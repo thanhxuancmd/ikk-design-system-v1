@@ -72,7 +72,7 @@ export default function TikTokCampaignsPage() {
                     +28% engagement
                   </p>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
                   <Eye className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default function TikTokCampaignsPage() {
             </div>
             
             <Select>
-              <SelectTrigger className="w-full" data-testid="select-tiktok-status">
+              <SelectTrigger className="w-full border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] transition-colors" data-testid="select-tiktok-status">
                 <SelectValue placeholder="Trạng thái" />
               </SelectTrigger>
               <SelectContent>
@@ -142,7 +142,7 @@ export default function TikTokCampaignsPage() {
             </Select>
 
             <Select>
-              <SelectTrigger className="w-full" data-testid="select-tiktok-category">
+              <SelectTrigger className="w-full border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] transition-colors" data-testid="select-tiktok-category">
                 <SelectValue placeholder="Danh mục" />
               </SelectTrigger>
               <SelectContent>
@@ -358,12 +358,12 @@ export default function TikTokCampaignsPage() {
               <div key={index} className="flex-1 flex flex-col items-center gap-2">
                 <div className="w-full flex flex-col gap-1">
                   <div 
-                    className="w-full bg-gradient-to-t from-[#ff0086] to-pink-400 rounded-t-lg hover:from-[#e6007a] hover:to-pink-500 transition-all duration-300 cursor-pointer"
+                    className="w-full bg-gradient-to-t from-pink-500 to-rose-500 rounded-t-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-300 cursor-pointer"
                     style={{ height: `${data.views}%` }}
                     title={`Views: ${data.views}%`}
                   />
                   <div 
-                    className="w-full bg-gradient-to-t from-blue-500 to-indigo-400 rounded-t-lg hover:from-blue-600 hover:to-indigo-500 transition-all duration-300 cursor-pointer"
+                    className="w-full bg-gradient-to-t from-blue-500 to-cyan-500 rounded-t-lg hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 cursor-pointer"
                     style={{ height: `${data.engagement}%` }}
                     title={`Engagement: ${data.engagement}%`}
                   />
