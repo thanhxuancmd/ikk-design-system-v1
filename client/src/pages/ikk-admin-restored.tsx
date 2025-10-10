@@ -47,10 +47,13 @@ import {
   Area,
   BarChart as RechartsBarChart,
   Bar,
+  ComposedChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
+  Legend,
   ResponsiveContainer
 } from 'recharts'
 
@@ -434,15 +437,18 @@ function SuperAdminDashboard() {
         </Card>
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Revenue Chart */}
+      {/* Charts Row - Combined Revenue & User Growth */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Combined Performance Chart */}
         <Card className="bg-white border-gray-100">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900" data-testid="heading-revenue-chart">Biểu đồ doanh thu</h3>
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="text-lg font-bold text-gray-900 mb-1" data-testid="heading-performance-chart">Hiệu suất tổng quan</h3>
+                <p className="text-sm text-gray-500">Doanh thu và tăng trưởng người dùng</p>
+              </div>
               <Select>
-                <SelectTrigger className="w-32" data-testid="select-revenue-period">
+                <SelectTrigger className="w-32" data-testid="select-performance-period">
                   <SelectValue placeholder="7 ngày" />
                 </SelectTrigger>
                 <SelectContent>
@@ -452,64 +458,84 @@ function SuperAdminDashboard() {
                 </SelectContent>
               </Select>
             </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <AreaChart data={[
-                { day: 'T2', revenue: 580 },
-                { day: 'T3', revenue: 720 },
-                { day: 'T4', revenue: 650 },
-                { day: 'T5', revenue: 890 },
-                { day: 'T6', revenue: 1100 },
-                { day: 'T7', revenue: 950 },
-                { day: 'CN', revenue: 780 }
+            <ResponsiveContainer width="100%" height={350}>
+              <ComposedChart data={[
+                { day: 'T2', revenue: 580, users: 42 },
+                { day: 'T3', revenue: 720, users: 58 },
+                { day: 'T4', revenue: 650, users: 45 },
+                { day: 'T5', revenue: 890, users: 67 },
+                { day: 'T6', revenue: 1100, users: 89 },
+                { day: 'T7', revenue: 950, users: 72 },
+                { day: 'CN', revenue: 780, users: 54 }
               ]}>
                 <defs>
-                  <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ff0086" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#ff0086" stopOpacity={0}/>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ff0086" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#ff0086" stopOpacity={0.1}/>
+                  </linearGradient>
+                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.8}/>
+                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0.1}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="day" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip />
-                <Area type="monotone" dataKey="revenue" stroke="#ff0086" strokeWidth={2} fill="url(#revenueGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* User Growth Chart */}
-        <Card className="bg-white border-gray-100">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-900" data-testid="heading-user-growth">Tăng trưởng người dùng</h3>
-              <Select>
-                <SelectTrigger className="w-32" data-testid="select-growth-period">
-                  <SelectValue placeholder="7 ngày" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="7days">7 ngày</SelectItem>
-                  <SelectItem value="30days">30 ngày</SelectItem>
-                  <SelectItem value="90days">90 ngày</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <ResponsiveContainer width="100%" height={250}>
-              <RechartsBarChart data={[
-                { day: 'T2', users: 42 },
-                { day: 'T3', users: 58 },
-                { day: 'T4', users: 45 },
-                { day: 'T5', users: 67 },
-                { day: 'T6', users: 89 },
-                { day: 'T7', users: 72 },
-                { day: 'CN', users: 54 }
-              ]}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="day" stroke="#888" />
-                <YAxis stroke="#888" />
-                <Tooltip />
-                <Bar dataKey="users" fill="#6366f1" radius={[8, 8, 0, 0]} />
-              </RechartsBarChart>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                <XAxis 
+                  dataKey="day" 
+                  stroke="#888" 
+                  tick={{ fill: '#666', fontSize: 12 }}
+                  axisLine={{ stroke: '#e5e7eb' }}
+                />
+                <YAxis 
+                  yAxisId="left"
+                  stroke="#ff0086" 
+                  tick={{ fill: '#ff0086', fontSize: 12 }}
+                  axisLine={{ stroke: '#ff0086' }}
+                  label={{ value: 'Doanh thu (triệu VNĐ)', angle: -90, position: 'insideLeft', fill: '#ff0086' }}
+                />
+                <YAxis 
+                  yAxisId="right"
+                  orientation="right"
+                  stroke="#6366f1" 
+                  tick={{ fill: '#6366f1', fontSize: 12 }}
+                  axisLine={{ stroke: '#6366f1' }}
+                  label={{ value: 'Người dùng mới', angle: 90, position: 'insideRight', fill: '#6366f1' }}
+                />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'white', 
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                  }}
+                  labelStyle={{ fontWeight: 'bold', marginBottom: '8px' }}
+                />
+                <Legend 
+                  wrapperStyle={{ paddingTop: '20px' }}
+                  iconType="circle"
+                  formatter={(value) => {
+                    if (value === 'revenue') return 'Doanh thu (triệu VNĐ)'
+                    if (value === 'users') return 'Người dùng mới'
+                    return value
+                  }}
+                />
+                <Bar 
+                  yAxisId="right"
+                  dataKey="users" 
+                  fill="url(#colorUsers)" 
+                  radius={[8, 8, 0, 0]}
+                  name="users"
+                />
+                <Line 
+                  yAxisId="left"
+                  type="monotone" 
+                  dataKey="revenue" 
+                  stroke="#ff0086" 
+                  strokeWidth={3}
+                  dot={{ fill: '#ff0086', strokeWidth: 2, r: 4 }}
+                  activeDot={{ r: 6, fill: '#ff0086' }}
+                  name="revenue"
+                />
+              </ComposedChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
