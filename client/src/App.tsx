@@ -10,17 +10,13 @@ import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
 import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
-import DashboardPage from "@/pages/dashboard";
 import DashboardRestoredPage from "@/pages/dashboard-restored";
 import ReportsPage from "@/pages/reports";
 import PaymentsPage from "@/pages/payments";
 import ToolsPage from "@/pages/tools";
 import AdvertiserPage from "@/pages/advertiser";
 import KOCAppPage from "@/pages/koc-app";
-import AdminAnalytics from "@/pages/admin/analytics";
-import AdminUsers from "@/pages/admin/users";
 import BrandDashboardPage from "@/pages/brand-dashboard";
-import IKKHomePageNew from "@/pages/ikk-home-new";
 import AdminPageRestored from "@/pages/ikk-admin-restored"
 import AdminBrandsPage from "@/pages/admin/brands"
 import AdminCategoriesPage from "@/pages/admin/brands/categories"
