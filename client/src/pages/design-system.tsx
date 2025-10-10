@@ -148,7 +148,8 @@ export default function DesignSystem() {
     { id: 'section-55', number: '55', title: 'Cài đặt hệ thống' },
     { id: 'section-56', number: '56', title: 'Quản lý người dùng' },
     { id: 'section-57', number: '57', title: 'Quản lý chiến dịch' },
-    { id: 'section-58', number: '58', title: 'Thêm chiến dịch' }
+    { id: 'section-58', number: '58', title: 'Thêm chiến dịch' },
+    { id: 'section-59', number: '59', title: 'Design System V2 (Home Page)' }
   ];
 
   // Scroll to section function
@@ -227,6 +228,9 @@ export default function DesignSystem() {
               <a href="#guidelines" className="text-gray-700 hover:text-[#ff0086] transition-colors font-medium">
                 Guidelines
               </a>
+              <Link to="/design-system-v2" className="text-gray-700 hover:text-[#ff0086] transition-colors font-medium">
+                Design System V2
+              </Link>
             </nav>
 
             {/* Right side - Notification + Auth */}
@@ -277,6 +281,9 @@ export default function DesignSystem() {
             <a href="#guidelines" className="block px-3 py-2 text-gray-600 hover:text-[#ff0086] hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
               Guidelines
             </a>
+            <Link to="/design-system-v2" className="block px-3 py-2 text-gray-600 hover:text-[#ff0086] hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">
+              Design System V2
+            </Link>
             
             {/* Mobile Auth Buttons */}
             <div className="flex items-center space-x-3 pt-4 border-t border-gray-100">
