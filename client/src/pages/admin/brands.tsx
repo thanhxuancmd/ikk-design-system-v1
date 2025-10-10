@@ -407,7 +407,8 @@ function BrandFormDialog({ open, onOpenChange, brand }: BrandFormDialogProps) {
               </Button>
               <Button
                 type="submit"
-                className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+                variant="default"
+                className="bg-primary hover:bg-primary-dark text-primary-foreground"
                 disabled={isPending}
                 data-testid="button-submit-brand"
               >
@@ -706,9 +707,11 @@ export default function AdminBrandsPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-bold text-gray-900" data-testid="heading-brand-management">Thị trường Thương hiệu</h2>
             <Button 
-              className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+              variant="default"
+                className="bg-primary hover:bg-primary-dark text-primary-foreground"
               onClick={handleCreateBrand}
               data-testid="button-create-brand"
+              className="bg-primary hover:bg-primary-dark text-primary-foreground"
             >
               <HiPlus className="w-5 h-5 mr-2" />
               Thêm mới thương hiệu
@@ -800,7 +803,8 @@ export default function AdminBrandsPage() {
 
           <div className="flex items-center gap-3 mb-4">
             <Button 
-              className="bg-[#ff0086] hover:bg-[#e6007a] text-white" 
+              variant="default"
+                className="bg-primary hover:bg-primary-dark text-primary-foreground" 
               data-testid="button-apply-filters"
               onClick={() => {
                 toast({
@@ -901,12 +905,12 @@ export default function AdminBrandsPage() {
                     ) : filteredBrands.length === 0 ? (
                       <tr>
                         <td colSpan={7} className="py-8 text-center text-gray-500">
-                          Không tìm thấy thương hiệu nào
+                          Không tìm thấy thương hiệu nào. Vui lòng thêm thương hiệu mới.
                         </td>
                       </tr>
                     ) : (
                       filteredBrands.map((brand) => (
-                        <tr key={brand.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-testid={`row-brand-${brand.id}`}>
+                        <tr key={brand.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors hover:shadow-sm" data-testid={`row-brand-${brand.id}`}>
                           <td className="py-4 px-4">
                             <div className="flex items-start gap-3">
                               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ff0086] to-purple-600 flex-shrink-0 flex items-center justify-center text-white font-semibold">
@@ -1005,11 +1009,11 @@ export default function AdminBrandsPage() {
               </div>
             ) : filteredBrands.length === 0 ? (
               <div className="col-span-full py-8 text-center text-gray-500">
-                Không tìm thấy thương hiệu nào
+                Không tìm thấy thương hiệu nào. Vui lòng thêm thương hiệu mới.
               </div>
             ) : (
               filteredBrands.map((brand) => (
-                <Card key={brand.id} className="bg-white border-gray-100 hover:shadow-md transition-shadow" data-testid={`card-brand-${brand.id}`}>
+                <Card key={brand.id} className="bg-white border-gray-100 hover:shadow-xl transition-shadow" data-testid={`card-brand-${brand.id}`}>
                   <CardContent className="p-4">
                     <div className="flex flex-col items-center text-center mb-3">
                       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ff0086] to-purple-600 flex items-center justify-center text-white font-semibold text-xl mb-3">
@@ -1065,8 +1069,7 @@ export default function AdminBrandsPage() {
                         Xem
                       </Button>
                       <Button
-                        className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white"
-                        size="sm"
+                        variant="outline" size="sm"
                         data-testid={`btn-edit-grid-${brand.id}`}
                         onClick={() => handleEditBrand(brand)}
                       >

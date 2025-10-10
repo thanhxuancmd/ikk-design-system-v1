@@ -196,7 +196,7 @@ export default function DesignSystem() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header - exactly like home page */}
-      <header className="bg-white border-b border-gray-100">
+      <header className="bg-background border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
@@ -241,9 +241,7 @@ export default function DesignSystem() {
                 <button className="text-gray-600 hover:text-gray-900 text-sm font-medium">
                   Đăng nhập
                 </button>
-                <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-                  Đăng ký
-                </button>
+                <Button variant="default" className="px-4 py-2 rounded-lg text-sm font-medium">Đăng ký</Button>
               </div>
 
               {/* Mobile menu button */}
@@ -284,9 +282,7 @@ export default function DesignSystem() {
               <button className="flex-1 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm font-medium transition-colors">
                 Đăng nhập
               </button>
-              <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white py-2 rounded-lg text-sm font-medium transition-colors">
-                Đăng ký
-              </button>
+              <Button variant="default" className="flex-1 py-2 rounded-lg text-sm font-medium">Đăng ký</Button>
             </div>
           </div>
         </div>
@@ -306,14 +302,14 @@ export default function DesignSystem() {
           {/* Principle 1: Color Hierarchy */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl flex items-center justify-center mb-4">
-              <Palette className="w-6 h-6 text-[#ff0086]" />
+              <Palette className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Phân cấp màu sắc</h3>
             <p className="text-sm text-gray-600 mb-4">
               Màu hồng chủ đạo #ff0086 với hệ thống màu phụ trợ rõ ràng cho từng chức năng
             </p>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-[#ff0086] rounded"></div>
+              <div className="w-8 h-8 bg-primary rounded"></div>
               <div className="w-8 h-8 bg-pink-100 rounded"></div>
               <div className="w-8 h-8 bg-gray-100 rounded"></div>
               <div className="w-8 h-8 bg-white border border-gray-200 rounded"></div>
@@ -323,7 +319,7 @@ export default function DesignSystem() {
           {/* Principle 2: Whitespace & Breathing */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center mb-4">
-              <Layout className="w-6 h-6 text-blue-600" />
+              <Layout className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Không gian thở</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -331,16 +327,20 @@ export default function DesignSystem() {
             </p>
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-xs text-gray-500">
+                <div className="w-1 h-4 bg-gray-200"></div>
+                <span>4px - Compact (p-1)</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-500">
+                <div className="w-2 h-4 bg-gray-200"></div>
+                <span>8px - Default (p-2)</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-gray-500">
                 <div className="w-4 h-4 bg-gray-200"></div>
-                <span>4px - Compact</span>
+                <span>16px - Spacious (p-4)</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-gray-500">
-                <div className="w-8 h-4 bg-gray-200"></div>
-                <span>8px - Default</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-gray-500">
-                <div className="w-16 h-4 bg-gray-200"></div>
-                <span>16px - Spacious</span>
+                <div className="w-6 h-4 bg-gray-200"></div>
+                <span>24px - Extra Spacious (p-6)</span>
               </div>
             </div>
           </div>
@@ -348,68 +348,95 @@ export default function DesignSystem() {
           {/* Principle 3: Rounded Corners */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-4">
-              <Box className="w-6 h-6 text-green-600" />
+              <Box className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Bo góc nhất quán</h3>
             <p className="text-sm text-gray-600 mb-4">
               rounded-xl (12px) cho cards, rounded-lg (8px) cho buttons, rounded (4px) cho inputs
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gray-200 rounded-xl"></div>
-              <div className="w-12 h-8 bg-gray-200 rounded-lg"></div>
-              <div className="w-12 h-6 bg-gray-200 rounded"></div>
+              <div className="w-12 h-12 bg-gray-200 rounded-xl flex items-center justify-center text-xs text-gray-600">xl (12px)</div>
+              <div className="w-12 h-8 bg-gray-200 rounded-lg flex items-center justify-center text-xs text-gray-600">lg (8px)</div>
+              <div className="w-12 h-6 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-600">md (6px)</div>
+              <div className="w-12 h-4 bg-gray-200 rounded-sm flex items-center justify-center text-xs text-gray-600">sm (4px)</div>
             </div>
           </div>
 
           {/* Principle 4: Shadow & Depth */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-violet-100 rounded-xl flex items-center justify-center mb-4">
-              <Layers className="w-6 h-6 text-purple-600" />
+              <Layers className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Hiệu ứng chiều sâu</h3>
             <p className="text-sm text-gray-600 mb-4">
               Shadow tinh tế từ shadow-sm đến shadow-xl, hover effects mượt mà với transitions
             </p>
             <div className="space-y-2">
-              <div className="p-2 bg-white rounded shadow-sm text-xs">shadow-sm</div>
-              <div className="p-2 bg-white rounded shadow-md text-xs">shadow-md</div>
-              <div className="p-2 bg-white rounded shadow-xl text-xs">shadow-xl</div>
+              <div className="p-2 bg-white rounded shadow-sm text-xs">shadow-sm (Small)</div>
+              <div className="p-2 bg-white rounded shadow-md text-xs">shadow-md (Medium)</div>
+              <div className="p-2 bg-white rounded shadow-lg text-xs">shadow-lg (Large)</div>
+              <div className="p-2 bg-white rounded shadow-xl text-xs">shadow-xl (Extra Large)</div>
             </div>
           </div>
 
           {/* Principle 5: Typography Scale */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl flex items-center justify-center mb-4">
-              <Type className="w-6 h-6 text-orange-600" />
+              <Type className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Phân cấp typography</h3>
             <p className="text-sm text-gray-600 mb-4">
               Hệ thống font size rõ ràng từ text-xs đến text-4xl, font-weight từ normal đến bold
             </p>
             <div className="space-y-1">
-              <p className="text-xs text-gray-500">text-xs (12px)</p>
-              <p className="text-sm text-gray-600">text-sm (14px)</p>
-              <p className="text-base text-gray-700">text-base (16px)</p>
-              <p className="text-lg text-gray-800 font-semibold">text-lg (18px)</p>
+              <p className="text-xs text-gray-500">text-xs (12px) - Normal</p>
+              <p className="text-sm text-gray-600">text-sm (14px) - Normal</p>
+              <p className="text-base text-gray-700 font-medium">text-base (16px) - Medium</p>
+              <p className="text-lg text-gray-800 font-semibold">text-lg (18px) - Semibold</p>
+              <p className="text-xl text-gray-900 font-bold">text-xl (20px) - Bold</p>
+              <p className="text-2xl text-gray-900 font-bold">text-2xl (24px) - Bold</p>
+              <p className="text-3xl text-gray-900 font-bold">text-3xl (30px) - Bold</p>
+              <p className="text-4xl text-gray-900 font-bold">text-4xl (36px) - Bold</p>
+            </div>
+          </div>
+
+          {/* Principle 7: Iconography */}
+          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div className="w-12 h-12 bg-gradient-to-br from-teal-100 to-cyan-100 rounded-xl flex items-center justify-center mb-4">
+              <Sparkles className="w-6 h-6 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Iconography nhất quán</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Sử dụng Lucide React icons với size, stroke-width và màu sắc nhất quán. Áp dụng gradient background và shadow cho icon.
+            </p>
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg flex items-center justify-center shadow-sm">
+                <Heart className="w-5 h-5 text-primary" />
+              </div>
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center shadow-sm">
+                <Camera className="w-5 h-5 text-primary" />
+              </div>
+              <div className="w-10 h-10 bg-gradient-to-br from-green-100 to-emerald-100 rounded-lg flex items-center justify-center shadow-sm">
+                <Gift className="w-5 h-5 text-primary" />
+              </div>
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-100 to-violet-100 rounded-lg flex items-center justify-center shadow-sm">
+                <Trophy className="w-5 h-5 text-primary" />
+              </div>
             </div>
           </div>
 
           {/* Principle 6: Interactive Feedback */}
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-red-100 to-rose-100 rounded-xl flex items-center justify-center mb-4">
-              <Zap className="w-6 h-6 text-red-600" />
+              <Zap className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Phản hồi tương tác</h3>
             <p className="text-sm text-gray-600 mb-4">
               Hover states, active states, transitions mượt 200-300ms cho mọi interactive element
             </p>
             <div className="space-y-2">
-              <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-all duration-300">
-                Hover me
-              </button>
-              <button className="px-4 py-2 bg-[#ff0086] hover:bg-[#e6007a] text-white rounded-lg text-sm transition-all duration-300">
-                Primary action
-              </button>
+              <Button variant="outline" className="px-4 py-2 rounded-lg">Hover me</Button>
+              <Button variant="default" className="px-4 py-2 rounded-lg">Primary action</Button>
             </div>
           </div>
         </div>
@@ -484,9 +511,7 @@ export default function DesignSystem() {
       <section className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-gray-900">Danh mục</h2>
-          <button className="text-sm text-[#ff0086] hover:text-[#e6007a] transition-colors font-medium">
-            Xem tất cả
-          </button>
+            <Button variant="link" className="text-sm font-medium p-0 h-auto">Xem tất cả</Button>
         </div>
 
         {/* Category Grid - 8 columns exactly like home */}
@@ -494,7 +519,7 @@ export default function DesignSystem() {
           {/* Colors */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-rose-100 group-hover:from-pink-200 group-hover:to-rose-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Palette className="w-7 h-7 text-pink-600" />
+              <Palette className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Màu sắc
@@ -504,7 +529,7 @@ export default function DesignSystem() {
           {/* Typography */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-blue-100 to-indigo-100 group-hover:from-blue-200 group-hover:to-indigo-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Type className="w-7 h-7 text-blue-600" />
+              <Type className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Typography
@@ -514,7 +539,7 @@ export default function DesignSystem() {
           {/* Buttons */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-orange-100 to-amber-100 group-hover:from-orange-200 group-hover:to-amber-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <PlusCircle className="w-7 h-7 text-orange-600" />
+              <PlusCircle className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Nút bấm
@@ -524,7 +549,7 @@ export default function DesignSystem() {
           {/* Forms */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-green-100 to-emerald-100 group-hover:from-green-200 group-hover:to-emerald-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <FileText className="w-7 h-7 text-green-600" />
+              <FileText className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Biểu mẫu
@@ -534,7 +559,7 @@ export default function DesignSystem() {
           {/* Cards */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-rose-100 to-pink-100 group-hover:from-rose-200 group-hover:to-pink-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Layers className="w-7 h-7 text-rose-600" />
+              <Layers className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Thẻ
@@ -544,7 +569,7 @@ export default function DesignSystem() {
           {/* Navigation */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-purple-100 to-violet-100 group-hover:from-purple-200 group-hover:to-violet-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Navigation className="w-7 h-7 text-purple-600" />
+              <Navigation className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Điều hướng
@@ -554,7 +579,7 @@ export default function DesignSystem() {
           {/* Icons */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-red-100 to-rose-100 group-hover:from-red-200 group-hover:to-rose-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Star className="w-7 h-7 text-red-600" />
+              <Star className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Biểu tượng
@@ -564,7 +589,7 @@ export default function DesignSystem() {
           {/* Layouts */}
           <div className="flex flex-col items-center group cursor-pointer">
             <div className="w-14 h-14 bg-gradient-to-br from-yellow-100 to-amber-100 group-hover:from-yellow-200 group-hover:to-amber-200 rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md">
-              <Grid3X3 className="w-7 h-7 text-yellow-600" />
+              <Grid3X3 className="w-7 h-7 text-primary" />
             </div>
             <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
               Bố cục
@@ -592,7 +617,7 @@ export default function DesignSystem() {
           {components.map((component, index) => (
             <div key={index} className="flex-shrink-0 group relative">
               <a href={`#${component.name}`}>
-                <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-[200px] relative">
+                  <div className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-[200px] relative group-hover:shadow-md group-hover:scale-[1.02]">
                   {/* Delete Button - positioned in top-right corner */}
                   <button
                     onClick={(e) => {
@@ -641,7 +666,7 @@ export default function DesignSystem() {
           {/* Design tokens carousel */}
           <div className="flex space-x-4 overflow-x-auto pb-4">
             {designTokens.map((token, index) => (
-              <div key={index} className="flex-shrink-0 w-80 h-48 relative rounded-xl overflow-hidden group cursor-pointer">
+              <div key={index} className="flex-shrink-0 w-80 h-48 relative rounded-xl overflow-hidden group cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300">
                 <div className={`absolute inset-0 bg-gradient-to-br ${token.color}`}></div>
                 <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-30 transition-all"></div>
                 
@@ -710,7 +735,7 @@ export default function DesignSystem() {
                 <SelectItem value="luxury">Cao cấp</SelectItem>
               </SelectContent>
             </Select>
-            <Button className="bg-[#ff0086] hover:bg-[#e6007a] text-white" data-testid="button-view-all-campaigns">
+            <Button variant="default" data-testid="button-view-all-campaigns">
               Xem tất cả
             </Button>
           </div>
@@ -1352,7 +1377,7 @@ export default function DesignSystem() {
             {/* Previous icons would be here */}
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center mb-3 shadow-sm hover:shadow-md transition-all duration-300">
-                <Users className="w-8 h-8 text-purple-600" />
+                <Users className="w-8 h-8 text-primary" />
               </div>
               <span className="text-xs font-medium text-gray-700">Users</span>
               <div className="text-xs text-gray-500 mt-1">Collaborations</div>
@@ -1361,7 +1386,7 @@ export default function DesignSystem() {
             {/* Commerce Icons */}
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-amber-100 to-yellow-100 rounded-xl flex items-center justify-center mb-3 shadow-sm hover:shadow-md transition-all duration-300">
-                <ShoppingBag className="w-8 h-8 text-amber-600" />
+                <ShoppingBag className="w-8 h-8 text-primary" />
               </div>
               <span className="text-xs font-medium text-gray-700">ShoppingBag</span>
               <div className="text-xs text-gray-500 mt-1">E-commerce</div>
@@ -1369,7 +1394,7 @@ export default function DesignSystem() {
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-3 shadow-sm hover:shadow-md transition-all duration-300">
-                <DollarSign className="w-8 h-8 text-green-600" />
+                <DollarSign className="w-8 h-8 text-primary" />
               </div>
               <span className="text-xs font-medium text-gray-700">DollarSign</span>
               <div className="text-xs text-gray-500 mt-1">Monetization</div>
@@ -1377,7 +1402,7 @@ export default function DesignSystem() {
 
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-gray-100 to-slate-100 rounded-xl flex items-center justify-center mb-3 shadow-sm hover:shadow-md transition-all duration-300">
-                <Eye className="w-8 h-8 text-gray-600" />
+                <Eye className="w-8 h-8 text-primary" />
               </div>
               <span className="text-xs font-medium text-gray-700">Eye</span>
               <div className="text-xs text-gray-500 mt-1">Content Views</div>
