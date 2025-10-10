@@ -3512,6 +3512,254 @@ export default function DesignSystemV2() {
               </div>
             </section>
 
+            {/* Section 9: CAMPAIGN DEMO - Chiến dịch TikTok KOC */}
+            <section className="max-w-7xl mx-auto px-4 mb-16" data-section="campaign-demo">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-pink-100 to-purple-100 px-4 py-2 rounded-full mb-4">
+                  <FaTiktok className="w-5 h-5 text-[#ff0086]" />
+                  <span className="text-sm font-semibold text-[#ff0086]">CHIẾN DỊCH TIKTOK KOC</span>
+                </div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4">Chiến dịch nổi bật</h2>
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                  Khám phá các chiến dịch TikTok đang hot, kết nối với thương hiệu uy tín và nhận hoa hồng hấp dẫn
+                </p>
+              </div>
+
+              {/* Campaign Cards Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {/* Campaign Card 1 */}
+                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                  <div className="relative h-48 bg-gradient-to-br from-pink-400 via-rose-400 to-red-400 flex items-center justify-center">
+                    <FaTiktok className="w-16 h-16 text-white opacity-20" />
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Đang hoạt động
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Hoa hồng</p>
+                            <p className="text-lg font-bold text-[#ff0086]">15%</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Thời hạn</p>
+                            <p className="text-sm font-semibold text-gray-900">30 ngày</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-5">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">SK</span>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">Skincare Beauty</h3>
+                        <p className="text-xs text-gray-500">Mỹ phẩm cao cấp</p>
+                      </div>
+                    </div>
+                    
+                    <h4 className="font-bold text-gray-900 mb-2 group-hover:text-[#ff0086] transition-colors">
+                      Review sản phẩm chăm sóc da mặt
+                    </h4>
+                    
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      Tạo video review các sản phẩm skincare mới nhất, chia sẻ trải nghiệm thực tế và hiệu quả sử dụng
+                    </p>
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Views</p>
+                        <p className="text-sm font-semibold text-gray-900">2.5M</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Videos</p>
+                        <p className="text-sm font-semibold text-gray-900">156</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">KOC</p>
+                        <p className="text-sm font-semibold text-gray-900">48</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white py-2 px-4 rounded-lg font-semibold text-sm transition-colors">
+                        Tham gia ngay
+                      </button>
+                      <button className="p-2 border border-gray-200 hover:border-[#ff0086] rounded-lg transition-colors">
+                        <HiOutlineBookmark className="w-5 h-5 text-gray-600 hover:text-[#ff0086]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Campaign Card 2 */}
+                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                  <div className="relative h-48 bg-gradient-to-br from-blue-400 via-cyan-400 to-teal-400 flex items-center justify-center">
+                    <FaTiktok className="w-16 h-16 text-white opacity-20" />
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Đang hoạt động
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Hoa hồng</p>
+                            <p className="text-lg font-bold text-[#ff0086]">20%</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Thời hạn</p>
+                            <p className="text-sm font-semibold text-gray-900">45 ngày</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-5">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">TG</span>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">Tech Gadgets</h3>
+                        <p className="text-xs text-gray-500">Công nghệ & Điện tử</p>
+                      </div>
+                    </div>
+                    
+                    <h4 className="font-bold text-gray-900 mb-2 group-hover:text-[#ff0086] transition-colors">
+                      Đánh giá smartphone mới nhất
+                    </h4>
+                    
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      Unboxing và review chi tiết các mẫu smartphone flagship 2024, so sánh hiệu năng và tính năng
+                    </p>
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Views</p>
+                        <p className="text-sm font-semibold text-gray-900">3.8M</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Videos</p>
+                        <p className="text-sm font-semibold text-gray-900">203</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">KOC</p>
+                        <p className="text-sm font-semibold text-gray-900">62</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white py-2 px-4 rounded-lg font-semibold text-sm transition-colors">
+                        Tham gia ngay
+                      </button>
+                      <button className="p-2 border border-gray-200 hover:border-[#ff0086] rounded-lg transition-colors">
+                        <HiOutlineBookmark className="w-5 h-5 text-gray-600 hover:text-[#ff0086]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Campaign Card 3 */}
+                <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                  <div className="relative h-48 bg-gradient-to-br from-green-400 via-emerald-400 to-teal-400 flex items-center justify-center">
+                    <FaTiktok className="w-16 h-16 text-white opacity-20" />
+                    <div className="absolute top-3 right-3">
+                      <span className="bg-yellow-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                        Sắp kết thúc
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Hoa hồng</p>
+                            <p className="text-lg font-bold text-[#ff0086]">18%</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600 mb-1">Thời hạn</p>
+                            <p className="text-sm font-semibold text-gray-900">7 ngày</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-5">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold text-sm">FD</span>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">Food & Drink</h3>
+                        <p className="text-xs text-gray-500">Ẩm thực & Đồ uống</p>
+                      </div>
+                    </div>
+                    
+                    <h4 className="font-bold text-gray-900 mb-2 group-hover:text-[#ff0086] transition-colors">
+                      Khám phá món ăn đường phố
+                    </h4>
+                    
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      Giới thiệu các món ăn đường phố độc đáo, review quán ăn ngon và chia sẻ trải nghiệm ẩm thực
+                    </p>
+                    
+                    <div className="grid grid-cols-3 gap-3 mb-4">
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Views</p>
+                        <p className="text-sm font-semibold text-gray-900">1.9M</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">Videos</p>
+                        <p className="text-sm font-semibold text-gray-900">128</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-xs text-gray-500 mb-1">KOC</p>
+                        <p className="text-sm font-semibold text-gray-900">35</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white py-2 px-4 rounded-lg font-semibold text-sm transition-colors">
+                        Tham gia ngay
+                      </button>
+                      <button className="p-2 border border-gray-200 hover:border-[#ff0086] rounded-lg transition-colors">
+                        <HiOutlineBookmark className="w-5 h-5 text-gray-600 hover:text-[#ff0086]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA Section */}
+              <div className="bg-gradient-to-r from-pink-50 via-purple-50 to-blue-50 rounded-2xl p-8 text-center">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">Trở thành KOC của IKK</h3>
+                <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                  Tham gia cộng đồng KOC lớn nhất Việt Nam, nhận hoa hồng cao và phát triển kênh TikTok của bạn cùng các thương hiệu uy tín
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+                  <Link to="/register">
+                    <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
+                      <HiOutlineRocketLaunch className="w-5 h-5" />
+                      <span>Đăng ký ngay</span>
+                    </button>
+                  </Link>
+                  <Link to="/campaigns">
+                    <button className="bg-white border border-gray-300 hover:border-[#ff0086] text-gray-700 hover:text-[#ff0086] px-8 py-3 rounded-lg font-semibold transition-colors">
+                      Xem tất cả chiến dịch
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </section>
+
             </div>
           </>
         );
