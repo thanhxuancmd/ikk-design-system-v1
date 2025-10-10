@@ -50,6 +50,7 @@ import CampaignDetailPage from "@/pages/campaigns/[id]"
 import CampaignApplyPage from "@/pages/campaigns/static-1/apply"
 import CampaignsRewardsPage from "@/pages/campaigns/rewards"
 import AdminDesignSystem from "@/pages/design-system/admin"
+import DesignSystemV2 from "@/pages/design-system-v2"
 
 
 function Router() {
@@ -102,6 +103,7 @@ function Router() {
         {/* Design System Routes */}
         <Route path="/design-system" component={DesignSystem} />
         <Route path="/design-system/admin" component={AdminDesignSystem} />
+        <Route path="/design-system-v2" component={DesignSystemV2} />
         
         <Route component={NotFound} />
       </Switch>
