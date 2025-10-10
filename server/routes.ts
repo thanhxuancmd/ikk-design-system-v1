@@ -5,6 +5,7 @@ import {
   insertUserSchema, insertKocProfileSchema, insertBrandSchema, 
   insertCampaignSchema, insertApplicationSchema, insertNotificationSchema 
 } from "@shared/schema";
+import { pushToGitHub } from "./git-push";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // User routes
@@ -316,6 +317,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     
     res.setHeader('Content-Type', 'image/svg+xml');
     res.send(svg);
+  });
+
+  // Git push route (internal use only)
+  app.post("/api/git/push", async (req, res) => {
+    try {
+      const { message } = req.body;
+      const commitMessage = message || 'Update code via API';
+      const result = await pushToGitHub(commitMessage);
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ 
+        success: false, 
+        message: error.message || 'Failed to push to GitHub' 
+      });
+    }
   });
 
   const httpServer = createServer(app);
