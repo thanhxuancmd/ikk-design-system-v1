@@ -1,0 +1,14 @@
+﻿brand_id,brand_name,brand_type,industry,description,total_campaigns,avg_reward,platforms,status
+FIN001,Finmart,Fintech,Tài chính số,Nền tảng so sánh và tư vấn thẻ tín dụng,1,800000,TikTok,Active
+FIN002,KBank,Bank,Ngân hàng,Ngân hàng Kasikornbank,1,900000,Facebook,Active
+FIN003,VNSC,Securities,Chứng khoán,Vietnam Securities Corporation - Công ty chứng khoán,1,700000,TikTok,Active
+FIN004,GREENCAP,Investment,Đầu tư,Công ty đầu tư và xuất bản sách tài chính,1,700000,Facebook,Active
+FIN005,1Long,Fintech,Tài chính số,App quản lý tài chính cá nhân,1,700000,"Facebook, App Store, Google Play",Active
+FIN006,VPBank,Bank,Ngân hàng,Ngân hàng Việt Nam Thịnh Vượng,2,700000,TikTok,Active
+FIN007,GENERALI,Insurance,Bảo hiểm,Tập đoàn bảo hiểm Generali Việt Nam,13,500000,"Facebook, TikTok",Active
+FIN008,TOPI,Fintech,Tài chính số,App quản lý tài chính và đầu tư,1,800000,"TikTok, Facebook",Active
+FIN009,ZaloPay,E-wallet,Ví điện tử,Ví điện tử ZaloPay của VNG,1,500000,TikTok,Active
+FIN010,HANAGOLD,Fintech,Tài chính số,App đầu tư vàng trực tuyến,1,800000,"TikTok, Facebook",Active
+FIN011,Chứng khoán Shinhan,Securities,Chứng khoán,Công ty chứng khoán Shinhan Việt Nam,1,800000,TikTok,Active
+FIN012,ADTECHINNO,Fintech,Công nghệ tài chính,Công ty công nghệ phát triển app ngân hàng,1,700000,TikTok,Active
+FIN013,TPBank,Bank,Ngân hàng,Ngân hàng Tiên Phong (qua Xanh Marketing),1,500000,TikTok,Active

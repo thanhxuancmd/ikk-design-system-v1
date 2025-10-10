@@ -1,0 +1,10 @@
+﻿field_name,data_type,required,description,example
+brand_id,String,Yes,"ID duy nhất của thương hiệu (FIN001, FIN002...)",FIN001
+brand_name,String,Yes,Tên thương hiệu,Finmart
+brand_type,String,Yes,Loại hình (Bank/Fintech/Insurance/Securities/E-wallet/Investment),Fintech
+industry,String,Yes,Ngành nghề,Tài chính số
+description,Text,Yes,Mô tả về thương hiệu,Nền tảng so sánh và tư vấn thẻ tín dụng
+total_campaigns,Number,Yes,Tổng số chiến dịch đã triển khai,1
+avg_reward,Number,Yes,Giá trị phần thưởng trung bình (VND),800000
+platforms,String,Yes,Các nền tảng sử dụng (TikTok/Facebook/Instagram),TikTok
+status,String,Yes,Trạng thái (Active/Inactive),Active

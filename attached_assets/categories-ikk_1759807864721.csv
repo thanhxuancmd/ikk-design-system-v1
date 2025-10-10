@@ -1,0 +1,43 @@
+﻿category_id,name,slug,type,parent_id,icon_number,description
+CAT001,Hướng dẫn Dịch vụ,revu_guide,MAIN,,6,REVU GUIDE - Hướng dẫn sử dụng dịch vụ
+CAT002,"Nhà hàng, cà phê",restaurants_cafes,MAIN,,7,Restaurants & Cafes - Dịch vụ ăn uống
+CAT003,Làm đẹp,beauty,MAIN,,8,Beauty & Cosmetics - Mỹ phẩm và làm đẹp
+CAT004,Du lịch,travel,MAIN,,9,Travel & Tourism - Du lịch và khách sạn
+CAT005,Giải trí,entertainment,MAIN,,10,Entertainment - Giải trí và sự kiện
+CAT006,"Đồ ăn, thức uống",food_beverage,MAIN,,11,Food & Beverage - Thực phẩm và đồ uống
+CAT007,Lối sống,lifestyle,MAIN,,12,Lifestyle - Phong cách sống
+CAT008,Công nghệ,technology,MAIN,,13,Technology - Công nghệ và điện tử
+CAT009,Tuyển dụng,recruitment,MAIN,,14,Recruitment - Tuyển dụng và việc làm
+CAT010,Nhà quảng cáo,advertiser,MAIN,,15,Advertiser - Dành cho nhà quảng cáo
+P001,Tất cả,all,PRODUCT,,,Tất cả sản phẩm
+P002,Mỹ phẩm,cosmetics,PRODUCT,,,Sản phẩm mỹ phẩm và làm đẹp
+P003,"Đồ ăn, thức uống",food_drink,PRODUCT,,,Thực phẩm và đồ uống
+P004,Mẹ và bé,mom_baby,PRODUCT,,,Sản phẩm cho mẹ và bé
+P005,Công nghệ - Gia dụng,tech_home,PRODUCT,,,Công nghệ và đồ gia dụng
+P006,Thời trang,fashion,PRODUCT,,,"Quần áo, phụ kiện, giày dép"
+P007,Lifestyle,lifestyle_product,PRODUCT,,,Sản phẩm phong cách sống
+P008,Dược phẩm,pharmaceutical,PRODUCT,,,Thuốc và dược phẩm
+P009,Nội thất,furniture,PRODUCT,,,Đồ nội thất
+P010,Game,game,PRODUCT,,,Game và phụ kiện gaming
+P003_1,Đồ ăn,food,PRODUCT,P003,,Thực phẩm
+P003_2,Thức uống,beverage,PRODUCT,P003,,Đồ uống các loại
+P011,Hóa dược phẩm,pharma_chemical,PRODUCT,,,Hóa chất và dược phẩm
+P012,Thú cưng,pet,PRODUCT,,,Sản phẩm cho thú cưng
+P013,Thực phẩm chức năng,functional_food,PRODUCT,,,Thực phẩm bổ sung
+P014,FMCG,fmcg,PRODUCT,,,Hàng tiêu dùng nhanh
+P015,Sức khỏe,health,PRODUCT,,,Sản phẩm chăm sóc sức khỏe
+P016,Thiết bị làm đẹp,beauty_device,PRODUCT,,,Máy móc làm đẹp
+P017,Thiết bị y tế,medical_device,PRODUCT,,,Thiết bị y tế
+P018,Giáo dục,education,PRODUCT,,,Sản phẩm giáo dục
+P019,Phong thuỷ,feng_shui,PRODUCT,,,Vật phẩm phong thuỷ
+P020,App,app,PRODUCT,,,Ứng dụng di động
+S001,Tất cả,all_service,SERVICE,,,Tất cả dịch vụ
+S002,"Nhà hàng, cà phê",restaurants_cafes_service,SERVICE,,7,Dịch vụ ăn uống
+S003,Du lịch,travel_service,SERVICE,,9,Du lịch và nghỉ dưỡng
+S004,Giải trí,entertainment_service,SERVICE,,10,Giải trí và sự kiện
+S005,Làm đẹp,beauty_service,SERVICE,,8,Spa và làm đẹp
+S006,Sức khỏe,health_service,SERVICE,,,Y tế và sức khỏe
+S007,Giáo dục,education_service,SERVICE,,,Giáo dục và đào tạo
+S008,Game,game_service,SERVICE,,,Game và esports
+S009,Tài chính,finance,SERVICE,,,Ngân hàng và tài chính
+S010,Phong thuỷ,feng_shui_service,SERVICE,,,Phong thuỷ và tâm linh
