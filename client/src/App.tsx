@@ -46,6 +46,7 @@ import CampaignDetailPage from "@/pages/campaigns/[id]"
 import CampaignApplyPage from "@/pages/campaigns/static-1/apply"
 import CampaignsRewardsPage from "@/pages/campaigns/rewards"
 import AdminDesignSystem from "@/pages/design-system/admin"
+import AppleHIGShowcase from "@/pages/apple-hig"
 
 
 function Router() {
@@ -98,6 +99,7 @@ function Router() {
         {/* Design System Routes */}
         <Route path="/design-system" component={DesignSystem} />
         <Route path="/design-system/admin" component={AdminDesignSystem} />
+        <Route path="/apple-hig" component={AppleHIGShowcase} />
         
         <Route component={NotFound} />
       </Switch>
