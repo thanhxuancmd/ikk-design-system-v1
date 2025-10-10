@@ -136,6 +136,7 @@ export default function DesignSystem() {
   // Section navigation data
   const sections = [
     { id: 'section-46', number: '46', title: 'Quản lý chiến dịch TikTok' },
+    { id: 'section-46-5', number: '46.5', title: 'Quản lý chiến dịch Instagram' },
     { id: 'section-47', number: '47', title: 'Quản lý danh mục thương hiệu' },
     { id: 'section-48', number: '48', title: 'Quản lý thương hiệu' },
     { id: 'section-49', number: '49', title: 'Super Admin Dashboard' },
@@ -346,6 +347,27 @@ export default function DesignSystem() {
           </div>
 
           {/* Principle 3: Rounded Corners */}
+          <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-fuchsia-100 rounded-xl flex items-center justify-center mb-4">
+              <Camera className="w-6 h-6 text-primary" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Quản lý chiến dịch Instagram</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Tối ưu hóa và theo dõi hiệu suất chiến dịch Instagram với các công cụ phân tích chuyên sâu và báo cáo chi tiết.
+            </p>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <FaInstagram className="w-4 h-4 text-pink-500" />
+              <span>Phân tích hiệu suất</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <BarChart3 className="w-4 h-4 text-blue-500" />
+              <span>Báo cáo chi tiết</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <Target className="w-4 h-4 text-green-500" />
+              <span>Tối ưu hóa mục tiêu</span>
+            </div>
+          </div>
           <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl flex items-center justify-center mb-4">
               <Box className="w-6 h-6 text-primary" />
@@ -7844,6 +7866,404 @@ export default function DesignSystem() {
           </div>
         </div>
       </section>
+      {/* #46.5 Quản lý chiến dịch Instagram */}
+      <section id="section-46-5" className="max-w-7xl mx-auto px-4 mb-12" data-testid="section-instagram-campaign-management">
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2" data-testid="heading-instagram-campaigns">Quản lý chiến dịch Instagram</h2>
+            <p className="text-gray-600" data-testid="text-instagram-subtitle">Theo dõi và quản lý hiệu suất các chiến dịch Instagram của thương hiệu</p>
+          </div>
+          <div className="flex items-center space-x-4">
+            <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors" data-testid="button-filter-instagram">
+              <span className="flex items-center space-x-2">
+                <Filter className="w-4 h-4" />
+                <span>Bộ lọc nâng cao</span>
+              </span>
+            </button>
+            <button className="px-4 py-2 bg-[#ff0086] hover:bg-[#e6007a] text-white rounded-lg text-sm font-medium transition-colors" data-testid="button-create-instagram-campaign">
+              <span className="flex items-center space-x-2">
+                <PlusCircle className="w-4 h-4" />
+                <span>Tạo chiến dịch Instagram</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <Card className="bg-white border-gray-100 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Tổng chiến dịch</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="stat-total-instagram-campaigns">32</p>
+                  <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    +18% so với tháng trước
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-xl flex items-center justify-center">
+                  <FaInstagram className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-100 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Tổng охват (Reach)</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="stat-total-instagram-reach">12.3M</p>
+                  <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    +35% engagement
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-100 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Tương tác trung bình</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="stat-avg-instagram-engagement">6.8%</p>
+                  <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    Cao hơn 4.2% trung bình
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center">
+                  <Heart className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-gray-100 hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Doanh thu tạo ra</p>
+                  <p className="text-2xl font-bold text-gray-900" data-testid="stat-instagram-revenue">580M VNĐ</p>
+                  <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" />
+                    ROI 4.1x
+                  </p>
+                </div>
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                  <DollarSign className="w-6 h-6 text-white" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Tìm kiếm chiến dịch Instagram..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] transition-colors"
+                data-testid="input-search-instagram-campaigns"
+              />
+            </div>
+            
+            <Select>
+              <SelectTrigger className="w-full" data-testid="select-instagram-status">
+                <SelectValue placeholder="Trạng thái" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tất cả</SelectItem>
+                <SelectItem value="active">Đang hoạt động</SelectItem>
+                <SelectItem value="completed">Đã hoàn thành</SelectItem>
+                <SelectItem value="draft">Nháp</SelectItem>
+                <SelectItem value="paused">Tạm dừng</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select>
+              <SelectTrigger className="w-full" data-testid="select-instagram-category">
+                <SelectValue placeholder="Danh mục" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Tất cả danh mục</SelectItem>
+                <SelectItem value="beauty">Làm đẹp</SelectItem>
+                <SelectItem value="fashion">Thời trang</SelectItem>
+                <SelectItem value="food">Ẩm thực</SelectItem>
+                <SelectItem value="tech">Công nghệ</SelectItem>
+                <SelectItem value="lifestyle">Lifestyle</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Campaign Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            {
+              id: 'ig-1',
+              title: 'Instagram Reels Beauty Challenge',
+              brand: 'Sephora Vietnam',
+              status: 'active',
+              reach: '3.5M',
+              engagement: '8.2%',
+              revenue: '185M VNĐ',
+              kocs: 22,
+              stories: 45,
+              posts: 28,
+              reels: 15,
+              avatar: 'SV',
+              color: 'from-purple-400 via-pink-400 to-orange-400'
+            },
+            {
+              id: 'ig-2',
+              title: 'Fashion Lookbook Instagram Series',
+              brand: 'Zara Vietnam',
+              status: 'active',
+              reach: '2.8M',
+              engagement: '6.5%',
+              revenue: '142M VNĐ',
+              kocs: 18,
+              stories: 38,
+              posts: 22,
+              reels: 12,
+              avatar: 'ZV',
+              color: 'from-gray-700 to-gray-900'
+            },
+            {
+              id: 'ig-3',
+              title: 'Food Photography Campaign',
+              brand: 'The Coffee House',
+              status: 'active',
+              reach: '4.2M',
+              engagement: '9.1%',
+              revenue: '210M VNĐ',
+              kocs: 30,
+              stories: 62,
+              posts: 35,
+              reels: 20,
+              avatar: 'TC',
+              color: 'from-amber-400 to-orange-500'
+            },
+            {
+              id: 'ig-4',
+              title: 'Tech Product Launch Stories',
+              brand: 'Apple Vietnam',
+              status: 'completed',
+              reach: '2.1M',
+              engagement: '7.3%',
+              revenue: '165M VNĐ',
+              kocs: 12,
+              stories: 25,
+              posts: 18,
+              reels: 8,
+              avatar: 'AV',
+              color: 'from-gray-400 to-gray-600'
+            },
+            {
+              id: 'ig-5',
+              title: 'Skincare Routine Reels',
+              brand: 'Innisfree Vietnam',
+              status: 'active',
+              reach: '3.1M',
+              engagement: '8.7%',
+              revenue: '175M VNĐ',
+              kocs: 20,
+              stories: 42,
+              posts: 25,
+              reels: 18,
+              avatar: 'IV',
+              color: 'from-green-400 to-emerald-500'
+            },
+            {
+              id: 'ig-6',
+              title: 'Lifestyle Influencer Collab',
+              brand: 'Uniqlo Vietnam',
+              status: 'paused',
+              reach: '1.8M',
+              engagement: '5.4%',
+              revenue: '95M VNĐ',
+              kocs: 10,
+              stories: 20,
+              posts: 15,
+              reels: 6,
+              avatar: 'UV',
+              color: 'from-red-500 to-red-600'
+            }
+          ].map((campaign) => (
+            <Card key={campaign.id} className="bg-white border-gray-100 hover:shadow-xl transition-all duration-300 group" data-testid={`card-instagram-campaign-${campaign.id}`}>
+              <CardContent className="p-6">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${campaign.color} rounded-xl flex items-center justify-center text-white font-bold text-sm`}>
+                      {campaign.avatar}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 mb-1">{campaign.title}</h3>
+                      <p className="text-xs text-gray-500">{campaign.brand}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Badge */}
+                <div className="mb-4">
+                  <Badge className={`
+                    ${campaign.status === 'active' ? 'bg-green-50 text-green-700 border-green-200' : ''}
+                    ${campaign.status === 'completed' ? 'bg-blue-50 text-blue-700 border-blue-200' : ''}
+                    ${campaign.status === 'draft' ? 'bg-gray-50 text-gray-700 border-gray-200' : ''}
+                    ${campaign.status === 'paused' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : ''}
+                    border
+                  `} data-testid={`badge-status-${campaign.id}`}>
+                    {campaign.status === 'active' && '🔴 Đang hoạt động'}
+                    {campaign.status === 'completed' && '✅ Đã hoàn thành'}
+                    {campaign.status === 'draft' && '📝 Nháp'}
+                    {campaign.status === 'paused' && '⏸️ Tạm dừng'}
+                  </Badge>
+                </div>
+
+                {/* Metrics */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <Eye className="w-3 h-3" />
+                      <span>Reach</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.reach}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <Heart className="w-3 h-3" />
+                      <span>Engagement</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.engagement}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <Image className="w-3 h-3" />
+                      <span>Stories</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.stories}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <Camera className="w-3 h-3" />
+                      <span>Posts</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.posts}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <PlayCircle className="w-3 h-3" />
+                      <span>Reels</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.reels}</div>
+                  </div>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mb-1">
+                      <Users className="w-3 h-3" />
+                      <span>KOC</span>
+                    </div>
+                    <div className="font-bold text-gray-900">{campaign.kocs}</div>
+                  </div>
+                </div>
+
+                {/* Revenue */}
+                <div className="pt-4 border-t border-gray-100 mb-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">Doanh thu</span>
+                    <span className="text-sm font-bold text-[#ff0086]">{campaign.revenue}</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1 hover:bg-gray-50 transition-colors"
+                    data-testid={`button-view-${campaign.id}`}
+                  >
+                    <Eye className="w-3 h-3 mr-1" />
+                    Xem chi tiết
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    className="bg-[#ff0086] hover:bg-[#e6007a] text-white transition-colors"
+                    data-testid={`button-manage-${campaign.id}`}
+                  >
+                    Quản lý
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Instagram Performance Chart */}
+        <div className="mt-8 bg-white rounded-xl border border-gray-100 p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 mb-1">Hiệu suất Instagram theo thời gian</h3>
+              <p className="text-sm text-gray-600">Theo dõi xu hướng reach và engagement</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">7 ngày</button>
+              <button className="px-3 py-1 text-xs font-medium bg-[#ff0086] text-white rounded-lg">30 ngày</button>
+              <button className="px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">90 ngày</button>
+            </div>
+          </div>
+          
+          <div className="h-64 flex items-end justify-between gap-2">
+            {[
+              { day: 'T2', reach: 70, engagement: 52 },
+              { day: 'T3', reach: 85, engagement: 60 },
+              { day: 'T4', reach: 95, engagement: 75 },
+              { day: 'T5', reach: 92, engagement: 68 },
+              { day: 'T6', reach: 100, engagement: 82 },
+              { day: 'T7', reach: 98, engagement: 88 },
+              { day: 'CN', reach: 88, engagement: 65 }
+            ].map((data, index) => (
+              <div key={index} className="flex-1 flex flex-col items-center gap-2">
+                <div className="w-full flex flex-col gap-1">
+                  <div 
+                    className="w-full bg-gradient-to-t from-purple-500 via-pink-500 to-orange-400 rounded-t-lg hover:from-purple-600 hover:via-pink-600 hover:to-orange-500 transition-all duration-300 cursor-pointer"
+                    style={{ height: `${data.reach}%` }}
+                    title={`Reach: ${data.reach}%`}
+                  />
+                  <div 
+                    className="w-full bg-gradient-to-t from-pink-500 to-rose-400 rounded-t-lg hover:from-pink-600 hover:to-rose-500 transition-all duration-300 cursor-pointer"
+                    style={{ height: `${data.engagement}%` }}
+                    title={`Engagement: ${data.engagement}%`}
+                  />
+                </div>
+                <span className="text-xs font-medium text-gray-600">{data.day}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-center gap-6 mt-6 pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded"></div>
+              <span className="text-xs text-gray-600">Reach</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-gradient-to-br from-pink-500 to-rose-400 rounded"></div>
+              <span className="text-xs text-gray-600">Engagement</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* #47 Quản lý danh mục thương hiệu */}
       <section id="section-47" className="max-w-7xl mx-auto px-4 mb-12" data-testid="section-brand-category-management">
