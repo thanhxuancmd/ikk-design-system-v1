@@ -20,6 +20,7 @@ UI Effects: Modern card-based design with clean shadows and borders
 - **Responsive Design**: Mobile-first approach optimized for all device sizes.
 - **Accessibility**: ARIA compliance and keyboard navigation support.
 - **MANDATORY Design Standard**: All sections must adhere to a specific layout including `max-w-7xl mx-auto px-4 mb-12` container, a header with left-aligned title/description and right-aligned action buttons, specific typography styles, and a mandatory 2-button layout for actions (Filter and CTA). All interactive elements require `data-testid` attributes.
+- **Apple HIG Design System** (October 2025): Complete design system at `/apple-hig` featuring centralized design tokens (`constants/design-tokens.ts`) and standardized components (`components/apple/`). Intentionally uses IKK's pink primary color (#ff0086) instead of Apple's standard blue for brand consistency. Includes AppleButton (3 sizes × 3 variants), AppleBadge (2 sizes × 5 variants), and AppleSectionHeader for consistent layouts. Interactive showcase with tabbed navigation demonstrates all components with before/after comparisons and live previews.
 
 ## Technical Implementation
 - **Frontend**: React 18 with TypeScript, Tailwind CSS (custom design tokens), shadcn/ui (Radix UI primitives), TanStack Query for state management, Wouter for routing, and Vite for building.
