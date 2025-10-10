@@ -7,7 +7,8 @@ import {
   HiOutlinePaintBrush, 
   HiOutlineBuildingOffice2, 
   HiOutlinePlus, 
-  HiOutlineMinus 
+  HiOutlineMinus,
+  HiOutlineSparkles
 } from "react-icons/hi2"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -42,6 +43,11 @@ const QuickNavigation = () => {
       label: "Design System",
       icon: HiOutlinePaintBrush,
     },
+    {
+      href: "/apple-hig",
+      label: "Apple HIG",
+      icon: HiOutlineSparkles,
+    },
   ]
 
   return (
@@ -73,7 +79,8 @@ const QuickNavigation = () => {
             (item.href === "/dashboard" && location.startsWith("/dashboard")) ||
             (item.href === "/brand-dashboard" && location.startsWith("/brand-dashboard")) ||
             (item.href === "/admin" && location.startsWith("/admin")) ||
-            (item.href === "/design-system" && location.startsWith("/design-system"))
+            (item.href === "/design-system" && location.startsWith("/design-system")) ||
+            (item.href === "/apple-hig" && location.startsWith("/apple-hig"))
 
           return (
             <Tooltip key={item.href}>
