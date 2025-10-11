@@ -28,6 +28,12 @@ export { AppleModal } from './AppleModal';
 export { AppleDialog } from './AppleDialog';
 export { AppleLoading } from './AppleLoading';
 export { AppleSkeleton } from './AppleSkeleton';
+export { AppleProgressBar } from './AppleProgressBar';
+export { AppleGauge } from './AppleGauge';
+export { AppleTooltip } from './AppleTooltip';
+export { ApplePopover } from './ApplePopover';
+export { AppleDropdown } from './AppleDropdown';
+export { AppleCommandPalette, type CommandItem } from './AppleCommandPalette';
 
 // Hooks
 export { useAppleToast } from '../../hooks/useAppleToast';
@@ -37,6 +43,7 @@ export { AppleTable } from './AppleTable';
 export { AppleCard } from './AppleCard';
 export { AppleAvatar } from './AppleAvatar';
 export { AppleList } from './AppleList';
+export { AppleChart } from './AppleChart';
 
 // Domain-Specific Cards
 export { StreamCard } from './StreamCard';
@@ -50,3 +57,4 @@ export { LiveStatusBadge } from './LiveStatusBadge';
 export { PriceDisplay } from './PriceDisplay';
 export { StatsCard } from './StatsCard';
 export { RankingBadge } from './RankingBadge';
+export { AppleMetricCard } from './AppleMetricCard';
