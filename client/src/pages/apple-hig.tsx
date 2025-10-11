@@ -28,11 +28,14 @@ import {
   AppleStack,
   useAppleToast,
   AppleToastContainer,
-  AppleToastProvider
+  AppleToastProvider,
+  PriceDisplay,
+  StatsCard,
+  RankingBadge
 } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
 import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
-import { Mail, User, Home, FileText, Settings } from 'lucide-react';
+import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users } from 'lucide-react';
 
 function AppleHIGShowcaseContent() {
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -114,7 +117,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'ikk-components', 'examples'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -1657,6 +1660,296 @@ function MyComponent() {
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* IKK Domain-Specific Components Section */}
+        {activeTab === 'ikk-components' && (
+        <Section title="IKK Domain-Specific Components">
+          <div className="space-y-8">
+            {/* PriceDisplay Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">PriceDisplay - Vietnamese Price Formatting</h3>
+              <p className="text-gray-600 mb-6">
+                Display product prices with Vietnamese formatting, discount badges, and size variants.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Basic Price</h4>
+                  <div className="flex items-center gap-4 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <PriceDisplay price={50000} />
+                    <PriceDisplay price={250000} />
+                    <PriceDisplay price={1500000} />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Price with Discount</h4>
+                  <div className="flex items-center gap-4 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <PriceDisplay price={40000} originalPrice={50000} />
+                    <PriceDisplay price={200000} originalPrice={250000} />
+                    <PriceDisplay price={1200000} originalPrice={1500000} />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Size Variants</h4>
+                  <div className="flex items-center gap-6 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Small</p>
+                      <PriceDisplay price={50000} originalPrice={70000} size="sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Medium</p>
+                      <PriceDisplay price={50000} originalPrice={70000} size="md" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Large</p>
+                      <PriceDisplay price={50000} originalPrice={70000} size="lg" />
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`// Basic usage
+<PriceDisplay price={50000} />
+
+// With discount
+<PriceDisplay 
+  price={40000} 
+  originalPrice={50000}
+  showDiscount={true}
+/>
+
+// Size variants
+<PriceDisplay 
+  price={50000} 
+  originalPrice={70000}
+  size="lg"
+  currency="đ"
+/>`} />
+              </div>
+            </div>
+
+            {/* StatsCard Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">StatsCard - Statistics Display with Animation</h3>
+              <p className="text-gray-600 mb-6">
+                Display key metrics with animated counters, change indicators, and optional icons.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <StatsCard
+                  id="revenue"
+                  title="Doanh thu"
+                  value={12500000}
+                  change={15.5}
+                  changeType="increase"
+                  icon={<TrendingUp className="w-8 h-8" />}
+                  color={designTokens.colors.primary.DEFAULT}
+                />
+                <StatsCard
+                  id="orders"
+                  title="Đơn hàng"
+                  value={342}
+                  change={8.3}
+                  changeType="decrease"
+                  icon={<ShoppingCart className="w-8 h-8" />}
+                />
+                <StatsCard
+                  id="kocs"
+                  title="KOCs hoạt động"
+                  value={156}
+                  change={0}
+                  changeType="neutral"
+                  icon={<Users className="w-8 h-8" />}
+                />
+              </div>
+
+              <CodeBlock code={`// Basic stats card
+<StatsCard
+  id="revenue"
+  title="Doanh thu"
+  value={12500000}
+  change={15.5}
+  changeType="increase"
+  icon={<TrendingUp className="w-8 h-8" />}
+  color={designTokens.colors.primary.DEFAULT}
+/>
+
+// With decrease indicator
+<StatsCard
+  id="orders"
+  title="Đơn hàng"
+  value={342}
+  change={8.3}
+  changeType="decrease"
+  icon={<ShoppingCart className="w-8 h-8" />}
+/>
+
+// Clickable card
+<StatsCard
+  id="kocs"
+  title="KOCs hoạt động"
+  value={156}
+  onClick={() => navigate('/kocs')}
+/>`} />
+            </div>
+
+            {/* RankingBadge Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">RankingBadge - KOC Ranking Display</h3>
+              <p className="text-gray-600 mb-6">
+                Display KOC rankings with level-based colors, optional icons for top ranks, and size variants.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Level Colors</h4>
+                  <div className="flex items-center gap-4 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <RankingBadge rank={15} level="Nano" />
+                    <RankingBadge rank={8} level="Micro" />
+                    <RankingBadge rank={4} level="Macro" />
+                    <RankingBadge rank={1} level="Celebrity" />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Top Ranks with Icons</h4>
+                  <div className="flex items-center gap-4 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <RankingBadge rank={1} level="Celebrity" showIcon={true} />
+                    <RankingBadge rank={2} level="Macro" showIcon={true} />
+                    <RankingBadge rank={3} level="Macro" showIcon={true} />
+                    <RankingBadge rank={4} level="Macro" showIcon={false} />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Size Variants</h4>
+                  <div className="flex items-center gap-6 flex-wrap p-4 bg-gray-50 rounded-lg">
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Small</p>
+                      <RankingBadge rank={1} level="Celebrity" size="sm" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Medium</p>
+                      <RankingBadge rank={1} level="Celebrity" size="md" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-xs text-gray-500">Large</p>
+                      <RankingBadge rank={1} level="Celebrity" size="lg" />
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`// Basic ranking badge
+<RankingBadge rank={1} level="Celebrity" />
+
+// Different levels
+<RankingBadge rank={15} level="Nano" />
+<RankingBadge rank={8} level="Micro" />
+<RankingBadge rank={4} level="Macro" />
+<RankingBadge rank={1} level="Celebrity" />
+
+// With icon for top ranks
+<RankingBadge 
+  rank={1} 
+  level="Celebrity" 
+  showIcon={true}
+  size="lg"
+/>`} />
+              </div>
+            </div>
+
+            {/* Combined Example */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Real-World Example: KOC Product Card</h3>
+              <p className="text-gray-600 mb-6">
+                Combining IKK components to create a complete product card with pricing and KOC ranking.
+              </p>
+
+              <div className="max-w-sm mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
+                <div className="h-48 bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
+                  <ShoppingCart className="w-20 h-20 text-gray-400" />
+                </div>
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="text-lg font-semibold text-gray-900">Premium Skincare Set</h4>
+                    <RankingBadge rank={2} level="Macro" showIcon={true} size="sm" />
+                  </div>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Bộ sản phẩm chăm sóc da cao cấp từ thương hiệu nổi tiếng
+                  </p>
+                  <div className="mb-4">
+                    <PriceDisplay 
+                      price={850000} 
+                      originalPrice={1200000}
+                      size="lg"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <StatsCard
+                      id="views"
+                      title="Lượt xem"
+                      value={2500}
+                      change={12}
+                      changeType="increase"
+                    />
+                    <StatsCard
+                      id="sales"
+                      title="Đã bán"
+                      value={187}
+                      change={25}
+                      changeType="increase"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <CodeBlock code={`<div className="max-w-sm bg-white border rounded-xl overflow-hidden shadow-lg">
+  <div className="h-48 bg-gradient-to-br from-pink-100 to-purple-100">
+    {/* Product Image */}
+  </div>
+  <div className="p-6">
+    <div className="flex items-start justify-between mb-3">
+      <h4 className="text-lg font-semibold">Premium Skincare Set</h4>
+      <RankingBadge rank={2} level="Macro" showIcon={true} size="sm" />
+    </div>
+    
+    <p className="text-sm text-gray-600 mb-4">
+      Bộ sản phẩm chăm sóc da cao cấp
+    </p>
+    
+    <div className="mb-4">
+      <PriceDisplay 
+        price={850000} 
+        originalPrice={1200000}
+        size="lg"
+      />
+    </div>
+    
+    <div className="grid grid-cols-2 gap-3">
+      <StatsCard
+        id="views"
+        title="Lượt xem"
+        value={2500}
+        change={12}
+        changeType="increase"
+      />
+      <StatsCard
+        id="sales"
+        title="Đã bán"
+        value={187}
+        change={25}
+        changeType="increase"
+      />
+    </div>
+  </div>
+</div>`} />
               </div>
             </div>
           </div>
