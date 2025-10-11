@@ -82,14 +82,18 @@ export function AppleMetricCard({
           {suffix && <span>{suffix}</span>}
         </p>
 
-        {change !== undefined && (
+        {change !== undefined && change !== null && !isNaN(change) && (
           <div
             data-testid="metric-trend"
             className={`inline-flex items-center gap-1 px-2 py-1 rounded-md ${trendStyles[trend]} mt-2 md:mt-0 self-start`}
           >
             {trendIcons[trend]}
             <span className="text-sm font-medium">
-              {change > 0 ? '+' : ''}{change}%
+              {change > 0 ? '+' : change < 0 ? '-' : ''}
+              {new Intl.NumberFormat('vi-VN', {
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              }).format(Math.abs(change))}%
             </span>
           </div>
         )}
