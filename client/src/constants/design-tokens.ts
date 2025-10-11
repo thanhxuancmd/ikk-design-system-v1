@@ -41,6 +41,41 @@ export const designTokens = {
       xl: 'gap-12',
     },
   },
+  borderRadius: {
+    none: 'rounded-none',
+    sm: 'rounded',
+    md: 'rounded-lg',
+    lg: 'rounded-xl',
+    full: 'rounded-full',
+  },
+  shadows: {
+    none: 'shadow-none',
+    sm: 'shadow-sm',
+    md: 'shadow-md',
+    lg: 'shadow-lg',
+    xl: 'shadow-xl',
+    '2xl': 'shadow-2xl',
+  },
+  transitions: {
+    fast: 'transition-all duration-150',
+    base: 'transition-all duration-200',
+    slow: 'transition-all duration-300',
+  },
+  breakpoints: {
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
+    '2xl': '1536px',
+  },
+  zIndex: {
+    dropdown: '1000',
+    sticky: '1020',
+    fixed: '1030',
+    modal: '1040',
+    popover: '1050',
+    toast: '1060',
+  },
   button: {
     sizes: {
       sm: 'px-4 py-2 text-sm',
