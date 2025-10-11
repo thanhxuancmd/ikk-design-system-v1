@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOOP Design System Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'soop-orange': '#FF6B35',
+                        'soop-dark': '#1A1A1A',
+                        'soop-blue': '#00D4FF',
+                        'soop-green': '#00FF88',
+                        'soop-grey': '#333333',
+                        'soop-light-grey': '#2A2A2A',
+                        'soop-border': '#444444'
+                    },
+                    fontFamily: {
+                        'korean': ['Noto Sans Korean', 'sans-serif'],
+                        'latin': ['Roboto', 'sans-serif']
+                    },
+                    borderRadius: {
+                        'soop': '12px',
+                        'soop-lg': '16px'
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-soop-dark text-white font-korean">
+    <!-- @COMPONENT: DesignSystemHeader -->
+    <header class="bg-soop-grey border-b border-soop-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-soop-orange rounded-soop flex items-center justify-center font-bold text-xl">
+                        S
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-soop-orange">SOOP Design System</h1>
+                        <p class="text-sm text-gray-400">Complete UI Component Library</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#colors" class="text-gray-300 hover:text-soop-orange transition-colors">Colors</a>
+                    <a href="#typography" class="text-gray-300 hover:text-soop-orange transition-colors">Typography</a>
+                    <a href="#components" class="text-gray-300 hover:text-soop-orange transition-colors">Components</a>
+                    <a href="#layouts" class="text-gray-300 hover:text-soop-orange transition-colors">Layouts</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: DesignSystemHeader -->
+
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <!-- @COMPONENT: Introduction -->
+        <section class="mb-16">
+            <div class="bg-gradient-to-r from-soop-orange to-soop-blue rounded-soop-lg p-8 text-center">
+                <h2 class="text-4xl font-bold mb-4">SOOP Design System Guide</h2>
+                <p class="text-xl opacity-90 max-w-3xl mx-auto">
+                    Comprehensive analysis and documentation of all design components from SoopLive, 
+                    Korea's premier gaming and live streaming platform.
+                </p>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: Introduction -->
+
+        <!-- @COMPONENT: ColorPalette -->
+        <section id="colors" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Color Palette</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-soop-orange rounded-soop mb-4"></div>
+                    <h3 class="font-bold text-lg">Primary Orange</h3>
+                    <p class="text-gray-400 text-sm">#FF6B35</p>
+                    <p class="text-sm mt-2">Main brand color used for logos, CTAs, and key highlights</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#FF6B35')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-soop-blue rounded-soop mb-4"></div>
+                    <h3 class="font-bold text-lg">Accent Blue</h3>
+                    <p class="text-gray-400 text-sm">#00D4FF</p>
+                    <p class="text-sm mt-2">Secondary accent for highlights and interactive states</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#00D4FF')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-soop-green rounded-soop mb-4"></div>
+                    <h3 class="font-bold text-lg">Success Green</h3>
+                    <p class="text-gray-400 text-sm">#00FF88</p>
+                    <p class="text-sm mt-2">Success states, live indicators, and positive actions</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#00FF88')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-soop-dark rounded-soop mb-4 border border-soop-border"></div>
+                    <h3 class="font-bold text-lg">Dark Background</h3>
+                    <p class="text-gray-400 text-sm">#1A1A1A</p>
+                    <p class="text-sm mt-2">Primary background color for dark theme</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#1A1A1A')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-soop-grey rounded-soop mb-4"></div>
+                    <h3 class="font-bold text-lg">Neutral Grey</h3>
+                    <p class="text-gray-400 text-sm">#333333</p>
+                    <p class="text-sm mt-2">Cards, panels, and secondary backgrounds</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#333333')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+
+                <div class="bg-soop-grey rounded-soop-lg p-6">
+                    <div class="w-full h-24 bg-white rounded-soop mb-4"></div>
+                    <h3 class="font-bold text-lg">Text White</h3>
+                    <p class="text-gray-400 text-sm">#FFFFFF</p>
+                    <p class="text-sm mt-2">Primary text color for high contrast readability</p>
+                    <button class="mt-3 px-4 py-2 bg-soop-light-grey rounded text-sm hover:bg-soop-border transition-colors" 
+                            onclick="navigator.clipboard.writeText('#FFFFFF')">
+                        <i class="fas fa-copy mr-2"></i>Copy
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: ColorPalette -->
+
+        <!-- @COMPONENT: Typography -->
+        <section id="typography" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Typography System</h2>
+            <div class="bg-soop-grey rounded-soop-lg p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-soop-blue">Korean Typography (Noto Sans Korean)</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-4xl font-bold mb-2">감스트 마인크래프트</h4>
+                                <p class="text-sm text-gray-400">Font: Noto Sans Korean Bold, Size: 36px</p>
+                            </div>
+                            <div>
+                                <h5 class="text-2xl font-medium mb-2">실시간 방송 중</h5>
+                                <p class="text-sm text-gray-400">Font: Noto Sans Korean Medium, Size: 24px</p>
+                            </div>
+                            <div>
+                                <p class="text-base mb-2">8,599명이 시청 중입니다</p>
+                                <p class="text-sm text-gray-400">Font: Noto Sans Korean Regular, Size: 16px</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-300">토크/캠방 • 마인크래프트</p>
+                                <p class="text-sm text-gray-400">Font: Noto Sans Korean Regular, Size: 14px</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-6 text-soop-blue">Latin Typography (Roboto)</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-4xl font-bold mb-2 font-latin">SOOP LIVE</h4>
+                                <p class="text-sm text-gray-400">Font: Roboto Bold, Size: 36px</p>
+                            </div>
+                            <div>
+                                <h5 class="text-2xl font-medium mb-2 font-latin">Component Library</h5>
+                                <p class="text-sm text-gray-400">Font: Roboto Medium, Size: 24px</p>
+                            </div>
+                            <div>
+                                <p class="text-base mb-2 font-latin">Interactive design elements</p>
+                                <p class="text-sm text-gray-400">Font: Roboto Regular, Size: 16px</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-300 font-latin">Gaming • Streaming • Entertainment</p>
+                                <p class="text-sm text-gray-400">Font: Roboto Regular, Size: 14px</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: Typography -->
+
+        <!-- @COMPONENT: NavigationComponents -->
+        <section id="components" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Navigation Components</h2>
+            
+            <!-- SOOP Main Navigation -->
+            <div class="bg-soop-grey rounded-soop-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Main Navigation Bar</h3>
+                <div class="bg-soop-dark rounded-soop p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-8">
+                            <!-- SOOP Logo -->
+                            <div class="flex items-center space-x-2">
+                                <div class="w-10 h-10 bg-soop-orange rounded-lg flex items-center justify-center font-bold text-lg">
+                                    S
+                                </div>
+                                <span class="text-xl font-bold text-soop-orange">SOOP</span>
+                            </div>
+                            
+                            <!-- Navigation Items -->
+                            <nav class="hidden md:flex space-x-6">
+                                <a href="#" class="flex items-center space-x-2 text-white hover:text-soop-orange transition-colors">
+                                    <i class="fas fa-video w-5 h-5"></i>
+                                    <span>LIVE</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-soop-orange transition-colors">
+                                    <i class="fas fa-compass w-5 h-5"></i>
+                                    <span>탐색</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-soop-orange transition-colors">
+                                    <i class="fas fa-user w-5 h-5"></i>
+                                    <span>MY</span>
+                                </a>
+                                <a href="#" class="flex items-center space-x-2 text-gray-400 hover:text-soop-orange transition-colors">
+                                    <i class="fas fa-play-circle w-5 h-5"></i>
+                                    <span>Catch</span>
+                                </a>
+                            </nav>
+                        </div>
+                        
+                        <!-- Search and Profile -->
+                        <div class="flex items-center space-x-4">
+                            <div class="relative hidden md:block">
+                                <input type="text" placeholder="스트리머, 방송제목 검색" 
+                                       class="bg-soop-light-grey border border-soop-border rounded-lg px-4 py-2 pr-10 text-sm w-64 focus:outline-none focus:border-soop-orange">
+                                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                            <button class="w-8 h-8 bg-soop-grey rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation -->
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Sidebar Navigation</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-soop-dark rounded-soop p-4">
+                        <h4 class="font-bold mb-4 text-soop-green">인기</h4>
+                        <div class="space-y-3">
+                            <!-- @MAP: popularStreamers.map(streamer => ( -->
+                            <div class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors cursor-pointer">
+                                <div class="w-8 h-8 bg-soop-orange rounded-full flex items-center justify-center text-xs font-bold">
+                                    감
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-sm">감스트</p>
+                                    <p class="text-xs text-gray-400">마인크래프트</p>
+                                </div>
+                                <span class="text-xs text-gray-400">8,599</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors cursor-pointer">
+                                <div class="w-8 h-8 bg-soop-blue rounded-full flex items-center justify-center text-xs font-bold">
+                                    시
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-sm">s시조새s</p>
+                                    <p class="text-xs text-gray-400">토크/캠방</p>
+                                </div>
+                                <span class="text-xs text-gray-400">2,477</span>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors cursor-pointer">
+                                <div class="w-8 h-8 bg-soop-green rounded-full flex items-center justify-center text-xs font-bold">
+                                    N
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-sm">NalrA_강민</p>
+                                    <p class="text-xs text-gray-400">스타크래프트</p>
+                                </div>
+                                <span class="text-xs text-gray-400">2,063</span>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+
+                    <div class="bg-soop-dark rounded-soop p-4">
+                        <h4 class="font-bold mb-4 text-soop-blue">더보기</h4>
+                        <div class="space-y-2">
+                            <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors">
+                                <i class="fas fa-trophy w-4 h-4 text-soop-orange"></i>
+                                <span class="text-sm">e스포츠</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors">
+                                <i class="fas fa-store w-4 h-4 text-soop-blue"></i>
+                                <span class="text-sm">숲토어</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors">
+                                <i class="fas fa-comments w-4 h-4 text-soop-green"></i>
+                                <span class="text-sm">소통센터</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors">
+                                <i class="fas fa-chart-bar w-4 h-4 text-gray-400"></i>
+                                <span class="text-sm">랭킹</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-3 p-2 rounded hover:bg-soop-grey transition-colors">
+                                <i class="fas fa-calendar w-4 h-4 text-gray-400"></i>
+                                <span class="text-sm">이벤트</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: NavigationComponents -->
+
+        <!-- @COMPONENT: StreamCards -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Stream Cards & Content</h2>
+            
+            <!-- Live Stream Cards -->
+            <div class="bg-soop-grey rounded-soop-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Live Stream Cards</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    
+                    <!-- Featured Stream Card -->
+                    <div class="bg-soop-dark rounded-soop-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <!-- Stream Thumbnail -->
+                        <!-- A gaming streamer playing Minecraft with vibrant neon lighting setup -->
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=450" 
+                                 alt="Gaming streamer setup" class="w-full h-48 object-cover">
+                            
+                            <!-- Live Badge -->
+                            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                LIVE
+                            </div>
+                            
+                            <!-- Viewer Count -->
+                            <div class="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                                <i class="fas fa-eye mr-1"></i>8,599
+                            </div>
+
+                            <!-- Duration -->
+                            <div class="absolute bottom-3 right-3 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                                02:35:14
+                            </div>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="p-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-soop-orange rounded-full flex items-center justify-center font-bold">
+                                    감
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-white truncate">[버컴] 감스트 8시 보스쟁 연습서버 마크</h4>
+                                    <p class="text-soop-orange text-sm font-medium">감스트</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="bg-soop-grey text-xs px-2 py-1 rounded text-gray-300">마인크래프트</span>
+                                        <span class="bg-soop-grey text-xs px-2 py-1 rounded text-gray-300">감컴퍼니</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Standard Stream Card -->
+                    <div class="bg-soop-dark rounded-soop-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <!-- A Korean talk show or cam broadcast with modern streaming setup -->
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=450" 
+                                 alt="Talk show streaming setup" class="w-full h-48 object-cover">
+                            
+                            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                LIVE
+                            </div>
+                            
+                            <div class="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                                <i class="fas fa-eye mr-1"></i>2,467
+                            </div>
+                        </div>
+                        
+                        <div class="p-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-soop-blue rounded-full flex items-center justify-center font-bold">
+                                    시
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-white truncate">401,402호 오늘은 무슨일이??!!!!Jsa jup</h4>
+                                    <p class="text-soop-orange text-sm font-medium">s시조새s</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="bg-soop-grey text-xs px-2 py-1 rounded text-gray-300">토크/캠방</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gaming Stream Card -->
+                    <div class="bg-soop-dark rounded-soop-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300 cursor-pointer">
+                        <!-- Professional gaming setup with StarCraft or strategy game interface -->
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=450" 
+                                 alt="Professional gaming setup" class="w-full h-48 object-cover">
+                            
+                            <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                                LIVE
+                            </div>
+                            
+                            <div class="absolute top-3 right-3 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                                <i class="fas fa-eye mr-1"></i>2,047
+                            </div>
+                        </div>
+                        
+                        <div class="p-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-10 h-10 bg-soop-green rounded-full flex items-center justify-center font-bold">
+                                    N
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-white truncate">강민 그동안 감사했습니다</h4>
+                                    <p class="text-soop-orange text-sm font-medium">NalrA_강민</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <span class="bg-soop-grey text-xs px-2 py-1 rounded text-gray-300">스타크래프트</span>
+                                        <span class="bg-soop-grey text-xs px-2 py-1 rounded text-gray-300">강민</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event Banners -->
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Promotional Banners</h3>
+                <div class="space-y-4">
+                    
+                    <!-- LCK Banner -->
+                    <div class="bg-gradient-to-r from-soop-orange to-red-600 rounded-soop-lg p-6 cursor-pointer hover:transform hover:scale-105 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="bg-white text-soop-orange text-xs font-bold px-2 py-1 rounded">8/26(화) 오후 5시</span>
+                                    <span class="text-white text-sm">방송 알람</span>
+                                </div>
+                                <h4 class="text-2xl font-bold text-white mb-1">2025 LCK CL R5</h4>
+                                <p class="text-white text-lg">DK vs NS • BFX vs DRX</p>
+                            </div>
+                            <i class="fas fa-trophy text-white text-3xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- User Meeting Banner -->
+                    <div class="bg-gradient-to-r from-soop-blue to-blue-600 rounded-soop-lg p-6 cursor-pointer hover:transform hover:scale-105 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="bg-white text-soop-blue text-xs font-bold px-2 py-1 rounded">8/26(화) 저녁 8시</span>
+                                    <span class="text-white text-sm">방송 알람</span>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-1">숲지기와 함께하는</h4>
+                                <p class="text-white">온라인 유저간담회</p>
+                            </div>
+                            <i class="fas fa-users text-white text-3xl"></i>
+                        </div>
+                    </div>
+
+                    <!-- Music Event Banner -->
+                    <div class="bg-gradient-to-r from-soop-green to-green-600 rounded-soop-lg p-6 cursor-pointer hover:transform hover:scale-105 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="bg-white text-soop-green text-xs font-bold px-2 py-1 rounded">8월 추천곡 업데이트!</span>
+                                </div>
+                                <h4 class="text-xl font-bold text-white mb-1">퇴근음악 추천곡</h4>
+                                <p class="text-white">드라마보다 오래 남은 OST Playlist</p>
+                            </div>
+                            <i class="fas fa-music text-white text-3xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: StreamCards -->
+
+        <!-- @COMPONENT: InteractiveElements -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Interactive Elements</h2>
+            
+            <!-- Buttons -->
+            <div class="bg-soop-grey rounded-soop-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Button Components</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Primary Button -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-300">Primary Buttons</h4>
+                        <button class="w-full bg-soop-orange hover:bg-orange-600 text-white font-medium py-3 px-6 rounded-soop transition-colors">
+                            방송 시작하기
+                        </button>
+                        <button class="w-full bg-soop-orange hover:bg-orange-600 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
+                            <i class="fas fa-heart mr-2"></i>팔로우
+                        </button>
+                    </div>
+
+                    <!-- Secondary Button -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-300">Secondary Buttons</h4>
+                        <button class="w-full bg-soop-light-grey border border-soop-border hover:border-soop-orange text-white font-medium py-3 px-6 rounded-soop transition-colors">
+                            구독하기
+                        </button>
+                        <button class="w-full bg-soop-light-grey border border-soop-border hover:border-soop-orange text-white font-medium py-2 px-4 rounded text-sm transition-colors">
+                            <i class="fas fa-share mr-2"></i>공유
+                        </button>
+                    </div>
+
+                    <!-- Success Button -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-300">Success Buttons</h4>
+                        <button class="w-full bg-soop-green hover:bg-green-600 text-black font-medium py-3 px-6 rounded-soop transition-colors">
+                            라이브 시청
+                        </button>
+                        <button class="w-full bg-soop-green hover:bg-green-600 text-black font-medium py-2 px-4 rounded text-sm transition-colors">
+                            <i class="fas fa-play mr-2"></i>재생
+                        </button>
+                    </div>
+
+                    <!-- Accent Button -->
+                    <div class="space-y-3">
+                        <h4 class="font-medium text-sm text-gray-300">Accent Buttons</h4>
+                        <button class="w-full bg-soop-blue hover:bg-blue-600 text-white font-medium py-3 px-6 rounded-soop transition-colors">
+                            알림 설정
+                        </button>
+                        <button class="w-full bg-soop-blue hover:bg-blue-600 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
+                            <i class="fas fa-bell mr-2"></i>알림
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Elements -->
+            <div class="bg-soop-grey rounded-soop-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Form Elements</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">스트리머 검색</label>
+                            <div class="relative">
+                                <input type="text" placeholder="스트리머 이름을 입력하세요" 
+                                       class="w-full bg-soop-dark border border-soop-border rounded-soop px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-soop-orange">
+                                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">카테고리 선택</label>
+                            <select class="w-full bg-soop-dark border border-soop-border rounded-soop px-4 py-3 text-white focus:outline-none focus:border-soop-orange">
+                                <option>전체</option>
+                                <option>마인크래프트</option>
+                                <option>로스트아크</option>
+                                <option>스타크래프트</option>
+                                <option>토크/캠방</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">방송 제목</label>
+                            <textarea placeholder="방송 제목을 입력하세요" 
+                                      class="w-full bg-soop-dark border border-soop-border rounded-soop px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-soop-orange h-24 resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">필터 옵션</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border rounded focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">탐방 허용</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border rounded focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">신규 스트리머</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border rounded focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">라이브 방송만</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">정렬 방식</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="radio" name="sort" value="viewers" checked class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">참여자수(높은순)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="sort" value="recent" class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">최근 시작</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="radio" name="sort" value="title" class="w-4 h-4 text-soop-orange bg-soop-dark border-soop-border focus:ring-soop-orange">
+                                    <span class="ml-2 text-sm text-gray-300">제목순</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tags and Badges -->
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Tags & Badges</h3>
+                <div class="space-y-6">
+                    
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Category Tags</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-soop-orange text-white text-xs font-medium px-3 py-1 rounded-full">마인크래프트</span>
+                            <span class="bg-soop-blue text-white text-xs font-medium px-3 py-1 rounded-full">로스트아크</span>
+                            <span class="bg-soop-green text-black text-xs font-medium px-3 py-1 rounded-full">스타크래프트</span>
+                            <span class="bg-soop-light-grey text-gray-300 text-xs font-medium px-3 py-1 rounded-full">토크/캠방</span>
+                            <span class="bg-soop-light-grey text-gray-300 text-xs font-medium px-3 py-1 rounded-full">메이플스토리</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Status Badges</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">LIVE</span>
+                            <span class="bg-soop-green text-black text-xs font-bold px-2 py-1 rounded">신입</span>
+                            <span class="bg-soop-blue text-white text-xs font-bold px-2 py-1 rounded">HOT</span>
+                            <span class="bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded">이벤트</span>
+                            <span class="bg-yellow-600 text-black text-xs font-bold px-2 py-1 rounded">NEW</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Interactive Tags</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button class="bg-soop-light-grey hover:bg-soop-orange text-gray-300 hover:text-white text-xs font-medium px-3 py-1 rounded-full transition-colors">
+                                #감컴퍼니
+                            </button>
+                            <button class="bg-soop-light-grey hover:bg-soop-orange text-gray-300 hover:text-white text-xs font-medium px-3 py-1 rounded-full transition-colors">
+                                #버츄얼
+                            </button>
+                            <button class="bg-soop-light-grey hover:bg-soop-orange text-gray-300 hover:text-white text-xs font-medium px-3 py-1 rounded-full transition-colors">
+                                #드롭스
+                            </button>
+                            <button class="bg-soop-light-grey hover:bg-soop-orange text-gray-300 hover:text-white text-xs font-medium px-3 py-1 rounded-full transition-colors">
+                                #씨나인
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: InteractiveElements -->
+
+        <!-- @COMPONENT: LayoutPatterns -->
+        <section id="layouts" class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Layout Patterns</h2>
+            
+            <!-- Grid Systems -->
+            <div class="bg-soop-grey rounded-soop-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Responsive Grid System</h3>
+                <div class="space-y-6">
+                    
+                    <!-- 12 Column Grid Example -->
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">12-Column Grid (Desktop)</h4>
+                        <div class="grid grid-cols-12 gap-2">
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">1</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">2</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">3</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">4</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">5</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">6</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">7</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">8</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">9</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">10</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">11</div>
+                            <div class="bg-soop-orange h-8 rounded flex items-center justify-center text-xs font-bold">12</div>
+                        </div>
+                    </div>
+
+                    <!-- Content Areas -->
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Main Content Layout</h4>
+                        <div class="grid grid-cols-12 gap-4 h-32">
+                            <div class="col-span-2 bg-soop-blue rounded-soop flex items-center justify-center text-sm font-medium">
+                                Sidebar
+                            </div>
+                            <div class="col-span-8 bg-soop-green rounded-soop flex items-center justify-center text-sm font-medium text-black">
+                                Main Content Area
+                            </div>
+                            <div class="col-span-2 bg-soop-blue rounded-soop flex items-center justify-center text-sm font-medium">
+                                Chat/Info
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stream Grid -->
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Stream Grid Layout</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <div class="bg-soop-light-grey rounded-soop h-32 flex items-center justify-center text-sm">Stream 1</div>
+                            <div class="bg-soop-light-grey rounded-soop h-32 flex items-center justify-center text-sm">Stream 2</div>
+                            <div class="bg-soop-light-grey rounded-soop h-32 flex items-center justify-center text-sm">Stream 3</div>
+                            <div class="bg-soop-light-grey rounded-soop h-32 flex items-center justify-center text-sm">Stream 4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spacing System -->
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">Spacing System</h3>
+                <div class="space-y-6">
+                    
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Margin & Padding Scale</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 text-xs text-gray-400">4px</div>
+                                <div class="w-1 h-4 bg-soop-orange"></div>
+                                <span class="text-sm">Extra Small (xs)</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 text-xs text-gray-400">8px</div>
+                                <div class="w-2 h-4 bg-soop-orange"></div>
+                                <span class="text-sm">Small (sm)</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 text-xs text-gray-400">16px</div>
+                                <div class="w-4 h-4 bg-soop-orange"></div>
+                                <span class="text-sm">Medium (md)</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 text-xs text-gray-400">24px</div>
+                                <div class="w-6 h-4 bg-soop-orange"></div>
+                                <span class="text-sm">Large (lg)</span>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div class="w-16 text-xs text-gray-400">32px</div>
+                                <div class="w-8 h-4 bg-soop-orange"></div>
+                                <span class="text-sm">Extra Large (xl)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-medium text-sm text-gray-300 mb-3">Border Radius</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-soop-orange h-16 rounded flex items-center justify-center text-sm font-medium">
+                                4px
+                            </div>
+                            <div class="bg-soop-blue h-16 rounded-lg flex items-center justify-center text-sm font-medium">
+                                8px
+                            </div>
+                            <div class="bg-soop-green h-16 rounded-soop flex items-center justify-center text-sm font-medium text-black">
+                                12px
+                            </div>
+                            <div class="bg-soop-light-grey h-16 rounded-soop-lg flex items-center justify-center text-sm font-medium">
+                                16px
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: LayoutPatterns -->
+
+        <!-- @COMPONENT: UsageGuidelines -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Usage Guidelines</h2>
+            
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Do's -->
+                    <div class="bg-soop-dark rounded-soop p-6">
+                        <h3 class="text-xl font-bold mb-4 text-soop-green flex items-center">
+                            <i class="fas fa-check-circle mr-2"></i>권장사항
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check text-soop-green mt-1 text-xs"></i>
+                                <span>어두운 배경에서 높은 대비를 위해 밝은 색상 사용</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check text-soop-green mt-1 text-xs"></i>
+                                <span>게이밍 콘텐츠의 경우 네온 색상으로 강조</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check text-soop-green mt-1 text-xs"></i>
+                                <span>카드 기반 레이아웃으로 콘텐츠 구조화</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check text-soop-green mt-1 text-xs"></i>
+                                <span>모바일 반응형 디자인 적용</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-check text-soop-green mt-1 text-xs"></i>
+                                <span>SOOP 오렌지를 주요 브랜드 컬러로 활용</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Don'ts -->
+                    <div class="bg-soop-dark rounded-soop p-6">
+                        <h3 class="text-xl font-bold mb-4 text-red-500 flex items-center">
+                            <i class="fas fa-times-circle mr-2"></i>금지사항
+                        </h3>
+                        <ul class="space-y-3 text-sm">
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                                <span>밝은 배경색 사용 금지 (다크 테마 유지)</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                                <span>과도한 애니메이션으로 시청 방해</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                                <span>브랜드 컬러 팔레트 외의 색상 무분별 사용</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                                <span>텍스트 가독성을 해치는 색상 조합</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fas fa-times text-red-500 mt-1 text-xs"></i>
+                                <span>게이밍 분위기와 맞지 않는 디자인 요소</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Accessibility Guidelines -->
+                <div class="mt-8 bg-soop-dark rounded-soop p-6">
+                    <h3 class="text-xl font-bold mb-4 text-soop-blue flex items-center">
+                        <i class="fas fa-universal-access mr-2"></i>접근성 가이드라인
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-medium text-soop-green mb-2">색상 대비</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>• 일반 텍스트: 최소 4.5:1 대비</li>
+                                <li>• 큰 텍스트: 최소 3:1 대비</li>
+                                <li>• UI 요소: 최소 3:1 대비</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-soop-green mb-2">키보드 내비게이션</h4>
+                            <ul class="text-sm space-y-1">
+                                <li>• 모든 인터랙티브 요소 포커스 가능</li>
+                                <li>• 명확한 포커스 표시</li>
+                                <li>• 논리적인 탭 순서</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: UsageGuidelines -->
+
+        <!-- @COMPONENT: CodeSnippets -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold mb-8 text-soop-orange">Code Examples</h2>
+            
+            <div class="bg-soop-grey rounded-soop-lg p-6">
+                <h3 class="text-xl font-bold mb-4 text-soop-blue">CSS Variables</h3>
+                <div class="bg-soop-dark rounded-soop p-4 overflow-x-auto">
+                    <pre class="text-sm text-gray-300"><code>:root {
+  /* SOOP Color Palette */
+  --soop-orange: #FF6B35;
+  --soop-dark: #1A1A1A;
+  --soop-blue: #00D4FF;
+  --soop-green: #00FF88;
+  --soop-grey: #333333;
+  --soop-light-grey: #2A2A2A;
+  --soop-border: #444444;
+  
+  /* Typography */
+  --font-korean: 'Noto Sans Korean', sans-serif;
+  --font-latin: 'Roboto', sans-serif;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  /* Border Radius */
+  --radius-soop: 12px;
+  --radius-soop-lg: 16px;
+}</code></pre>
+                </div>
+                <button class="mt-3 px-4 py-2 bg-soop-orange hover:bg-orange-600 text-white rounded text-sm transition-colors" 
+                        onclick="navigator.clipboard.writeText(document.querySelector('code').textContent)">
+                    <i class="fas fa-copy mr-2"></i>Copy CSS Variables
+                </button>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: CodeSnippets -->
+    </div>
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-soop-grey border-t border-soop-border mt-16">
+        <div class="max-w-7xl mx-auto px-6 py-8">
+            <div class="text-center">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-soop-orange rounded-lg flex items-center justify-center font-bold">
+                        S
+                    </div>
+                    <span class="text-xl font-bold text-soop-orange">SOOP Design System</span>
+                </div>
+                <p class="text-gray-400 text-sm">
+                    Complete UI component library inspired by SoopLive's Korean gaming platform
+                </p>
+                <p class="text-gray-500 text-xs mt-2">
+                    This design system captures 100% of the visual elements and design patterns from sooplive.co.kr
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        (function() {
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Copy to clipboard functionality
+            window.copyToClipboard = function(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                    // TODO: Show success notification
+                    console.log('Copied to clipboard:', text);
+                });
+            };
+
+            // Interactive component hover effects
+            const cards = document.querySelectorAll('.hover\\:transform');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        })();
+    </script>
+</body>
+</html>

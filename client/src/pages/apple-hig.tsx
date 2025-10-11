@@ -1,0 +1,2011 @@
+import { useState } from 'react';
+import { 
+  AppleButton, 
+  AppleBadge, 
+  AppleSectionHeader,
+  AppleInput,
+  AppleSelect,
+  AppleCheckbox,
+  AppleRadioGroup,
+  AppleSwitch,
+  AppleTextarea,
+  AppleTabs,
+  AppleBreadcrumbs,
+  ApplePagination,
+  AppleSidebar,
+  AppleNav,
+  AppleAlert,
+  AppleModal,
+  AppleDialog,
+  AppleLoading,
+  AppleSkeleton,
+  AppleTable,
+  AppleCard,
+  AppleAvatar,
+  AppleList,
+  AppleContainer,
+  AppleGrid,
+  AppleStack,
+  useAppleToast,
+  AppleToastContainer,
+  AppleToastProvider
+} from '@/components/apple';
+import { designTokens } from '@/constants/design-tokens';
+import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
+import { Mail, User, Home, FileText, Settings } from 'lucide-react';
+
+function AppleHIGShowcaseContent() {
+  const [activeTab, setActiveTab] = useState<string>('overview');
+  
+  // State for interactive examples
+  const [modalOpen, setModalOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tabsActiveTab, setTabsActiveTab] = useState('home');
+  const [radioValue, setRadioValue] = useState('option1');
+  const toast = useAppleToast();
+
+  const CodeBlock = ({ code, language = 'tsx' }: { code: string; language?: string }) => (
+    <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
+      <code>{code}</code>
+    </pre>
+  );
+
+  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <section className={designTokens.spacing.sectionSpacing}>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6" data-testid={`heading-${title.toLowerCase().replace(/\s+/g, '-')}`}>
+        {title}
+      </h2>
+      {children}
+    </section>
+  );
+
+  const ComparisonCard = ({
+    title,
+    before,
+    after,
+    beforeCode,
+    afterCode,
+  }: {
+    title: string;
+    before: React.ReactNode;
+    after: React.ReactNode;
+    beforeCode: string;
+    afterCode: string;
+  }) => (
+    <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
+      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <HiOutlineXCircle className="w-5 h-5 text-red-500" />
+            <h4 className="font-semibold text-gray-700">Before (Inconsistent)</h4>
+          </div>
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg">{before}</div>
+          <CodeBlock code={beforeCode} />
+        </div>
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <HiOutlineCheckCircle className="w-5 h-5 text-green-500" />
+            <h4 className="font-semibold text-gray-700">After (Standardized)</h4>
+          </div>
+          <div className="mb-4 p-4 bg-gray-50 rounded-lg">{after}</div>
+          <CodeBlock code={afterCode} />
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className={`${designTokens.spacing.container} py-12`}>
+          <h1 className="text-5xl font-bold text-gray-900 mb-3" data-testid="heading-main">
+            Apple HIG Design System
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl" data-testid="text-description">
+            Standardized components following Apple Human Interface Guidelines for consistent, 
+            accessible, and beautiful user experiences
+          </p>
+        </div>
+      </header>
+
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+        <div className={designTokens.spacing.container}>
+          <nav className="flex gap-1 overflow-x-auto py-2">
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'examples'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === tab
+                    ? 'bg-[#ff0086] text-white'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+                data-testid={`button-tab-${tab}`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <main className={`${designTokens.spacing.container} py-12`}>
+        {/* Design Tokens Section */}
+        {activeTab === 'overview' && (
+        <Section title="Design Tokens Overview">
+          <div className="space-y-8">
+            {/* Colors */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-4">Color Palette</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Primary Colors</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    {Object.entries(designTokens.colors.primary).map(([name, value]) => (
+                      <div key={name} className="space-y-2">
+                        <div
+                          className="h-20 rounded-lg shadow-sm border border-gray-200"
+                          style={{ backgroundColor: value }}
+                          data-testid={`color-primary-${name}`}
+                        />
+                        <div className="text-xs">
+                          <p className="font-medium">{name}</p>
+                          <p className="text-gray-500 font-mono">{value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Semantic Colors</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {Object.entries(designTokens.colors.semantic).map(([name, value]) => (
+                      <div key={name} className="space-y-2">
+                        <div
+                          className="h-20 rounded-lg shadow-sm border border-gray-200"
+                          style={{ backgroundColor: value }}
+                          data-testid={`color-semantic-${name}`}
+                        />
+                        <div className="text-xs">
+                          <p className="font-medium">{name}</p>
+                          <p className="text-gray-500 font-mono">{value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Neutral Palette</h4>
+                  <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
+                    {Object.entries(designTokens.colors.neutral).map(([name, value]) => (
+                      <div key={name} className="space-y-2">
+                        <div
+                          className="h-16 rounded-lg shadow-sm border border-gray-200"
+                          style={{ backgroundColor: value }}
+                          data-testid={`color-neutral-${name}`}
+                        />
+                        <p className="text-xs font-mono text-center">{name}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Spacing */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-4">Spacing Scale</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Section Spacing</p>
+                  <code className="text-sm bg-gray-100 px-3 py-1 rounded">{designTokens.spacing.sectionSpacing}</code>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Container</p>
+                  <code className="text-sm bg-gray-100 px-3 py-1 rounded">{designTokens.spacing.container}</code>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Component Gaps</p>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(designTokens.spacing.componentGaps).map(([name, value]) => (
+                      <code key={name} className="text-sm bg-gray-100 px-3 py-1 rounded">
+                        {name}: {value}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Typography */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-4">Typography Scale</h3>
+              <div className="space-y-4">
+                {Object.entries(designTokens.typography).map(([name, className]) => (
+                  <div key={name} className="border-b border-gray-200 pb-4 last:border-b-0">
+                    <p className="text-sm text-gray-500 mb-1">{name}</p>
+                    <p className={className}>The quick brown fox jumps over the lazy dog</p>
+                    <code className="text-xs bg-gray-100 px-2 py-1 rounded mt-1 inline-block">{className}</code>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Buttons Section */}
+        {activeTab === 'buttons' && (
+        <Section title="Buttons Showcase">
+          <div className="space-y-8">
+            {/* Live Button Examples */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">All Button Variants</h3>
+              
+              {(['primary', 'secondary', 'outline'] as const).map((variant) => (
+                <div key={variant} className="mb-6 last:mb-0">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3 capitalize">{variant}</h4>
+                  <div className="flex flex-wrap items-center gap-4">
+                    {(['sm', 'md', 'lg'] as const).map((size) => (
+                      <AppleButton
+                        key={size}
+                        variant={variant}
+                        size={size}
+                        data-testid={`button-${variant}-${size}`}
+                      >
+                        {size.toUpperCase()} Button
+                      </AppleButton>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleButton } from '@/components/apple/AppleButton';
+
+<AppleButton variant="primary" size="md">
+  Click Me
+</AppleButton>
+
+<AppleButton variant="secondary" size="lg">
+  Secondary Action
+</AppleButton>
+
+<AppleButton variant="outline" size="sm">
+  Learn More
+</AppleButton>`}
+                />
+              </div>
+            </div>
+
+            {/* Before/After Comparison */}
+            <ComparisonCard
+              title="Button Standardization"
+              before={
+                <div className="space-y-3">
+                  <button className="bg-pink-600 text-white px-5 py-2 rounded">
+                    Inconsistent
+                  </button>
+                  <button className="bg-gray-200 text-black px-3 py-1.5 rounded-md text-sm">
+                    Different Sizes
+                  </button>
+                  <button className="border border-blue-500 text-blue-500 px-6 py-3 rounded-full">
+                    Mixed Styles
+                  </button>
+                </div>
+              }
+              after={
+                <div className="space-y-3">
+                  <AppleButton variant="primary" size="md">
+                    Standardized
+                  </AppleButton>
+                  <AppleButton variant="secondary" size="md">
+                    Consistent Size
+                  </AppleButton>
+                  <AppleButton variant="outline" size="md">
+                    Unified Style
+                  </AppleButton>
+                </div>
+              }
+              beforeCode={`// Inconsistent buttons
+<button className="bg-pink-600 text-white px-5 py-2 rounded">
+<button className="bg-gray-200 text-black px-3 py-1.5 rounded-md text-sm">
+<button className="border border-blue-500 text-blue-500 px-6 py-3 rounded-full">`}
+              afterCode={`// Standardized Apple buttons
+<AppleButton variant="primary" size="md">Standardized</AppleButton>
+<AppleButton variant="secondary" size="md">Consistent Size</AppleButton>
+<AppleButton variant="outline" size="md">Unified Style</AppleButton>`}
+            />
+          </div>
+        </Section>
+        )}
+
+        {/* Badges Section */}
+        {activeTab === 'badges' && (
+        <Section title="Badges Showcase">
+          <div className="space-y-8">
+            {/* Live Badge Examples */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">All Badge Variants</h3>
+              
+              {(['sm', 'md'] as const).map((size) => (
+                <div key={size} className="mb-6 last:mb-0">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Size: {size.toUpperCase()}</h4>
+                  <div className="flex flex-wrap items-center gap-3">
+                    {(['default', 'success', 'warning', 'error', 'info'] as const).map((variant) => (
+                      <AppleBadge
+                        key={variant}
+                        variant={variant}
+                        size={size}
+                        data-testid={`badge-${variant}-${size}`}
+                      >
+                        {variant}
+                      </AppleBadge>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleBadge } from '@/components/apple/AppleBadge';
+
+<AppleBadge variant="success" size="md">Active</AppleBadge>
+<AppleBadge variant="warning" size="sm">Pending</AppleBadge>
+<AppleBadge variant="error" size="md">Failed</AppleBadge>`}
+                />
+              </div>
+            </div>
+
+            {/* Before/After Comparison */}
+            <ComparisonCard
+              title="Badge Standardization"
+              before={
+                <div className="space-x-2">
+                  <span className="bg-green-200 text-green-900 px-3 py-1 rounded-full text-xs">
+                    Active
+                  </span>
+                  <span className="bg-yellow-100 px-2 py-0.5 text-sm">
+                    Warning
+                  </span>
+                  <span className="bg-red-500 text-white px-4 py-1.5 rounded">
+                    Error
+                  </span>
+                </div>
+              }
+              after={
+                <div className="space-x-2">
+                  <AppleBadge variant="success" size="md">Active</AppleBadge>
+                  <AppleBadge variant="warning" size="md">Warning</AppleBadge>
+                  <AppleBadge variant="error" size="md">Error</AppleBadge>
+                </div>
+              }
+              beforeCode={`// Inconsistent badges
+<span className="bg-green-200 text-green-900 px-3 py-1 rounded-full text-xs">
+<span className="bg-yellow-100 px-2 py-0.5 text-sm">
+<span className="bg-red-500 text-white px-4 py-1.5 rounded">`}
+              afterCode={`// Standardized Apple badges
+<AppleBadge variant="success" size="md">Active</AppleBadge>
+<AppleBadge variant="warning" size="md">Warning</AppleBadge>
+<AppleBadge variant="error" size="md">Error</AppleBadge>`}
+            />
+          </div>
+        </Section>
+        )}
+
+        {/* Section Headers Section */}
+        {activeTab === 'headers' && (
+        <Section title="Section Headers Showcase">
+          <div className="space-y-8">
+            {/* Live Examples */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Standard Section Header Patterns</h3>
+              
+              <div className="space-y-8">
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <AppleSectionHeader
+                    title="Dashboard Overview"
+                    description="View your performance metrics and analytics"
+                  />
+                  <div className="mt-4 p-4 bg-gray-50 rounded text-sm text-gray-600">
+                    Content goes here...
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <AppleSectionHeader
+                    title="Campaign Management"
+                    description="Create and manage your marketing campaigns"
+                    actionButtons={[
+                      { label: 'New Campaign', onClick: () => {}, variant: 'primary' },
+                      { label: 'View All', onClick: () => {}, variant: 'outline' },
+                    ]}
+                  />
+                  <div className="mt-4 p-4 bg-gray-50 rounded text-sm text-gray-600">
+                    Content goes here...
+                  </div>
+                </div>
+
+                <div className="border border-gray-200 rounded-lg p-6">
+                  <AppleSectionHeader
+                    title="Team Members"
+                    actionButtons={[
+                      { label: 'Invite', onClick: () => {}, variant: 'primary' },
+                    ]}
+                  />
+                  <div className="mt-4 p-4 bg-gray-50 rounded text-sm text-gray-600">
+                    Content goes here...
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleSectionHeader } from '@/components/apple/AppleSectionHeader';
+
+<AppleSectionHeader
+  title="Campaign Management"
+  description="Create and manage your marketing campaigns"
+  actionButtons={[
+    { label: 'New Campaign', onClick: handleCreate, variant: 'primary' },
+    { label: 'View All', onClick: handleViewAll, variant: 'outline' },
+  ]}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* Before/After Comparison */}
+            <ComparisonCard
+              title="Section Header Standardization"
+              before={
+                <div>
+                  <div className="flex justify-between mb-4">
+                    <div>
+                      <h2 className="text-xl font-semibold">My Section</h2>
+                      <p className="text-sm text-gray-500 mt-1">Some description</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <button className="bg-blue-500 text-white px-3 py-1 rounded text-sm">
+                        Action
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+              after={
+                <AppleSectionHeader
+                  title="My Section"
+                  description="Some description"
+                  actionButtons={[
+                    { label: 'Action', onClick: () => {}, variant: 'primary' },
+                  ]}
+                />
+              }
+              beforeCode={`// Inconsistent section header
+<div className="flex justify-between mb-4">
+  <div>
+    <h2 className="text-xl font-semibold">My Section</h2>
+    <p className="text-sm text-gray-500 mt-1">Some description</p>
+  </div>
+  <button className="bg-blue-500 text-white px-3 py-1 rounded text-sm">
+    Action
+  </button>
+</div>`}
+              afterCode={`// Standardized Apple section header
+<AppleSectionHeader
+  title="My Section"
+  description="Some description"
+  actionButtons={[
+    { label: 'Action', onClick: handleAction, variant: 'primary' },
+  ]}
+/>`}
+            />
+          </div>
+        </Section>
+        )}
+
+        {/* Forms Section */}
+        {activeTab === 'forms' && (
+        <Section title="Form Components Showcase">
+          <div className="space-y-8">
+            {/* AppleInput */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleInput - Text Inputs</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Sizes</h4>
+                  <div className="space-y-4">
+                    <AppleInput 
+                      label="Small Input" 
+                      placeholder="Nhập văn bản..." 
+                      size="sm"
+                      data-testid="input-small"
+                    />
+                    <AppleInput 
+                      label="Medium Input (Default)" 
+                      placeholder="Nhập email của bạn..." 
+                      data-testid="input-medium"
+                    />
+                    <AppleInput 
+                      label="Large Input" 
+                      placeholder="Nhập tên đầy đủ..." 
+                      size="lg"
+                      data-testid="input-large"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">With Icons & States</h4>
+                  <div className="space-y-4">
+                    <AppleInput 
+                      label="Email" 
+                      placeholder="email@example.com" 
+                      leftIcon={<Mail className="w-4 h-4" />}
+                      data-testid="input-with-icon"
+                    />
+                    <AppleInput 
+                      label="Disabled Input" 
+                      value="Không thể chỉnh sửa"
+                      disabled
+                      data-testid="input-disabled"
+                    />
+                    <AppleInput 
+                      label="Input với lỗi" 
+                      placeholder="Nhập số điện thoại"
+                      error="Số điện thoại không hợp lệ"
+                      data-testid="input-error"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleInput } from '@/components/apple';
+
+<AppleInput 
+  label="Email" 
+  placeholder="email@example.com"
+  leftIcon={<Mail className="w-4 h-4" />}
+  error={errors.email}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleSelect */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleSelect - Dropdown Select</h3>
+              
+              <div className="space-y-4">
+                <AppleSelect
+                  label="Chọn quốc gia"
+                  options={[
+                    { value: 'vn', label: 'Việt Nam' },
+                    { value: 'us', label: 'United States' },
+                    { value: 'jp', label: 'Japan' },
+                  ]}
+                  data-testid="select-country"
+                />
+                <AppleSelect
+                  label="Disabled Select"
+                  options={[{ value: '1', label: 'Option 1' }]}
+                  disabled
+                  data-testid="select-disabled"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleSelect } from '@/components/apple';
+
+<AppleSelect
+  label="Chọn quốc gia"
+  options={[
+    { value: 'vn', label: 'Việt Nam' },
+    { value: 'us', label: 'United States' }
+  ]}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleCheckbox & AppleRadio */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleCheckbox & AppleRadio</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Checkboxes</h4>
+                  <div className="space-y-3">
+                    <AppleCheckbox 
+                      label="Tôi đồng ý với điều khoản" 
+                      data-testid="checkbox-terms"
+                    />
+                    <AppleCheckbox 
+                      label="Nhận thông báo qua email" 
+                      description="Chúng tôi sẽ gửi cập nhật quan trọng"
+                      data-testid="checkbox-notifications"
+                    />
+                    <AppleCheckbox 
+                      label="Disabled checkbox" 
+                      disabled 
+                      data-testid="checkbox-disabled"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Radio Group</h4>
+                  <AppleRadioGroup
+                    label="Chọn gói dịch vụ"
+                    name="plan"
+                    value={radioValue}
+                    onChange={setRadioValue}
+                    options={[
+                      { value: 'option1', label: 'Gói Basic', description: '100,000đ/tháng' },
+                      { value: 'option2', label: 'Gói Pro', description: '300,000đ/tháng' },
+                      { value: 'option3', label: 'Gói Enterprise', description: 'Liên hệ' },
+                    ]}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleCheckbox, AppleRadioGroup } from '@/components/apple';
+
+<AppleCheckbox 
+  label="Tôi đồng ý với điều khoản" 
+  description="Vui lòng đọc kỹ trước khi đồng ý"
+/>
+
+<AppleRadioGroup
+  label="Chọn gói dịch vụ"
+  name="plan"
+  value={value}
+  onChange={setValue}
+  options={[
+    { value: 'basic', label: 'Gói Basic' },
+    { value: 'pro', label: 'Gói Pro' }
+  ]}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleSwitch */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleSwitch - Toggle Switch</h3>
+              
+              <div className="space-y-4">
+                <AppleSwitch 
+                  label="Bật thông báo" 
+                  description="Nhận cập nhật về chiến dịch mới"
+                  data-testid="switch-notifications"
+                />
+                <AppleSwitch 
+                  label="Chế độ tối" 
+                  data-testid="switch-dark-mode"
+                />
+                <AppleSwitch 
+                  label="Disabled switch" 
+                  disabled 
+                  data-testid="switch-disabled"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleSwitch } from '@/components/apple';
+
+<AppleSwitch 
+  label="Bật thông báo" 
+  description="Nhận cập nhật về chiến dịch mới"
+  checked={enabled}
+  onChange={(e) => setEnabled(e.target.checked)}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleTextarea */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleTextarea - Multi-line Text</h3>
+              
+              <div className="space-y-4">
+                <AppleTextarea
+                  label="Mô tả chiến dịch"
+                  placeholder="Nhập mô tả chi tiết về chiến dịch của bạn..."
+                  rows={4}
+                  data-testid="textarea-description"
+                />
+                <AppleTextarea
+                  label="Ghi chú (với giới hạn)"
+                  placeholder="Nhập ghi chú..."
+                  rows={3}
+                  maxLength={200}
+                  showCount
+                  data-testid="textarea-with-count"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleTextarea } from '@/components/apple';
+
+<AppleTextarea
+  label="Mô tả chiến dịch"
+  placeholder="Nhập mô tả..."
+  rows={4}
+  maxLength={500}
+  showCount
+/>`}
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Navigation Section */}
+        {activeTab === 'navigation' && (
+        <Section title="Navigation Components Showcase">
+          <div className="space-y-8">
+            {/* AppleTabs */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleTabs - Tab Navigation</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Underline Variant</h4>
+                  <AppleTabs
+                    tabs={[
+                      { id: 'home', label: 'Trang chủ', icon: <Home className="w-4 h-4" /> },
+                      { id: 'profile', label: 'Hồ sơ', icon: <User className="w-4 h-4" /> },
+                      { id: 'settings', label: 'Cài đặt', icon: <Settings className="w-4 h-4" /> },
+                    ]}
+                    activeTab={tabsActiveTab}
+                    onChange={setTabsActiveTab}
+                    variant="underline"
+                  />
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Pills Variant</h4>
+                  <AppleTabs
+                    tabs={[
+                      { id: 'tab1', label: 'Tất cả' },
+                      { id: 'tab2', label: 'Đang hoạt động' },
+                      { id: 'tab3', label: 'Hoàn thành' },
+                    ]}
+                    activeTab="tab1"
+                    onChange={() => {}}
+                    variant="pills"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleTabs } from '@/components/apple';
+
+<AppleTabs
+  tabs={[
+    { id: 'home', label: 'Trang chủ', icon: <Home /> },
+    { id: 'profile', label: 'Hồ sơ', icon: <User /> }
+  ]}
+  activeTab={activeTab}
+  onChange={setActiveTab}
+  variant="underline"
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleBreadcrumbs */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleBreadcrumbs - Navigation Path</h3>
+              
+              <div className="space-y-4">
+                <AppleBreadcrumbs
+                  items={[
+                    { label: 'Trang chủ', onClick: () => console.log('Home') },
+                    { label: 'Chiến dịch', onClick: () => console.log('Campaigns') },
+                    { label: 'Chi tiết chiến dịch' },
+                  ]}
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleBreadcrumbs } from '@/components/apple';
+
+<AppleBreadcrumbs
+  items={[
+    { label: 'Trang chủ', onClick: () => navigate('/') },
+    { label: 'Chiến dịch', onClick: () => navigate('/campaigns') },
+    { label: 'Chi tiết chiến dịch' }
+  ]}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* ApplePagination */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">ApplePagination - Page Navigation</h3>
+              
+              <div className="space-y-4">
+                <ApplePagination
+                  currentPage={currentPage}
+                  totalPages={10}
+                  onPageChange={setCurrentPage}
+                  showFirstLast
+                  data-testid="pagination-example"
+                />
+                <p className="text-sm text-gray-600">Current Page: {currentPage}</p>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { ApplePagination } from '@/components/apple';
+
+<ApplePagination
+  currentPage={currentPage}
+  totalPages={10}
+  onPageChange={setCurrentPage}
+  showFirstLast
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleSidebar */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleSidebar - Vertical Navigation</h3>
+              
+              <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
+                <AppleSidebar
+                  items={[
+                    { id: '1', label: 'Trang chủ', icon: <Home className="w-5 h-5" /> },
+                    { id: '2', label: 'Chiến dịch', icon: <FileText className="w-5 h-5" />, badge: 5 },
+                    { id: '3', label: 'Người dùng', icon: <User className="w-5 h-5" /> },
+                    { id: '4', label: 'Cài đặt', icon: <Settings className="w-5 h-5" /> },
+                  ]}
+                  activeItem="1"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleSidebar } from '@/components/apple';
+
+<AppleSidebar
+  items={[
+    { id: '1', label: 'Trang chủ', icon: <Home /> },
+    { id: '2', label: 'Chiến dịch', icon: <FileText />, badge: 5 }
+  ]}
+  activeItem={activeItem}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleNav */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleNav - Horizontal Navigation Bar</h3>
+              
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <AppleNav
+                  logo={<span className="font-bold text-xl text-[#ff0086]">IKK</span>}
+                  items={[
+                    { id: '1', label: 'Trang chủ' },
+                    { id: '2', label: 'Chiến dịch' },
+                    { id: '3', label: 'KOC' },
+                  ]}
+                  actions={
+                    <AppleButton variant="primary" size="sm" data-testid="button-nav-action">
+                      Đăng nhập
+                    </AppleButton>
+                  }
+                  activeItem="1"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleNav } from '@/components/apple';
+
+<AppleNav
+  logo={<Logo />}
+  items={[
+    { id: '1', label: 'Trang chủ' },
+    { id: '2', label: 'Chiến dịch' }
+  ]}
+  actions={<Button>Đăng nhập</Button>}
+  activeItem={activeItem}
+/>`}
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Feedback Section */}
+        {activeTab === 'feedback' && (
+        <Section title="Feedback Components Showcase">
+          <div className="space-y-8">
+            {/* AppleToast */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleToast - Toast Notifications</h3>
+              
+              <div className="flex flex-wrap gap-3">
+                <AppleButton 
+                  variant="primary" 
+                  onClick={() => toast.success('Thành công! Thao tác đã hoàn thành.')}
+                  data-testid="button-toast-success"
+                >
+                  Show Success Toast
+                </AppleButton>
+                <AppleButton 
+                  variant="secondary" 
+                  onClick={() => toast.error('Lỗi! Vui lòng thử lại.')}
+                  data-testid="button-toast-error"
+                >
+                  Show Error Toast
+                </AppleButton>
+                <AppleButton 
+                  variant="outline" 
+                  onClick={() => toast.warning('Cảnh báo! Hành động này không thể hoàn tác.')}
+                  data-testid="button-toast-warning"
+                >
+                  Show Warning Toast
+                </AppleButton>
+                <AppleButton 
+                  variant="outline" 
+                  onClick={() => toast.info('Thông tin: Có 3 chiến dịch mới.')}
+                  data-testid="button-toast-info"
+                >
+                  Show Info Toast
+                </AppleButton>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { useAppleToast } from '@/components/apple';
+
+function MyComponent() {
+  const toast = useAppleToast();
+  
+  const handleSubmit = () => {
+    toast.success('Thành công! Thao tác đã hoàn thành.');
+  };
+  
+  return <button onClick={handleSubmit}>Submit</button>;
+}`}
+                />
+              </div>
+            </div>
+
+            {/* AppleAlert */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleAlert - Alert Messages</h3>
+              
+              <div className="space-y-4">
+                <AppleAlert severity="success" title="Thành công">
+                  Chiến dịch của bạn đã được tạo thành công!
+                </AppleAlert>
+                <AppleAlert severity="error" title="Lỗi">
+                  Không thể kết nối đến server. Vui lòng thử lại.
+                </AppleAlert>
+                <AppleAlert severity="warning" title="Cảnh báo">
+                  Chiến dịch sắp hết hạn. Vui lòng gia hạn.
+                </AppleAlert>
+                <AppleAlert severity="info" title="Thông tin">
+                  Có 5 KOC mới đăng ký tham gia chiến dịch.
+                </AppleAlert>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleAlert } from '@/components/apple';
+
+<AppleAlert severity="success" title="Thành công">
+  Chiến dịch của bạn đã được tạo thành công!
+</AppleAlert>
+
+<AppleAlert severity="error" title="Lỗi">
+  Không thể kết nối đến server.
+</AppleAlert>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleModal */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleModal - Modal Dialog</h3>
+              
+              <AppleButton 
+                variant="primary" 
+                onClick={() => setModalOpen(true)}
+                data-testid="button-open-modal"
+              >
+                Open Modal
+              </AppleButton>
+
+              <AppleModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                title="Chi tiết chiến dịch"
+                size="lg"
+                footer={
+                  <div className="flex justify-end gap-3">
+                    <AppleButton 
+                      variant="outline" 
+                      onClick={() => setModalOpen(false)}
+                      data-testid="button-modal-cancel"
+                    >
+                      Hủy
+                    </AppleButton>
+                    <AppleButton 
+                      variant="primary" 
+                      onClick={() => setModalOpen(false)}
+                      data-testid="button-modal-confirm"
+                    >
+                      Xác nhận
+                    </AppleButton>
+                  </div>
+                }
+              >
+                <p className="text-gray-600">
+                  Đây là nội dung của modal. Bạn có thể thêm bất kỳ nội dung nào vào đây.
+                </p>
+              </AppleModal>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleModal } from '@/components/apple';
+
+<AppleModal
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Chi tiết chiến dịch"
+  footer={<Button onClick={handleSave}>Lưu</Button>}
+>
+  <p>Modal content here...</p>
+</AppleModal>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleDialog */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleDialog - Confirmation Dialog</h3>
+              
+              <div className="flex gap-3">
+                <AppleButton 
+                  variant="primary" 
+                  onClick={() => setDialogOpen(true)}
+                  data-testid="button-open-dialog"
+                >
+                  Open Dialog
+                </AppleButton>
+              </div>
+
+              <AppleDialog
+                open={dialogOpen}
+                onClose={() => setDialogOpen(false)}
+                title="Xác nhận xóa"
+                description="Bạn có chắc chắn muốn xóa chiến dịch này? Hành động này không thể hoàn tác."
+                confirmText="Xóa"
+                cancelText="Hủy"
+                variant="danger"
+                onConfirm={() => {
+                  console.log('Confirmed');
+                  setDialogOpen(false);
+                }}
+                onCancel={() => setDialogOpen(false)}
+              />
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleDialog } from '@/components/apple';
+
+<AppleDialog
+  open={open}
+  onClose={() => setOpen(false)}
+  title="Xác nhận xóa"
+  description="Bạn có chắc chắn muốn xóa?"
+  confirmText="Xóa"
+  cancelText="Hủy"
+  variant="danger"
+  onConfirm={handleDelete}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleLoading */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleLoading - Loading Indicators</h3>
+              
+              <div className="flex items-center gap-8">
+                <div className="text-center">
+                  <AppleLoading size="sm" />
+                  <p className="text-sm text-gray-600 mt-2">Small</p>
+                </div>
+                <div className="text-center">
+                  <AppleLoading size="md" text="Đang tải..." />
+                  <p className="text-sm text-gray-600 mt-2">Medium</p>
+                </div>
+                <div className="text-center">
+                  <AppleLoading size="lg" />
+                  <p className="text-sm text-gray-600 mt-2">Large</p>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleLoading } from '@/components/apple';
+
+<AppleLoading size="md" text="Đang tải..." />
+
+{/* Full screen loading */}
+<AppleLoading fullScreen text="Đang xử lý..." />`}
+                />
+              </div>
+            </div>
+
+            {/* AppleSkeleton */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleSkeleton - Content Placeholders</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Text Skeletons</h4>
+                  <div className="space-y-2">
+                    <AppleSkeleton variant="text" width="100%" />
+                    <AppleSkeleton variant="text" width="80%" />
+                    <AppleSkeleton variant="text" width="60%" />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Other Shapes</h4>
+                  <div className="flex items-center gap-4">
+                    <AppleSkeleton variant="circular" width={60} height={60} />
+                    <div className="flex-1 space-y-2">
+                      <AppleSkeleton variant="rectangular" width="100%" height={100} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleSkeleton } from '@/components/apple';
+
+<AppleSkeleton variant="text" width="100%" />
+<AppleSkeleton variant="circular" width={60} height={60} />
+<AppleSkeleton variant="rectangular" width="100%" height={100} />`}
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Data Display Section */}
+        {activeTab === 'data' && (
+        <Section title="Data Display Components Showcase">
+          <div className="space-y-8">
+            {/* AppleTable */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleTable - Data Tables</h3>
+              
+              <AppleTable
+                columns={[
+                  { key: 'name', header: 'Tên', sortable: true },
+                  { key: 'role', header: 'Vai trò', sortable: true },
+                  { key: 'status', header: 'Trạng thái', render: (row) => (
+                    <AppleBadge variant={row.status === 'active' ? 'success' : 'default'} size="sm">
+                      {row.status === 'active' ? 'Hoạt động' : 'Tạm dừng'}
+                    </AppleBadge>
+                  )},
+                ]}
+                data={[
+                  { name: 'Nguyễn Văn A', role: 'KOC', status: 'active' },
+                  { name: 'Trần Thị B', role: 'Brand', status: 'active' },
+                  { name: 'Lê Văn C', role: 'Admin', status: 'inactive' },
+                ]}
+                striped
+                hoverable
+              />
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleTable } from '@/components/apple';
+
+<AppleTable
+  columns={[
+    { key: 'name', header: 'Tên', sortable: true },
+    { key: 'status', header: 'Trạng thái', render: (row) => (
+      <Badge>{row.status}</Badge>
+    )}
+  ]}
+  data={data}
+  striped
+  hoverable
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleCard */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleCard - Content Cards</h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <AppleCard variant="elevated" hoverable>
+                  <AppleCard.Header 
+                    title="Chiến dịch Tết 2024" 
+                    subtitle="Kết thúc sau 5 ngày"
+                  />
+                  <AppleCard.Body>
+                    <p className="text-gray-600">
+                      Chiến dịch quảng bá sản phẩm trong dịp Tết Nguyên Đán.
+                    </p>
+                  </AppleCard.Body>
+                  <AppleCard.Footer>
+                    <AppleButton variant="outline" size="sm" data-testid="button-card-view">
+                      Xem chi tiết
+                    </AppleButton>
+                  </AppleCard.Footer>
+                </AppleCard>
+
+                <AppleCard variant="outlined">
+                  <AppleCard.Header title="KOC Analytics" />
+                  <AppleCard.Body>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total KOCs</span>
+                        <span className="font-semibold">1,234</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Active</span>
+                        <span className="font-semibold">987</span>
+                      </div>
+                    </div>
+                  </AppleCard.Body>
+                </AppleCard>
+
+                <AppleCard variant="filled">
+                  <AppleCard.Image 
+                    src="https://images.unsplash.com/photo-1557683316-973673baf926" 
+                    alt="Campaign" 
+                    height="h-40"
+                  />
+                  <AppleCard.Body>
+                    <h4 className="font-semibold mb-1">Summer Sale</h4>
+                    <p className="text-sm text-gray-600">Special discount campaign</p>
+                  </AppleCard.Body>
+                </AppleCard>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleCard } from '@/components/apple';
+
+<AppleCard variant="elevated" hoverable>
+  <AppleCard.Header 
+    title="Chiến dịch Tết 2024" 
+    subtitle="Kết thúc sau 5 ngày"
+  />
+  <AppleCard.Body>
+    <p>Chiến dịch quảng bá sản phẩm...</p>
+  </AppleCard.Body>
+  <AppleCard.Footer>
+    <Button>Xem chi tiết</Button>
+  </AppleCard.Footer>
+</AppleCard>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleAvatar */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleAvatar - User Avatars</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Sizes</h4>
+                  <div className="flex items-center gap-4">
+                    <AppleAvatar name="Nguyễn Văn A" size="xs" />
+                    <AppleAvatar name="Trần Thị B" size="sm" />
+                    <AppleAvatar name="Lê Văn C" size="md" />
+                    <AppleAvatar name="Phạm Thị D" size="lg" />
+                    <AppleAvatar name="Hoàng Văn E" size="xl" />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">With Status</h4>
+                  <div className="flex items-center gap-4">
+                    <AppleAvatar name="User 1" size="lg" status="online" />
+                    <AppleAvatar name="User 2" size="lg" status="offline" />
+                    <AppleAvatar name="User 3" size="lg" status="away" />
+                    <AppleAvatar name="User 4" size="lg" status="busy" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleAvatar } from '@/components/apple';
+
+<AppleAvatar 
+  name="Nguyễn Văn A" 
+  size="md" 
+  status="online"
+/>
+
+<AppleAvatar 
+  src="/path/to/image.jpg"
+  name="Trần Thị B"
+  size="lg"
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleList */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleList - List Items</h3>
+              
+              <AppleList
+                items={[
+                  {
+                    id: '1',
+                    title: 'Chiến dịch Tết 2024',
+                    description: 'Kết thúc sau 5 ngày',
+                    avatar: { name: 'CT' },
+                    badge: 'Mới',
+                    actions: <AppleButton variant="outline" size="sm" data-testid="button-list-action-1">Xem</AppleButton>
+                  },
+                  {
+                    id: '2',
+                    title: 'Summer Sale',
+                    description: 'Đang hoạt động',
+                    avatar: { name: 'SS' },
+                    badge: 15,
+                    actions: <AppleButton variant="outline" size="sm" data-testid="button-list-action-2">Xem</AppleButton>
+                  },
+                  {
+                    id: '3',
+                    title: 'Black Friday 2024',
+                    description: 'Sắp diễn ra',
+                    avatar: { name: 'BF' },
+                  },
+                ]}
+                divided
+                hoverable
+              />
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleList } from '@/components/apple';
+
+<AppleList
+  items={[
+    {
+      id: '1',
+      title: 'Chiến dịch Tết 2024',
+      description: 'Kết thúc sau 5 ngày',
+      avatar: { name: 'CT' },
+      badge: 'Mới',
+      actions: <Button>Xem</Button>
+    }
+  ]}
+  divided
+  hoverable
+/>`}
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Layout Components Section */}
+        {activeTab === 'layout-components' && (
+        <Section title="Layout Components Showcase">
+          <div className="space-y-8">
+            {/* AppleContainer */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleContainer - Responsive Containers</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Different Max Widths</h4>
+                  <div className="space-y-4">
+                    <div className="bg-gray-50 p-4">
+                      <AppleContainer maxWidth="sm">
+                        <div className="bg-blue-100 p-4 rounded text-center">
+                          Small Container (max-w-640px)
+                        </div>
+                      </AppleContainer>
+                    </div>
+                    <div className="bg-gray-50 p-4">
+                      <AppleContainer maxWidth="md">
+                        <div className="bg-blue-100 p-4 rounded text-center">
+                          Medium Container (max-w-768px)
+                        </div>
+                      </AppleContainer>
+                    </div>
+                    <div className="bg-gray-50 p-4">
+                      <AppleContainer maxWidth="lg">
+                        <div className="bg-blue-100 p-4 rounded text-center">
+                          Large Container (max-w-1024px)
+                        </div>
+                      </AppleContainer>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleContainer } from '@/components/apple';
+
+<AppleContainer maxWidth="lg" padding center>
+  <h1>Page Content</h1>
+  <p>Your content here...</p>
+</AppleContainer>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleGrid */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleGrid - Responsive Grid Layouts</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">2-Column Grid</h4>
+                  <AppleGrid cols={2} gap="md">
+                    <div className="bg-blue-100 p-4 rounded">Column 1</div>
+                    <div className="bg-blue-100 p-4 rounded">Column 2</div>
+                  </AppleGrid>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">3-Column Grid</h4>
+                  <AppleGrid cols={3} gap="md">
+                    <div className="bg-green-100 p-4 rounded">Column 1</div>
+                    <div className="bg-green-100 p-4 rounded">Column 2</div>
+                    <div className="bg-green-100 p-4 rounded">Column 3</div>
+                  </AppleGrid>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">4-Column Grid with Small Gap</h4>
+                  <AppleGrid cols={4} gap="sm">
+                    <div className="bg-purple-100 p-4 rounded">1</div>
+                    <div className="bg-purple-100 p-4 rounded">2</div>
+                    <div className="bg-purple-100 p-4 rounded">3</div>
+                    <div className="bg-purple-100 p-4 rounded">4</div>
+                  </AppleGrid>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Responsive Grid</h4>
+                  <AppleGrid cols={{ sm: 1, md: 2, lg: 3 }} gap="lg">
+                    <div className="bg-orange-100 p-4 rounded">Item 1</div>
+                    <div className="bg-orange-100 p-4 rounded">Item 2</div>
+                    <div className="bg-orange-100 p-4 rounded">Item 3</div>
+                  </AppleGrid>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleGrid } from '@/components/apple';
+
+<AppleGrid cols={3} gap="md">
+  <div>Column 1</div>
+  <div>Column 2</div>
+  <div>Column 3</div>
+</AppleGrid>
+
+{/* Responsive */}
+<AppleGrid cols={{ sm: 1, md: 2, lg: 3 }} gap="lg">
+  <Card />
+  <Card />
+  <Card />
+</AppleGrid>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleStack */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleStack - Flex Stacks</h3>
+              
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Vertical Stack (Default)</h4>
+                  <AppleStack direction="vertical" spacing="md">
+                    <div className="bg-pink-100 p-4 rounded">Item 1</div>
+                    <div className="bg-pink-100 p-4 rounded">Item 2</div>
+                    <div className="bg-pink-100 p-4 rounded">Item 3</div>
+                  </AppleStack>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Horizontal Stack</h4>
+                  <AppleStack direction="horizontal" spacing="md">
+                    <div className="bg-cyan-100 p-4 rounded">Item 1</div>
+                    <div className="bg-cyan-100 p-4 rounded">Item 2</div>
+                    <div className="bg-cyan-100 p-4 rounded">Item 3</div>
+                  </AppleStack>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">With Different Spacing</h4>
+                  <AppleStack direction="horizontal" spacing="xs">
+                    <div className="bg-yellow-100 p-2 rounded text-sm">xs</div>
+                    <div className="bg-yellow-100 p-2 rounded text-sm">spacing</div>
+                  </AppleStack>
+                  <div className="mt-4">
+                    <AppleStack direction="horizontal" spacing="xl">
+                      <div className="bg-yellow-100 p-2 rounded text-sm">xl</div>
+                      <div className="bg-yellow-100 p-2 rounded text-sm">spacing</div>
+                    </AppleStack>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">With Alignment Options</h4>
+                  <AppleStack direction="horizontal" spacing="md" align="center" justify="between">
+                    <div className="bg-teal-100 p-4 rounded">Start</div>
+                    <div className="bg-teal-100 p-4 rounded">Center aligned, space between</div>
+                    <div className="bg-teal-100 p-4 rounded">End</div>
+                  </AppleStack>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                <CodeBlock
+                  code={`import { AppleStack } from '@/components/apple';
+
+<AppleStack direction="vertical" spacing="md">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</AppleStack>
+
+<AppleStack 
+  direction="horizontal" 
+  spacing="lg" 
+  align="center" 
+  justify="between"
+>
+  <Button>Cancel</Button>
+  <Button>Save</Button>
+</AppleStack>`}
+                />
+              </div>
+            </div>
+
+            {/* Design Tokens Reference */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Design Tokens for Layout</h3>
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Container Width</p>
+                  <code className="text-sm bg-gray-100 px-3 py-1 rounded">{designTokens.spacing.container}</code>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Section Spacing</p>
+                  <code className="text-sm bg-gray-100 px-3 py-1 rounded">{designTokens.spacing.sectionSpacing}</code>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 mb-2">Component Gaps</p>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(designTokens.spacing.componentGaps).map(([name, value]) => (
+                      <code key={name} className="text-sm bg-gray-100 px-3 py-1 rounded">
+                        {name}: {value}
+                      </code>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Real Examples Section */}
+        {activeTab === 'examples' && (
+        <>
+        <Section title="Before/After: Real-World Examples">
+          <div className="space-y-8">
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Migrating Existing Code</h3>
+              <p className="text-gray-600 mb-6">
+                Here's how to migrate your existing components to use the standardized Apple HIG design system:
+              </p>
+
+              <div className="space-y-8">
+                <div>
+                  <h4 className="text-lg font-semibold mb-4">Step 1: Replace Buttons</h4>
+                  <ComparisonCard
+                    title="Button Migration"
+                    before={
+                      <button className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-md">
+                        Join Campaign
+                      </button>
+                    }
+                    after={
+                      <AppleButton variant="primary" size="md">
+                        Join Campaign
+                      </AppleButton>
+                    }
+                    beforeCode={`<button className="bg-pink-600 hover:bg-pink-700 text-white px-6 py-2 rounded-md">
+  Join Campaign
+</button>`}
+                    afterCode={`<AppleButton variant="primary" size="md">
+  Join Campaign
+</AppleButton>`}
+                  />
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold mb-4">Step 2: Replace Status Badges</h4>
+                  <ComparisonCard
+                    title="Badge Migration"
+                    before={
+                      <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+                        Active
+                      </span>
+                    }
+                    after={
+                      <AppleBadge variant="success" size="md">
+                        Active
+                      </AppleBadge>
+                    }
+                    beforeCode={`<span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-medium">
+  Active
+</span>`}
+                    afterCode={`<AppleBadge variant="success" size="md">
+  Active
+</AppleBadge>`}
+                  />
+                </div>
+
+                <div>
+                  <h4 className="text-lg font-semibold mb-4">Step 3: Standardize Section Headers</h4>
+                  <ComparisonCard
+                    title="Section Header Migration"
+                    before={
+                      <div className="mb-6">
+                        <div className="flex items-center justify-between">
+                          <h2 className="text-2xl font-bold">Active Campaigns</h2>
+                          <button className="bg-pink-600 text-white px-4 py-2 rounded">
+                            Create New
+                          </button>
+                        </div>
+                        <p className="text-gray-600 mt-2">Manage your ongoing campaigns</p>
+                      </div>
+                    }
+                    after={
+                      <AppleSectionHeader
+                        title="Active Campaigns"
+                        description="Manage your ongoing campaigns"
+                        actionButtons={[
+                          { label: 'Create New', onClick: () => {}, variant: 'primary' },
+                        ]}
+                      />
+                    }
+                    beforeCode={`<div className="mb-6">
+  <div className="flex items-center justify-between">
+    <h2 className="text-2xl font-bold">Active Campaigns</h2>
+    <button className="bg-pink-600 text-white px-4 py-2 rounded">
+      Create New
+    </button>
+  </div>
+  <p className="text-gray-600 mt-2">Manage your ongoing campaigns</p>
+</div>`}
+                    afterCode={`<AppleSectionHeader
+  title="Active Campaigns"
+  description="Manage your ongoing campaigns"
+  actionButtons={[
+    { label: 'Create New', onClick: handleCreate, variant: 'primary' },
+  ]}
+/>`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Benefits */}
+            <div className="bg-gradient-to-br from-[#ff0086]/10 to-[#ff4da6]/10 p-8 rounded-lg border border-[#ff0086]/20">
+              <h3 className="text-2xl font-bold mb-4">Benefits of Standardization</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex gap-3">
+                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Consistency</h4>
+                    <p className="text-sm text-gray-600">
+                      All components follow the same design language and patterns
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Maintainability</h4>
+                    <p className="text-sm text-gray-600">
+                      Centralized design tokens make updates easy across the entire app
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Accessibility</h4>
+                    <p className="text-sm text-gray-600">
+                      Built-in focus states and ARIA attributes for better accessibility
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <div>
+                    <h4 className="font-semibold mb-1">Developer Experience</h4>
+                    <p className="text-sm text-gray-600">
+                      Type-safe props and consistent API make development faster
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        {/* Quick Reference */}
+        <Section title="Quick Reference">
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h3 className="text-xl font-semibold mb-6">Import Statements - All Components</h3>
+            <CodeBlock
+              code={`// Import design tokens
+import { designTokens } from '@/constants/design-tokens';
+
+// Import all Apple components using barrel export
+import { 
+  // Core Components
+  AppleButton,
+  AppleBadge,
+  AppleSectionHeader,
+  
+  // Form Components
+  AppleInput,
+  AppleSelect,
+  AppleCheckbox,
+  AppleRadioGroup,
+  AppleSwitch,
+  AppleTextarea,
+  
+  // Navigation Components
+  AppleTabs,
+  AppleBreadcrumbs,
+  ApplePagination,
+  AppleSidebar,
+  AppleNav,
+  
+  // Feedback Components
+  useAppleToast,
+  AppleToastContainer,
+  AppleToastProvider,
+  AppleAlert,
+  AppleModal,
+  AppleDialog,
+  AppleLoading,
+  AppleSkeleton,
+  
+  // Data Display Components
+  AppleTable,
+  AppleCard,
+  AppleAvatar,
+  AppleList,
+  
+  // Layout Components
+  AppleContainer,
+  AppleGrid,
+  AppleStack
+} from '@/components/apple';
+
+// Example usage in a page component
+export default function MyPage() {
+  const toast = useAppleToast();
+  
+  return (
+    <AppleToastProvider>
+      <AppleContainer maxWidth="lg">
+        <div className={designTokens.spacing.sectionSpacing}>
+          <AppleSectionHeader
+            title="My Page"
+            description="Page description"
+            actionButtons={[
+              { label: 'Primary Action', onClick: handleAction, variant: 'primary' },
+              { label: 'Secondary', onClick: handleSecondary, variant: 'outline' },
+            ]}
+          />
+          
+          <AppleStack direction="vertical" spacing="lg">
+            {/* Buttons */}
+            <AppleStack direction="horizontal" spacing="md">
+              <AppleButton 
+                variant="primary" 
+                onClick={() => toast.success('Success!')}
+              >
+                Click Me
+              </AppleButton>
+              <AppleBadge variant="success">Active</AppleBadge>
+            </AppleStack>
+            
+            {/* Forms */}
+            <AppleInput 
+              label="Email" 
+              placeholder="Enter email"
+            />
+            
+            {/* Data Display */}
+            <AppleCard variant="elevated">
+              <AppleCard.Header title="Card Title" />
+              <AppleCard.Body>
+                <p>Card content here...</p>
+              </AppleCard.Body>
+            </AppleCard>
+          </AppleStack>
+        </div>
+      </AppleContainer>
+      
+      <AppleToastContainer />
+    </AppleToastProvider>
+  );
+}`}
+            />
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mt-6">
+            <h3 className="text-xl font-semibold mb-6">Component Categories</h3>
+            <AppleGrid cols={{ sm: 1, md: 2, lg: 3 }} gap="md">
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Core (3)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• AppleButton</li>
+                  <li>• AppleBadge</li>
+                  <li>• AppleSectionHeader</li>
+                </ul>
+              </div>
+              
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Forms (6)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• AppleInput</li>
+                  <li>• AppleSelect</li>
+                  <li>• AppleCheckbox</li>
+                  <li>• AppleRadioGroup</li>
+                  <li>• AppleSwitch</li>
+                  <li>• AppleTextarea</li>
+                </ul>
+              </div>
+              
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Navigation (5)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• AppleTabs</li>
+                  <li>• AppleBreadcrumbs</li>
+                  <li>• ApplePagination</li>
+                  <li>• AppleSidebar</li>
+                  <li>• AppleNav</li>
+                </ul>
+              </div>
+              
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Feedback (6)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• useAppleToast / AppleToastContainer</li>
+                  <li>• AppleAlert</li>
+                  <li>• AppleModal</li>
+                  <li>• AppleDialog</li>
+                  <li>• AppleLoading</li>
+                  <li>• AppleSkeleton</li>
+                </ul>
+              </div>
+              
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Data Display (4)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• AppleTable</li>
+                  <li>• AppleCard</li>
+                  <li>• AppleAvatar</li>
+                  <li>• AppleList</li>
+                </ul>
+              </div>
+              
+              <div className="p-4 border border-gray-200 rounded-lg">
+                <h4 className="font-semibold mb-2">Layout (3)</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li>• AppleContainer</li>
+                  <li>• AppleGrid</li>
+                  <li>• AppleStack</li>
+                </ul>
+              </div>
+            </AppleGrid>
+          </div>
+        </Section>
+        </>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-20">
+        <div className={`${designTokens.spacing.container} py-8`}>
+          <p className="text-center text-gray-600">
+            Built with Apple Human Interface Guidelines • IKK Platform Design System
+          </p>
+        </div>
+      </footer>
+      
+      <AppleToastContainer />
+    </div>
+  );
+}
+
+export default function AppleHIGShowcase() {
+  return (
+    <AppleToastProvider>
+      <AppleHIGShowcaseContent />
+    </AppleToastProvider>
+  );
+}
