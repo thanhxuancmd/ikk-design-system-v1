@@ -37,11 +37,19 @@ import {
   CampaignCard,
   KOCCard,
   CommissionBadge,
-  LiveStatusBadge
+  LiveStatusBadge,
+  AppleTooltip,
+  ApplePopover,
+  AppleDropdown,
+  AppleCommandPalette,
+  AppleChart,
+  AppleMetricCard,
+  AppleProgressBar,
+  AppleGauge
 } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
 import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
-import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users } from 'lucide-react';
+import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command } from 'lucide-react';
 
 function AppleHIGShowcaseContent() {
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -52,7 +60,107 @@ function AppleHIGShowcaseContent() {
   const [currentPage, setCurrentPage] = useState(1);
   const [tabsActiveTab, setTabsActiveTab] = useState('home');
   const [radioValue, setRadioValue] = useState('option1');
+  const [commandOpen, setCommandOpen] = useState(false);
   const toast = useAppleToast();
+
+  // Sample commands for command palette
+  const sampleCommands = [
+    {
+      id: 'new-campaign',
+      label: 'Tạo chiến dịch mới',
+      description: 'Bắt đầu một chiến dịch marketing mới',
+      icon: <FileText className="w-4 h-4" />,
+      category: 'Chiến dịch',
+      onSelect: () => {
+        toast.success('Đang tạo chiến dịch mới...');
+        setCommandOpen(false);
+      }
+    },
+    {
+      id: 'search-koc',
+      label: 'Tìm kiếm KOC',
+      description: 'Tìm KOC phù hợp cho chiến dịch',
+      icon: <Search className="w-4 h-4" />,
+      category: 'KOC',
+      onSelect: () => {
+        toast.info('Đang tìm kiếm KOC...');
+        setCommandOpen(false);
+      }
+    },
+    {
+      id: 'view-analytics',
+      label: 'Xem báo cáo',
+      description: 'Phân tích hiệu suất chiến dịch',
+      icon: <TrendingUp className="w-4 h-4" />,
+      category: 'Báo cáo',
+      onSelect: () => {
+        toast.info('Đang mở báo cáo...');
+        setCommandOpen(false);
+      }
+    },
+    {
+      id: 'settings',
+      label: 'Cài đặt',
+      description: 'Điều chỉnh cài đặt hệ thống',
+      icon: <Settings className="w-4 h-4" />,
+      category: 'Hệ thống',
+      onSelect: () => {
+        toast.info('Đang mở cài đặt...');
+        setCommandOpen(false);
+      }
+    },
+    {
+      id: 'invite-user',
+      label: 'Mời người dùng',
+      description: 'Thêm thành viên mới vào nhóm',
+      icon: <User className="w-4 h-4" />,
+      category: 'Người dùng',
+      onSelect: () => {
+        toast.success('Đang gửi lời mời...');
+        setCommandOpen(false);
+      }
+    }
+  ];
+
+  // Sample data for Data Visualization components
+  const monthlyRevenue = [
+    { month: 'T1', revenue: 125000000 },
+    { month: 'T2', revenue: 145000000 },
+    { month: 'T3', revenue: 168000000 },
+    { month: 'T4', revenue: 152000000 },
+    { month: 'T5', revenue: 178000000 },
+    { month: 'T6', revenue: 195000000 },
+    { month: 'T7', revenue: 210000000 },
+    { month: 'T8', revenue: 198000000 },
+    { month: 'T9', revenue: 225000000 },
+    { month: 'T10', revenue: 245000000 },
+    { month: 'T11', revenue: 268000000 },
+    { month: 'T12', revenue: 290000000 }
+  ];
+
+  const kocPerformance = [
+    { tier: 'Nano', count: 1250 },
+    { tier: 'Micro', count: 850 },
+    { tier: 'Macro', count: 320 },
+    { tier: 'Celebrity', count: 45 }
+  ];
+
+  const campaignMetrics = [
+    { date: '01/10', conversion: 12.5 },
+    { date: '05/10', conversion: 15.8 },
+    { date: '10/10', conversion: 18.2 },
+    { date: '15/10', conversion: 22.6 },
+    { date: '20/10', conversion: 28.4 },
+    { date: '25/10', conversion: 31.2 },
+    { date: '30/10', conversion: 35.7 }
+  ];
+
+  const productCategories = [
+    { name: 'Thời trang', value: 35 },
+    { name: 'Làm đẹp', value: 28 },
+    { name: 'Ẩm thực', value: 22 },
+    { name: 'Công nghệ', value: 15 }
+  ];
 
   const CodeBlock = ({ code, language = 'tsx' }: { code: string; language?: string }) => (
     <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
@@ -123,7 +231,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'ikk-components', 'recipes', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'recipes', 'guides', 'examples'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -2440,6 +2548,1080 @@ function MyComponent() {
         </>
         )}
 
+        {/* Advanced Interactions Section */}
+        {activeTab === 'advanced' && (
+        <Section title="Advanced Interactions - Tương tác nâng cao">
+          <div className="space-y-8">
+            {/* AppleTooltip Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleTooltip - Gợi ý ngữ cảnh</h3>
+              <p className="text-gray-600 mb-6">
+                Hiển thị thông tin bổ sung khi di chuột qua các phần tử. Hỗ trợ 4 vị trí, độ trễ tùy chỉnh và nhiều kiểu trigger.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Tất cả vị trí (4 hướng)</h4>
+                  <div className="flex items-center justify-center gap-12 p-8 bg-gray-50 rounded-lg">
+                    <AppleTooltip content="Tooltip phía trên" side="top">
+                      <AppleButton variant="outline" size="sm" data-testid="tooltip-top">
+                        Top
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Tooltip phía dưới" side="bottom">
+                      <AppleButton variant="outline" size="sm" data-testid="tooltip-bottom">
+                        Bottom
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Tooltip bên trái" side="left">
+                      <AppleButton variant="outline" size="sm" data-testid="tooltip-left">
+                        Left
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Tooltip bên phải" side="right">
+                      <AppleButton variant="outline" size="sm" data-testid="tooltip-right">
+                        Right
+                      </AppleButton>
+                    </AppleTooltip>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Các loại trigger khác nhau</h4>
+                  <div className="flex items-center gap-6 flex-wrap p-6 bg-gray-50 rounded-lg">
+                    <AppleTooltip content="Nhấn để chỉnh sửa thông tin">
+                      <AppleButton variant="primary" size="md" data-testid="tooltip-button">
+                        <Edit className="w-4 h-4" /> Button Trigger
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Xem thêm thông tin chi tiết">
+                      <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors" data-testid="tooltip-icon">
+                        <Info className="w-5 h-5 text-gray-600" />
+                      </button>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Đây là văn bản có tooltip">
+                      <span className="text-sm font-medium text-[#ff0086] cursor-help border-b border-dashed border-[#ff0086]" data-testid="tooltip-text">
+                        Text với Tooltip
+                      </span>
+                    </AppleTooltip>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Độ trễ tùy chỉnh</h4>
+                  <div className="flex items-center gap-6 flex-wrap p-6 bg-gray-50 rounded-lg">
+                    <AppleTooltip content="Hiển thị ngay lập tức" delayDuration={0}>
+                      <AppleButton variant="secondary" size="sm" data-testid="tooltip-nodelay">
+                        Không độ trễ (0ms)
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Độ trễ mặc định" delayDuration={200}>
+                      <AppleButton variant="secondary" size="sm" data-testid="tooltip-default">
+                        Mặc định (200ms)
+                      </AppleButton>
+                    </AppleTooltip>
+                    
+                    <AppleTooltip content="Độ trễ lâu hơn" delayDuration={500}>
+                      <AppleButton variant="secondary" size="sm" data-testid="tooltip-slow">
+                        Chậm (500ms)
+                      </AppleButton>
+                    </AppleTooltip>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleTooltip } from '@/components/apple';
+import { Info } from 'lucide-react';
+
+// Tooltip cơ bản với các vị trí khác nhau
+<AppleTooltip content="Tooltip phía trên" side="top">
+  <button>Hover me</button>
+</AppleTooltip>
+
+// Với icon trigger
+<AppleTooltip content="Xem thêm thông tin">
+  <Info className="w-5 h-5" />
+</AppleTooltip>
+
+// Với độ trễ tùy chỉnh
+<AppleTooltip 
+  content="Hiển thị ngay lập tức" 
+  delayDuration={0}
+>
+  <button>No delay</button>
+</AppleTooltip>
+
+// Text với tooltip
+<AppleTooltip content="Thông tin chi tiết">
+  <span className="cursor-help">Text có tooltip</span>
+</AppleTooltip>`} />
+              </div>
+            </div>
+
+            {/* ApplePopover Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">ApplePopover - Nội dung phụ</h3>
+              <p className="text-gray-600 mb-6">
+                Hiển thị nội dung phong phú trong một hộp nổi. Hỗ trợ form, danh sách, và nội dung tùy chỉnh với nhiều vị trí và căn chỉnh.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Popover cơ bản với tiêu đề</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <ApplePopover
+                      trigger={
+                        <AppleButton variant="primary" size="md" data-testid="popover-basic">
+                          <Info className="w-4 h-4" /> Xem thông tin
+                        </AppleButton>
+                      }
+                      title="Thông tin chiến dịch"
+                    >
+                      <div className="space-y-2">
+                        <p className="text-sm text-gray-600">
+                          Chiến dịch này đang hoạt động với 24 KOCs tham gia.
+                        </p>
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="font-medium">Ngân sách:</span>
+                          <span className="text-gray-600">50,000,000đ</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="font-medium">Thời gian:</span>
+                          <span className="text-gray-600">15/01 - 30/01/2024</span>
+                        </div>
+                      </div>
+                    </ApplePopover>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Popover với form (nội dung phong phú)</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <ApplePopover
+                      trigger={
+                        <AppleButton variant="outline" size="md" data-testid="popover-form">
+                          <Edit className="w-4 h-4" /> Chỉnh sửa nhanh
+                        </AppleButton>
+                      }
+                      title="Cập nhật thông tin"
+                    >
+                      <div className="space-y-4">
+                        <AppleInput
+                          label="Tên chiến dịch"
+                          placeholder="Nhập tên chiến dịch..."
+                          data-testid="popover-input-name"
+                        />
+                        <AppleSelect
+                          label="Trạng thái"
+                          options={[
+                            { value: 'active', label: 'Đang hoạt động' },
+                            { value: 'paused', label: 'Tạm dừng' },
+                            { value: 'ended', label: 'Đã kết thúc' },
+                          ]}
+                          data-testid="popover-select-status"
+                        />
+                        <AppleButton variant="primary" size="sm" className="w-full" data-testid="popover-submit">
+                          Lưu thay đổi
+                        </AppleButton>
+                      </div>
+                    </ApplePopover>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Vị trí và căn chỉnh khác nhau</h4>
+                  <div className="flex items-center gap-4 flex-wrap p-6 bg-gray-50 rounded-lg">
+                    <ApplePopover
+                      trigger={<AppleButton variant="secondary" size="sm" data-testid="popover-bottom">Bottom</AppleButton>}
+                      side="bottom"
+                      align="center"
+                      title="Popover phía dưới"
+                    >
+                      <p className="text-sm text-gray-600">Nội dung hiển thị ở phía dưới</p>
+                    </ApplePopover>
+
+                    <ApplePopover
+                      trigger={<AppleButton variant="secondary" size="sm" data-testid="popover-top">Top</AppleButton>}
+                      side="top"
+                      align="center"
+                      title="Popover phía trên"
+                    >
+                      <p className="text-sm text-gray-600">Nội dung hiển thị ở phía trên</p>
+                    </ApplePopover>
+
+                    <ApplePopover
+                      trigger={<AppleButton variant="secondary" size="sm" data-testid="popover-left">Left</AppleButton>}
+                      side="left"
+                      align="center"
+                      title="Popover bên trái"
+                    >
+                      <p className="text-sm text-gray-600">Nội dung hiển thị ở bên trái</p>
+                    </ApplePopover>
+
+                    <ApplePopover
+                      trigger={<AppleButton variant="secondary" size="sm" data-testid="popover-right">Right</AppleButton>}
+                      side="right"
+                      align="center"
+                      title="Popover bên phải"
+                    >
+                      <p className="text-sm text-gray-600">Nội dung hiển thị ở bên phải</p>
+                    </ApplePopover>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Với và không có nút đóng</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <ApplePopover
+                      trigger={<AppleButton variant="outline" size="sm" data-testid="popover-with-close">Có nút đóng</AppleButton>}
+                      title="Với nút đóng"
+                      showCloseButton={true}
+                    >
+                      <p className="text-sm text-gray-600">Popover này có nút đóng ở góc trên</p>
+                    </ApplePopover>
+
+                    <ApplePopover
+                      trigger={<AppleButton variant="outline" size="sm" data-testid="popover-no-close">Không nút đóng</AppleButton>}
+                      title="Không nút đóng"
+                      showCloseButton={false}
+                    >
+                      <p className="text-sm text-gray-600">Popover này không có nút đóng</p>
+                    </ApplePopover>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { ApplePopover, AppleButton, AppleInput } from '@/components/apple';
+
+// Popover cơ bản
+<ApplePopover
+  trigger={
+    <AppleButton variant="primary">Xem thông tin</AppleButton>
+  }
+  title="Thông tin chiến dịch"
+>
+  <p>Nội dung của popover...</p>
+</ApplePopover>
+
+// Với form bên trong
+<ApplePopover
+  trigger={<AppleButton>Chỉnh sửa</AppleButton>}
+  title="Cập nhật thông tin"
+>
+  <div className="space-y-4">
+    <AppleInput label="Tên" placeholder="Nhập tên..." />
+    <AppleButton className="w-full">Lưu</AppleButton>
+  </div>
+</ApplePopover>
+
+// Vị trí và căn chỉnh tùy chỉnh
+<ApplePopover
+  trigger={<button>Click</button>}
+  side="right"
+  align="start"
+  showCloseButton={false}
+>
+  <p>Nội dung...</p>
+</ApplePopover>`} />
+              </div>
+            </div>
+
+            {/* AppleDropdown Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleDropdown - Menu thả xuống</h3>
+              <p className="text-gray-600 mb-6">
+                Menu thả xuống với icons, phân cách, nhãn, trạng thái disabled, mục destructive và hỗ trợ submenu lồng nhau.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Dropdown cơ bản với icons</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <AppleDropdown
+                      trigger={
+                        <AppleButton variant="primary" size="md" data-testid="dropdown-basic">
+                          Hành động <ChevronRight className="w-4 h-4 ml-1" />
+                        </AppleButton>
+                      }
+                      items={[
+                        {
+                          label: 'Chỉnh sửa',
+                          icon: <Edit className="w-4 h-4" />,
+                          onClick: () => toast.info('Đang chỉnh sửa...')
+                        },
+                        {
+                          label: 'Tải xuống',
+                          icon: <Download className="w-4 h-4" />,
+                          onClick: () => toast.success('Đang tải xuống...')
+                        },
+                        {
+                          label: 'Sao chép',
+                          icon: <Copy className="w-4 h-4" />,
+                          onClick: () => toast.success('Đã sao chép!')
+                        }
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Với dividers và labels</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <AppleDropdown
+                      trigger={
+                        <AppleButton variant="outline" size="md" data-testid="dropdown-dividers">
+                          Tùy chọn <ChevronRight className="w-4 h-4 ml-1" />
+                        </AppleButton>
+                      }
+                      items={[
+                        { type: 'label', label: 'Hành động chung' },
+                        {
+                          label: 'Xem chi tiết',
+                          icon: <Info className="w-4 h-4" />,
+                          onClick: () => toast.info('Đang mở...')
+                        },
+                        {
+                          label: 'Chỉnh sửa',
+                          icon: <Edit className="w-4 h-4" />,
+                          onClick: () => toast.info('Đang chỉnh sửa...')
+                        },
+                        { type: 'divider', label: '' },
+                        { type: 'label', label: 'Hành động khác' },
+                        {
+                          label: 'Chia sẻ',
+                          icon: <Copy className="w-4 h-4" />,
+                          onClick: () => toast.success('Đã sao chép liên kết!')
+                        }
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Mục destructive (xóa) và disabled</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <AppleDropdown
+                      trigger={
+                        <AppleButton variant="secondary" size="md" data-testid="dropdown-destructive">
+                          Quản lý <ChevronRight className="w-4 h-4 ml-1" />
+                        </AppleButton>
+                      }
+                      items={[
+                        {
+                          label: 'Chỉnh sửa',
+                          icon: <Edit className="w-4 h-4" />,
+                          onClick: () => toast.info('Đang chỉnh sửa...')
+                        },
+                        {
+                          label: 'Tải xuống',
+                          icon: <Download className="w-4 h-4" />,
+                          onClick: () => toast.success('Đang tải...')
+                        },
+                        {
+                          label: 'Chia sẻ (đã tắt)',
+                          icon: <Copy className="w-4 h-4" />,
+                          onClick: () => {},
+                          disabled: true
+                        },
+                        { type: 'divider', label: '' },
+                        {
+                          label: 'Xóa',
+                          icon: <Trash className="w-4 h-4" />,
+                          onClick: () => toast.error('Đã xóa!'),
+                          destructive: true
+                        }
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Menu lồng nhau (Nested Menu)</h4>
+                  <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-lg">
+                    <AppleDropdown
+                      trigger={
+                        <AppleButton variant="primary" size="md" data-testid="dropdown-nested">
+                          Menu với Submenu <ChevronRight className="w-4 h-4 ml-1" />
+                        </AppleButton>
+                      }
+                      items={[
+                        {
+                          label: 'Tệp',
+                          icon: <FileText className="w-4 h-4" />,
+                          items: [
+                            {
+                              label: 'Tệp mới',
+                              onClick: () => toast.success('Tạo tệp mới')
+                            },
+                            {
+                              label: 'Mở tệp',
+                              onClick: () => toast.info('Mở tệp')
+                            },
+                            { type: 'divider', label: '' },
+                            {
+                              label: 'Lưu',
+                              onClick: () => toast.success('Đã lưu')
+                            }
+                          ]
+                        },
+                        {
+                          label: 'Chỉnh sửa',
+                          icon: <Edit className="w-4 h-4" />,
+                          items: [
+                            {
+                              label: 'Hoàn tác',
+                              onClick: () => toast.info('Đã hoàn tác')
+                            },
+                            {
+                              label: 'Làm lại',
+                              onClick: () => toast.info('Đã làm lại')
+                            }
+                          ]
+                        },
+                        { type: 'divider', label: '' },
+                        {
+                          label: 'Cài đặt',
+                          icon: <Settings className="w-4 h-4" />,
+                          items: [
+                            {
+                              label: 'Tùy chọn chung',
+                              onClick: () => toast.info('Mở cài đặt chung')
+                            },
+                            {
+                              label: 'Tùy chọn nâng cao',
+                              onClick: () => toast.info('Mở cài đặt nâng cao')
+                            }
+                          ]
+                        }
+                      ]}
+                    />
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleDropdown } from '@/components/apple';
+import { Edit, Trash, Download } from 'lucide-react';
+
+// Dropdown cơ bản
+<AppleDropdown
+  trigger={<button>Hành động</button>}
+  items={[
+    {
+      label: 'Chỉnh sửa',
+      icon: <Edit className="w-4 h-4" />,
+      onClick: () => handleEdit()
+    },
+    {
+      label: 'Tải xuống',
+      icon: <Download className="w-4 h-4" />,
+      onClick: () => handleDownload()
+    }
+  ]}
+/>
+
+// Với dividers, labels và destructive items
+<AppleDropdown
+  trigger={<button>Quản lý</button>}
+  items={[
+    { type: 'label', label: 'Hành động' },
+    {
+      label: 'Chỉnh sửa',
+      icon: <Edit />,
+      onClick: handleEdit
+    },
+    { type: 'divider' },
+    {
+      label: 'Xóa',
+      icon: <Trash />,
+      onClick: handleDelete,
+      destructive: true
+    }
+  ]}
+/>
+
+// Menu lồng nhau (Nested)
+<AppleDropdown
+  trigger={<button>Menu</button>}
+  items={[
+    {
+      label: 'Tệp',
+      items: [
+        { label: 'Tạo mới', onClick: handleNew },
+        { label: 'Mở', onClick: handleOpen }
+      ]
+    },
+    {
+      label: 'Chỉnh sửa',
+      items: [
+        { label: 'Hoàn tác', onClick: handleUndo },
+        { label: 'Làm lại', onClick: handleRedo }
+      ]
+    }
+  ]}
+/>`} />
+              </div>
+            </div>
+
+            {/* AppleCommandPalette Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleCommandPalette - Bảng lệnh nhanh</h3>
+              <p className="text-gray-600 mb-6">
+                Giao diện tìm kiếm và thực thi lệnh nhanh kiểu Command+K. Hỗ trợ fuzzy search, phân loại, lịch sử và phím tắt.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Demo tương tác</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <AppleButton 
+                      variant="primary" 
+                      size="lg" 
+                      onClick={() => setCommandOpen(true)}
+                      data-testid="button-open-command"
+                    >
+                      <Command className="w-4 h-4" /> Mở Command Palette
+                    </AppleButton>
+                    
+                    <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
+                      <h5 className="text-sm font-medium mb-2">Tính năng:</h5>
+                      <ul className="text-sm text-gray-600 space-y-1">
+                        <li>✨ <strong>Fuzzy Search:</strong> Tìm kiếm thông minh, khớp chuỗi không liên tục</li>
+                        <li>⚡ <strong>Phím tắt:</strong> Cmd+K (Mac) hoặc Ctrl+K (Windows) để mở nhanh</li>
+                        <li>📁 <strong>Phân loại:</strong> Nhóm lệnh theo category</li>
+                        <li>🕐 <strong>Lịch sử:</strong> Tự động lưu các lệnh gần đây</li>
+                        <li>⌨️ <strong>Điều hướng:</strong> Dùng ↑↓ để chọn, Enter để thực thi</li>
+                      </ul>
+                    </div>
+
+                    <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <p className="text-sm text-blue-800">
+                        💡 <strong>Mẹo:</strong> Thử gõ "tao", "tim", "bao" để thấy fuzzy search hoạt động!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Lệnh mẫu với categories</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        { category: 'Chiến dịch', count: 1, icon: <FileText className="w-4 h-4" /> },
+                        { category: 'KOC', count: 1, icon: <Users className="w-4 h-4" /> },
+                        { category: 'Báo cáo', count: 1, icon: <TrendingUp className="w-4 h-4" /> },
+                        { category: 'Hệ thống', count: 1, icon: <Settings className="w-4 h-4" /> },
+                        { category: 'Người dùng', count: 1, icon: <User className="w-4 h-4" /> }
+                      ].map((cat) => (
+                        <div key={cat.category} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
+                          {cat.icon}
+                          <div>
+                            <p className="text-sm font-medium">{cat.category}</p>
+                            <p className="text-xs text-gray-500">{cat.count} lệnh</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Cách sử dụng</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg space-y-3">
+                    <div className="flex items-start gap-3">
+                      <div className="bg-[#ff0086] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                        1
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Nhấn nút hoặc phím tắt</p>
+                        <p className="text-xs text-gray-600">Mở palette bằng nút "Mở Command Palette" hoặc Cmd+K</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-[#ff0086] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                        2
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Tìm kiếm lệnh</p>
+                        <p className="text-xs text-gray-600">Gõ tên lệnh, fuzzy search sẽ tự động lọc kết quả</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <div className="bg-[#ff0086] text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                        3
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Thực thi</p>
+                        <p className="text-xs text-gray-600">Dùng ↑↓ để chọn, Enter để thực thi lệnh</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleCommandPalette } from '@/components/apple';
+import { useState } from 'react';
+
+function MyComponent() {
+  const [commandOpen, setCommandOpen] = useState(false);
+
+  const commands = [
+    {
+      id: 'new-campaign',
+      label: 'Tạo chiến dịch mới',
+      description: 'Bắt đầu một chiến dịch marketing mới',
+      icon: <FileText className="w-4 h-4" />,
+      category: 'Chiến dịch',
+      onSelect: () => {
+        handleCreateCampaign();
+        setCommandOpen(false);
+      }
+    },
+    {
+      id: 'search-koc',
+      label: 'Tìm kiếm KOC',
+      description: 'Tìm KOC phù hợp cho chiến dịch',
+      icon: <Search className="w-4 h-4" />,
+      category: 'KOC',
+      onSelect: () => {
+        handleSearchKOC();
+        setCommandOpen(false);
+      }
+    }
+  ];
+
+  return (
+    <>
+      {/* Nút mở palette */}
+      <button onClick={() => setCommandOpen(true)}>
+        Mở Command Palette
+      </button>
+
+      {/* Command Palette */}
+      <AppleCommandPalette
+        open={commandOpen}
+        onOpenChange={setCommandOpen}
+        commands={commands}
+        placeholder="Tìm kiếm lệnh..."
+        emptyText="Không tìm thấy kết quả"
+      />
+    </>
+  );
+}
+
+// Lưu ý: Component tự động lưu lịch sử vào localStorage
+// Hỗ trợ fuzzy search - khớp chuỗi không liên tục
+// Phím tắt: Cmd+K (Mac), Ctrl+K (Windows) - cần setup riêng`} />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Data Visualization Section */}
+        {activeTab === 'data-viz' && (
+        <Section title="Data Visualization - Trực quan hóa dữ liệu">
+          <div className="space-y-8">
+            {/* AppleChart Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleChart - Biểu đồ</h3>
+              <p className="text-gray-600 mb-6">
+                Biểu đồ chuyên nghiệp với nhiều kiểu hiển thị: đường, cột, vùng, và tròn. Tích hợp với dữ liệu thực từ IKK Platform.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Line Chart */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-gray-700">Line Chart - Doanh thu theo tháng</h4>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <AppleChart
+                      variant="line"
+                      data={monthlyRevenue}
+                      dataKey="revenue"
+                      categoryKey="month"
+                      height={250}
+                      showGrid={true}
+                      showTooltip={true}
+                    />
+                  </div>
+                </div>
+
+                {/* Bar Chart */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-gray-700">Bar Chart - Hiệu suất KOC theo cấp</h4>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <AppleChart
+                      variant="bar"
+                      data={kocPerformance}
+                      dataKey="count"
+                      categoryKey="tier"
+                      height={250}
+                      showGrid={true}
+                      showTooltip={true}
+                    />
+                  </div>
+                </div>
+
+                {/* Area Chart */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-gray-700">Area Chart - Tỷ lệ chuyển đổi chiến dịch</h4>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <AppleChart
+                      variant="area"
+                      data={campaignMetrics}
+                      dataKey="conversion"
+                      categoryKey="date"
+                      height={250}
+                      showGrid={true}
+                      showTooltip={true}
+                    />
+                  </div>
+                </div>
+
+                {/* Pie Chart */}
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-gray-700">Pie Chart - Phân bố danh mục sản phẩm</h4>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <AppleChart
+                      variant="pie"
+                      data={productCategories}
+                      dataKey="value"
+                      labelKey="name"
+                      height={250}
+                      showTooltip={true}
+                      showLegend={true}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Code Example</h4>
+                <CodeBlock
+                  code={`import { AppleChart } from '@/components/apple/AppleChart';
+
+// Line Chart - Doanh thu theo tháng
+<AppleChart
+  variant="line"
+  data={monthlyRevenue}
+  dataKey="revenue"
+  categoryKey="month"
+  height={250}
+  showGrid={true}
+  showTooltip={true}
+/>
+
+// Bar Chart - Hiệu suất KOC
+<AppleChart
+  variant="bar"
+  data={kocPerformance}
+  dataKey="count"
+  categoryKey="tier"
+/>
+
+// Area Chart - Tỷ lệ chuyển đổi
+<AppleChart
+  variant="area"
+  data={campaignMetrics}
+  dataKey="conversion"
+  categoryKey="date"
+/>
+
+// Pie Chart - Phân bố danh mục
+<AppleChart
+  variant="pie"
+  data={productCategories}
+  dataKey="value"
+  labelKey="name"
+  showLegend={true}
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleMetricCard Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleMetricCard - Thẻ chỉ số</h3>
+              <p className="text-gray-600 mb-6">
+                Hiển thị các chỉ số quan trọng với xu hướng tăng/giảm và định dạng tiền tệ Việt Nam.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <AppleMetricCard
+                  title="Doanh thu"
+                  value={290000000}
+                  change={12.5}
+                  trend="up"
+                  suffix="đ"
+                  variant="success"
+                  icon={<TrendingUp className="w-5 h-5" />}
+                  description="So với tháng trước"
+                />
+                <AppleMetricCard
+                  title="Người dùng"
+                  value={2465}
+                  change={-8.3}
+                  trend="down"
+                  variant="error"
+                  icon={<Users className="w-5 h-5" />}
+                  description="Người dùng hoạt động"
+                />
+                <AppleMetricCard
+                  title="Chiến dịch"
+                  value={48}
+                  trend="neutral"
+                  variant="default"
+                  icon={<FileText className="w-5 h-5" />}
+                  description="Đang chạy"
+                />
+                <AppleMetricCard
+                  title="Đơn hàng"
+                  value={1234}
+                  change={25.8}
+                  trend="up"
+                  variant="warning"
+                  icon={<ShoppingCart className="w-5 h-5" />}
+                  description="Trong tháng này"
+                />
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Code Example</h4>
+                <CodeBlock
+                  code={`import { AppleMetricCard } from '@/components/apple/AppleMetricCard';
+import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
+
+// Revenue metric with upward trend
+<AppleMetricCard
+  title="Doanh thu"
+  value={290000000}
+  change={12.5}
+  trend="up"
+  suffix="đ"
+  variant="success"
+  icon={<TrendingUp className="w-5 h-5" />}
+  description="So với tháng trước"
+/>
+
+// Users metric with downward trend
+<AppleMetricCard
+  title="Người dùng"
+  value={2465}
+  change={-8.3}
+  trend="down"
+  variant="error"
+  icon={<Users className="w-5 h-5" />}
+  description="Người dùng hoạt động"
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleProgressBar Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleProgressBar - Thanh tiến trình</h3>
+              <p className="text-gray-600 mb-6">
+                Thanh tiến trình với nhiều kích thước, màu sắc và chế độ hiển thị.
+              </p>
+
+              <div className="space-y-8">
+                {/* Sizes */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Kích thước</h4>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs text-gray-500 mb-2">Small (sm)</p>
+                      <AppleProgressBar value={75} size="sm" showLabel label="75%" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-2">Medium (md)</p>
+                      <AppleProgressBar value={60} size="md" showLabel label="60%" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-2">Large (lg)</p>
+                      <AppleProgressBar value={85} size="lg" showLabel label="85%" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Colors */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Màu sắc</h4>
+                  <div className="space-y-4">
+                    <AppleProgressBar value={65} color="primary" showLabel label="Primary - 65%" />
+                    <AppleProgressBar value={90} color="success" showLabel label="Hoàn thành - 90%" />
+                    <AppleProgressBar value={50} color="warning" showLabel label="Cảnh báo - 50%" />
+                    <AppleProgressBar value={25} color="error" showLabel label="Lỗi - 25%" />
+                  </div>
+                </div>
+
+                {/* Variants */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Chế độ</h4>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-xs text-gray-500 mb-2">Determinate - Xác định</p>
+                      <AppleProgressBar value={70} variant="determinate" showLabel label="70%" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500 mb-2">Indeterminate - Không xác định</p>
+                      <AppleProgressBar value={0} variant="indeterminate" showLabel label="Đang xử lý..." />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Campaign Progress Examples */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Ví dụ thực tế - Tiến trình chiến dịch</h4>
+                  <div className="space-y-4">
+                    <AppleProgressBar value={100} color="success" showLabel label="Chiến dịch A - Hoàn thành" />
+                    <AppleProgressBar value={75} color="primary" showLabel label="Chiến dịch B - Đang chạy (75%)" />
+                    <AppleProgressBar value={45} color="warning" showLabel label="Chiến dịch C - Cần chú ý (45%)" />
+                    <AppleProgressBar value={0} variant="indeterminate" color="primary" showLabel label="Chiến dịch D - Đang khởi động..." />
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Code Example</h4>
+                <CodeBlock
+                  code={`import { AppleProgressBar } from '@/components/apple/AppleProgressBar';
+
+// Different sizes
+<AppleProgressBar value={75} size="sm" showLabel />
+<AppleProgressBar value={60} size="md" showLabel />
+<AppleProgressBar value={85} size="lg" showLabel />
+
+// Different colors
+<AppleProgressBar value={65} color="primary" showLabel />
+<AppleProgressBar value={90} color="success" showLabel label="Hoàn thành" />
+<AppleProgressBar value={50} color="warning" showLabel label="Cảnh báo" />
+<AppleProgressBar value={25} color="error" showLabel label="Lỗi" />
+
+// Indeterminate variant
+<AppleProgressBar 
+  value={0} 
+  variant="indeterminate" 
+  showLabel 
+  label="Đang xử lý..." 
+/>`}
+                />
+              </div>
+            </div>
+
+            {/* AppleGauge Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleGauge - Đồng hồ đo</h3>
+              <p className="text-gray-600 mb-6">
+                Đồng hồ đo hiệu suất với màu sắc tự động theo ngưỡng hoặc màu tùy chỉnh.
+              </p>
+
+              <div className="space-y-8">
+                {/* Sizes */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Kích thước</h4>
+                  <div className="flex items-center gap-8 flex-wrap">
+                    <div className="text-center">
+                      <AppleGauge value={75} size="sm" label="Small" />
+                      <p className="text-xs text-gray-500 mt-2">Size: sm</p>
+                    </div>
+                    <div className="text-center">
+                      <AppleGauge value={60} size="md" label="Medium" />
+                      <p className="text-xs text-gray-500 mt-2">Size: md</p>
+                    </div>
+                    <div className="text-center">
+                      <AppleGauge value={85} size="lg" label="Large" />
+                      <p className="text-xs text-gray-500 mt-2">Size: lg</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Auto Color vs Manual Color */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Màu sắc tự động (Auto Color)</h4>
+                  <p className="text-xs text-gray-600 mb-3">Màu tự động thay đổi dựa trên giá trị: {'<'}40% đỏ, 40-70% vàng, {'>'}70% xanh</p>
+                  <div className="flex items-center gap-8 flex-wrap">
+                    <AppleGauge value={25} autoColor={true} label="Thấp" />
+                    <AppleGauge value={55} autoColor={true} label="Trung bình" />
+                    <AppleGauge value={85} autoColor={true} label="Cao" />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Màu tùy chỉnh</h4>
+                  <div className="flex items-center gap-8 flex-wrap">
+                    <AppleGauge value={75} autoColor={false} color="#ff0086" label="Primary" />
+                    <AppleGauge value={60} autoColor={false} color="#3b82f6" label="Blue" />
+                    <AppleGauge value={85} autoColor={false} color="#8b5cf6" label="Purple" />
+                  </div>
+                </div>
+
+                {/* Real Examples */}
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-4">Ví dụ thực tế - Chỉ số KPI</h4>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <div className="text-center">
+                      <AppleGauge value={92} label="Hiệu suất" />
+                      <p className="text-xs text-gray-600 mt-2">Chiến dịch A</p>
+                    </div>
+                    <div className="text-center">
+                      <AppleGauge value={68} label="Tỷ lệ chuyển đổi" />
+                      <p className="text-xs text-gray-600 mt-2">Chiến dịch B</p>
+                    </div>
+                    <div className="text-center">
+                      <AppleGauge value={45} label="Mức độ tương tác" />
+                      <p className="text-xs text-gray-600 mt-2">Chiến dịch C</p>
+                    </div>
+                    <div className="text-center">
+                      <AppleGauge value={28} label="ROI" />
+                      <p className="text-xs text-gray-600 mt-2">Chiến dịch D</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h4 className="text-sm font-medium text-gray-700 mb-3">Code Example</h4>
+                <CodeBlock
+                  code={`import { AppleGauge } from '@/components/apple/AppleGauge';
+
+// Different sizes
+<AppleGauge value={75} size="sm" label="Small" />
+<AppleGauge value={60} size="md" label="Medium" />
+<AppleGauge value={85} size="lg" label="Large" />
+
+// Auto color (changes based on value)
+<AppleGauge value={25} autoColor={true} label="Thấp" />
+<AppleGauge value={55} autoColor={true} label="Trung bình" />
+<AppleGauge value={85} autoColor={true} label="Cao" />
+
+// Manual color
+<AppleGauge 
+  value={75} 
+  autoColor={false} 
+  color="#ff0086" 
+  label="Primary" 
+/>
+
+// Real-world example
+<AppleGauge value={92} label="Hiệu suất" />`}
+                />
+              </div>
+            </div>
+          </div>
+        </Section>
+        )}
+
+        {/* Command Palette Instance */}
+        <AppleCommandPalette
+          open={commandOpen}
+          onOpenChange={setCommandOpen}
+          commands={sampleCommands}
+          placeholder="Tìm kiếm lệnh... (thử gõ 'tao', 'tim', 'bao')"
+          emptyText="Không tìm thấy kết quả"
+        />
+
         {/* IKK Domain-Specific Components Section */}
         {activeTab === 'ikk-components' && (
         <Section title="IKK Domain-Specific Components">
@@ -2728,6 +3910,843 @@ function MyComponent() {
             </div>
           </div>
         </Section>
+        )}
+
+        {/* Guides Section */}
+        {activeTab === 'guides' && (
+        <>
+        <Section title="Hướng Dẫn Migration">
+          <div className="space-y-8">
+            {/* Introduction */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Tại sao nên migrate sang Apple HIG Components?</h3>
+              <div className="space-y-3 text-gray-700">
+                <p className="flex items-start gap-2">
+                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Tính nhất quán:</strong> Tất cả components tuân theo cùng một design language, đảm bảo UI đồng nhất</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Khả năng tiếp cận:</strong> Built-in accessibility features (ARIA labels, keyboard navigation, screen reader support)</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Dễ bảo trì:</strong> Centralized updates, bug fixes áp dụng cho toàn bộ hệ thống</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <span><strong>Developer experience:</strong> Props rõ ràng, TypeScript support, documentation đầy đủ</span>
+                </p>
+              </div>
+              <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
+                <p className="text-sm text-gray-600">
+                  <strong>Hướng dẫn này bao gồm:</strong> 4 ví dụ migration chi tiết (Buttons, Forms, Navigation, Layout), 
+                  checklist đầy đủ, và best practices để đảm bảo quá trình chuyển đổi suôn sẻ.
+                </p>
+              </div>
+            </div>
+
+            {/* A. Buttons Migration */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">A. Migration Buttons</h3>
+              <ComparisonCard
+                title="Standardize Button Components"
+                before={
+                  <div className="space-y-3">
+                    <button className="bg-pink-600 text-white px-5 py-2 rounded hover:bg-pink-700">
+                      Tham gia chiến dịch
+                    </button>
+                    <button className="bg-gray-200 text-gray-800 px-3 py-1.5 rounded-md text-sm">
+                      Xem chi tiết
+                    </button>
+                    <button className="border-2 border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50">
+                      Tìm hiểu thêm
+                    </button>
+                  </div>
+                }
+                after={
+                  <div className="space-y-3">
+                    <AppleButton variant="primary" size="md" data-testid="button-migration-primary">
+                      Tham gia chiến dịch
+                    </AppleButton>
+                    <AppleButton variant="secondary" size="md" data-testid="button-migration-secondary">
+                      Xem chi tiết
+                    </AppleButton>
+                    <AppleButton variant="outline" size="md" data-testid="button-migration-outline">
+                      Tìm hiểu thêm
+                    </AppleButton>
+                  </div>
+                }
+                beforeCode={`// ❌ Inconsistent styling, manual hover states
+<button className="bg-pink-600 text-white px-5 py-2 rounded hover:bg-pink-700">
+  Tham gia chiến dịch
+</button>
+<button className="bg-gray-200 text-gray-800 px-3 py-1.5 rounded-md text-sm">
+  Xem chi tiết
+</button>
+<button className="border-2 border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50">
+  Tìm hiểu thêm
+</button>`}
+                afterCode={`// ✅ Standardized, consistent sizing & states
+import { AppleButton } from '@/components/apple';
+
+<AppleButton variant="primary" size="md">
+  Tham gia chiến dịch
+</AppleButton>
+<AppleButton variant="secondary" size="md">
+  Xem chi tiết
+</AppleButton>
+<AppleButton variant="outline" size="md">
+  Tìm hiểu thêm
+</AppleButton>`}
+              />
+              <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-900 mb-2">Lợi ích:</h4>
+                <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
+                  <li>Kích thước nhất quán (sm, md, lg) với padding chuẩn</li>
+                  <li>Hover states và focus rings tự động</li>
+                  <li>Loading state và disabled state built-in</li>
+                  <li>Accessibility: proper ARIA attributes, keyboard support</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* B. Forms Migration */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">B. Migration Form Components</h3>
+              <ComparisonCard
+                title="Standardize Form Inputs"
+                before={
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email
+                      </label>
+                      <input 
+                        type="email" 
+                        placeholder="email@example.com"
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <p className="text-red-500 text-xs mt-1">Email không hợp lệ</p>
+                    </div>
+                  </div>
+                }
+                after={
+                  <div className="space-y-4">
+                    <AppleInput
+                      label="Email"
+                      type="email"
+                      placeholder="email@example.com"
+                      leftIcon={<Mail className="w-4 h-4" />}
+                      error="Email không hợp lệ"
+                      data-testid="input-migration-email"
+                    />
+                  </div>
+                }
+                beforeCode={`// ❌ Manual label, error handling, styling
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">
+    Email
+  </label>
+  <input 
+    type="email" 
+    placeholder="email@example.com"
+    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+  <p className="text-red-500 text-xs mt-1">Email không hợp lệ</p>
+</div>`}
+                afterCode={`// ✅ Built-in label, error support, icons
+import { AppleInput } from '@/components/apple';
+import { Mail } from 'lucide-react';
+
+<AppleInput
+  label="Email"
+  type="email"
+  placeholder="email@example.com"
+  leftIcon={<Mail className="w-4 h-4" />}
+  error="Email không hợp lệ"
+/>`}
+              />
+              <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-900 mb-2">Lợi ích:</h4>
+                <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
+                  <li>Built-in accessibility: proper label association, ARIA attributes</li>
+                  <li>Consistent error handling và validation UI</li>
+                  <li>Icon support (left/right) không cần custom styling</li>
+                  <li>Disabled và loading states tự động</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* C. Navigation Migration */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">C. Migration Navigation Components</h3>
+              <ComparisonCard
+                title="Standardize Tabs Navigation"
+                before={
+                  <div>
+                    <div className="flex gap-2 border-b border-gray-200">
+                      <button className="px-4 py-2 border-b-2 border-pink-600 text-pink-600 font-medium">
+                        Tổng quan
+                      </button>
+                      <button className="px-4 py-2 text-gray-600 hover:text-gray-900">
+                        Chiến dịch
+                      </button>
+                      <button className="px-4 py-2 text-gray-600 hover:text-gray-900">
+                        Báo cáo
+                      </button>
+                    </div>
+                  </div>
+                }
+                after={
+                  <AppleTabs
+                    tabs={[
+                      { id: 'overview', label: 'Tổng quan', icon: <Home className="w-4 h-4" /> },
+                      { id: 'campaigns', label: 'Chiến dịch', icon: <FileText className="w-4 h-4" /> },
+                      { id: 'reports', label: 'Báo cáo', icon: <TrendingUp className="w-4 h-4" /> },
+                    ]}
+                    activeTab={tabsActiveTab}
+                    onChange={setTabsActiveTab}
+                    data-testid="tabs-migration-nav"
+                  />
+                }
+                beforeCode={`// ❌ Manual state, styling, no keyboard navigation
+const [activeTab, setActiveTab] = useState('overview');
+
+<div className="flex gap-2 border-b border-gray-200">
+  <button 
+    onClick={() => setActiveTab('overview')}
+    className={\`px-4 py-2 \${activeTab === 'overview' ? 'border-b-2 border-pink-600 text-pink-600' : 'text-gray-600'}\`}
+  >
+    Tổng quan
+  </button>
+  {/* More tabs... */}
+</div>`}
+                afterCode={`// ✅ Built-in state, keyboard navigation, ARIA
+import { AppleTabs } from '@/components/apple';
+
+<AppleTabs
+  tabs={[
+    { id: 'overview', label: 'Tổng quan', icon: <Home /> },
+    { id: 'campaigns', label: 'Chiến dịch', icon: <FileText /> },
+    { id: 'reports', label: 'Báo cáo', icon: <TrendingUp /> },
+  ]}
+  activeTab={activeTab}
+  onChange={setActiveTab}
+/>`}
+              />
+              <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-900 mb-2">Lợi ích:</h4>
+                <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
+                  <li>Keyboard navigation tự động (Arrow keys, Tab, Enter)</li>
+                  <li>ARIA labels và roles cho screen readers</li>
+                  <li>Icon support và badge indicators</li>
+                  <li>Responsive: scroll trên mobile, full width trên desktop</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* D. Layout Migration */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">D. Migration Layout Components</h3>
+              <ComparisonCard
+                title="Standardize Grid Layouts"
+                before={
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div className="p-4 bg-gray-100 rounded">Card 1</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 2</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 3</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 4</div>
+                  </div>
+                }
+                after={
+                  <AppleGrid cols={{ sm: 2, lg: 3, xl: 4 }} gap="md">
+                    <div className="p-4 bg-gray-100 rounded">Card 1</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 2</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 3</div>
+                    <div className="p-4 bg-gray-100 rounded">Card 4</div>
+                  </AppleGrid>
+                }
+                beforeCode={`// ❌ Repeated responsive classes everywhere
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+  <div>Card 1</div>
+  <div>Card 2</div>
+  <div>Card 3</div>
+  <div>Card 4</div>
+</div>
+
+{/* Repeated in 10+ places with different breakpoints */}`}
+                afterCode={`// ✅ Reusable, standardized breakpoints
+import { AppleGrid } from '@/components/apple';
+
+<AppleGrid cols={{ sm: 2, lg: 3, xl: 4 }} gap="md">
+  <div>Card 1</div>
+  <div>Card 2</div>
+  <div>Card 3</div>
+  <div>Card 4</div>
+</AppleGrid>`}
+              />
+              <div className="mt-4 p-4 bg-green-50 rounded-lg border border-green-200">
+                <h4 className="font-semibold text-green-900 mb-2">Lợi ích:</h4>
+                <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
+                  <li>Standardized breakpoints (xs, sm, md, lg, xl) trên toàn bộ app</li>
+                  <li>Consistent spacing với gap presets (xs, sm, md, lg, xl)</li>
+                  <li>Dễ maintain: thay đổi 1 chỗ, apply toàn bộ</li>
+                  <li>Auto-responsive: tự động điều chỉnh theo viewport</li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Migration Checklist */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Checklist Migration</h3>
+              <div className="space-y-4">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-blue-900 mb-3">Trước khi bắt đầu:</h4>
+                  <div className="space-y-2">
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-identify" />
+                      <span>✅ Xác định các components cần migrate (buttons, inputs, cards, tables)</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-review" />
+                      <span>✅ Review Apple HIG showcase để hiểu rõ components có sẵn</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-backup" />
+                      <span>✅ Tạo backup code hiện tại hoặc branch mới trên Git</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <h4 className="font-semibold text-green-900 mb-3">Trong quá trình migration:</h4>
+                  <div className="space-y-2">
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-section" />
+                      <span>✅ Replace components từng section một (không làm hết cùng lúc)</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-imports" />
+                      <span>✅ Import đúng components: <code className="bg-white px-1 rounded">import {`{ AppleButton }`} from '@/components/apple'</code></span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-props" />
+                      <span>✅ Sử dụng đúng props (variant, size, icon) theo documentation</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-testid" />
+                      <span>✅ Thêm data-testid cho tất cả interactive elements</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                  <h4 className="font-semibold text-purple-900 mb-3">Sau khi migration:</h4>
+                  <div className="space-y-2">
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-accessibility" />
+                      <span>✅ Test accessibility (keyboard navigation, Tab, Enter, ESC, screen readers)</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-tokens" />
+                      <span>✅ Update styling để sử dụng design tokens từ constants</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-cleanup" />
+                      <span>✅ Remove old CSS classes và Tailwind utility classes không dùng</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-responsive" />
+                      <span>✅ Test responsive trên mobile, tablet, desktop</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-review-final" />
+                      <span>✅ Code review và QA testing trước khi deploy</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        <Section title="Best Practices">
+          <div className="space-y-8">
+            {/* 1. Composition Patterns */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">1. Composition Patterns - Kết hợp Components</h3>
+              <p className="text-gray-600 mb-6">
+                Học cách kết hợp các Apple components đơn giản để tạo UI phức tạp, maintainable và reusable.
+              </p>
+
+              <div className="space-y-6">
+                {/* Form Composition */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">📝 Form với AppleInput + AppleSelect + AppleButton</h4>
+                  <CodeBlock code={`import { AppleInput, AppleSelect, AppleButton } from '@/components/apple';
+
+function CampaignForm() {
+  return (
+    <div className="space-y-4">
+      <AppleInput
+        label="Tên chiến dịch"
+        placeholder="Nhập tên chiến dịch"
+        required
+      />
+      
+      <AppleSelect
+        label="Loại chiến dịch"
+        options={[
+          { value: 'product', label: 'Sản phẩm' },
+          { value: 'brand', label: 'Thương hiệu' },
+          { value: 'event', label: 'Sự kiện' }
+        ]}
+        required
+      />
+      
+      <AppleInput
+        label="Ngân sách"
+        type="number"
+        placeholder="0"
+        leftIcon={<DollarSign className="w-4 h-4" />}
+      />
+      
+      <div className="flex gap-3 pt-4">
+        <AppleButton variant="outline" size="md">
+          Hủy
+        </AppleButton>
+        <AppleButton variant="primary" size="md">
+          Tạo chiến dịch
+        </AppleButton>
+      </div>
+    </div>
+  );
+}`} />
+                </div>
+
+                {/* Dashboard Composition */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">📊 Dashboard với AppleMetricCard + AppleChart</h4>
+                  <CodeBlock code={`import { AppleMetricCard, AppleChart, AppleGrid } from '@/components/apple';
+
+function Dashboard() {
+  const revenueData = [
+    { month: 'T1', value: 125000000 },
+    { month: 'T2', value: 145000000 },
+    { month: 'T3', value: 168000000 }
+  ];
+
+  return (
+    <>
+      <AppleGrid cols={{ sm: 2, lg: 4 }} gap="md">
+        <AppleMetricCard
+          title="Tổng doanh thu"
+          value="438M"
+          change={15.3}
+          changeType="increase"
+          icon={<TrendingUp />}
+        />
+        <AppleMetricCard
+          title="Chiến dịch đang chạy"
+          value="24"
+          change={-5}
+          changeType="decrease"
+        />
+        <AppleMetricCard
+          title="KOC tham gia"
+          value="1,245"
+          change={12}
+          changeType="increase"
+        />
+        <AppleMetricCard
+          title="Tỷ lệ chuyển đổi"
+          value="3.2%"
+          change={0.5}
+          changeType="increase"
+        />
+      </AppleGrid>
+
+      <div className="mt-6">
+        <AppleChart
+          data={revenueData}
+          type="line"
+          xKey="month"
+          yKey="value"
+          title="Doanh thu theo tháng"
+        />
+      </div>
+    </>
+  );
+}`} />
+                </div>
+
+                {/* Data Table Composition */}
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-3">🗂️ Data Table với AppleTable + ApplePagination + AppleDropdown</h4>
+                  <CodeBlock code={`import { AppleTable, ApplePagination, AppleDropdown } from '@/components/apple';
+
+function KOCTable() {
+  const columns = [
+    { key: 'name', label: 'KOC' },
+    { key: 'tier', label: 'Tier' },
+    { key: 'followers', label: 'Followers' },
+    { key: 'engagement', label: 'Engagement' },
+    { key: 'actions', label: 'Actions' }
+  ];
+
+  const rows = [
+    {
+      id: '1',
+      name: 'Nguyễn Văn A',
+      tier: 'Macro',
+      followers: '125K',
+      engagement: '4.5%',
+      actions: (
+        <AppleDropdown
+          items={[
+            { label: 'Xem profile', icon: <User />, onClick: () => {} },
+            { label: 'Gửi tin nhắn', icon: <Mail />, onClick: () => {} },
+            { label: 'Mời tham gia', icon: <FileText />, onClick: () => {} }
+          ]}
+        />
+      )
+    }
+  ];
+
+  return (
+    <>
+      <AppleTable columns={columns} data={rows} />
+      
+      <div className="mt-4">
+        <ApplePagination
+          currentPage={1}
+          totalPages={10}
+          onPageChange={(page) => console.log(page)}
+        />
+      </div>
+    </>
+  );
+}`} />
+                </div>
+              </div>
+            </div>
+
+            {/* 2. Accessibility Guidelines */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">2. Accessibility Guidelines - Hướng dẫn Khả năng Tiếp cận</h3>
+              <div className="space-y-4">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-blue-900 mb-3">Nguyên tắc cơ bản:</h4>
+                  <div className="space-y-2">
+                    <label className="flex items-start gap-3 text-sm text-gray-700">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-semantic" />
+                      <span>✅ <strong>Luôn sử dụng semantic components:</strong> AppleButton thay vì div với onClick</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-aria" />
+                      <span>✅ <strong>Cung cấp aria-labels:</strong> Đặc biệt cho icon-only buttons</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-tooltip" />
+                      <span>✅ <strong>Sử dụng AppleTooltip:</strong> Cho contextual help và thông tin bổ sung</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-keyboard" />
+                      <span>✅ <strong>Đảm bảo keyboard navigation:</strong> Tab, Enter, ESC, Arrow keys hoạt động</span>
+                    </label>
+                    <label className="flex items-start gap-3 text-sm text-gray-700">
+                      <input type="checkbox" className="mt-0.5" data-testid="checkbox-screen-reader" />
+                      <span>✅ <strong>Test với screen readers:</strong> NVDA, JAWS, VoiceOver</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <h4 className="font-semibold text-gray-900 mb-3">Ví dụ thực tế:</h4>
+                  <CodeBlock code={`// ❌ BAD: Không accessibility
+<div onClick={handleDelete} className="cursor-pointer">
+  <Trash className="w-4 h-4" />
+</div>
+
+// ✅ GOOD: Semantic button với aria-label
+<AppleButton
+  variant="outline"
+  size="sm"
+  onClick={handleDelete}
+  aria-label="Xóa chiến dịch"
+  data-testid="button-delete"
+>
+  <Trash className="w-4 h-4" />
+</AppleButton>
+
+// ✅ BETTER: Với tooltip cho context
+<AppleTooltip content="Xóa chiến dịch này">
+  <AppleButton
+    variant="outline"
+    size="sm"
+    onClick={handleDelete}
+    aria-label="Xóa chiến dịch"
+  >
+    <Trash className="w-4 h-4" />
+  </AppleButton>
+</AppleTooltip>`} />
+                </div>
+              </div>
+            </div>
+
+            {/* 3. Performance Tips */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">3. Performance Tips - Tối ưu Hiệu suất</h3>
+              <div className="space-y-4">
+                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <h4 className="font-semibold text-green-900 mb-3">Các kỹ thuật tối ưu:</h4>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-2">
+                        💡 Import chỉ những components cần thiết
+                      </p>
+                      <CodeBlock code={`// ✅ GOOD: Named imports
+import { AppleButton, AppleInput } from '@/components/apple';
+
+// ❌ BAD: Import all (larger bundle)
+import * as Apple from '@/components/apple';`} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-2">
+                        💡 Sử dụng AppleSkeleton cho loading states
+                      </p>
+                      <CodeBlock code={`import { AppleSkeleton } from '@/components/apple';
+
+function CampaignList() {
+  const { data, isLoading } = useQuery('/api/campaigns');
+  
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <AppleSkeleton variant="card" count={3} />
+      </div>
+    );
+  }
+  
+  return <div>{/* Render campaigns */}</div>;
+}`} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-2">
+                        💡 Lazy load charts và heavy components
+                      </p>
+                      <CodeBlock code={`import { lazy, Suspense } from 'react';
+import { AppleSkeleton } from '@/components/apple';
+
+const AppleChart = lazy(() => import('@/components/apple/AppleChart'));
+
+function Dashboard() {
+  return (
+    <Suspense fallback={<AppleSkeleton variant="chart" />}>
+      <AppleChart data={revenueData} type="line" />
+    </Suspense>
+  );
+}`} />
+                    </div>
+
+                    <div>
+                      <p className="text-sm font-medium text-gray-900 mb-2">
+                        💡 Optimize re-renders với React.memo
+                      </p>
+                      <CodeBlock code={`import { memo } from 'react';
+import { AppleCard } from '@/components/apple';
+
+const KOCCard = memo(({ koc }) => (
+  <AppleCard>
+    <h3>{koc.name}</h3>
+    <p>{koc.followers} followers</p>
+  </AppleCard>
+));
+
+// Chỉ re-render khi koc prop thay đổi`} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Common Pitfalls & Solutions */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">4. Common Pitfalls & Solutions - Lỗi Thường Gặp</h3>
+              <div className="space-y-4">
+                {/* Pitfall 1 */}
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Mixing raw Tailwind với Apple components</h4>
+                      <CodeBlock code={`// ❌ BAD
+<AppleButton className="bg-blue-500 px-10 py-5">
+  Click me
+</AppleButton>`} />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 ml-9">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng props hoặc className cho custom styles</h4>
+                      <CodeBlock code={`// ✅ GOOD: Use props
+<AppleButton variant="primary" size="lg">
+  Click me
+</AppleButton>
+
+// ✅ OK: Custom styles via className (when needed)
+<AppleButton className="shadow-2xl">
+  Click me
+</AppleButton>`} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pitfall 2 */}
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Quên data-testid attributes</h4>
+                      <CodeBlock code={`// ❌ BAD: No testid
+<AppleButton onClick={handleSubmit}>
+  Submit
+</AppleButton>`} />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 ml-9">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Luôn thêm data-testid cho interactive elements</h4>
+                      <CodeBlock code={`// ✅ GOOD
+<AppleButton 
+  onClick={handleSubmit}
+  data-testid="button-submit-campaign"
+>
+  Submit
+</AppleButton>`} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pitfall 3 */}
+                <div className="border border-gray-200 rounded-lg p-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Inconsistent spacing/colors</h4>
+                      <CodeBlock code={`// ❌ BAD: Random values
+<div className="mb-7 text-[#ff0099]">
+  <h1 className="text-2xl mb-5">Title</h1>
+</div>`} />
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 ml-9">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng design tokens từ constants</h4>
+                      <CodeBlock code={`// ✅ GOOD: Use design tokens
+import { designTokens } from '@/constants/design-tokens';
+
+<div className={designTokens.spacing.sectionSpacing}>
+  <h1 className={designTokens.typography.h1}>Title</h1>
+</div>
+
+// Or use Tailwind with semantic colors
+<div className="bg-primary-pink text-white">
+  Content
+</div>`} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Quick Reference Card */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">5. Quick Reference - Bảng Tham Khảo Nhanh</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">Component</th>
+                      <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">Khi nào sử dụng</th>
+                      <th className="border border-gray-300 px-4 py-3 text-left font-semibold text-gray-900">Ví dụ Use Case</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleTooltip</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Hiển thị thông tin ngắn khi hover</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Icon buttons, giải thích field</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">ApplePopover</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Hiển thị content phức tạp khi click</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Filters, settings panel, rich content</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleModal</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Workflow phức tạp, multi-step forms</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Tạo campaign, edit profile, uploads</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleDialog</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Confirmations, alerts quan trọng</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Delete confirmations, destructive actions</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleChart</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Data visualization đơn giản</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Revenue trends, KOC performance</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">Custom Chart</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Visualization phức tạp, custom interactions</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Advanced analytics, real-time data</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleDropdown</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Actions menu với nhiều options</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Row actions trong table, more options</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleSelect</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Chọn 1 option từ danh sách</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Forms, filters, settings</td>
+                    </tr>
+                    <tr>
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleCommandPalette</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Quick actions, navigation nhanh</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Cmd+K shortcuts, global search</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="border border-gray-300 px-4 py-3 font-mono text-sm">AppleSkeleton</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Loading states, placeholder UI</td>
+                      <td className="border border-gray-300 px-4 py-3 text-sm">Fetching data, lazy loading</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-900 mb-2">💡 Pro Tips:</h4>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• <strong>AppleTooltip:</strong> Cho thông tin bổ sung, không critical</li>
+                  <li>• <strong>ApplePopover:</strong> Cho UI tương tác (forms, filters) trong popup</li>
+                  <li>• <strong>AppleModal:</strong> Cho workflows đòi hỏi focus hoàn toàn</li>
+                  <li>• <strong>AppleDialog:</strong> Cho decisions quan trọng cần confirmation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Section>
+        </>
         )}
 
         {/* Real Examples Section */}
