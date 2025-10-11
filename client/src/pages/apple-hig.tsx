@@ -31,7 +31,13 @@ import {
   AppleToastProvider,
   PriceDisplay,
   StatsCard,
-  RankingBadge
+  RankingBadge,
+  StreamCard,
+  ProductCard,
+  CampaignCard,
+  KOCCard,
+  CommissionBadge,
+  LiveStatusBadge
 } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
 import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
@@ -117,7 +123,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'ikk-components', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'ikk-components', 'recipes', 'examples'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -534,7 +540,6 @@ function AppleHIGShowcaseContent() {
                     <AppleInput 
                       label="Small Input" 
                       placeholder="Nhập văn bản..." 
-                      size="sm"
                       data-testid="input-small"
                     />
                     <AppleInput 
@@ -545,7 +550,6 @@ function AppleHIGShowcaseContent() {
                     <AppleInput 
                       label="Large Input" 
                       placeholder="Nhập tên đầy đủ..." 
-                      size="lg"
                       data-testid="input-large"
                     />
                   </div>
@@ -1664,6 +1668,776 @@ function MyComponent() {
             </div>
           </div>
         </Section>
+        )}
+
+        {/* Recipes & Patterns Section */}
+        {activeTab === 'recipes' && (
+        <>
+        <Section title="Composition Recipes & Patterns">
+          <p className="text-gray-600 mb-8">
+            Các mẫu thiết kế thực tế kết hợp nhiều components để tạo giao diện hoàn chỉnh cho nền tảng IKK
+          </p>
+
+          <div className="space-y-12">
+            {/* Pattern 1: Stream Grid Layout */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-stream-grid">
+                1. Stream Grid Layout
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Hiển thị danh sách livestream dạng lưới với bộ lọc và tiêu đề phần. Thích hợp cho trang khám phá livestream.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-stream-grid">
+                <AppleSectionHeader 
+                  title="Livestream Đang Diễn Ra"
+                  description="Khám phá các livestream hot nhất từ KOCs"
+                  actionButtons={[
+                    { label: 'Xem tất cả', onClick: () => {}, variant: 'outline' },
+                  ]}
+                />
+                <div className="mb-4 flex gap-2 flex-wrap">
+                  <AppleButton variant="primary" size="sm">Tất cả</AppleButton>
+                  <AppleButton variant="outline" size="sm">Làm đẹp</AppleButton>
+                  <AppleButton variant="outline" size="sm">Thời trang</AppleButton>
+                  <AppleButton variant="outline" size="sm">Ẩm thực</AppleButton>
+                </div>
+                <AppleGrid cols={{ sm: 1, md: 2, lg: 3 }} gap="md">
+                  <StreamCard
+                    id="stream-1"
+                    title="Review son môi hot trend 2024 - Sale 50%"
+                    streamerName="Minh Anh Beauty"
+                    thumbnail="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400"
+                    viewerCount={12500}
+                    isLive={true}
+                    category="Làm đẹp"
+                  />
+                  <StreamCard
+                    id="stream-2"
+                    title="Haul đồ SHEIN siêu rẻ - Freeship 0đ"
+                    streamerName="Fashion Queen"
+                    thumbnail="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400"
+                    viewerCount={8300}
+                    isLive={true}
+                    category="Thời trang"
+                  />
+                  <StreamCard
+                    id="stream-3"
+                    title="Nấu ăn healthy giảm cân hiệu quả"
+                    streamerName="Chef Linh"
+                    thumbnail="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400"
+                    viewerCount={5200}
+                    isLive={true}
+                    category="Ẩm thực"
+                  />
+                  <StreamCard
+                    id="stream-4"
+                    title="Skincare routine cho da dầu mụn"
+                    streamerName="Dr. Thảo Skincare"
+                    thumbnail="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400"
+                    viewerCount={15800}
+                    isLive={true}
+                    category="Làm đẹp"
+                  />
+                  <StreamCard
+                    id="stream-5"
+                    title="Mix đồ đi làm sang chảnh chỉ 500k"
+                    streamerName="Style Maven"
+                    thumbnail="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400"
+                    viewerCount={6700}
+                    isLive={true}
+                    category="Thời trang"
+                  />
+                  <StreamCard
+                    id="stream-6"
+                    title="Làm bánh cupcake siêu dễ cho người mới"
+                    streamerName="Bánh Ngọt Homemade"
+                    thumbnail="https://images.unsplash.com/photo-1587241321921-91a834d6d191?w=400"
+                    viewerCount={3400}
+                    isLive={true}
+                    category="Ẩm thực"
+                  />
+                </AppleGrid>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>Thay đổi số cột grid với props <code className="bg-gray-200 px-1 rounded">cols</code></li>
+                  <li>Điều chỉnh gap giữa các card: <code className="bg-gray-200 px-1 rounded">gap="sm" | "md" | "lg"</code></li>
+                  <li>Thêm filter buttons để lọc theo danh mục livestream</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`<AppleSectionHeader 
+  title="Livestream Đang Diễn Ra"
+  description="Khám phá các livestream hot nhất từ KOCs"
+  actionButtons={[
+    { label: 'Xem tất cả', onClick: handleViewAll, variant: 'outline' },
+  ]}
+/>
+
+<div className="mb-4 flex gap-2 flex-wrap">
+  <AppleButton variant="primary" size="sm">Tất cả</AppleButton>
+  <AppleButton variant="outline" size="sm">Làm đẹp</AppleButton>
+  <AppleButton variant="outline" size="sm">Thời trang</AppleButton>
+</div>
+
+<AppleGrid cols={{ sm: 1, md: 2, lg: 3 }} gap="md">
+  {streams.map(stream => (
+    <StreamCard
+      key={stream.id}
+      id={stream.id}
+      title={stream.title}
+      streamerName={stream.streamerName}
+      thumbnail={stream.thumbnail}
+      viewerCount={stream.viewerCount}
+      isLive={stream.isLive}
+      category={stream.category}
+    />
+  ))}
+</AppleGrid>`}
+              />
+            </div>
+
+            {/* Pattern 2: Product Gallery */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-product-gallery">
+                2. Product Gallery
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Danh sách sản phẩm dạng lưới với sắp xếp và phân trang. Thích hợp cho trang sản phẩm affiliate.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-product-gallery">
+                <AppleSectionHeader 
+                  title="Sản Phẩm Hot Tháng Này"
+                  description="Top sản phẩm được KOCs giới thiệu nhiều nhất"
+                  actionButtons={[
+                    { label: 'Thêm sản phẩm', onClick: () => {}, variant: 'primary' },
+                  ]}
+                />
+                <div className="mb-4 flex items-center justify-between">
+                  <div className="flex gap-2">
+                    <AppleBadge variant="info" size="sm">128 sản phẩm</AppleBadge>
+                  </div>
+                  <AppleSelect 
+                    options={[
+                      { value: 'newest', label: 'Mới nhất' },
+                      { value: 'popular', label: 'Phổ biến nhất' },
+                      { value: 'price-low', label: 'Giá thấp đến cao' },
+                      { value: 'price-high', label: 'Giá cao đến thấp' },
+                    ]}
+                    value="popular"
+                    onChange={() => {}}
+                  />
+                </div>
+                <AppleGrid cols={{ sm: 1, md: 2, lg: 4 }} gap="md">
+                  <ProductCard
+                    id="product-1"
+                    name="Set son lì 12 màu Hàn Quốc"
+                    price={299000}
+                    originalPrice={450000}
+                    image="https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400"
+                    rating={4.8}
+                    soldCount={2340}
+                    badges={['Hot', 'Freeship']}
+                  />
+                  <ProductCard
+                    id="product-2"
+                    name="Áo phông form rộng unisex"
+                    price={149000}
+                    originalPrice={250000}
+                    image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400"
+                    rating={4.5}
+                    soldCount={1820}
+                    badges={['Sale']}
+                  />
+                  <ProductCard
+                    id="product-3"
+                    name="Serum vitamin C trị thâm"
+                    price={385000}
+                    originalPrice={550000}
+                    image="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400"
+                    rating={4.9}
+                    soldCount={3150}
+                    badges={['Best seller']}
+                  />
+                  <ProductCard
+                    id="product-4"
+                    name="Túi xách mini da PU cao cấp"
+                    price={225000}
+                    originalPrice={350000}
+                    image="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400"
+                    rating={4.6}
+                    soldCount={980}
+                  />
+                  <ProductCard
+                    id="product-5"
+                    name="Kem dưỡng da mặt ban đêm"
+                    price={420000}
+                    originalPrice={600000}
+                    image="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400"
+                    rating={4.7}
+                    soldCount={1560}
+                    badges={['Organic']}
+                  />
+                  <ProductCard
+                    id="product-6"
+                    name="Váy maxi hoa nhí vintage"
+                    price={285000}
+                    originalPrice={400000}
+                    image="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400"
+                    rating={4.8}
+                    soldCount={720}
+                  />
+                  <ProductCard
+                    id="product-7"
+                    name="Mặt nạ ngủ dưỡng ẩm"
+                    price={180000}
+                    originalPrice={280000}
+                    image="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400"
+                    rating={4.6}
+                    soldCount={2100}
+                    badges={['New']}
+                  />
+                  <ProductCard
+                    id="product-8"
+                    name="Giày sneaker trắng basic"
+                    price={399000}
+                    originalPrice={650000}
+                    image="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400"
+                    rating={4.9}
+                    soldCount={3890}
+                    badges={['Hot', 'Best seller']}
+                  />
+                </AppleGrid>
+                <div className="mt-6">
+                  <ApplePagination
+                    currentPage={1}
+                    totalPages={8}
+                    onPageChange={() => {}}
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>Responsive grid tự động điều chỉnh: 1 cột (mobile), 2 cột (tablet), 4 cột (desktop)</li>
+                  <li>Thêm badges để highlight sản phẩm đặc biệt (Hot, Sale, New)</li>
+                  <li>Kết hợp AppleSelect để sắp xếp và ApplePagination cho nhiều trang</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`<AppleSectionHeader 
+  title="Sản Phẩm Hot Tháng Này"
+  actionButtons={[
+    { label: 'Thêm sản phẩm', onClick: handleAdd, variant: 'primary' },
+  ]}
+/>
+
+<div className="mb-4 flex items-center justify-between">
+  <AppleBadge variant="info" size="sm">{products.length} sản phẩm</AppleBadge>
+  <AppleSelect 
+    options={sortOptions}
+    value={sortBy}
+    onChange={setSortBy}
+  />
+</div>
+
+<AppleGrid cols={{ sm: 1, md: 2, lg: 4 }} gap="md">
+  {products.map(product => (
+    <ProductCard
+      key={product.id}
+      {...product}
+    />
+  ))}
+</AppleGrid>
+
+<ApplePagination
+  currentPage={currentPage}
+  totalPages={totalPages}
+  onPageChange={handlePageChange}
+/>`}
+              />
+            </div>
+
+            {/* Pattern 3: Campaign Dashboard */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-campaign-dashboard">
+                3. Campaign Dashboard
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Bảng điều khiển chiến dịch với thống kê và danh sách. Thích hợp cho trang quản lý chiến dịch của brand.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-campaign-dashboard">
+                <AppleSectionHeader 
+                  title="Chiến Dịch Marketing"
+                  description="Quản lý và theo dõi các chiến dịch của bạn"
+                  actionButtons={[
+                    { label: 'Tạo chiến dịch mới', onClick: () => {}, variant: 'primary' },
+                  ]}
+                />
+                
+                <div className="mb-6">
+                  <AppleAlert severity="info">
+                    Bạn có 3 chiến dịch đang chờ duyệt. Vui lòng kiểm tra và phê duyệt.
+                  </AppleAlert>
+                </div>
+                
+                <AppleStack direction="vertical" spacing="lg">
+                  <AppleGrid cols={{ sm: 1, md: 3 }} gap="md">
+                    <StatsCard
+                      id="revenue"
+                      title="Doanh thu"
+                      value={125000000}
+                      change={18.5}
+                      changeType="increase"
+                      icon={<TrendingUp className="w-8 h-8" />}
+                      color={designTokens.colors.primary.DEFAULT}
+                    />
+                    <StatsCard
+                      id="campaigns"
+                      title="Chiến dịch đang chạy"
+                      value={24}
+                      change={12.5}
+                      changeType="increase"
+                      icon={<ShoppingCart className="w-8 h-8" />}
+                    />
+                    <StatsCard
+                      id="kocs-active"
+                      title="KOCs tham gia"
+                      value={156}
+                      change={5.2}
+                      changeType="increase"
+                      icon={<Users className="w-8 h-8" />}
+                    />
+                  </AppleGrid>
+                  
+                  <div>
+                    <h4 className="text-lg font-semibold mb-4">Chiến dịch mới nhất</h4>
+                    <AppleStack direction="vertical" spacing="md">
+                      <CampaignCard
+                        id="campaign-1"
+                        title="Review sản phẩm skincare mới"
+                        brandName="L'Oreal Paris"
+                        category="Beauty"
+                        type="review"
+                        reward={500000}
+                        kocNeeded={20}
+                        kocApplied={15}
+                        deadline="2025-11-15"
+                        status="recruiting"
+                      />
+                      <CampaignCard
+                        id="campaign-2"
+                        title="Check-in tại cửa hàng tại HCM"
+                        brandName="The Coffee House"
+                        category="F&B"
+                        type="checkin"
+                        reward={200000}
+                        kocNeeded={50}
+                        kocApplied={48}
+                        deadline="2025-11-10"
+                        status="in-progress"
+                      />
+                      <CampaignCard
+                        id="campaign-3"
+                        title="Seeding bài viết TikTok về thời trang"
+                        brandName="SHEIN Vietnam"
+                        category="Fashion"
+                        type="seeding"
+                        reward={800000}
+                        kocNeeded={30}
+                        kocApplied={12}
+                        deadline="2025-11-20"
+                        status="recruiting"
+                      />
+                      <CampaignCard
+                        id="campaign-4"
+                        title="Cài đặt app game mobile mới"
+                        brandName="Garena"
+                        category="Gaming"
+                        type="cpi"
+                        reward={350000}
+                        kocNeeded={100}
+                        kocApplied={78}
+                        deadline="2025-11-18"
+                        status="in-progress"
+                      />
+                      <CampaignCard
+                        id="campaign-5"
+                        title="Review ứng dụng giao đồ ăn"
+                        brandName="Grab Food"
+                        category="F&B"
+                        type="cpa"
+                        reward={600000}
+                        kocNeeded={40}
+                        kocApplied={5}
+                        deadline="2025-11-25"
+                        status="draft"
+                      />
+                    </AppleStack>
+                  </div>
+                </AppleStack>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>Sử dụng AppleStack vertical để xếp chồng các phần tử</li>
+                  <li>Hiển thị thống kê quan trọng với StatsCard ở đầu trang</li>
+                  <li>Thêm AppleAlert để thông báo quan trọng cho người dùng</li>
+                  <li>CampaignCard tự động tính progress bar dựa trên KOC đã apply</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`<AppleSectionHeader 
+  title="Chiến Dịch Marketing"
+  description="Quản lý và theo dõi các chiến dịch của bạn"
+  actionButtons={[
+    { label: 'Tạo chiến dịch mới', onClick: handleCreate, variant: 'primary' },
+  ]}
+/>
+
+<AppleAlert variant="info">
+  Bạn có {pendingCount} chiến dịch đang chờ duyệt
+</AppleAlert>
+
+<AppleStack direction="vertical" spacing="lg">
+  <AppleGrid cols={{ sm: 1, md: 3 }} gap="md">
+    <StatsCard
+      id="revenue"
+      title="Doanh thu"
+      value={totalRevenue}
+      change={revenueChange}
+      changeType="increase"
+      icon={<TrendingUp />}
+    />
+    {/* More stats */}
+  </AppleGrid>
+  
+  <AppleStack direction="vertical" spacing="md">
+    {campaigns.map(campaign => (
+      <CampaignCard key={campaign.id} {...campaign} />
+    ))}
+  </AppleStack>
+</AppleStack>`}
+              />
+            </div>
+
+            {/* Pattern 4: KOC Directory */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-koc-directory">
+                4. KOC Directory
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Danh sách KOCs với tìm kiếm và lọc theo level. Thích hợp cho trang tìm kiếm KOC của brand.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-koc-directory">
+                <AppleSectionHeader 
+                  title="Thư Viện KOCs"
+                  description="Tìm kiếm và kết nối với các KOCs phù hợp"
+                />
+                
+                <div className="mb-6 space-y-4">
+                  <AppleInput
+                    placeholder="Tìm kiếm KOC theo tên, danh mục..."
+                    leftIcon={<User className="w-4 h-4" />}
+                  />
+                  <div className="flex gap-2 flex-wrap">
+                    <span className="text-sm text-gray-600">Lọc theo level:</span>
+                    <AppleBadge variant="info" size="sm">Tất cả</AppleBadge>
+                    <AppleBadge variant="default" size="sm">Nano</AppleBadge>
+                    <AppleBadge variant="success" size="sm">Micro</AppleBadge>
+                    <AppleBadge variant="warning" size="sm">Macro</AppleBadge>
+                    <AppleBadge variant="error" size="sm">Celebrity</AppleBadge>
+                  </div>
+                </div>
+                
+                <AppleStack direction="vertical" spacing="md">
+                  <KOCCard
+                    id="koc-1"
+                    name="Nguyễn Minh Anh"
+                    level="Micro"
+                    followers={85000}
+                    rating={4.8}
+                    completedCampaigns={48}
+                    categories={['Làm đẹp', 'Skincare', 'Makeup']}
+                    isVerified={true}
+                  />
+                  <KOCCard
+                    id="koc-2"
+                    name="Trần Hương Giang"
+                    level="Macro"
+                    followers={320000}
+                    rating={4.9}
+                    completedCampaigns={156}
+                    categories={['Thời trang', 'Lifestyle', 'Du lịch']}
+                    isVerified={true}
+                  />
+                  <KOCCard
+                    id="koc-3"
+                    name="Lê Phương Linh"
+                    level="Nano"
+                    followers={12000}
+                    rating={4.5}
+                    completedCampaigns={15}
+                    categories={['Ẩm thực', 'Nấu ăn', 'Healthy']}
+                    isVerified={false}
+                  />
+                  <KOCCard
+                    id="koc-4"
+                    name="Phạm Thanh Tùng"
+                    level="Celebrity"
+                    followers={1200000}
+                    rating={4.9}
+                    completedCampaigns={285}
+                    categories={['Tech', 'Gaming', 'Review sản phẩm']}
+                    isVerified={true}
+                  />
+                  <KOCCard
+                    id="koc-5"
+                    name="Hoàng Mai Anh"
+                    level="Micro"
+                    followers={65000}
+                    rating={4.7}
+                    completedCampaigns={62}
+                    categories={['Mẹ và bé', 'Parenting', 'Đồ dùng trẻ em']}
+                    isVerified={true}
+                  />
+                </AppleStack>
+                
+                <div className="mt-6">
+                  <ApplePagination
+                    currentPage={1}
+                    totalPages={12}
+                    onPageChange={() => {}}
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>AppleStack vertical tự động tạo spacing giữa các KOCCard</li>
+                  <li>Sử dụng AppleInput với leftIcon để tạo search bar đẹp mắt</li>
+                  <li>Filter badges giúp người dùng lọc KOC theo level nhanh chóng</li>
+                  <li>KOCCard hiển thị verified badge, rating, và số lượng campaign đã hoàn thành</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`<AppleSectionHeader 
+  title="Thư Viện KOCs"
+  description="Tìm kiếm và kết nối với các KOCs phù hợp"
+/>
+
+<AppleInput
+  placeholder="Tìm kiếm KOC..."
+  leftIcon={<User />}
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+/>
+
+<div className="flex gap-2">
+  <span>Lọc theo level:</span>
+  {levels.map(level => (
+    <AppleBadge 
+      key={level} 
+      variant={selectedLevel === level ? 'info' : 'default'}
+      onClick={() => setSelectedLevel(level)}
+    >
+      {level}
+    </AppleBadge>
+  ))}
+</div>
+
+<AppleStack direction="vertical" spacing="md">
+  {filteredKOCs.map(koc => (
+    <KOCCard key={koc.id} {...koc} />
+  ))}
+</AppleStack>
+
+<ApplePagination
+  currentPage={currentPage}
+  totalPages={totalPages}
+  onPageChange={setCurrentPage}
+/>`}
+              />
+            </div>
+
+            {/* Pattern 5: E-commerce Product Page */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-product-page">
+                5. E-commerce Product Page
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Trang sản phẩm hoàn chỉnh với thông tin chi tiết, livestream và affiliate commission. Layout phức tạp kết hợp nhiều components.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-product-page">
+                <AppleGrid cols={{ sm: 1, md: 2 }} gap="lg">
+                  <div>
+                    <ProductCard
+                      id="product-detail"
+                      name="Bộ Serum Vitamin C & Retinol Đặc Trị"
+                      price={1250000}
+                      originalPrice={1850000}
+                      image="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600"
+                      rating={4.9}
+                      soldCount={5680}
+                      badges={['Best Seller', 'Authentic', 'Fast Shipping']}
+                    />
+                  </div>
+                  
+                  <AppleStack direction="vertical" spacing="lg">
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <h4 className="text-lg font-semibold mb-4">Giá & Khuyến mãi</h4>
+                      <PriceDisplay 
+                        price={1250000}
+                        originalPrice={1850000}
+                        size="lg"
+                        showDiscount={true}
+                      />
+                      <div className="mt-4 flex items-center gap-2">
+                        <CommissionBadge rate={15} />
+                        <span className="text-sm text-gray-600">Hoa hồng cho KOC</span>
+                      </div>
+                      <div className="mt-6">
+                        <AppleButton variant="primary" size="lg" className="w-full">
+                          <ShoppingCart className="w-5 h-5 mr-2" />
+                          Thêm vào giỏ hàng
+                        </AppleButton>
+                      </div>
+                    </div>
+                    
+                    <AppleGrid cols={2} gap="md">
+                      <StatsCard
+                        id="views"
+                        title="Lượt xem"
+                        value={28500}
+                        change={24}
+                        changeType="increase"
+                      />
+                      <StatsCard
+                        id="sold"
+                        title="Đã bán"
+                        value={5680}
+                        change={18}
+                        changeType="increase"
+                      />
+                    </AppleGrid>
+                  </AppleStack>
+                </AppleGrid>
+                
+                <div className="mt-8">
+                  <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <LiveStatusBadge status="live" />
+                    KOC đang review trực tiếp
+                  </h4>
+                  <AppleGrid cols={{ sm: 1, md: 2 }} gap="md">
+                    <StreamCard
+                      id="live-review"
+                      title="Review chi tiết bộ serum - Hiệu quả thật sự?"
+                      streamerName="Dr. Thảo Skincare"
+                      thumbnail="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=400"
+                      viewerCount={8500}
+                      isLive={true}
+                      category="Beauty Review"
+                      variant="compact"
+                    />
+                    <div className="bg-white p-6 rounded-lg border border-gray-200">
+                      <h5 className="font-semibold mb-3">Ưu đãi đặc biệt</h5>
+                      <AppleStack direction="vertical" spacing="sm">
+                        <div className="flex items-center gap-2">
+                          <AppleBadge variant="success" size="sm">Freeship</AppleBadge>
+                          <span className="text-sm">Đơn từ 500k</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <AppleBadge variant="warning" size="sm">Giảm 10%</AppleBadge>
+                          <span className="text-sm">Cho đơn đầu tiên</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <AppleBadge variant="info" size="sm">Combo</AppleBadge>
+                          <span className="text-sm">Mua 2 giảm 20%</span>
+                        </div>
+                      </AppleStack>
+                    </div>
+                  </AppleGrid>
+                </div>
+                
+                <div className="mt-6">
+                  <AppleAlert severity="success">
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5" />
+                      <span>Sản phẩm này đang được 156 KOCs giới thiệu. Tham gia ngay để nhận hoa hồng 15%!</span>
+                    </div>
+                  </AppleAlert>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>Layout 2 cột responsive: ProductCard bên trái, thông tin giá và actions bên phải</li>
+                  <li>CommissionBadge hiển thị tỷ lệ hoa hồng cho KOC</li>
+                  <li>Kết hợp StreamCard để hiển thị livestream đang review sản phẩm</li>
+                  <li>LiveStatusBadge tạo hiệu ứng nhấp nháy cho livestream</li>
+                  <li>AppleAlert thông báo chương trình affiliate để khuyến khích KOC tham gia</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`<AppleGrid cols={{ sm: 1, md: 2 }} gap="lg">
+  {/* Left: Product Image */}
+  <ProductCard {...productData} />
+  
+  {/* Right: Price & Actions */}
+  <AppleStack direction="vertical" spacing="lg">
+    <div className="bg-white p-6 rounded-lg">
+      <PriceDisplay 
+        price={price}
+        originalPrice={originalPrice}
+        size="lg"
+        showDiscount={true}
+      />
+      <CommissionBadge rate={15} variant="highlight" />
+      <AppleButton variant="primary" size="lg" className="w-full">
+        <ShoppingCart /> Thêm vào giỏ
+      </AppleButton>
+    </div>
+    
+    <AppleGrid cols={2} gap="md">
+      <StatsCard id="views" title="Lượt xem" value={views} />
+      <StatsCard id="sold" title="Đã bán" value={sold} />
+    </AppleGrid>
+  </AppleStack>
+</AppleGrid>
+
+{/* Live Review Section */}
+<div className="mt-8">
+  <h4 className="flex items-center gap-2">
+    <LiveStatusBadge isLive={true} />
+    KOC đang review trực tiếp
+  </h4>
+  <StreamCard {...liveStreamData} variant="compact" />
+</div>
+
+<AppleAlert variant="success">
+  Sản phẩm đang được {kocCount} KOCs giới thiệu
+</AppleAlert>`}
+              />
+            </div>
+          </div>
+        </Section>
+        </>
         )}
 
         {/* IKK Domain-Specific Components Section */}
