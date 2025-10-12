@@ -20,16 +20,18 @@ UI Effects: Modern card-based design with clean shadows and borders
 - **Responsive Design**: Mobile-first approach optimized for all device sizes.
 - **Accessibility**: ARIA compliance and keyboard navigation support.
 - **MANDATORY Design Standard**: All sections must adhere to a specific layout including `max-w-7xl mx-auto px-4 mb-12` container, a header with left-aligned title/description and right-aligned action buttons, specific typography styles, and a mandatory 2-button layout for actions (Filter and CTA). All interactive elements require `data-testid` attributes.
-- **Apple HIG Design System** (October 2025 - Priority 1 Complete): Production-ready design system at `/apple-hig` with 44 components (35 generic + 9 IKK domain-specific) following Apple Human Interface Guidelines. Features centralized design tokens (`constants/design-tokens.ts`) including colors, typography, spacing, borderRadius, shadows, transitions, breakpoints, and zIndex scales. Intentionally uses IKK's pink primary color (#ff0086) instead of Apple's standard blue for brand consistency.
+- **Apple HIG Design System** (October 2025 - Production Ready): Production-ready design system at `/apple-hig` with 50 components (41 generic + 9 IKK domain-specific) following Apple Human Interface Guidelines. Features centralized design tokens (`constants/design-tokens.ts`) including colors, typography, spacing, borderRadius, shadows, transitions, breakpoints, and zIndex scales. Intentionally uses IKK's pink primary color (#ff0086) instead of Apple's standard blue for brand consistency.
   
-  **Generic Components (35):**
+  **Latest Update**: Added 6 Priority 1 components (DatePicker, TimePicker, FileUpload, SearchBar, FilterPanel, Drawer) and 2 new composition recipes for advanced filtering and scheduling workflows.
+  
+  **Generic Components (41):**
   - **Core Components (3)**: AppleButton (3 sizes × 3 variants), AppleBadge (2 sizes × 5 variants), AppleSectionHeader
-  - **Form Components (6)**: AppleInput, AppleSelect, AppleCheckbox, AppleRadioGroup, AppleSwitch, AppleTextarea - all with full accessibility (ARIA attributes, keyboard navigation)
+  - **Form Components (9)**: AppleInput, AppleSelect, AppleCheckbox, AppleRadioGroup, AppleSwitch, AppleTextarea, **AppleDatePicker** (single/range selection, Vietnamese locale, react-day-picker), **AppleTimePicker** (24h/12h formats, Vietnamese labels, dropdown), **AppleFileUpload** (drag & drop, image preview, validation) - all with full accessibility (ARIA attributes, keyboard navigation)
   - **Navigation Components (5)**: AppleTabs, AppleBreadcrumbs, ApplePagination, AppleSidebar, AppleNav - with active state management and keyboard support
-  - **Feedback Components (6)**: AppleToast system (with useAppleToast hook & AppleToastProvider context), AppleAlert, AppleModal, AppleDialog, AppleLoading, AppleSkeleton
+  - **Feedback Components (7)**: AppleToast system (with useAppleToast hook & AppleToastProvider context), AppleAlert, AppleModal, AppleDialog, **AppleDrawer** (left/right/bottom positions, mobile-optimized, backdrop), AppleLoading, AppleSkeleton
   - **Data Display Components (4)**: AppleTable (with sorting), AppleCard (compound: Header/Body/Footer/Image), AppleAvatar, AppleList
   - **Layout Components (3)**: AppleContainer, AppleGrid, AppleStack - responsive design patterns
-  - **Advanced Interaction Components (4)**: AppleTooltip (4 positions, delay config, ARIA), ApplePopover (rich content, positioning, keyboard), AppleDropdown (nested menus, keyboard navigation, icons), AppleCommandPalette (Cmd+K, fuzzy search, recent items, Vietnamese)
+  - **Advanced Interaction Components (6)**: AppleTooltip (4 positions, delay config, ARIA), ApplePopover (rich content, positioning, keyboard), AppleDropdown (nested menus, keyboard navigation, icons), AppleCommandPalette (Cmd+K, fuzzy search, recent items, Vietnamese), **AppleSearchBar** (debounced 300ms, autocomplete, recent searches, Vietnamese), **AppleFilterPanel** (5 filter types: checkbox/radio/range/date/select, collapsible groups, Vietnamese)
   - **Data Visualization Components (4)**: AppleChart (Line/Bar/Area/Pie with Recharts, IKK theming), AppleMetricCard (KPI display, trends, Vietnamese formatting), AppleProgressBar (determinate/indeterminate, sizes, colors), AppleGauge (circular progress, color thresholds, Vietnamese units)
   
   **IKK Domain Components (9):**
@@ -39,12 +41,14 @@ UI Effects: Modern card-based design with clean shadows and borders
   - **Analytics**: StatsCard (change indicators, animated counters), RankingBadge (tier colors: Nano/Micro/Macro/Celebrity)
   - **Status Indicators**: LiveStatusBadge (pulsing animations for live status)
   
-  **Composition Patterns (5 Recipes):**
+  **Composition Patterns (7 Recipes):**
   - Stream Grid Layout: AppleGrid + StreamCards with filters
   - Product Gallery: AppleGrid + ProductCards with sorting and pagination
   - Campaign Dashboard: StatsCards + CampaignCards with alerts
   - KOC Directory: Search + KOCCards with level filters
   - E-commerce Product Page: Complex multi-component layout combining ProductCard, PriceDisplay, CommissionBadge, StatsCard, StreamCard
+  - Advanced KOC Discovery: AppleSearchBar + AppleFilterPanel + AppleDrawer (responsive mobile pattern with bottom drawer)
+  - Campaign Scheduling Form: AppleDatePicker + AppleTimePicker + Form validation (Vietnamese datetime, duration calculation)
   
   **Documentation & Guides:**
   - **Migration Guide**: Step-by-step migration from raw code to Apple components with 4 before/after examples (Buttons, Forms, Navigation, Layout), Vietnamese checklist, benefits explained

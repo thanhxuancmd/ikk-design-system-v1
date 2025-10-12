@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import { 
   AppleButton, 
   AppleBadge, 
@@ -9,6 +10,9 @@ import {
   AppleRadioGroup,
   AppleSwitch,
   AppleTextarea,
+  AppleDatePicker,
+  AppleTimePicker,
+  AppleFileUpload,
   AppleTabs,
   AppleBreadcrumbs,
   ApplePagination,
@@ -17,6 +21,7 @@ import {
   AppleAlert,
   AppleModal,
   AppleDialog,
+  AppleDrawer,
   AppleLoading,
   AppleSkeleton,
   AppleTable,
@@ -42,6 +47,8 @@ import {
   ApplePopover,
   AppleDropdown,
   AppleCommandPalette,
+  AppleSearchBar,
+  AppleFilterPanel,
   AppleChart,
   AppleMetricCard,
   AppleProgressBar,
@@ -62,6 +69,31 @@ function AppleHIGShowcaseContent() {
   const [radioValue, setRadioValue] = useState('option1');
   const [commandOpen, setCommandOpen] = useState(false);
   const toast = useAppleToast();
+
+  // State for new Priority 1 components
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [dateRange, setDateRange] = useState<DateRange>();
+  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime12h, setSelectedTime12h] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [filterValues, setFilterValues] = useState<Record<string, any>>({});
+  const [drawerOpen, setDrawerOpen] = useState({ left: false, right: false, bottom: false });
+
+  // Recipe 5 state - Advanced KOC Discovery
+  const [kocSearchQuery, setKocSearchQuery] = useState('');
+  const [kocFilters, setKocFilters] = useState<Record<string, any>>({});
+  const [kocDrawerOpen, setKocDrawerOpen] = useState(false);
+
+  // Recipe 6 state - Campaign Scheduling Form
+  const [campaignForm, setCampaignForm] = useState({
+    name: '',
+    startDate: undefined as Date | undefined,
+    startTime: '',
+    endDate: undefined as Date | undefined,
+    endTime: ''
+  });
 
   // Sample commands for command palette
   const sampleCommands = [
@@ -161,6 +193,40 @@ function AppleHIGShowcaseContent() {
     { name: 'Ẩm thực', value: 22 },
     { name: 'Công nghệ', value: 15 }
   ];
+
+  // Sample KOC data for Recipe 5
+  const sampleKOCData = [
+    { id: 'koc-1', name: 'Nguyễn Minh Anh', level: 'Micro', followers: 85000, platform: 'TikTok', categories: ['Làm đẹp', 'Skincare'] },
+    { id: 'koc-2', name: 'Trần Hương Giang', level: 'Macro', followers: 320000, platform: 'Instagram', categories: ['Thời trang', 'Lifestyle'] },
+    { id: 'koc-3', name: 'Lê Phương Linh', level: 'Nano', followers: 12000, platform: 'Facebook', categories: ['Ẩm thực', 'Nấu ăn'] },
+    { id: 'koc-4', name: 'Phạm Thanh Tùng', level: 'Celebrity', followers: 1200000, platform: 'YouTube', categories: ['Tech', 'Gaming'] },
+    { id: 'koc-5', name: 'Hoàng Mai Anh', level: 'Micro', followers: 65000, platform: 'TikTok', categories: ['Mẹ và bé', 'Parenting'] },
+    { id: 'koc-6', name: 'Đỗ Văn Bình', level: 'Nano', followers: 8500, platform: 'Instagram', categories: ['Du lịch', 'Review'] },
+    { id: 'koc-7', name: 'Vũ Thu Hà', level: 'Micro', followers: 95000, platform: 'TikTok', categories: ['Làm đẹp', 'Makeup'] },
+    { id: 'koc-8', name: 'Ngô Quang Minh', level: 'Macro', followers: 450000, platform: 'YouTube', categories: ['Thể thao', 'Fitness'] },
+  ];
+
+  // Filter KOC data based on search and filters
+  const filteredKOCs = sampleKOCData.filter(koc => {
+    const matchesSearch = !kocSearchQuery || 
+      koc.name.toLowerCase().includes(kocSearchQuery.toLowerCase()) ||
+      koc.categories.some(cat => cat.toLowerCase().includes(kocSearchQuery.toLowerCase()));
+    
+    const matchesLevel = !kocFilters.level?.length || kocFilters.level.includes(koc.level);
+    const matchesPlatform = !kocFilters.platform || kocFilters.platform === koc.platform;
+    const matchesFollowers = !kocFilters.followers || 
+      (koc.followers >= (kocFilters.followers.min || 0) && 
+       koc.followers <= (kocFilters.followers.max || Infinity));
+    
+    return matchesSearch && matchesLevel && matchesPlatform && matchesFollowers;
+  });
+
+  // KOC names for search autocomplete
+  const kocSuggestions = kocSearchQuery.trim() 
+    ? sampleKOCData
+        .filter(koc => koc.name.toLowerCase().includes(kocSearchQuery.toLowerCase()))
+        .map(koc => koc.name)
+    : [];
 
   const CodeBlock = ({ code, language = 'tsx' }: { code: string; language?: string }) => (
     <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
@@ -878,6 +944,248 @@ function AppleHIGShowcaseContent() {
                 />
               </div>
             </div>
+
+            {/* Date & Time Inputs Section */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">Date & Time Inputs</h3>
+              
+              {/* AppleDatePicker */}
+              <div className="space-y-6 mb-8">
+                <h4 className="text-lg font-semibold text-gray-800">AppleDatePicker - Chọn ngày</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <AppleDatePicker
+                      label="Chọn ngày sinh nhật"
+                      mode="single"
+                      selected={selectedDate}
+                      onSelect={(date) => setSelectedDate(date as Date)}
+                      name="birthday"
+                      data-testid="datepicker-single"
+                    />
+                    {selectedDate && (
+                      <p className="mt-2 text-sm text-gray-600" data-testid="text-selected-date">
+                        Ngày đã chọn: {selectedDate.toLocaleDateString('vi-VN')}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <AppleDatePicker
+                      label="Chọn khoảng thời gian chiến dịch"
+                      mode="range"
+                      selected={dateRange}
+                      onSelect={(range) => setDateRange(range as DateRange)}
+                      name="campaign-range"
+                      data-testid="datepicker-range"
+                    />
+                    {dateRange?.from && (
+                      <p className="mt-2 text-sm text-gray-600" data-testid="text-selected-range">
+                        {dateRange.from.toLocaleDateString('vi-VN')}
+                        {dateRange.to && ` - ${dateRange.to.toLocaleDateString('vi-VN')}`}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                  <CodeBlock
+                    code={`import { AppleDatePicker } from '@/components/apple';
+import { useState } from 'react';
+
+// Single date
+const [selectedDate, setSelectedDate] = useState<Date>();
+
+<AppleDatePicker
+  label="Chọn ngày sinh nhật"
+  mode="single"
+  selected={selectedDate}
+  onSelect={(date) => setSelectedDate(date as Date)}
+/>
+
+// Date range
+const [dateRange, setDateRange] = useState<DateRange>();
+
+<AppleDatePicker
+  label="Chọn khoảng thời gian chiến dịch"
+  mode="range"
+  selected={dateRange}
+  onSelect={(range) => setDateRange(range as DateRange)}
+/>`}
+                  />
+                </div>
+              </div>
+
+              {/* AppleTimePicker */}
+              <div className="space-y-6 mb-8">
+                <h4 className="text-lg font-semibold text-gray-800">AppleTimePicker - Chọn giờ</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <AppleTimePicker
+                      label="Chọn giờ bắt đầu"
+                      value={selectedTime}
+                      onChange={setSelectedTime}
+                      use24Hour={true}
+                      minuteStep={15}
+                      name="start-time"
+                      data-testid="timepicker-24h"
+                    />
+                    {selectedTime && (
+                      <p className="mt-2 text-sm text-gray-600" data-testid="text-selected-time">
+                        Giờ đã chọn: {selectedTime}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <AppleTimePicker
+                      label="Chọn giờ kết thúc"
+                      value={selectedTime12h}
+                      onChange={setSelectedTime12h}
+                      use24Hour={false}
+                      minuteStep={30}
+                      name="end-time"
+                      data-testid="timepicker-12h"
+                    />
+                    {selectedTime12h && (
+                      <p className="mt-2 text-sm text-gray-600" data-testid="text-selected-time-12h">
+                        Giờ đã chọn: {selectedTime12h}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                  <CodeBlock
+                    code={`import { AppleTimePicker } from '@/components/apple';
+
+// 24-hour format
+<AppleTimePicker
+  label="Chọn giờ bắt đầu"
+  value={selectedTime}
+  onChange={setSelectedTime}
+  use24Hour={true}
+  minuteStep={15}
+/>
+
+// 12-hour format
+<AppleTimePicker
+  label="Chọn giờ kết thúc"
+  value={selectedTime}
+  onChange={setSelectedTime}
+  use24Hour={false}
+  minuteStep={30}
+/>`}
+                  />
+                </div>
+              </div>
+
+              {/* AppleFileUpload */}
+              <div className="space-y-6">
+                <h4 className="text-lg font-semibold text-gray-800">AppleFileUpload - Tải tệp lên</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <AppleFileUpload
+                      label="Tải ảnh đại diện"
+                      value={uploadedFiles}
+                      onChange={setUploadedFiles}
+                      accept="image/*"
+                      maxFiles={1}
+                      maxSize={5 * 1024 * 1024}
+                      showPreview={true}
+                      name="avatar"
+                      data-testid="fileupload-single"
+                    />
+                  </div>
+
+                  <div>
+                    <AppleFileUpload
+                      label="Tải ảnh sản phẩm"
+                      value={uploadedFiles}
+                      onChange={setUploadedFiles}
+                      accept="image/*"
+                      maxFiles={5}
+                      maxSize={10 * 1024 * 1024}
+                      showPreview={true}
+                      name="product-images"
+                      helperText="Kéo thả hoặc nhấp để chọn (tối đa 5 ảnh, mỗi ảnh 10MB)"
+                      data-testid="fileupload-multiple"
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Usage Example</h4>
+                  <CodeBlock
+                    code={`import { AppleFileUpload } from '@/components/apple';
+
+// Single file upload
+<AppleFileUpload
+  label="Tải ảnh đại diện"
+  value={uploadedFiles}
+  onChange={setUploadedFiles}
+  accept="image/*"
+  maxFiles={1}
+  maxSize={5 * 1024 * 1024}
+  showPreview={true}
+/>
+
+// Multiple files with drag & drop
+<AppleFileUpload
+  label="Tải ảnh sản phẩm"
+  value={uploadedFiles}
+  onChange={setUploadedFiles}
+  accept="image/*"
+  maxFiles={5}
+  maxSize={10 * 1024 * 1024}
+  showPreview={true}
+  helperText="Kéo thả hoặc nhấp để chọn"
+/>`}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Before/After Comparison for DatePicker */}
+            <ComparisonCard
+              title="Date Input Standardization"
+              before={
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-gray-700">Chọn ngày</label>
+                  <input
+                    type="date"
+                    className="w-full border border-gray-300 rounded px-3 py-2"
+                    data-testid="input-date-before"
+                  />
+                  <p className="text-xs text-gray-500">Giao diện không nhất quán giữa các trình duyệt</p>
+                </div>
+              }
+              after={
+                <div className="space-y-3">
+                  <AppleDatePicker
+                    label="Chọn ngày"
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(date) => setSelectedDate(date as Date)}
+                    data-testid="datepicker-after"
+                  />
+                  <p className="text-xs text-gray-500">Giao diện nhất quán, hỗ trợ đầy đủ tính năng</p>
+                </div>
+              }
+              beforeCode={`// Raw HTML date input
+<input type="date" className="border rounded px-3 py-2" />`}
+              afterCode={`// AppleDatePicker
+<AppleDatePicker
+  label="Chọn ngày"
+  mode="single"
+  selected={selectedDate}
+  onSelect={setSelectedDate}
+/>`}
+            />
           </div>
         </Section>
         )}
@@ -2543,6 +2851,532 @@ function MyComponent() {
 </AppleAlert>`}
               />
             </div>
+
+            {/* Pattern 6: Advanced KOC Discovery */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-koc-discovery">
+                6. Advanced KOC Discovery - Search, Filter & Mobile Drawer
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Hệ thống tìm kiếm và lọc KOC nâng cao với SearchBar, FilterPanel, và Drawer responsive cho mobile. Pattern này kết hợp 3 components mới để tạo trải nghiệm tìm kiếm mạnh mẽ.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-koc-discovery">
+                <AppleSectionHeader 
+                  title="Tìm Kiếm KOC Nâng Cao"
+                  description="Khám phá và lọc KOC phù hợp cho chiến dịch của bạn"
+                />
+                
+                {/* Search Bar */}
+                <div className="mb-6">
+                  <AppleSearchBar
+                    value={kocSearchQuery}
+                    onChange={setKocSearchQuery}
+                    onSearch={(query) => console.log('Search:', query)}
+                    suggestions={kocSuggestions}
+                    placeholder="Tìm kiếm KOC theo tên, danh mục..."
+                    showRecent={false}
+                    data-testid="searchbar-koc-discovery"
+                  />
+                </div>
+
+                {/* Mobile: Filter Button + Drawer */}
+                <div className="md:hidden mb-6">
+                  <AppleButton 
+                    variant="outline" 
+                    onClick={() => setKocDrawerOpen(true)}
+                    className="w-full"
+                    data-testid="button-open-filter-drawer"
+                  >
+                    <Search className="w-4 h-4 mr-2" />
+                    Bộ lọc ({Object.keys(kocFilters).filter(k => kocFilters[k]?.length || kocFilters[k]).length})
+                  </AppleButton>
+                  
+                  <AppleDrawer
+                    open={kocDrawerOpen}
+                    onOpenChange={setKocDrawerOpen}
+                    position="bottom"
+                    title="Bộ lọc KOC"
+                    description="Tùy chỉnh tiêu chí tìm kiếm"
+                  >
+                    <AppleFilterPanel
+                      filters={[
+                        {
+                          id: 'level',
+                          label: 'Cấp độ',
+                          type: 'checkbox',
+                          options: [
+                            { label: 'Nano', value: 'Nano' },
+                            { label: 'Micro', value: 'Micro' },
+                            { label: 'Macro', value: 'Macro' },
+                            { label: 'Celebrity', value: 'Celebrity' },
+                          ],
+                          defaultOpen: true,
+                        },
+                        {
+                          id: 'followers',
+                          label: 'Followers',
+                          type: 'range',
+                          min: 1000,
+                          max: 1000000,
+                          step: 1000,
+                          defaultOpen: true,
+                        },
+                        {
+                          id: 'platform',
+                          label: 'Nền tảng',
+                          type: 'select',
+                          options: [
+                            { label: 'TikTok', value: 'TikTok' },
+                            { label: 'Instagram', value: 'Instagram' },
+                            { label: 'Facebook', value: 'Facebook' },
+                            { label: 'YouTube', value: 'YouTube' },
+                          ],
+                          defaultOpen: true,
+                        },
+                      ]}
+                      values={kocFilters}
+                      onChange={setKocFilters}
+                      onApply={() => {
+                        setKocDrawerOpen(false);
+                        toast.success('Đã áp dụng bộ lọc');
+                      }}
+                      onReset={() => {
+                        setKocFilters({});
+                        toast.info('Đã xóa bộ lọc');
+                      }}
+                    />
+                  </AppleDrawer>
+                </div>
+
+                {/* Desktop & Mobile: Content Grid */}
+                <AppleGrid cols={{ sm: 1, md: 12 }} gap="md">
+                  {/* Desktop: Filter Panel (Sidebar) */}
+                  <div className="hidden md:block md:col-span-3">
+                    <div className="sticky top-4">
+                      <AppleFilterPanel
+                        filters={[
+                          {
+                            id: 'level',
+                            label: 'Cấp độ',
+                            type: 'checkbox',
+                            options: [
+                              { label: 'Nano', value: 'Nano' },
+                              { label: 'Micro', value: 'Micro' },
+                              { label: 'Macro', value: 'Macro' },
+                              { label: 'Celebrity', value: 'Celebrity' },
+                            ],
+                            defaultOpen: true,
+                          },
+                          {
+                            id: 'followers',
+                            label: 'Followers',
+                            type: 'range',
+                            min: 1000,
+                            max: 1000000,
+                            step: 1000,
+                            defaultOpen: true,
+                          },
+                          {
+                            id: 'platform',
+                            label: 'Nền tảng',
+                            type: 'select',
+                            options: [
+                              { label: 'TikTok', value: 'TikTok' },
+                              { label: 'Instagram', value: 'Instagram' },
+                              { label: 'Facebook', value: 'Facebook' },
+                              { label: 'YouTube', value: 'YouTube' },
+                            ],
+                            defaultOpen: true,
+                          },
+                        ]}
+                        values={kocFilters}
+                        onChange={setKocFilters}
+                        onApply={() => toast.success('Đã áp dụng bộ lọc')}
+                        onReset={() => {
+                          setKocFilters({});
+                          toast.info('Đã xóa bộ lọc');
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* KOC Results Grid */}
+                  <div className="md:col-span-9">
+                    <div className="mb-4">
+                      <p className="text-sm text-gray-600" data-testid="text-koc-count">
+                        Tìm thấy {filteredKOCs.length} KOC
+                      </p>
+                    </div>
+                    
+                    {filteredKOCs.length > 0 ? (
+                      <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
+                        {filteredKOCs.map((koc) => (
+                          <KOCCard
+                            key={koc.id}
+                            id={koc.id}
+                            name={koc.name}
+                            level={koc.level as any}
+                            followers={koc.followers}
+                            rating={4.5 + Math.random() * 0.4}
+                            completedCampaigns={Math.floor(Math.random() * 100) + 10}
+                            categories={koc.categories}
+                            isVerified={koc.followers > 50000}
+                          />
+                        ))}
+                      </AppleGrid>
+                    ) : (
+                      <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+                        <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                        <p className="text-gray-600">Không tìm thấy KOC phù hợp</p>
+                        <AppleButton 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => {
+                            setKocSearchQuery('');
+                            setKocFilters({});
+                          }}
+                          className="mt-4"
+                        >
+                          Xóa bộ lọc
+                        </AppleButton>
+                      </div>
+                    )}
+                  </div>
+                </AppleGrid>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li><strong>Desktop:</strong> AppleFilterPanel hiển thị dạng sidebar bên trái (col-span-3)</li>
+                  <li><strong>Mobile:</strong> Filter button mở AppleDrawer từ dưới lên chứa FilterPanel</li>
+                  <li>AppleSearchBar với autocomplete suggestions từ tên KOC</li>
+                  <li>Responsive grid: 1 cột mobile, 2 cột desktop cho KOCCard</li>
+                  <li>Real-time filtering kết hợp search query và filter values</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`// Desktop: SearchBar + FilterPanel (side-by-side)
+<AppleSearchBar
+  value={searchQuery}
+  onChange={setSearchQuery}
+  onSearch={handleSearch}
+  suggestions={kocSuggestions}
+  placeholder="Tìm kiếm KOC..."
+/>
+
+{/* Mobile: Filter Button + Drawer */}
+<div className="md:hidden">
+  <AppleButton onClick={() => setDrawerOpen(true)}>
+    Bộ lọc
+  </AppleButton>
+  
+  <AppleDrawer
+    open={drawerOpen}
+    onOpenChange={setDrawerOpen}
+    position="bottom"
+    title="Bộ lọc KOC"
+  >
+    <AppleFilterPanel
+      filters={filterConfig}
+      values={filters}
+      onChange={setFilters}
+    />
+  </AppleDrawer>
+</div>
+
+{/* Desktop & Mobile Grid */}
+<AppleGrid cols={{ sm: 1, md: 12 }} gap="md">
+  {/* Desktop Sidebar */}
+  <div className="hidden md:block md:col-span-3">
+    <AppleFilterPanel
+      filters={filterConfig}
+      values={filters}
+      onChange={setFilters}
+    />
+  </div>
+  
+  {/* Results */}
+  <div className="md:col-span-9">
+    <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
+      {filteredKOCs.map(koc => (
+        <KOCCard key={koc.id} {...koc} />
+      ))}
+    </AppleGrid>
+  </div>
+</AppleGrid>`}
+              />
+            </div>
+
+            {/* Pattern 7: Campaign Scheduling Form */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-campaign-scheduling">
+                7. Campaign Scheduling Form - Date & Time Pickers
+              </h3>
+              <p className="text-gray-600 mb-6">
+                Form lên lịch chiến dịch sử dụng AppleDatePicker và AppleTimePicker để chọn thời gian bắt đầu và kết thúc chính xác. Kết hợp validation và hiển thị preview.
+              </p>
+              
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-campaign-scheduling">
+                <AppleSectionHeader 
+                  title="Lên Lịch Chiến Dịch"
+                  description="Tạo lịch trình chi tiết cho chiến dịch marketing"
+                />
+                
+                <AppleGrid cols={{ sm: 1, md: 2 }} gap="lg">
+                  {/* Form Section */}
+                  <div className="space-y-6">
+                    <AppleInput
+                      label="Tên chiến dịch"
+                      placeholder="VD: Black Friday Sale 2024"
+                      value={campaignForm.name}
+                      onChange={(e) => setCampaignForm({ ...campaignForm, name: e.target.value })}
+                      data-testid="input-campaign-name"
+                    />
+
+                    <AppleDatePicker
+                      label="Ngày bắt đầu"
+                      mode="single"
+                      selected={campaignForm.startDate}
+                      onSelect={(date) => setCampaignForm({ ...campaignForm, startDate: date as Date })}
+                      name="start-date"
+                    />
+
+                    <AppleTimePicker
+                      label="Giờ bắt đầu"
+                      value={campaignForm.startTime}
+                      onChange={(time) => setCampaignForm({ ...campaignForm, startTime: time })}
+                      use24Hour={true}
+                      name="start-time"
+                    />
+
+                    <AppleDatePicker
+                      label="Ngày kết thúc"
+                      mode="single"
+                      selected={campaignForm.endDate}
+                      onSelect={(date) => setCampaignForm({ ...campaignForm, endDate: date as Date })}
+                      minDate={campaignForm.startDate}
+                      name="end-date"
+                    />
+
+                    <AppleTimePicker
+                      label="Giờ kết thúc"
+                      value={campaignForm.endTime}
+                      onChange={(time) => setCampaignForm({ ...campaignForm, endTime: time })}
+                      use24Hour={true}
+                      name="end-time"
+                    />
+
+                    <AppleButton 
+                      variant="primary" 
+                      className="w-full"
+                      onClick={() => {
+                        if (!campaignForm.name) {
+                          toast.error('Vui lòng nhập tên chiến dịch');
+                          return;
+                        }
+                        if (!campaignForm.startDate || !campaignForm.startTime) {
+                          toast.error('Vui lòng chọn thời gian bắt đầu');
+                          return;
+                        }
+                        if (!campaignForm.endDate || !campaignForm.endTime) {
+                          toast.error('Vui lòng chọn thời gian kết thúc');
+                          return;
+                        }
+                        
+                        const startDateTime = new Date(campaignForm.startDate);
+                        const [startHour, startMin] = campaignForm.startTime.split(':');
+                        startDateTime.setHours(parseInt(startHour), parseInt(startMin));
+                        
+                        const endDateTime = new Date(campaignForm.endDate);
+                        const [endHour, endMin] = campaignForm.endTime.split(':');
+                        endDateTime.setHours(parseInt(endHour), parseInt(endMin));
+                        
+                        if (endDateTime <= startDateTime) {
+                          toast.error('Thời gian kết thúc phải sau thời gian bắt đầu');
+                          return;
+                        }
+                        
+                        toast.success('Đã tạo lịch chiến dịch thành công!');
+                      }}
+                      data-testid="button-submit-campaign"
+                    >
+                      Tạo chiến dịch
+                    </AppleButton>
+                  </div>
+
+                  {/* Preview Section */}
+                  <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h4 className="text-lg font-semibold mb-4">Xem trước</h4>
+                    
+                    {campaignForm.name && (
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-600 mb-1">Tên chiến dịch</p>
+                        <p className="font-medium" data-testid="text-preview-name">{campaignForm.name}</p>
+                      </div>
+                    )}
+
+                    {campaignForm.startDate && campaignForm.startTime && (
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-600 mb-1">Thời gian bắt đầu</p>
+                        <p className="font-medium" data-testid="text-preview-start">
+                          {new Date(campaignForm.startDate).toLocaleDateString('vi-VN', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })} lúc {campaignForm.startTime}
+                        </p>
+                      </div>
+                    )}
+
+                    {campaignForm.endDate && campaignForm.endTime && (
+                      <div className="mb-4">
+                        <p className="text-sm text-gray-600 mb-1">Thời gian kết thúc</p>
+                        <p className="font-medium" data-testid="text-preview-end">
+                          {new Date(campaignForm.endDate).toLocaleDateString('vi-VN', { 
+                            weekday: 'long', 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })} lúc {campaignForm.endTime}
+                        </p>
+                      </div>
+                    )}
+
+                    {campaignForm.startDate && campaignForm.startTime && campaignForm.endDate && campaignForm.endTime && (() => {
+                      const startDateTime = new Date(campaignForm.startDate);
+                      const [startHour, startMin] = campaignForm.startTime.split(':');
+                      startDateTime.setHours(parseInt(startHour), parseInt(startMin));
+                      
+                      const endDateTime = new Date(campaignForm.endDate);
+                      const [endHour, endMin] = campaignForm.endTime.split(':');
+                      endDateTime.setHours(parseInt(endHour), parseInt(endMin));
+                      
+                      const durationMs = endDateTime.getTime() - startDateTime.getTime();
+                      const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
+                      const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                      const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
+                      
+                      const isValid = endDateTime > startDateTime;
+                      
+                      return (
+                        <div className={`p-4 rounded-lg ${isValid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                          <p className="text-sm font-medium mb-2">Thời lượng chiến dịch</p>
+                          {isValid ? (
+                            <p className="text-lg font-semibold text-green-700" data-testid="text-preview-duration">
+                              {days > 0 && `${days} ngày `}
+                              {hours > 0 && `${hours} giờ `}
+                              {minutes > 0 && `${minutes} phút`}
+                            </p>
+                          ) : (
+                            <p className="text-sm text-red-600">
+                              ⚠️ Thời gian kết thúc phải sau thời gian bắt đầu
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })()}
+
+                    {(!campaignForm.startDate || !campaignForm.endDate) && (
+                      <div className="text-center py-8 text-gray-400">
+                        <FileText className="w-12 h-12 mx-auto mb-2" />
+                        <p className="text-sm">Nhập thông tin để xem trước</p>
+                      </div>
+                    )}
+                  </div>
+                </AppleGrid>
+              </div>
+              
+              <div className="mb-4">
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
+                  <li>AppleDatePicker với mode="single" cho việc chọn ngày đơn lẻ</li>
+                  <li>AppleTimePicker hỗ trợ format 24h và 12h (AM/PM)</li>
+                  <li>Validation: minDate cho endDate để đảm bảo end sau start</li>
+                  <li>Preview card hiển thị thời gian format tiếng Việt (toLocaleDateString)</li>
+                  <li>Tính toán duration: chuyển đổi Date + Time thành timestamp để so sánh</li>
+                  <li>Visual feedback: màu xanh (valid) hoặc đỏ (invalid) cho duration</li>
+                </ul>
+              </div>
+              
+              <CodeBlock
+                code={`// Complete form with date/time pickers
+const [form, setForm] = useState({
+  name: '',
+  startDate: undefined,
+  startTime: '',
+  endDate: undefined,
+  endTime: ''
+});
+
+// Form fields
+<AppleInput
+  label="Tên chiến dịch"
+  value={form.name}
+  onChange={(e) => setForm({ ...form, name: e.target.value })}
+/>
+
+<AppleDatePicker
+  label="Ngày bắt đầu"
+  mode="single"
+  selected={form.startDate}
+  onSelect={(date) => setForm({ ...form, startDate: date })}
+/>
+
+<AppleTimePicker
+  label="Giờ bắt đầu"
+  value={form.startTime}
+  onChange={(time) => setForm({ ...form, startTime: time })}
+  use24Hour={true}
+/>
+
+<AppleDatePicker
+  label="Ngày kết thúc"
+  mode="single"
+  selected={form.endDate}
+  onSelect={(date) => setForm({ ...form, endDate: date })}
+  minDate={form.startDate} // Validation
+/>
+
+<AppleTimePicker
+  label="Giờ kết thúc"
+  value={form.endTime}
+  onChange={(time) => setForm({ ...form, endTime: time })}
+  use24Hour={true}
+/>
+
+// Validation logic
+const handleSubmit = () => {
+  const startDateTime = new Date(form.startDate);
+  const [startH, startM] = form.startTime.split(':');
+  startDateTime.setHours(parseInt(startH), parseInt(startM));
+  
+  const endDateTime = new Date(form.endDate);
+  const [endH, endM] = form.endTime.split(':');
+  endDateTime.setHours(parseInt(endH), parseInt(endM));
+  
+  if (endDateTime <= startDateTime) {
+    toast.error('Thời gian kết thúc phải sau thời gian bắt đầu');
+    return;
+  }
+  
+  // Submit form
+};
+
+// Preview display (Vietnamese format)
+<p>
+  {new Date(form.startDate).toLocaleDateString('vi-VN', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })} lúc {form.startTime}
+</p>`}
+              />
+            </div>
           </div>
         </Section>
         </>
@@ -3215,6 +4049,518 @@ function MyComponent() {
 // Phím tắt: Cmd+K (Mac), Ctrl+K (Windows) - cần setup riêng`} />
               </div>
             </div>
+
+            {/* AppleSearchBar Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleSearchBar - Tìm kiếm với gợi ý</h3>
+              <p className="text-gray-600 mb-6">
+                Thanh tìm kiếm với tính năng autocomplete, lịch sử tìm kiếm, debounce và trạng thái loading.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Tìm kiếm cơ bản</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <AppleSearchBar
+                      value={searchValue}
+                      onChange={setSearchValue}
+                      onSearch={(query) => {
+                        console.log('Searching for:', query);
+                        toast.info(`Đang tìm kiếm: ${query}`);
+                      }}
+                      placeholder="Tìm kiếm KOC..."
+                      data-testid="searchbar-basic"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Với autocomplete suggestions</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <AppleSearchBar
+                      value={searchValue}
+                      onChange={setSearchValue}
+                      onSearch={(query) => {
+                        console.log('Searching for:', query);
+                      }}
+                      suggestions={[
+                        'Nguyễn Văn An - @vanan_koc',
+                        'Trần Thị Bình - @binhtt_beauty',
+                        'Lê Hoàng Cường - @cuonglh_tech',
+                        'Phạm Minh Đức - @ducpm_fashion',
+                        'Hoàng Thị Em - @emht_food'
+                      ].filter(name => name.toLowerCase().includes(searchValue.toLowerCase()))}
+                      placeholder="Tìm kiếm KOC với gợi ý..."
+                      onSelectSuggestion={(suggestion) => {
+                        toast.success(`Đã chọn: ${suggestion}`);
+                      }}
+                      data-testid="searchbar-autocomplete"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Với lịch sử tìm kiếm gần đây</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <AppleSearchBar
+                      value={searchValue}
+                      onChange={setSearchValue}
+                      onSearch={(query) => {
+                        console.log('Searching for:', query);
+                      }}
+                      showRecent={true}
+                      recentSearches={[
+                        'KOC thời trang',
+                        'Influencer làm đẹp',
+                        'Review công nghệ',
+                        'Food blogger Hà Nội'
+                      ]}
+                      placeholder="Tìm kiếm với lịch sử..."
+                      onSelectSuggestion={(suggestion) => {
+                        toast.info(`Chọn từ lịch sử: ${suggestion}`);
+                      }}
+                      data-testid="searchbar-recent"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Với trạng thái loading</h4>
+                  <div className="p-6 bg-gray-50 rounded-lg">
+                    <AppleSearchBar
+                      value={searchValue}
+                      onChange={(value) => {
+                        setSearchValue(value);
+                        if (value) {
+                          setSearchLoading(true);
+                          setTimeout(() => setSearchLoading(false), 1000);
+                        }
+                      }}
+                      onSearch={(query) => {
+                        console.log('Searching for:', query);
+                      }}
+                      loading={searchLoading}
+                      placeholder="Nhập để thấy loading..."
+                      data-testid="searchbar-loading"
+                    />
+                    <p className="mt-3 text-sm text-gray-600">
+                      💡 <strong>Debounce:</strong> Tìm kiếm được debounce 300ms để tránh gọi API quá nhiều
+                    </p>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleSearchBar } from '@/components/apple';
+
+// Tìm kiếm cơ bản
+<AppleSearchBar
+  value={searchValue}
+  onChange={setSearchValue}
+  onSearch={(query) => console.log('Searching:', query)}
+  placeholder="Tìm kiếm KOC..."
+/>
+
+// Với autocomplete
+<AppleSearchBar
+  value={searchValue}
+  onChange={setSearchValue}
+  onSearch={handleSearch}
+  suggestions={filteredSuggestions}
+  onSelectSuggestion={(item) => console.log('Selected:', item)}
+/>
+
+// Với lịch sử và loading
+<AppleSearchBar
+  value={searchValue}
+  onChange={setSearchValue}
+  onSearch={handleSearch}
+  showRecent={true}
+  recentSearches={recentItems}
+  loading={isSearching}
+/>`} />
+              </div>
+            </div>
+
+            {/* AppleFilterPanel Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleFilterPanel - Bộ lọc nâng cao</h3>
+              <p className="text-gray-600 mb-6">
+                Bộ lọc đa năng hỗ trợ 5 loại filter: checkbox, radio, range, date, và select. Hiển thị giá trị real-time.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Bộ lọc toàn diện với tất cả loại filter</h4>
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="lg:col-span-2 p-6 bg-gray-50 rounded-lg">
+                      <AppleFilterPanel
+                        filters={[
+                          {
+                            id: 'status',
+                            label: 'Trạng thái KOC',
+                            type: 'checkbox',
+                            options: [
+                              { label: 'Hoạt động', value: 'active' },
+                              { label: 'Tạm dừng', value: 'paused' },
+                              { label: 'Chờ duyệt', value: 'pending' }
+                            ],
+                            defaultOpen: true
+                          },
+                          {
+                            id: 'tier',
+                            label: 'Cấp độ',
+                            type: 'radio',
+                            options: [
+                              { label: 'Nano (1K-10K)', value: 'nano' },
+                              { label: 'Micro (10K-100K)', value: 'micro' },
+                              { label: 'Macro (100K-1M)', value: 'macro' },
+                              { label: 'Celebrity (>1M)', value: 'celebrity' }
+                            ],
+                            defaultOpen: true
+                          },
+                          {
+                            id: 'commission',
+                            label: 'Hoa hồng (%)',
+                            type: 'range',
+                            min: 0,
+                            max: 50,
+                            step: 5,
+                            defaultOpen: true
+                          },
+                          {
+                            id: 'joinDate',
+                            label: 'Thời gian tham gia',
+                            type: 'date',
+                            dateMode: 'range',
+                            defaultOpen: true
+                          },
+                          {
+                            id: 'platform',
+                            label: 'Nền tảng',
+                            type: 'select',
+                            options: [
+                              { label: 'TikTok', value: 'tiktok' },
+                              { label: 'Instagram', value: 'instagram' },
+                              { label: 'Facebook', value: 'facebook' },
+                              { label: 'YouTube', value: 'youtube' }
+                            ],
+                            defaultOpen: true
+                          }
+                        ]}
+                        values={filterValues}
+                        onChange={setFilterValues}
+                        onApply={() => {
+                          toast.success('Đã áp dụng bộ lọc!');
+                          console.log('Applied filters:', filterValues);
+                        }}
+                        onReset={() => {
+                          setFilterValues({});
+                          toast.info('Đã xóa bộ lọc');
+                        }}
+                        showActions={true}
+                        collapsible={true}
+                      />
+                    </div>
+
+                    <div className="p-6 bg-gray-50 rounded-lg">
+                      <h5 className="text-sm font-semibold text-gray-700 mb-3">Giá trị filter (Real-time)</h5>
+                      <pre className="text-xs bg-white p-4 rounded border border-gray-200 overflow-auto max-h-96">
+                        {JSON.stringify(filterValues, null, 2)}
+                      </pre>
+                      <div className="mt-4 space-y-2">
+                        <AppleButton
+                          variant="primary"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => {
+                            toast.success('Đã áp dụng bộ lọc!');
+                          }}
+                          data-testid="button-apply-filter"
+                        >
+                          Áp dụng
+                        </AppleButton>
+                        <AppleButton
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          onClick={() => setFilterValues({})}
+                          data-testid="button-reset-filter"
+                        >
+                          Xóa bộ lọc
+                        </AppleButton>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleFilterPanel } from '@/components/apple';
+
+<AppleFilterPanel
+  filters={[
+    {
+      id: 'status',
+      label: 'Trạng thái KOC',
+      type: 'checkbox',
+      options: [
+        { label: 'Hoạt động', value: 'active' },
+        { label: 'Tạm dừng', value: 'paused' }
+      ]
+    },
+    {
+      id: 'tier',
+      label: 'Cấp độ',
+      type: 'radio',
+      options: [
+        { label: 'Nano', value: 'nano' },
+        { label: 'Micro', value: 'micro' }
+      ]
+    },
+    {
+      id: 'commission',
+      label: 'Hoa hồng (%)',
+      type: 'range',
+      min: 0,
+      max: 50,
+      step: 5
+    },
+    {
+      id: 'joinDate',
+      label: 'Thời gian tham gia',
+      type: 'date',
+      dateMode: 'range'
+    },
+    {
+      id: 'platform',
+      label: 'Nền tảng',
+      type: 'select',
+      options: [
+        { label: 'TikTok', value: 'tiktok' },
+        { label: 'Instagram', value: 'instagram' }
+      ]
+    }
+  ]}
+  values={filterValues}
+  onChange={setFilterValues}
+  onApply={handleApply}
+  onReset={handleReset}
+  showActions={true}
+/>`} />
+              </div>
+            </div>
+
+            {/* AppleDrawer Component */}
+            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+              <h3 className="text-xl font-semibold mb-6">AppleDrawer - Ngăn kéo trượt</h3>
+              <p className="text-gray-600 mb-6">
+                Drawer có thể mở từ trái, phải hoặc dưới. Hỗ trợ đóng bằng Esc và click backdrop.
+              </p>
+
+              <div className="space-y-6">
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Ba vị trí drawer</h4>
+                  <div className="flex flex-wrap gap-4 p-6 bg-gray-50 rounded-lg">
+                    <AppleButton
+                      variant="primary"
+                      size="md"
+                      onClick={() => setDrawerOpen({ ...drawerOpen, left: true })}
+                      data-testid="button-drawer-left"
+                    >
+                      Mở Drawer Trái
+                    </AppleButton>
+
+                    <AppleButton
+                      variant="secondary"
+                      size="md"
+                      onClick={() => setDrawerOpen({ ...drawerOpen, right: true })}
+                      data-testid="button-drawer-right"
+                    >
+                      Mở Drawer Phải
+                    </AppleButton>
+
+                    <AppleButton
+                      variant="outline"
+                      size="md"
+                      onClick={() => setDrawerOpen({ ...drawerOpen, bottom: true })}
+                      data-testid="button-drawer-bottom"
+                    >
+                      Mở Drawer Dưới
+                    </AppleButton>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 mb-3">Demo nội dung</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <h5 className="font-medium text-blue-900 mb-2">Drawer Trái</h5>
+                      <p className="text-sm text-blue-700">Menu điều hướng với các mục chính</p>
+                    </div>
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <h5 className="font-medium text-green-900 mb-2">Drawer Phải</h5>
+                      <p className="text-sm text-green-700">Bộ lọc nâng cao (AppleFilterPanel)</p>
+                    </div>
+                    <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                      <h5 className="font-medium text-purple-900 mb-2">Drawer Dưới</h5>
+                      <p className="text-sm text-purple-700">Action sheet cho mobile</p>
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`import { AppleDrawer } from '@/components/apple';
+
+// Drawer từ trái (Navigation)
+<AppleDrawer
+  open={drawerOpen.left}
+  onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, left: open })}
+  position="left"
+  title="Menu điều hướng"
+>
+  <nav className="space-y-2">
+    <button className="w-full text-left p-3 hover:bg-gray-100 rounded">
+      Trang chủ
+    </button>
+    <button className="w-full text-left p-3 hover:bg-gray-100 rounded">
+      Chiến dịch
+    </button>
+  </nav>
+</AppleDrawer>
+
+// Drawer từ phải (Filter Panel)
+<AppleDrawer
+  open={drawerOpen.right}
+  onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, right: open })}
+  position="right"
+  title="Bộ lọc"
+>
+  <AppleFilterPanel filters={filters} values={values} onChange={setValues} />
+</AppleDrawer>
+
+// Drawer từ dưới (Mobile Actions)
+<AppleDrawer
+  open={drawerOpen.bottom}
+  onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, bottom: open })}
+  position="bottom"
+  title="Hành động"
+>
+  <div className="space-y-2">
+    <button className="w-full p-4 hover:bg-gray-100 rounded">Chia sẻ</button>
+    <button className="w-full p-4 hover:bg-gray-100 rounded text-red-600">Xóa</button>
+  </div>
+</AppleDrawer>`} />
+              </div>
+            </div>
+
+            {/* Drawer Components - Hidden but functional */}
+            <AppleDrawer
+              open={drawerOpen.left}
+              onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, left: open })}
+              position="left"
+              title="Menu điều hướng"
+              description="Chọn trang bạn muốn truy cập"
+            >
+              <nav className="space-y-2">
+                <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-home">
+                  <Home className="w-5 h-5" />
+                  <span>Trang chủ</span>
+                </button>
+                <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-campaigns">
+                  <FileText className="w-5 h-5" />
+                  <span>Chiến dịch</span>
+                </button>
+                <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-kocs">
+                  <Users className="w-5 h-5" />
+                  <span>KOC</span>
+                </button>
+                <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-settings">
+                  <Settings className="w-5 h-5" />
+                  <span>Cài đặt</span>
+                </button>
+              </nav>
+            </AppleDrawer>
+
+            <AppleDrawer
+              open={drawerOpen.right}
+              onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, right: open })}
+              position="right"
+              title="Bộ lọc nâng cao"
+              description="Lọc danh sách KOC theo tiêu chí"
+            >
+              <AppleFilterPanel
+                filters={[
+                  {
+                    id: 'status',
+                    label: 'Trạng thái',
+                    type: 'checkbox',
+                    options: [
+                      { label: 'Hoạt động', value: 'active' },
+                      { label: 'Tạm dừng', value: 'paused' }
+                    ]
+                  },
+                  {
+                    id: 'tier',
+                    label: 'Cấp độ',
+                    type: 'radio',
+                    options: [
+                      { label: 'Nano', value: 'nano' },
+                      { label: 'Micro', value: 'micro' }
+                    ]
+                  }
+                ]}
+                values={filterValues}
+                onChange={setFilterValues}
+                onApply={() => {
+                  toast.success('Đã áp dụng bộ lọc!');
+                  setDrawerOpen({ ...drawerOpen, right: false });
+                }}
+                onReset={() => {
+                  setFilterValues({});
+                  toast.info('Đã xóa bộ lọc');
+                }}
+              />
+            </AppleDrawer>
+
+            <AppleDrawer
+              open={drawerOpen.bottom}
+              onOpenChange={(open) => setDrawerOpen({ ...drawerOpen, bottom: open })}
+              position="bottom"
+              title="Hành động nhanh"
+              description="Chọn thao tác bạn muốn thực hiện"
+            >
+              <div className="space-y-2">
+                <button 
+                  className="w-full p-4 hover:bg-gray-100 rounded-lg transition-colors text-left flex items-center gap-3"
+                  onClick={() => {
+                    toast.info('Đang chia sẻ...');
+                    setDrawerOpen({ ...drawerOpen, bottom: false });
+                  }}
+                  data-testid="action-share"
+                >
+                  <Copy className="w-5 h-5" />
+                  <span>Chia sẻ</span>
+                </button>
+                <button 
+                  className="w-full p-4 hover:bg-gray-100 rounded-lg transition-colors text-left flex items-center gap-3"
+                  onClick={() => {
+                    toast.success('Đang tải xuống...');
+                    setDrawerOpen({ ...drawerOpen, bottom: false });
+                  }}
+                  data-testid="action-download"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Tải xuống</span>
+                </button>
+                <button 
+                  className="w-full p-4 hover:bg-red-50 rounded-lg transition-colors text-left flex items-center gap-3 text-red-600"
+                  onClick={() => {
+                    toast.error('Đã xóa!');
+                    setDrawerOpen({ ...drawerOpen, bottom: false });
+                  }}
+                  data-testid="action-delete"
+                >
+                  <Trash className="w-5 h-5" />
+                  <span>Xóa</span>
+                </button>
+              </div>
+            </AppleDrawer>
           </div>
         </Section>
         )}

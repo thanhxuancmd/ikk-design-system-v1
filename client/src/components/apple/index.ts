@@ -2,11 +2,15 @@ export { AppleButton } from './AppleButton';
 export { AppleBadge } from './AppleBadge';
 export { AppleSectionHeader } from './AppleSectionHeader';
 export { AppleInput } from './AppleInput';
+export { AppleSearchBar } from './AppleSearchBar';
 export { AppleSelect } from './AppleSelect';
 export { AppleCheckbox } from './AppleCheckbox';
 export { AppleRadio, AppleRadioGroup } from './AppleRadio';
 export { AppleSwitch } from './AppleSwitch';
 export { AppleTextarea } from './AppleTextarea';
+export { AppleDatePicker } from './AppleDatePicker';
+export { AppleTimePicker } from './AppleTimePicker';
+export { AppleFileUpload } from './AppleFileUpload';
 
 // Layout Components
 export { AppleContainer } from './AppleContainer';
@@ -26,6 +30,7 @@ export { AppleToastProvider } from '../../contexts/AppleToastContext';
 export { AppleAlert } from './AppleAlert';
 export { AppleModal } from './AppleModal';
 export { AppleDialog } from './AppleDialog';
+export { AppleDrawer } from './AppleDrawer';
 export { AppleLoading } from './AppleLoading';
 export { AppleSkeleton } from './AppleSkeleton';
 export { AppleProgressBar } from './AppleProgressBar';
@@ -58,3 +63,7 @@ export { PriceDisplay } from './PriceDisplay';
 export { StatsCard } from './StatsCard';
 export { RankingBadge } from './RankingBadge';
 export { AppleMetricCard } from './AppleMetricCard';
+
+// Filter Components
+export { AppleFilterPanel } from './AppleFilterPanel';
+export type { FilterType, FilterOption, FilterGroup, AppleFilterPanelProps } from './AppleFilterPanel';

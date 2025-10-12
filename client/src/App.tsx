@@ -48,6 +48,7 @@ import CampaignsRewardsPage from "@/pages/campaigns/rewards"
 import AdminDesignSystem from "@/pages/design-system/admin"
 import AppleHIGShowcase from "@/pages/apple-hig"
 import AppleHIGFeedbackPage from "@/pages/apple-hig-feedback"
+import FilterPanelDemo from "@/pages/filter-panel-demo"
 
 
 function Router() {
@@ -102,6 +103,7 @@ function Router() {
         <Route path="/design-system/admin" component={AdminDesignSystem} />
         <Route path="/apple-hig" component={AppleHIGShowcase} />
         <Route path="/apple-hig-feedback" component={AppleHIGFeedbackPage} />
+        <Route path="/filter-panel-demo" component={FilterPanelDemo} />
         
         <Route component={NotFound} />
       </Switch>
