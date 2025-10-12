@@ -52,8 +52,20 @@ import {
   AppleChart,
   AppleMetricCard,
   AppleProgressBar,
-  AppleGauge
+  AppleGauge,
+  ShoppingCartDrawer,
+  CheckoutStepper,
+  VoucherInput,
+  OrderStatusTracker,
+  EmptyState,
+  ErrorBoundary,
+  OnboardingStepper,
+  BulkActionToolbar,
+  ContentModerationQueue,
+  CommissionRulesEditor,
+  DataExportDialog
 } from '@/components/apple';
+import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
 import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
 import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command } from 'lucide-react';
@@ -94,6 +106,21 @@ function AppleHIGShowcaseContent() {
     endDate: undefined as Date | undefined,
     endTime: ''
   });
+
+  // E-commerce tab state
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([
+    { id: '1', name: 'Áo thun IKK Limited', image: '', price: 350000, quantity: 2, variant: 'Size M, Màu Đen' },
+    { id: '2', name: 'Quần jean Skinny', image: '', price: 550000, quantity: 1, variant: 'Size 29' }
+  ]);
+  const [appliedVoucher, setAppliedVoucher] = useState<any>();
+  const [orderStatus, setOrderStatus] = useState<OrderStatus>('processing');
+
+  // Utilities tab state
+  const [showBulkToolbar, setShowBulkToolbar] = useState(false);
+
+  // Admin tab state
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
   // Sample commands for command palette
   const sampleCommands = [
@@ -297,7 +324,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'recipes', 'guides', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'recipes', 'guides', 'examples'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -308,7 +335,7 @@ function AppleHIGShowcaseContent() {
                 }`}
                 data-testid={`button-tab-${tab}`}
               >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Quản trị' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>
@@ -2852,529 +2879,333 @@ function MyComponent() {
               />
             </div>
 
-            {/* Pattern 6: Advanced KOC Discovery */}
+            {/* Pattern 6: Complete E-commerce Checkout Flow */}
             <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-koc-discovery">
-                6. Advanced KOC Discovery - Search, Filter & Mobile Drawer
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-checkout-flow">
+                6. Complete E-commerce Checkout Flow
               </h3>
               <p className="text-gray-600 mb-6">
-                Hệ thống tìm kiếm và lọc KOC nâng cao với SearchBar, FilterPanel, và Drawer responsive cho mobile. Pattern này kết hợp 3 components mới để tạo trải nghiệm tìm kiếm mạnh mẽ.
+                Luồng thanh toán hoàn chỉnh từ giỏ hàng đến tracking đơn hàng. Kết hợp ProductCard → ShoppingCartDrawer → CheckoutStepper → OrderStatusTracker.
               </p>
               
-              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-koc-discovery">
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-checkout-flow">
+                {/* Step 1: Product Display */}
                 <AppleSectionHeader 
-                  title="Tìm Kiếm KOC Nâng Cao"
-                  description="Khám phá và lọc KOC phù hợp cho chiến dịch của bạn"
+                  title="Bước 1: Chọn sản phẩm"
+                  description="Hiển thị sản phẩm với giá, giảm giá, và nút thêm vào giỏ"
                 />
-                
-                {/* Search Bar */}
-                <div className="mb-6">
-                  <AppleSearchBar
-                    value={kocSearchQuery}
-                    onChange={setKocSearchQuery}
-                    onSearch={(query) => console.log('Search:', query)}
-                    suggestions={kocSuggestions}
-                    placeholder="Tìm kiếm KOC theo tên, danh mục..."
-                    showRecent={false}
-                    data-testid="searchbar-koc-discovery"
+                <div className="mb-8">
+                  <ProductCard
+                    id="prod-checkout"
+                    name="Áo thun IKK Limited Edition"
+                    price={350000}
+                    originalPrice={450000}
+                    image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300"
+                    rating={4.8}
+                    soldCount={1250}
                   />
-                </div>
-
-                {/* Mobile: Filter Button + Drawer */}
-                <div className="md:hidden mb-6">
                   <AppleButton 
-                    variant="outline" 
-                    onClick={() => setKocDrawerOpen(true)}
-                    className="w-full"
-                    data-testid="button-open-filter-drawer"
+                    variant="primary" 
+                    className="mt-4"
+                    onClick={() => toast.success('Đã thêm vào giỏ hàng!')}
                   >
-                    <Search className="w-4 h-4 mr-2" />
-                    Bộ lọc ({Object.keys(kocFilters).filter(k => kocFilters[k]?.length || kocFilters[k]).length})
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Thêm vào giỏ hàng
                   </AppleButton>
-                  
-                  <AppleDrawer
-                    open={kocDrawerOpen}
-                    onOpenChange={setKocDrawerOpen}
-                    position="bottom"
-                    title="Bộ lọc KOC"
-                    description="Tùy chỉnh tiêu chí tìm kiếm"
-                  >
-                    <AppleFilterPanel
-                      filters={[
-                        {
-                          id: 'level',
-                          label: 'Cấp độ',
-                          type: 'checkbox',
-                          options: [
-                            { label: 'Nano', value: 'Nano' },
-                            { label: 'Micro', value: 'Micro' },
-                            { label: 'Macro', value: 'Macro' },
-                            { label: 'Celebrity', value: 'Celebrity' },
-                          ],
-                          defaultOpen: true,
-                        },
-                        {
-                          id: 'followers',
-                          label: 'Followers',
-                          type: 'range',
-                          min: 1000,
-                          max: 1000000,
-                          step: 1000,
-                          defaultOpen: true,
-                        },
-                        {
-                          id: 'platform',
-                          label: 'Nền tảng',
-                          type: 'select',
-                          options: [
-                            { label: 'TikTok', value: 'TikTok' },
-                            { label: 'Instagram', value: 'Instagram' },
-                            { label: 'Facebook', value: 'Facebook' },
-                            { label: 'YouTube', value: 'YouTube' },
-                          ],
-                          defaultOpen: true,
-                        },
-                      ]}
-                      values={kocFilters}
-                      onChange={setKocFilters}
-                      onApply={() => {
-                        setKocDrawerOpen(false);
-                        toast.success('Đã áp dụng bộ lọc');
-                      }}
-                      onReset={() => {
-                        setKocFilters({});
-                        toast.info('Đã xóa bộ lọc');
-                      }}
-                    />
-                  </AppleDrawer>
                 </div>
 
-                {/* Desktop & Mobile: Content Grid */}
-                <AppleGrid cols={{ sm: 1, md: 12 }} gap="md">
-                  {/* Desktop: Filter Panel (Sidebar) */}
-                  <div className="hidden md:block md:col-span-3">
-                    <div className="sticky top-4">
-                      <AppleFilterPanel
-                        filters={[
-                          {
-                            id: 'level',
-                            label: 'Cấp độ',
-                            type: 'checkbox',
-                            options: [
-                              { label: 'Nano', value: 'Nano' },
-                              { label: 'Micro', value: 'Micro' },
-                              { label: 'Macro', value: 'Macro' },
-                              { label: 'Celebrity', value: 'Celebrity' },
-                            ],
-                            defaultOpen: true,
-                          },
-                          {
-                            id: 'followers',
-                            label: 'Followers',
-                            type: 'range',
-                            min: 1000,
-                            max: 1000000,
-                            step: 1000,
-                            defaultOpen: true,
-                          },
-                          {
-                            id: 'platform',
-                            label: 'Nền tảng',
-                            type: 'select',
-                            options: [
-                              { label: 'TikTok', value: 'TikTok' },
-                              { label: 'Instagram', value: 'Instagram' },
-                              { label: 'Facebook', value: 'Facebook' },
-                              { label: 'YouTube', value: 'YouTube' },
-                            ],
-                            defaultOpen: true,
-                          },
-                        ]}
-                        values={kocFilters}
-                        onChange={setKocFilters}
-                        onApply={() => toast.success('Đã áp dụng bộ lọc')}
-                        onReset={() => {
-                          setKocFilters({});
-                          toast.info('Đã xóa bộ lọc');
-                        }}
-                      />
-                    </div>
-                  </div>
+                {/* Step 2: Shopping Cart */}
+                <AppleSectionHeader 
+                  title="Bước 2: Xem giỏ hàng & áp dụng voucher"
+                  description="ShoppingCartDrawer với quantity controls và VoucherInput"
+                />
+                <div className="mb-8">
+                  <AppleButton onClick={() => setCartOpen(true)} className="mb-4">
+                    Mở giỏ hàng (2 sản phẩm)
+                  </AppleButton>
+                  <p className="text-sm text-gray-600 mb-2">Features: Điều chỉnh số lượng, xóa sản phẩm, tính tổng tự động, checkout CTA</p>
+                  {/* ShoppingCartDrawer component is defined in state above */}
+                </div>
 
-                  {/* KOC Results Grid */}
-                  <div className="md:col-span-9">
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-600" data-testid="text-koc-count">
-                        Tìm thấy {filteredKOCs.length} KOC
-                      </p>
-                    </div>
-                    
-                    {filteredKOCs.length > 0 ? (
-                      <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
-                        {filteredKOCs.map((koc) => (
-                          <KOCCard
-                            key={koc.id}
-                            id={koc.id}
-                            name={koc.name}
-                            level={koc.level as any}
-                            followers={koc.followers}
-                            rating={4.5 + Math.random() * 0.4}
-                            completedCampaigns={Math.floor(Math.random() * 100) + 10}
-                            categories={koc.categories}
-                            isVerified={koc.followers > 50000}
-                          />
-                        ))}
-                      </AppleGrid>
-                    ) : (
-                      <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-                        <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                        <p className="text-gray-600">Không tìm thấy KOC phù hợp</p>
-                        <AppleButton 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => {
-                            setKocSearchQuery('');
-                            setKocFilters({});
-                          }}
-                          className="mt-4"
-                        >
-                          Xóa bộ lọc
-                        </AppleButton>
-                      </div>
-                    )}
-                  </div>
-                </AppleGrid>
+                {/* Step 3: Checkout Process */}
+                <AppleSectionHeader 
+                  title="Bước 3: Thanh toán"
+                  description="CheckoutStepper 3 bước với form validation"
+                />
+                <div className="mb-8 border rounded-lg p-4">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Wizard 3 bước: Thông tin giao hàng → Phương thức thanh toán → Xác nhận đơn hàng
+                  </p>
+                  {/* CheckoutStepper shown in E-commerce tab */}
+                  <AppleButton size="sm" onClick={() => setActiveTab('ecommerce')}>
+                    Xem CheckoutStepper trong tab E-commerce
+                  </AppleButton>
+                </div>
+
+                {/* Step 4: Order Tracking */}
+                <AppleSectionHeader 
+                  title="Bước 4: Theo dõi đơn hàng"
+                  description="OrderStatusTracker hiển thị trạng thái realtime"
+                />
+                <div className="max-w-md">
+                  <OrderStatusTracker currentStatus="shipping" />
+                </div>
               </div>
-              
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
-                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-                  <li><strong>Desktop:</strong> AppleFilterPanel hiển thị dạng sidebar bên trái (col-span-3)</li>
-                  <li><strong>Mobile:</strong> Filter button mở AppleDrawer từ dưới lên chứa FilterPanel</li>
-                  <li>AppleSearchBar với autocomplete suggestions từ tên KOC</li>
-                  <li>Responsive grid: 1 cột mobile, 2 cột desktop cho KOCCard</li>
-                  <li>Real-time filtering kết hợp search query và filter values</li>
+
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-blue-900 mb-2">💡 Use Case</h4>
+                <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                  <li>Trang sản phẩm livestream với mua hàng ngay</li>
+                  <li>App thương mại điện tử có affiliate marketing</li>
+                  <li>Checkout flow cho KOC commission products</li>
                 </ul>
               </div>
-              
+
               <CodeBlock
-                code={`// Desktop: SearchBar + FilterPanel (side-by-side)
-<AppleSearchBar
-  value={searchQuery}
-  onChange={setSearchQuery}
-  onSearch={handleSearch}
-  suggestions={kocSuggestions}
-  placeholder="Tìm kiếm KOC..."
-/>
+                code={`// Complete E-commerce Flow
+import { 
+  ProductCard, 
+  ShoppingCartDrawer, 
+  CheckoutStepper, 
+  OrderStatusTracker,
+  VoucherInput 
+} from '@/components/apple';
 
-{/* Mobile: Filter Button + Drawer */}
-<div className="md:hidden">
-  <AppleButton onClick={() => setDrawerOpen(true)}>
-    Bộ lọc
-  </AppleButton>
-  
-  <AppleDrawer
-    open={drawerOpen}
-    onOpenChange={setDrawerOpen}
-    position="bottom"
-    title="Bộ lọc KOC"
-  >
-    <AppleFilterPanel
-      filters={filterConfig}
-      values={filters}
-      onChange={setFilters}
-    />
-  </AppleDrawer>
-</div>
+function EcommercePage() {
+  const [cartOpen, setCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [orderStatus, setOrderStatus] = useState<OrderStatus>('ordered');
 
-{/* Desktop & Mobile Grid */}
-<AppleGrid cols={{ sm: 1, md: 12 }} gap="md">
-  {/* Desktop Sidebar */}
-  <div className="hidden md:block md:col-span-3">
-    <AppleFilterPanel
-      filters={filterConfig}
-      values={filters}
-      onChange={setFilters}
-    />
-  </div>
-  
-  {/* Results */}
-  <div className="md:col-span-9">
-    <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
-      {filteredKOCs.map(koc => (
-        <KOCCard key={koc.id} {...koc} />
-      ))}
-    </AppleGrid>
-  </div>
-</AppleGrid>`}
+  return (
+    <>
+      {/* 1. Product Grid */}
+      <ProductCard
+        name="Áo thun IKK"
+        price={350000}
+      />
+
+      {/* 2. Shopping Cart Drawer */}
+      <ShoppingCartDrawer
+        open={cartOpen}
+        onOpenChange={setCartOpen}
+        items={cartItems}
+        onUpdateQuantity={(id, qty) => {
+          setCartItems(prev => 
+            prev.map(item => item.id === id ? {...item, quantity: qty} : item)
+          );
+        }}
+        onRemoveItem={(id) => {
+          setCartItems(prev => prev.filter(item => item.id !== id));
+        }}
+        onCheckout={() => {
+          router.push('/checkout');
+        }}
+      />
+
+      {/* 3. Checkout Stepper (on /checkout page) */}
+      <CheckoutStepper
+        onComplete={async (data) => {
+          const orderId = await createOrder(data, cartItems);
+          setOrderStatus('ordered');
+          router.push('/order/' + orderId);
+        }}
+        orderSummary={{
+          items: cartItems,
+          subtotal: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+          shipping: 0,
+          total: 900000
+        }}
+      />
+
+      {/* 4. Order Status Tracker (on /order/:id page) */}
+      <OrderStatusTracker currentStatus={orderStatus} />
+    </>
+  );
+}`}
               />
             </div>
 
-            {/* Pattern 7: Campaign Scheduling Form */}
+            {/* Pattern 7: Admin Dashboard with Moderation & Export */}
             <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-campaign-scheduling">
-                7. Campaign Scheduling Form - Date & Time Pickers
+              <h3 className="text-2xl font-semibold mb-4" data-testid="heading-pattern-admin-dashboard">
+                7. Admin Dashboard with Moderation & Export
               </h3>
               <p className="text-gray-600 mb-6">
-                Form lên lịch chiến dịch sử dụng AppleDatePicker và AppleTimePicker để chọn thời gian bắt đầu và kết thúc chính xác. Kết hợp validation và hiển thị preview.
+                Dashboard quản trị viên với thống kê, kiểm duyệt nội dung, và xuất dữ liệu. Kết hợp StatsCard + ContentModerationQueue + DataExportDialog.
               </p>
               
-              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-campaign-scheduling">
+              <div className="mb-6 p-6 bg-gray-50 rounded-lg" data-testid="example-admin-dashboard">
+                {/* Section 1: Stats Overview */}
                 <AppleSectionHeader 
-                  title="Lên Lịch Chiến Dịch"
-                  description="Tạo lịch trình chi tiết cho chiến dịch marketing"
+                  title="Tổng quan hệ thống"
+                  description="Các chỉ số quan trọng cần theo dõi"
                 />
-                
-                <AppleGrid cols={{ sm: 1, md: 2 }} gap="lg">
-                  {/* Form Section */}
-                  <div className="space-y-6">
-                    <AppleInput
-                      label="Tên chiến dịch"
-                      placeholder="VD: Black Friday Sale 2024"
-                      value={campaignForm.name}
-                      onChange={(e) => setCampaignForm({ ...campaignForm, name: e.target.value })}
-                      data-testid="input-campaign-name"
+                <div className="mb-8">
+                  <AppleGrid cols={{ sm: 1, md: 2, lg: 4 }} gap="md">
+                    <StatsCard
+                      id="pending-content"
+                      title="Nội dung chờ duyệt"
+                      value={24}
+                      change={12}
+                      changeType="increase"
                     />
-
-                    <AppleDatePicker
-                      label="Ngày bắt đầu"
-                      mode="single"
-                      selected={campaignForm.startDate}
-                      onSelect={(date) => setCampaignForm({ ...campaignForm, startDate: date as Date })}
-                      name="start-date"
+                    <StatsCard
+                      id="monthly-commission"
+                      title="Hoa hồng tháng này"
+                      value={125000000}
+                      change={8.5}
+                      changeType="increase"
                     />
-
-                    <AppleTimePicker
-                      label="Giờ bắt đầu"
-                      value={campaignForm.startTime}
-                      onChange={(time) => setCampaignForm({ ...campaignForm, startTime: time })}
-                      use24Hour={true}
-                      name="start-time"
+                    <StatsCard
+                      id="active-koc"
+                      title="KOC đang hoạt động"
+                      value={1850}
+                      change={15}
+                      changeType="increase"
                     />
-
-                    <AppleDatePicker
-                      label="Ngày kết thúc"
-                      mode="single"
-                      selected={campaignForm.endDate}
-                      onSelect={(date) => setCampaignForm({ ...campaignForm, endDate: date as Date })}
-                      minDate={campaignForm.startDate}
-                      name="end-date"
+                    <StatsCard
+                      id="running-campaigns"
+                      title="Chiến dịch đang chạy"
+                      value={42}
+                      change={5}
+                      changeType="decrease"
                     />
+                  </AppleGrid>
+                </div>
 
-                    <AppleTimePicker
-                      label="Giờ kết thúc"
-                      value={campaignForm.endTime}
-                      onChange={(time) => setCampaignForm({ ...campaignForm, endTime: time })}
-                      use24Hour={true}
-                      name="end-time"
-                    />
+                {/* Section 2: Content Moderation */}
+                <AppleSectionHeader 
+                  title="Kiểm duyệt nội dung"
+                  description="Phê duyệt hoặc từ chối nội dung từ KOCs và người dùng"
+                  actionButtons={[
+                    { label: 'Xuất báo cáo', onClick: () => setExportDialogOpen(true), variant: 'outline' }
+                  ]}
+                />
+                <div className="mb-8">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Hàng đợi kiểm duyệt với bộ lọc trạng thái và actions approve/reject
+                  </p>
+                  <AppleButton size="sm" onClick={() => setActiveTab('admin')}>
+                    Xem ContentModerationQueue trong tab Quản trị
+                  </AppleButton>
+                </div>
 
-                    <AppleButton 
-                      variant="primary" 
-                      className="w-full"
-                      onClick={() => {
-                        if (!campaignForm.name) {
-                          toast.error('Vui lòng nhập tên chiến dịch');
-                          return;
-                        }
-                        if (!campaignForm.startDate || !campaignForm.startTime) {
-                          toast.error('Vui lòng chọn thời gian bắt đầu');
-                          return;
-                        }
-                        if (!campaignForm.endDate || !campaignForm.endTime) {
-                          toast.error('Vui lòng chọn thời gian kết thúc');
-                          return;
-                        }
-                        
-                        const startDateTime = new Date(campaignForm.startDate);
-                        const [startHour, startMin] = campaignForm.startTime.split(':');
-                        startDateTime.setHours(parseInt(startHour), parseInt(startMin));
-                        
-                        const endDateTime = new Date(campaignForm.endDate);
-                        const [endHour, endMin] = campaignForm.endTime.split(':');
-                        endDateTime.setHours(parseInt(endHour), parseInt(endMin));
-                        
-                        if (endDateTime <= startDateTime) {
-                          toast.error('Thời gian kết thúc phải sau thời gian bắt đầu');
-                          return;
-                        }
-                        
-                        toast.success('Đã tạo lịch chiến dịch thành công!');
-                      }}
-                      data-testid="button-submit-campaign"
-                    >
-                      Tạo chiến dịch
-                    </AppleButton>
-                  </div>
+                {/* Section 3: Commission Rules Management */}
+                <AppleSectionHeader 
+                  title="Quản lý quy tắc hoa hồng"
+                  description="Cấu hình % hoa hồng theo tier KOC và danh mục sản phẩm"
+                />
+                <div className="mb-8">
+                  <p className="text-sm text-gray-600 mb-4">
+                    Form editor với add/remove rules, tier selection, và preview calculation
+                  </p>
+                  <AppleButton size="sm" onClick={() => setActiveTab('admin')}>
+                    Xem CommissionRulesEditor trong tab Quản trị
+                  </AppleButton>
+                </div>
 
-                  {/* Preview Section */}
-                  <div className="bg-white p-6 rounded-lg border border-gray-200">
-                    <h4 className="text-lg font-semibold mb-4">Xem trước</h4>
-                    
-                    {campaignForm.name && (
-                      <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">Tên chiến dịch</p>
-                        <p className="font-medium" data-testid="text-preview-name">{campaignForm.name}</p>
-                      </div>
-                    )}
-
-                    {campaignForm.startDate && campaignForm.startTime && (
-                      <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">Thời gian bắt đầu</p>
-                        <p className="font-medium" data-testid="text-preview-start">
-                          {new Date(campaignForm.startDate).toLocaleDateString('vi-VN', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                          })} lúc {campaignForm.startTime}
-                        </p>
-                      </div>
-                    )}
-
-                    {campaignForm.endDate && campaignForm.endTime && (
-                      <div className="mb-4">
-                        <p className="text-sm text-gray-600 mb-1">Thời gian kết thúc</p>
-                        <p className="font-medium" data-testid="text-preview-end">
-                          {new Date(campaignForm.endDate).toLocaleDateString('vi-VN', { 
-                            weekday: 'long', 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric' 
-                          })} lúc {campaignForm.endTime}
-                        </p>
-                      </div>
-                    )}
-
-                    {campaignForm.startDate && campaignForm.startTime && campaignForm.endDate && campaignForm.endTime && (() => {
-                      const startDateTime = new Date(campaignForm.startDate);
-                      const [startHour, startMin] = campaignForm.startTime.split(':');
-                      startDateTime.setHours(parseInt(startHour), parseInt(startMin));
-                      
-                      const endDateTime = new Date(campaignForm.endDate);
-                      const [endHour, endMin] = campaignForm.endTime.split(':');
-                      endDateTime.setHours(parseInt(endHour), parseInt(endMin));
-                      
-                      const durationMs = endDateTime.getTime() - startDateTime.getTime();
-                      const days = Math.floor(durationMs / (1000 * 60 * 60 * 24));
-                      const hours = Math.floor((durationMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                      const minutes = Math.floor((durationMs % (1000 * 60 * 60)) / (1000 * 60));
-                      
-                      const isValid = endDateTime > startDateTime;
-                      
-                      return (
-                        <div className={`p-4 rounded-lg ${isValid ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
-                          <p className="text-sm font-medium mb-2">Thời lượng chiến dịch</p>
-                          {isValid ? (
-                            <p className="text-lg font-semibold text-green-700" data-testid="text-preview-duration">
-                              {days > 0 && `${days} ngày `}
-                              {hours > 0 && `${hours} giờ `}
-                              {minutes > 0 && `${minutes} phút`}
-                            </p>
-                          ) : (
-                            <p className="text-sm text-red-600">
-                              ⚠️ Thời gian kết thúc phải sau thời gian bắt đầu
-                            </p>
-                          )}
-                        </div>
-                      );
-                    })()}
-
-                    {(!campaignForm.startDate || !campaignForm.endDate) && (
-                      <div className="text-center py-8 text-gray-400">
-                        <FileText className="w-12 h-12 mx-auto mb-2" />
-                        <p className="text-sm">Nhập thông tin để xem trước</p>
-                      </div>
-                    )}
-                  </div>
-                </AppleGrid>
+                {/* Section 4: Data Export */}
+                <AppleSectionHeader 
+                  title="Xuất dữ liệu hệ thống"
+                  description="Export data theo định dạng CSV, Excel, hoặc JSON"
+                />
+                <div>
+                  <AppleButton onClick={() => setExportDialogOpen(true)}>
+                    Mở Data Export Dialog
+                  </AppleButton>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Features: Chọn định dạng file, lọc theo date range, chọn fields cụ thể
+                  </p>
+                </div>
               </div>
-              
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
-                <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
-                  <li>AppleDatePicker với mode="single" cho việc chọn ngày đơn lẻ</li>
-                  <li>AppleTimePicker hỗ trợ format 24h và 12h (AM/PM)</li>
-                  <li>Validation: minDate cho endDate để đảm bảo end sau start</li>
-                  <li>Preview card hiển thị thời gian format tiếng Việt (toLocaleDateString)</li>
-                  <li>Tính toán duration: chuyển đổi Date + Time thành timestamp để so sánh</li>
-                  <li>Visual feedback: màu xanh (valid) hoặc đỏ (invalid) cho duration</li>
+
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-purple-900 mb-2">💡 Use Case</h4>
+                <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
+                  <li>Admin panel cho nền tảng KOC marketing</li>
+                  <li>Dashboard quản lý chiến dịch affiliate</li>
+                  <li>Content moderation system cho livestream</li>
+                  <li>Financial reporting và commission management</li>
                 </ul>
               </div>
-              
+
               <CodeBlock
-                code={`// Complete form with date/time pickers
-const [form, setForm] = useState({
-  name: '',
-  startDate: undefined,
-  startTime: '',
-  endDate: undefined,
-  endTime: ''
-});
+                code={`// Admin Dashboard Pattern
+import { 
+  StatsCard,
+  ContentModerationQueue, 
+  CommissionRulesEditor,
+  DataExportDialog,
+  BulkActionToolbar
+} from '@/components/apple';
 
-// Form fields
-<AppleInput
-  label="Tên chiến dịch"
-  value={form.name}
-  onChange={(e) => setForm({ ...form, name: e.target.value })}
-/>
+function AdminDashboard() {
+  const [moderationItems, setModerationItems] = useState([]);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
 
-<AppleDatePicker
-  label="Ngày bắt đầu"
-  mode="single"
-  selected={form.startDate}
-  onSelect={(date) => setForm({ ...form, startDate: date })}
-/>
+  return (
+    <div className="space-y-8">
+      {/* 1. Stats Overview */}
+      <div className="grid grid-cols-4 gap-4">
+        <StatsCard 
+          id="pending"
+          title="Nội dung chờ duyệt" 
+          value={moderationItems.filter(i => i.status === 'pending').length}
+          change={12}
+        />
+        <StatsCard 
+          id="commission"
+          title="Hoa hồng tháng này" 
+          value={125000000}
+        />
+        <StatsCard 
+          id="koc"
+          title="KOC hoạt động" 
+          value={1850}
+        />
+        <StatsCard 
+          id="campaigns"
+          title="Chiến dịch" 
+          value={42}
+        />
+      </div>
 
-<AppleTimePicker
-  label="Giờ bắt đầu"
-  value={form.startTime}
-  onChange={(time) => setForm({ ...form, startTime: time })}
-  use24Hour={true}
-/>
+      {/* 2. Content Moderation Queue */}
+      <ContentModerationQueue
+        items={moderationItems}
+        onApprove={(id) => {
+          setModerationItems(prev => 
+            prev.map(item => item.id === id ? {...item, status: 'approved'} : item)
+          );
+        }}
+        onReject={(id, reason) => {
+          setModerationItems(prev => 
+            prev.map(item => 
+              item.id === id ? {...item, status: 'rejected', reason} : item
+            )
+          );
+        }}
+      />
 
-<AppleDatePicker
-  label="Ngày kết thúc"
-  mode="single"
-  selected={form.endDate}
-  onSelect={(date) => setForm({ ...form, endDate: date })}
-  minDate={form.startDate} // Validation
-/>
-
-<AppleTimePicker
-  label="Giờ kết thúc"
-  value={form.endTime}
-  onChange={(time) => setForm({ ...form, endTime: time })}
-  use24Hour={true}
-/>
-
-// Validation logic
-const handleSubmit = () => {
-  const startDateTime = new Date(form.startDate);
-  const [startH, startM] = form.startTime.split(':');
-  startDateTime.setHours(parseInt(startH), parseInt(startM));
-  
-  const endDateTime = new Date(form.endDate);
-  const [endH, endM] = form.endTime.split(':');
-  endDateTime.setHours(parseInt(endH), parseInt(endM));
-  
-  if (endDateTime <= startDateTime) {
-    toast.error('Thời gian kết thúc phải sau thời gian bắt đầu');
-    return;
-  }
-  
-  // Submit form
-};
-
-// Preview display (Vietnamese format)
-<p>
-  {new Date(form.startDate).toLocaleDateString('vi-VN', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })} lúc {form.startTime}
-</p>`}
+      {/* 3. Data Export Dialog */}
+      <DataExportDialog
+        open={exportDialogOpen}
+        onOpenChange={setExportDialogOpen}
+        availableFields={[
+          {id: 'id', label: 'ID', checked: true},
+          {id: 'content', label: 'Nội dung', checked: true},
+          {id: 'user', label: 'Người dùng', checked: true},
+          {id: 'status', label: 'Trạng thái', checked: true}
+        ]}
+        onExport={async (config) => {
+          const data = await exportData(config);
+          return {url: data.downloadUrl, filename: 'export_' + Date.now() + '.' + config.format};
+        }}
+      />
+    </div>
+  );
+}`}
               />
             </div>
           </div>
@@ -6417,6 +6248,224 @@ export default function MyPage() {
           </div>
         </Section>
         </>
+        )}
+
+        {/* E-commerce Tab */}
+        {activeTab === 'ecommerce' && (
+          <div className="space-y-12">
+            <AppleSectionHeader 
+              title="E-commerce Components"
+              description="Các components cho hệ thống thương mại điện tử: giỏ hàng, thanh toán, voucher, tracking đơn hàng"
+            />
+
+            {/* ShoppingCartDrawer */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">ShoppingCartDrawer - Giỏ Hàng</h3>
+              <AppleButton onClick={() => setCartOpen(true)} data-testid="button-open-cart">
+                Mở giỏ hàng ({cartItems.length} sản phẩm)
+              </AppleButton>
+              <ShoppingCartDrawer
+                open={cartOpen}
+                onOpenChange={setCartOpen}
+                items={cartItems}
+                onUpdateQuantity={(id, qty) => {
+                  setCartItems(prev => prev.map(item => 
+                    item.id === id ? {...item, quantity: qty} : item
+                  ));
+                }}
+                onRemoveItem={(id) => {
+                  setCartItems(prev => prev.filter(item => item.id !== id));
+                }}
+                onCheckout={() => {
+                  toast.success('Chuyển đến trang thanh toán...');
+                  setCartOpen(false);
+                }}
+                discount={appliedVoucher?.discount?.value || 0}
+                shipping={0}
+              />
+            </section>
+
+            {/* CheckoutStepper */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">CheckoutStepper - Quy Trình Thanh Toán</h3>
+              <CheckoutStepper
+                onComplete={(data) => {
+                  console.log('Checkout data:', data);
+                  toast.success('Đơn hàng đã được tạo thành công!');
+                }}
+                orderSummary={{
+                  items: cartItems.map(item => ({name: item.name, quantity: item.quantity, price: item.price})),
+                  subtotal: 900000,
+                  shipping: 0,
+                  total: 900000
+                }}
+              />
+            </section>
+
+            {/* VoucherInput */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">VoucherInput - Nhập Mã Giảm Giá</h3>
+              <VoucherInput
+                onApply={async (code) => {
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  if (code === 'SALE50') {
+                    const voucher = {
+                      code: code,
+                      discount: { type: 'fixed' as const, value: 50000 }
+                    };
+                    setAppliedVoucher(voucher);
+                    return { success: true, discount: voucher.discount };
+                  }
+                  return { success: false, message: 'Mã không hợp lệ' };
+                }}
+                appliedVoucher={appliedVoucher}
+                onRemove={() => setAppliedVoucher(undefined)}
+              />
+            </section>
+
+            {/* OrderStatusTracker */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">OrderStatusTracker - Theo Dõi Đơn Hàng</h3>
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <AppleButton size="sm" onClick={() => setOrderStatus('ordered')}>Ordered</AppleButton>
+                <AppleButton size="sm" onClick={() => setOrderStatus('processing')}>Processing</AppleButton>
+                <AppleButton size="sm" onClick={() => setOrderStatus('shipping')}>Shipping</AppleButton>
+                <AppleButton size="sm" onClick={() => setOrderStatus('delivered')}>Delivered</AppleButton>
+              </div>
+              <OrderStatusTracker currentStatus={orderStatus} />
+            </section>
+          </div>
+        )}
+
+        {/* Utilities Tab */}
+        {activeTab === 'utilities' && (
+          <div className="space-y-12">
+            <AppleSectionHeader 
+              title="Utility Components"
+              description="Các components tiện ích: empty state, error handling, onboarding, bulk actions"
+            />
+
+            {/* EmptyState */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">EmptyState - Trạng Thái Trống</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="border rounded-lg p-4">
+                  <EmptyState variant="noData" action={{label: 'Thêm dữ liệu', onClick: () => toast.info('Thêm dữ liệu...')}} />
+                </div>
+                <div className="border rounded-lg p-4">
+                  <EmptyState variant="noResults" action={{label: 'Xóa bộ lọc', onClick: () => toast.info('Xóa bộ lọc...')}} />
+                </div>
+              </div>
+            </section>
+
+            {/* ErrorBoundary */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">ErrorBoundary - Xử Lý Lỗi</h3>
+              <p className="text-sm text-gray-600 mb-2">Component tự động bắt lỗi trong React tree</p>
+              <AppleAlert severity="info" title="Note">ErrorBoundary wraps children và hiển thị fallback UI khi có lỗi</AppleAlert>
+            </section>
+
+            {/* OnboardingStepper */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">OnboardingStepper - Hướng Dẫn Từng Bước</h3>
+              <OnboardingStepper
+                steps={[
+                  {id: '1', title: 'Chào mừng', description: 'Chào mừng đến với IKK Platform'},
+                  {id: '2', title: 'Hoàn thành hồ sơ', description: 'Điền thông tin cá nhân'},
+                  {id: '3', title: 'Kết nối mạng xã hội', description: 'Liên kết tài khoản social media'},
+                  {id: '4', title: 'Bắt đầu', description: 'Sẵn sàng sử dụng nền tảng'}
+                ]}
+                onComplete={(steps) => toast.success(`Hoàn thành ${steps.length} bước!`)}
+                showSkipButton
+              />
+            </section>
+
+            {/* BulkActionToolbar */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">BulkActionToolbar - Thao Tác Hàng Loạt</h3>
+              <AppleButton onClick={() => setShowBulkToolbar(prev => !prev)} className="mb-4">
+                Toggle Bulk Toolbar
+              </AppleButton>
+              {showBulkToolbar && (
+                <BulkActionToolbar
+                  selectedCount={2}
+                  totalCount={10}
+                  selectedIds={['1', '2']}
+                  actions={[
+                    {id: 'delete', label: 'Xóa', icon: <Trash />, onClick: () => toast.info('Xóa...'), variant: 'danger'},
+                    {id: 'export', label: 'Xuất', icon: <Download />, onClick: () => toast.info('Xuất...')}
+                  ]}
+                  onSelectAll={() => toast.info('Select all')}
+                  onDeselectAll={() => setShowBulkToolbar(false)}
+                  onClose={() => setShowBulkToolbar(false)}
+                />
+              )}
+            </section>
+          </div>
+        )}
+
+        {/* Admin Tab */}
+        {activeTab === 'admin' && (
+          <div className="space-y-12">
+            <AppleSectionHeader 
+              title="Admin & Moderation Components"
+              description="Các components cho quản trị: kiểm duyệt nội dung, quản lý hoa hồng, xuất dữ liệu"
+            />
+
+            {/* ContentModerationQueue */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">ContentModerationQueue - Hàng Đợi Kiểm Duyệt</h3>
+              <ContentModerationQueue
+                items={[
+                  {
+                    id: '1',
+                    type: 'stream',
+                    content: 'Review sản phẩm làm đẹp XYZ - Hiệu quả tuyệt vời!',
+                    user: {id: 'u1', name: 'Nguyễn Minh Anh'},
+                    timestamp: new Date().toISOString(),
+                    status: 'pending'
+                  }
+                ]}
+                onApprove={(id) => toast.success(`Đã phê duyệt ${id}`)}
+                onReject={(id) => toast.error(`Đã từ chối ${id}`)}
+              />
+            </section>
+
+            {/* CommissionRulesEditor */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">CommissionRulesEditor - Quản Lý Quy Tắc Hoa Hồng</h3>
+              <CommissionRulesEditor
+                rules={[
+                  {id: '1', tier: 'nano', commissionRate: 5},
+                  {id: '2', tier: 'micro', commissionRate: 8}
+                ]}
+                onChange={(rules) => console.log('Rules changed:', rules)}
+                onSave={(rules) => toast.success(`Đã lưu ${rules.length} quy tắc`)}
+                categories={['Thời trang', 'Làm đẹp', 'Công nghệ']}
+              />
+            </section>
+
+            {/* DataExportDialog */}
+            <section>
+              <h3 className="text-lg font-semibold mb-4">DataExportDialog - Xuất Dữ Liệu</h3>
+              <AppleButton onClick={() => setExportDialogOpen(true)} data-testid="button-open-export-dialog">
+                Mở Dialog Xuất Dữ Liệu
+              </AppleButton>
+              <DataExportDialog
+                open={exportDialogOpen}
+                onOpenChange={setExportDialogOpen}
+                availableFields={[
+                  {id: 'name', label: 'Tên', checked: true},
+                  {id: 'email', label: 'Email', checked: true},
+                  {id: 'phone', label: 'Số điện thoại', checked: false}
+                ]}
+                onExport={async (config) => {
+                  await new Promise(resolve => setTimeout(resolve, 2000));
+                  return {url: '#', filename: `export.${config.format}`};
+                }}
+              />
+            </section>
+          </div>
         )}
       </main>
 

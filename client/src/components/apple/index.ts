@@ -31,6 +31,7 @@ export { AppleAlert } from './AppleAlert';
 export { AppleModal } from './AppleModal';
 export { AppleDialog } from './AppleDialog';
 export { AppleDrawer } from './AppleDrawer';
+export { ShoppingCartDrawer, type CartItem, type ShoppingCartDrawerProps } from './ShoppingCartDrawer';
 export { AppleLoading } from './AppleLoading';
 export { AppleSkeleton } from './AppleSkeleton';
 export { AppleProgressBar } from './AppleProgressBar';
@@ -67,3 +68,28 @@ export { AppleMetricCard } from './AppleMetricCard';
 // Filter Components
 export { AppleFilterPanel } from './AppleFilterPanel';
 export type { FilterType, FilterOption, FilterGroup, AppleFilterPanelProps } from './AppleFilterPanel';
+
+// E-commerce Components
+export { CheckoutStepper } from './CheckoutStepper';
+export { VoucherInput } from './VoucherInput';
+export type { VoucherInputProps, VoucherResult, AppliedVoucher } from './VoucherInput';
+export { OrderStatusTracker } from './OrderStatusTracker';
+export type { OrderStatus, OrderStatusStep, OrderStatusTrackerProps } from './OrderStatusTracker';
+
+// Foundation/Utility Components
+export { EmptyState } from './EmptyState';
+export type { EmptyStateProps, EmptyStateVariant } from './EmptyState';
+export { ErrorBoundary } from './ErrorBoundary';
+export type { ErrorBoundaryProps, ErrorBoundaryState } from './ErrorBoundary';
+export { OnboardingStepper } from './OnboardingStepper';
+export type { OnboardingStep, OnboardingStepperProps } from './OnboardingStepper';
+export { BulkActionToolbar } from './BulkActionToolbar';
+export type { BulkAction, BulkActionToolbarProps } from './BulkActionToolbar';
+
+// Admin/Moderation Components
+export { ContentModerationQueue } from './ContentModerationQueue';
+export type { ModerationStatus, ContentType, ModerationItem, ContentModerationQueueProps } from './ContentModerationQueue';
+export { CommissionRulesEditor } from './CommissionRulesEditor';
+export type { KOCTier, CommissionRule, CommissionRulesEditorProps } from './CommissionRulesEditor';
+export { DataExportDialog } from './DataExportDialog';
+export type { ExportFormat, ExportField, ExportConfig, DataExportDialogProps } from './DataExportDialog';
