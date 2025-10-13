@@ -13,6 +13,8 @@ interface AppleMetricCardProps {
   icon?: ReactNode;
   variant?: 'default' | 'success' | 'warning' | 'error';
   valueTestId?: string;
+  changeLabel?: string;
+  locale?: string;
 }
 
 export function AppleMetricCard({
@@ -26,10 +28,12 @@ export function AppleMetricCard({
   icon,
   variant = 'default',
   valueTestId = 'metric-value',
+  changeLabel = 'so với tháng trước',
+  locale = 'vi-VN',
 }: AppleMetricCardProps) {
   const formatValue = (val: number | string): string => {
     if (typeof val === 'number') {
-      return val.toLocaleString('vi-VN');
+      return val.toLocaleString(locale);
     }
     return val;
   };
@@ -92,7 +96,7 @@ export function AppleMetricCard({
             {trendIcons[trend]}
             <span className="text-sm font-medium">
               {change > 0 ? '+' : change < 0 ? '-' : ''}
-              {new Intl.NumberFormat('vi-VN', {
+              {new Intl.NumberFormat(locale, {
                 minimumFractionDigits: 1,
                 maximumFractionDigits: 1,
               }).format(Math.abs(change))}%
@@ -100,6 +104,12 @@ export function AppleMetricCard({
           </div>
         )}
       </div>
+
+      {change !== undefined && change !== null && !isNaN(change) && (
+        <p className="text-xs text-gray-500 mt-1">
+          {changeLabel}
+        </p>
+      )}
 
       {description && (
         <p className="text-sm text-gray-500">
