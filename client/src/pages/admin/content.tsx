@@ -26,7 +26,7 @@ interface ContentItem {
 export default function AdminContentPage() {
   const [statusFilter, setStatusFilter] = useState<ModerationStatus | "all">("all")
 
-  const contentItems: ContentItem[] = [
+  const [contentItems, setContentItems] = useState<ContentItem[]>([
     {
       id: "content-1",
       title: "Review son môi Maybelline SuperStay Matte Ink - Màu 35 Chic",
@@ -93,7 +93,7 @@ export default function AdminContentPage() {
       views: 420,
       engagement: "9.1%"
     }
-  ]
+  ])
 
   const stats = useMemo(() => {
     const total = contentItems.length
@@ -144,10 +144,20 @@ export default function AdminContentPage() {
 
   const handleApprove = (id: string) => {
     console.log('Approved:', id)
+    setContentItems(prev => 
+      prev.map(item => 
+        item.id === id ? { ...item, status: 'approved' as const } : item
+      )
+    )
   }
 
   const handleReject = (id: string, reason?: string) => {
     console.log('Rejected:', id, 'Reason:', reason)
+    setContentItems(prev => 
+      prev.map(item => 
+        item.id === id ? { ...item, status: 'rejected' as const, reason } : item
+      )
+    )
   }
 
   return (
