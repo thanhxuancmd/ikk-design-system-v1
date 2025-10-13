@@ -67,9 +67,12 @@ import {
   AppleThemeProvider,
   ikkTheme,
   appleTheme,
-  useAppleTheme
+  useAppleTheme,
+  AppleListDetailShell,
+  AppleHierarchicalTable,
+  AppleNotificationCenter
 } from '@/components/apple';
-import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField } from '@/components/apple';
+import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField, TreeNode, Notification } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
 import { HiOutlineCheckCircle, HiOutlineXCircle, HiEye, HiHeart, HiCurrencyDollar, HiArrowTrendingUp, HiCheckCircle as HiCheckCircleSolid } from 'react-icons/hi2';
 import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command, DollarSign, Heart, Eye } from 'lucide-react';
@@ -142,6 +145,106 @@ function AppleHIGShowcaseContent() {
   const [adminFilterTab, setAdminFilterTab] = useState('all');
   const [adminSearchValue, setAdminSearchValue] = useState('');
   const [analyticsTab, setAnalyticsTab] = useState('week');
+
+  // Phase 2 components state
+  // List-Detail Shell state
+  const [selectedUserId, setSelectedUserId] = useState<number | undefined>(undefined);
+  const [listDetailSearchValue, setListDetailSearchValue] = useState('');
+  
+  // Hierarchical Table state
+  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string | number>>(new Set());
+  const [selectedOrgNodeIds, setSelectedOrgNodeIds] = useState<Set<string | number>>(new Set());
+  const [showConnectingLines, setShowConnectingLines] = useState(true);
+  
+  // Notification Center state
+  const [notificationsList, setNotificationsList] = useState<Notification[]>([
+    {
+      id: 'notif-1',
+      type: 'success',
+      title: 'Chiến dịch được duyệt',
+      message: 'Chiến dịch "Tết 2025" đã được phê duyệt và sẵn sàng khởi chạy',
+      timestamp: new Date(Date.now() - 3600000),
+      isRead: false,
+      avatar: '',
+      actionLabel: 'Xem chi tiết'
+    },
+    {
+      id: 'notif-2',
+      type: 'info',
+      title: 'KOC mới đăng ký',
+      message: 'Nguyễn Minh Anh (85K followers) vừa đăng ký tham gia nền tảng',
+      timestamp: new Date(Date.now() - 7200000),
+      isRead: false,
+      avatar: ''
+    },
+    {
+      id: 'notif-3',
+      type: 'warning',
+      title: 'Thanh toán đến hạn',
+      message: 'Bạn có 3 khoản thanh toán cần xử lý trước 25/10',
+      timestamp: new Date(Date.now() - 14400000),
+      isRead: false
+    },
+    {
+      id: 'notif-4',
+      type: 'error',
+      title: 'Chiến dịch bị từ chối',
+      message: 'Chiến dịch "Black Friday Sale" không đáp ứng tiêu chuẩn nội dung',
+      timestamp: new Date(Date.now() - 21600000),
+      isRead: true
+    },
+    {
+      id: 'notif-5',
+      type: 'success',
+      title: 'Doanh thu đạt mục tiêu',
+      message: 'Chiến dịch "Summer Collection" đã đạt 150% mục tiêu doanh thu',
+      timestamp: new Date(Date.now() - 86400000),
+      isRead: true
+    },
+    {
+      id: 'notif-6',
+      type: 'info',
+      title: 'Báo cáo tuần sẵn sàng',
+      message: 'Báo cáo hiệu suất tuần 42 đã được tạo và sẵn sàng xem',
+      timestamp: new Date(Date.now() - 172800000),
+      isRead: true
+    },
+    {
+      id: 'notif-7',
+      type: 'success',
+      title: 'Hợp đồng được ký',
+      message: 'Brand XYZ đã ký hợp đồng hợp tác dài hạn',
+      timestamp: new Date(Date.now() - 259200000),
+      isRead: true
+    },
+    {
+      id: 'notif-8',
+      type: 'info',
+      title: 'Cập nhật hệ thống',
+      message: 'Phiên bản 2.5.0 với tính năng mới đã được triển khai',
+      timestamp: new Date(Date.now() - 345600000),
+      isRead: true
+    }
+  ]);
+  
+  // Enhanced Bulk Actions state
+  const [selectedProducts, setSelectedProducts] = useState<Set<string | number>>(new Set());
+  const [lastBulkAction, setLastBulkAction] = useState<any>(null);
+  const [bulkActionDialogOpen, setBulkActionDialogOpen] = useState(false);
+
+  // Recipe 8 state - Admin List Management
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(1);
+  const [selectedItemsInCategory, setSelectedItemsInCategory] = useState<Set<string | number>>(new Set());
+  
+  // Recipe 9 state - Analytics Dashboard
+  const [analyticsFilters, setAnalyticsFilters] = useState<Record<string, any>>({
+    dateRange: 'week',
+    channel: 'all'
+  });
+  
+  // Recipe 10 state - User Management with Notifications
+  const [selectedUserIds, setSelectedUserIds] = useState<Set<number>>(new Set());
+  const [selectedUserIdForDetail, setSelectedUserIdForDetail] = useState<number | undefined>(1);
 
   // Sample commands for command palette
   const sampleCommands = [
@@ -276,6 +379,199 @@ function AppleHIGShowcaseContent() {
         .map(koc => koc.name)
     : [];
 
+  // Phase 2 Sample Data
+  // Sample users for List-Detail Shell
+  const sampleUsers = [
+    { id: 1, name: 'Nguyễn Văn An', email: 'nva@ikk.vn', role: 'Admin', status: 'active', avatar: '', joinDate: '2024-01-15', department: 'Quản trị', phone: '0901234567' },
+    { id: 2, name: 'Trần Thị Bình', email: 'ttb@ikk.vn', role: 'Brand Manager', status: 'active', avatar: '', joinDate: '2024-02-20', department: 'Marketing', phone: '0912345678' },
+    { id: 3, name: 'Lê Hoàng Cường', email: 'lhc@ikk.vn', role: 'KOC Manager', status: 'active', avatar: '', joinDate: '2024-01-10', department: 'Influencer Relations', phone: '0923456789' },
+    { id: 4, name: 'Phạm Thị Dung', email: 'ptd@ikk.vn', role: 'Content Creator', status: 'inactive', avatar: '', joinDate: '2023-12-05', department: 'Content', phone: '0934567890' },
+    { id: 5, name: 'Hoàng Văn Em', email: 'hve@ikk.vn', role: 'Analyst', status: 'active', avatar: '', joinDate: '2024-03-01', department: 'Analytics', phone: '0945678901' },
+    { id: 6, name: 'Đỗ Thị Phương', email: 'dtp@ikk.vn', role: 'Developer', status: 'active', avatar: '', joinDate: '2024-02-15', department: 'Engineering', phone: '0956789012' },
+    { id: 7, name: 'Vũ Minh Giang', email: 'vmg@ikk.vn', role: 'Designer', status: 'active', avatar: '', joinDate: '2024-01-20', department: 'Design', phone: '0967890123' },
+    { id: 8, name: 'Bùi Thị Hương', email: 'bth@ikk.vn', role: 'Sales Manager', status: 'active', avatar: '', joinDate: '2023-11-10', department: 'Sales', phone: '0978901234' },
+    { id: 9, name: 'Ngô Văn Ích', email: 'nvi@ikk.vn', role: 'Support Specialist', status: 'inactive', avatar: '', joinDate: '2024-03-15', department: 'Customer Support', phone: '0989012345' },
+    { id: 10, name: 'Trịnh Thị Kim', email: 'ttk@ikk.vn', role: 'Operations', status: 'active', avatar: '', joinDate: '2024-02-01', department: 'Operations', phone: '0990123456' },
+    { id: 11, name: 'Lý Văn Long', email: 'lvl@ikk.vn', role: 'Finance Manager', status: 'active', avatar: '', joinDate: '2023-10-20', department: 'Finance', phone: '0901234000' },
+    { id: 12, name: 'Phan Thị Mai', email: 'ptm@ikk.vn', role: 'HR Manager', status: 'active', avatar: '', joinDate: '2023-12-01', department: 'Human Resources', phone: '0912340000' },
+  ];
+
+  // Filter users based on search
+  const filteredUsers = sampleUsers.filter(user => 
+    !listDetailSearchValue || 
+    user.name.toLowerCase().includes(listDetailSearchValue.toLowerCase()) ||
+    user.email.toLowerCase().includes(listDetailSearchValue.toLowerCase()) ||
+    user.department.toLowerCase().includes(listDetailSearchValue.toLowerCase())
+  );
+
+  // Sample organization structure for Hierarchical Table
+  const orgStructure: TreeNode[] = [
+    {
+      id: 1,
+      data: { name: 'Nguyễn Minh Quang', position: 'CEO', department: 'Executive', email: 'ceo@ikk.vn', employees: 45 },
+      children: [
+        {
+          id: 2,
+          data: { name: 'Trần Văn Bình', position: 'CTO', department: 'Technology', email: 'cto@ikk.vn', employees: 18 },
+          children: [
+            {
+              id: 3,
+              data: { name: 'Lê Thị Hà', position: 'Engineering Lead', department: 'Engineering', email: 'ha.le@ikk.vn', employees: 8 },
+              children: [
+                { id: 4, data: { name: 'Phạm Văn Dũng', position: 'Senior Developer', department: 'Engineering', email: 'dung.pham@ikk.vn', employees: 3 } },
+                { id: 5, data: { name: 'Hoàng Thị Mai', position: 'Senior Developer', department: 'Engineering', email: 'mai.hoang@ikk.vn', employees: 2 } },
+              ]
+            },
+            {
+              id: 6,
+              data: { name: 'Đỗ Văn Khánh', position: 'Product Lead', department: 'Product', email: 'khanh.do@ikk.vn', employees: 5 },
+              children: [
+                { id: 7, data: { name: 'Vũ Thị Lan', position: 'Product Manager', department: 'Product', email: 'lan.vu@ikk.vn', employees: 2 } },
+              ]
+            },
+            {
+              id: 8,
+              data: { name: 'Bùi Văn Nam', position: 'QA Lead', department: 'Quality Assurance', email: 'nam.bui@ikk.vn', employees: 3 },
+            }
+          ]
+        },
+        {
+          id: 9,
+          data: { name: 'Ngô Thị Oanh', position: 'CMO', department: 'Marketing', email: 'cmo@ikk.vn', employees: 12 },
+          children: [
+            {
+              id: 10,
+              data: { name: 'Trịnh Văn Phúc', position: 'Content Lead', department: 'Content', email: 'phuc.trinh@ikk.vn', employees: 4 },
+              children: [
+                { id: 11, data: { name: 'Lý Thị Quỳnh', position: 'Content Writer', department: 'Content', email: 'quynh.ly@ikk.vn', employees: 0 } },
+                { id: 12, data: { name: 'Phan Văn Rồng', position: 'Content Writer', department: 'Content', email: 'rong.phan@ikk.vn', employees: 0 } },
+              ]
+            },
+            {
+              id: 13,
+              data: { name: 'Dương Thị Sương', position: 'Brand Manager', department: 'Branding', email: 'suong.duong@ikk.vn', employees: 3 },
+            },
+            {
+              id: 14,
+              data: { name: 'Cao Văn Tài', position: 'Social Media Manager', department: 'Social Media', email: 'tai.cao@ikk.vn', employees: 2 },
+            }
+          ]
+        },
+        {
+          id: 15,
+          data: { name: 'Đinh Thị Uyên', position: 'CFO', department: 'Finance', email: 'cfo@ikk.vn', employees: 8 },
+          children: [
+            { id: 16, data: { name: 'Võ Văn Vũ', position: 'Accounting Manager', department: 'Accounting', email: 'vu.vo@ikk.vn', employees: 3 } },
+            { id: 17, data: { name: 'Huỳnh Thị Xuân', position: 'Finance Analyst', department: 'Finance', email: 'xuan.huynh@ikk.vn', employees: 2 } },
+          ]
+        },
+        {
+          id: 18,
+          data: { name: 'Mai Văn Yên', position: 'COO', department: 'Operations', email: 'coo@ikk.vn', employees: 7 },
+          children: [
+            { id: 19, data: { name: 'Châu Thị Ánh', position: 'Operations Manager', department: 'Operations', email: 'anh.chau@ikk.vn', employees: 4 } },
+          ]
+        }
+      ]
+    }
+  ];
+
+  // Sample products for Enhanced Bulk Actions
+  const sampleProducts = [
+    { id: 1, name: 'Áo thun IKK Premium', sku: 'IKK-TS-001', price: 299000, stock: 150, category: 'Thời trang', status: 'active' },
+    { id: 2, name: 'Quần jean Slim Fit', sku: 'IKK-JN-002', price: 550000, stock: 85, category: 'Thời trang', status: 'active' },
+    { id: 3, name: 'Áo hoodie Winter', sku: 'IKK-HD-003', price: 450000, stock: 120, category: 'Thời trang', status: 'active' },
+    { id: 4, name: 'Giày sneaker Classic', sku: 'IKK-SN-004', price: 890000, stock: 45, category: 'Giày dép', status: 'active' },
+    { id: 5, name: 'Balo laptop Premium', sku: 'IKK-BL-005', price: 650000, stock: 60, category: 'Phụ kiện', status: 'active' },
+    { id: 6, name: 'Mũ lưỡi trai IKK', sku: 'IKK-CP-006', price: 180000, stock: 200, category: 'Phụ kiện', status: 'active' },
+    { id: 7, name: 'Túi tote canvas', sku: 'IKK-TB-007', price: 220000, stock: 95, category: 'Phụ kiện', status: 'low_stock' },
+    { id: 8, name: 'Áo khoác bomber', sku: 'IKK-JK-008', price: 780000, stock: 35, category: 'Thời trang', status: 'low_stock' },
+    { id: 9, name: 'Quần short summer', sku: 'IKK-SH-009', price: 320000, stock: 0, category: 'Thời trang', status: 'out_of_stock' },
+    { id: 10, name: 'Dép sandal comfort', sku: 'IKK-SD-010', price: 250000, stock: 110, category: 'Giày dép', status: 'active' },
+    { id: 11, name: 'Áo polo classic', sku: 'IKK-PL-011', price: 380000, stock: 75, category: 'Thời trang', status: 'active' },
+    { id: 12, name: 'Ví da cao cấp', sku: 'IKK-WL-012', price: 450000, stock: 50, category: 'Phụ kiện', status: 'active' },
+  ];
+
+  // Recipe 8 sample data - Categories with hierarchical items
+  const categoryList = [
+    { id: 1, name: 'Thời trang', itemCount: 156, icon: '👔' },
+    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '💄' },
+    { id: 3, name: 'Công nghệ', itemCount: 64, icon: '💻' },
+    { id: 4, name: 'Ẩm thực', itemCount: 42, icon: '🍔' },
+  ];
+
+  const categoryItemsTree: TreeNode[] = [
+    {
+      id: 'fashion-1',
+      data: { name: 'Áo quần nam', type: 'Danh mục chính', products: 45, revenue: '125M VNĐ' },
+      children: [
+        { id: 'fashion-1-1', data: { name: 'Áo thun nam', type: 'Danh mục con', products: 18, revenue: '45M VNĐ' } },
+        { id: 'fashion-1-2', data: { name: 'Quần jean nam', type: 'Danh mục con', products: 15, revenue: '52M VNĐ' } },
+        { id: 'fashion-1-3', data: { name: 'Áo sơ mi nam', type: 'Danh mục con', products: 12, revenue: '28M VNĐ' } },
+      ]
+    },
+    {
+      id: 'fashion-2',
+      data: { name: 'Áo quần nữ', type: 'Danh mục chính', products: 67, revenue: '198M VNĐ' },
+      children: [
+        { id: 'fashion-2-1', data: { name: 'Váy nữ', type: 'Danh mục con', products: 24, revenue: '78M VNĐ' } },
+        { id: 'fashion-2-2', data: { name: 'Áo kiểu nữ', type: 'Danh mục con', products: 28, revenue: '85M VNĐ' } },
+        { id: 'fashion-2-3', data: { name: 'Quần nữ', type: 'Danh mục con', products: 15, revenue: '35M VNĐ' } },
+      ]
+    },
+    {
+      id: 'fashion-3',
+      data: { name: 'Phụ kiện thời trang', type: 'Danh mục chính', products: 44, revenue: '89M VNĐ' },
+      children: [
+        { id: 'fashion-3-1', data: { name: 'Túi xách', type: 'Danh mục con', products: 18, revenue: '45M VNĐ' } },
+        { id: 'fashion-3-2', data: { name: 'Giày dép', type: 'Danh mục con', products: 16, revenue: '32M VNĐ' } },
+        { id: 'fashion-3-3', data: { name: 'Mũ nón', type: 'Danh mục con', products: 10, revenue: '12M VNĐ' } },
+      ]
+    },
+  ];
+
+  // Recipe 9 sample data - Analytics dashboard
+  const analyticsMetrics = {
+    revenue: { value: 245000000, change: 18.5, changeType: 'increase' as const },
+    orders: { value: 1842, change: 12.3, changeType: 'increase' as const },
+    customers: { value: 856, change: 8.7, changeType: 'increase' as const },
+    conversion: { value: 3.4, change: -2.1, changeType: 'decrease' as const, suffix: '%' },
+  };
+
+  const revenueChartData = [
+    { date: '01/10', revenue: 15000000 },
+    { date: '05/10', revenue: 18000000 },
+    { date: '10/10', revenue: 22000000 },
+    { date: '15/10', revenue: 25000000 },
+    { date: '20/10', revenue: 28000000 },
+    { date: '25/10', revenue: 32000000 },
+    { date: '30/10', revenue: 35000000 },
+  ];
+
+  const categoryRevenueData = [
+    { category: 'Thời trang', revenue: 95000000 },
+    { category: 'Làm đẹp', revenue: 68000000 },
+    { category: 'Công nghệ', revenue: 52000000 },
+    { category: 'Ẩm thực', revenue: 30000000 },
+  ];
+
+  const recentOrdersData = [
+    { id: 'ORD-001', customer: 'Nguyễn Văn A', amount: 1250000, status: 'Đã giao', date: '2024-10-12' },
+    { id: 'ORD-002', customer: 'Trần Thị B', amount: 890000, status: 'Đang giao', date: '2024-10-12' },
+    { id: 'ORD-003', customer: 'Lê Hoàng C', amount: 2150000, status: 'Đã giao', date: '2024-10-11' },
+    { id: 'ORD-004', customer: 'Phạm Thị D', amount: 750000, status: 'Chờ xử lý', date: '2024-10-11' },
+    { id: 'ORD-005', customer: 'Hoàng Văn E', amount: 1680000, status: 'Đã giao', date: '2024-10-10' },
+  ];
+
+  // Recipe 10 sample data - User activities
+  const userActivitiesData = [
+    { id: 1, action: 'Đăng nhập hệ thống', timestamp: '2024-10-13 09:30', ip: '192.168.1.1', device: 'Chrome - Windows' },
+    { id: 2, action: 'Chỉnh sửa chiến dịch "Tết 2025"', timestamp: '2024-10-13 10:15', ip: '192.168.1.1', device: 'Chrome - Windows' },
+    { id: 3, action: 'Phê duyệt KOC mới', timestamp: '2024-10-13 11:20', ip: '192.168.1.1', device: 'Chrome - Windows' },
+    { id: 4, action: 'Xuất báo cáo doanh thu', timestamp: '2024-10-13 14:45', ip: '192.168.1.1', device: 'Chrome - Windows' },
+    { id: 5, action: 'Đăng nhập hệ thống', timestamp: '2024-10-12 08:45', ip: '192.168.1.2', device: 'Safari - MacOS' },
+  ];
+
   const CodeBlock = ({ code, language = 'tsx' }: { code: string; language?: string }) => (
     <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
       <code>{code}</code>
@@ -380,18 +676,27 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'reusability', 'recipes', 'guides', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'reusability', 'recipes', 'guides', 'examples', 'list-detail', 'hierarchical-table', 'notification-center', 'advanced-dashboard', 'enhanced-bulk-actions'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                   activeTab === tab
                     ? 'bg-[#ff0086] text-white'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
                 data-testid={`button-tab-${tab}`}
               >
-                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Admin Use Cases' : tab === 'reusability' ? 'External Reusability' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'ecommerce' ? 'E-commerce' : 
+                 tab === 'utilities' ? 'Tiện ích' : 
+                 tab === 'admin' ? 'Admin Use Cases' : 
+                 tab === 'reusability' ? 'External Reusability' :
+                 tab === 'list-detail' ? 'List-Detail Shell' :
+                 tab === 'hierarchical-table' ? 'Hierarchical Table' :
+                 tab === 'notification-center' ? 'Notification Center' :
+                 tab === 'advanced-dashboard' ? 'Advanced Dashboard' :
+                 tab === 'enhanced-bulk-actions' ? 'Enhanced Bulk Actions' :
+                 tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>
@@ -3259,6 +3564,780 @@ function AdminDashboard() {
           return {url: data.downloadUrl, filename: 'export_' + Date.now() + '.' + config.format};
         }}
       />
+    </div>
+  );
+}`}
+              />
+            </div>
+
+            {/* Recipe 8: Admin List Management Workflow */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold mb-2" data-testid="heading-recipe-admin-list">
+                  8. Quản lý danh sách Admin / Admin List Management
+                </h3>
+                <p className="text-gray-600">
+                  Master-detail layout kết hợp hierarchical table và bulk actions để quản lý dữ liệu phân cấp với các thao tác hàng loạt
+                </p>
+              </div>
+
+              {/* Components Used */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Components sử dụng:</h4>
+                <div className="flex flex-wrap gap-2">
+                  <AppleBadge variant="info" size="sm">AppleListDetailShell</AppleBadge>
+                  <AppleBadge variant="info" size="sm">AppleHierarchicalTable</AppleBadge>
+                  <AppleBadge variant="info" size="sm">BulkActionToolbar</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleBadge</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Demo */}
+              <div className="mb-6 border rounded-lg p-6 bg-gray-50">
+                <h4 className="font-semibold mb-4">Live Demo</h4>
+                <AppleListDetailShell
+                  items={categoryList}
+                  selectedId={selectedCategoryId}
+                  onSelect={(id) => setSelectedCategoryId(id as number)}
+                  renderListItem={(category) => (
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">{category.icon}</span>
+                        <span className="font-medium">{category.name}</span>
+                      </div>
+                      <AppleBadge variant="default" size="sm">{category.itemCount}</AppleBadge>
+                    </div>
+                  )}
+                  renderDetail={(category) => (
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                          <span className="text-3xl">{category.icon}</span>
+                          {category.name}
+                        </h3>
+                        <p className="text-gray-600">
+                          Quản lý {category.itemCount} sản phẩm trong danh mục này
+                        </p>
+                      </div>
+
+                      <AppleHierarchicalTable
+                        data={categoryItemsTree}
+                        columns={[
+                          { 
+                            key: 'name', 
+                            label: 'Tên danh mục', 
+                            width: '35%',
+                            render: (value) => <span className="font-medium">{value}</span>
+                          },
+                          { key: 'type', label: 'Loại', width: '20%' },
+                          { key: 'products', label: 'Sản phẩm', width: '15%', align: 'center' },
+                          { key: 'revenue', label: 'Doanh thu', width: '30%', align: 'right' },
+                        ]}
+                        expandedIds={new Set([...expandedNodeIds])}
+                        onExpandedChange={setExpandedNodeIds}
+                        selectedIds={selectedItemsInCategory}
+                        onSelectedChange={setSelectedItemsInCategory}
+                        showExpandAll
+                        showConnectingLines
+                      />
+
+                      {selectedItemsInCategory.size > 0 && (
+                        <div className="mt-4">
+                          <BulkActionToolbar
+                            selectedCount={selectedItemsInCategory.size}
+                            totalCount={categoryItemsTree.length}
+                            onSelectAll={() => {
+                              const allIds = new Set<string | number>();
+                              const addAllIds = (nodes: TreeNode[]) => {
+                                nodes.forEach(node => {
+                                  allIds.add(node.id);
+                                  if (node.children) addAllIds(node.children);
+                                });
+                              };
+                              addAllIds(categoryItemsTree);
+                              setSelectedItemsInCategory(allIds);
+                            }}
+                            onDeselectAll={() => setSelectedItemsInCategory(new Set())}
+                            onUndo={() => {
+                              toast.info('Đã hoàn tác thao tác cuối');
+                              setSelectedItemsInCategory(new Set());
+                            }}
+                            onExport={() => toast.success('Đang xuất dữ liệu...')}
+                            actions={[
+                              { 
+                                label: 'Di chuyển', 
+                                onClick: () => toast.info(`Di chuyển ${selectedItemsInCategory.size} mục`) 
+                              },
+                              { 
+                                label: 'Xóa', 
+                                variant: 'destructive', 
+                                onClick: () => toast.error(`Xóa ${selectedItemsInCategory.size} mục`) 
+                              }
+                            ]}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                />
+              </div>
+
+              {/* Best Practices */}
+              <div className="mb-6 bg-green-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-green-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
+                  <li>Quản lý cấu trúc dữ liệu phân cấp (danh mục, tổ chức)</li>
+                  <li>Cần thao tác hàng loạt trên nhiều mục cùng lúc</li>
+                  <li>Hiển thị mối quan hệ cha-con trong dữ liệu</li>
+                  <li>Admin panel cho quản lý nội dung hoặc sản phẩm</li>
+                </ul>
+              </div>
+
+              {/* Code Example */}
+              <CodeBlock
+                code={`import { 
+  AppleListDetailShell, 
+  AppleHierarchicalTable, 
+  BulkActionToolbar,
+  AppleBadge 
+} from '@/components/apple';
+
+function AdminListManagement() {
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>();
+  const [selectedItems, setSelectedItems] = useState<Set<string | number>>(new Set());
+  const [expandedNodes, setExpandedNodes] = useState<Set<string | number>>(new Set());
+
+  const categories = [
+    { id: 1, name: 'Thời trang', itemCount: 156, icon: '👔' },
+    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '💄' }
+  ];
+
+  const categoryTree: TreeNode[] = [
+    {
+      id: 'cat-1',
+      data: { name: 'Áo quần nam', type: 'Chính', products: 45, revenue: '125M' },
+      children: [
+        { id: 'cat-1-1', data: { name: 'Áo thun', type: 'Con', products: 18, revenue: '45M' } },
+        { id: 'cat-1-2', data: { name: 'Quần jean', type: 'Con', products: 15, revenue: '52M' } }
+      ]
+    }
+  ];
+
+  return (
+    <AppleListDetailShell
+      items={categories}
+      selectedId={selectedCategoryId}
+      onSelect={setSelectedCategoryId}
+      renderListItem={(category) => (
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center gap-3">
+            <span>{category.icon}</span>
+            <span>{category.name}</span>
+          </div>
+          <AppleBadge>{category.itemCount}</AppleBadge>
+        </div>
+      )}
+      renderDetail={(category) => (
+        <div className="space-y-6">
+          <h3>{category.name}</h3>
+
+          <AppleHierarchicalTable
+            data={categoryTree}
+            columns={[
+              { key: 'name', label: 'Tên', width: '40%' },
+              { key: 'type', label: 'Loại', width: '20%' },
+              { key: 'products', label: 'SP', width: '20%' },
+              { key: 'revenue', label: 'DT', width: '20%' }
+            ]}
+            expandedIds={expandedNodes}
+            onExpandedChange={setExpandedNodes}
+            selectedIds={selectedItems}
+            onSelectedChange={setSelectedItems}
+            showExpandAll
+          />
+
+          {selectedItems.size > 0 && (
+            <BulkActionToolbar
+              selectedCount={selectedItems.size}
+              totalCount={categoryTree.length}
+              onSelectAll={handleSelectAll}
+              onDeselectAll={() => setSelectedItems(new Set())}
+              actions={[
+                { label: 'Di chuyển', onClick: handleMove },
+                { label: 'Xóa', variant: 'destructive', onClick: handleDelete }
+              ]}
+            />
+          )}
+        </div>
+      )}
+    />
+  );
+}`}
+              />
+            </div>
+
+            {/* Recipe 9: Analytics Dashboard Pattern */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold mb-2" data-testid="heading-recipe-analytics">
+                  9. Dashboard phân tích / Analytics Dashboard
+                </h3>
+                <p className="text-gray-600">
+                  Bảng điều khiển phân tích toàn diện với KPI cards, biểu đồ, bộ lọc và bảng dữ liệu
+                </p>
+              </div>
+
+              {/* Components Used */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Components sử dụng:</h4>
+                <div className="flex flex-wrap gap-2">
+                  <AppleBadge variant="info" size="sm">AppleMetricCard</AppleBadge>
+                  <AppleBadge variant="info" size="sm">AppleChart</AppleBadge>
+                  <AppleBadge variant="info" size="sm">AppleFilterPanel</AppleBadge>
+                  <AppleBadge variant="info" size="sm">AppleCard</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTable</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Demo */}
+              <div className="mb-6 border rounded-lg p-6 bg-gray-50">
+                <h4 className="font-semibold mb-4">Live Demo</h4>
+                <div className="space-y-6">
+                  {/* Header with filters */}
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold">Báo cáo phân tích</h3>
+                    <AppleFilterPanel
+                      filters={[
+                        {
+                          id: 'dateRange',
+                          type: 'select',
+                          label: 'Khoảng thời gian',
+                          options: [
+                            { value: 'week', label: 'Tuần này' },
+                            { value: 'month', label: 'Tháng này' },
+                            { value: 'quarter', label: 'Quý này' }
+                          ],
+                          value: analyticsFilters.dateRange
+                        },
+                        {
+                          id: 'channel',
+                          type: 'select',
+                          label: 'Kênh',
+                          options: [
+                            { value: 'all', label: 'Tất cả' },
+                            { value: 'online', label: 'Online' },
+                            { value: 'offline', label: 'Offline' }
+                          ],
+                          value: analyticsFilters.channel
+                        }
+                      ]}
+                      onApply={(filters) => {
+                        setAnalyticsFilters(filters);
+                        toast.success('Đã áp dụng bộ lọc');
+                      }}
+                      onClear={() => {
+                        setAnalyticsFilters({ dateRange: 'week', channel: 'all' });
+                        toast.info('Đã xóa bộ lọc');
+                      }}
+                    />
+                  </div>
+
+                  {/* KPI Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <AppleMetricCard
+                      title="Doanh thu"
+                      value={analyticsMetrics.revenue.value}
+                      format="currency"
+                      change={analyticsMetrics.revenue.change}
+                      changeType={analyticsMetrics.revenue.changeType}
+                      icon={<DollarSign className="w-5 h-5" />}
+                    />
+                    <AppleMetricCard
+                      title="Đơn hàng"
+                      value={analyticsMetrics.orders.value}
+                      format="number"
+                      change={analyticsMetrics.orders.change}
+                      changeType={analyticsMetrics.orders.changeType}
+                      icon={<ShoppingCart className="w-5 h-5" />}
+                    />
+                    <AppleMetricCard
+                      title="Khách hàng"
+                      value={analyticsMetrics.customers.value}
+                      format="number"
+                      change={analyticsMetrics.customers.change}
+                      changeType={analyticsMetrics.customers.changeType}
+                      icon={<Users className="w-5 h-5" />}
+                    />
+                    <AppleMetricCard
+                      title="Tỷ lệ chuyển đổi"
+                      value={analyticsMetrics.conversion.value}
+                      suffix="%"
+                      change={analyticsMetrics.conversion.change}
+                      changeType={analyticsMetrics.conversion.changeType}
+                      icon={<TrendingUp className="w-5 h-5" />}
+                    />
+                  </div>
+
+                  {/* Charts Grid */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <AppleCard>
+                      <AppleCard.Header>
+                        <h4 className="font-semibold">Xu hướng doanh thu</h4>
+                      </AppleCard.Header>
+                      <AppleCard.Body>
+                        <div className="h-64">
+                          <AppleChart
+                            type="line"
+                            data={revenueChartData}
+                            xKey="date"
+                            yKey="revenue"
+                            showGrid
+                            showTooltip
+                          />
+                        </div>
+                      </AppleCard.Body>
+                    </AppleCard>
+
+                    <AppleCard>
+                      <AppleCard.Header>
+                        <h4 className="font-semibold">Doanh thu theo danh mục</h4>
+                      </AppleCard.Header>
+                      <AppleCard.Body>
+                        <div className="h-64">
+                          <AppleChart
+                            type="bar"
+                            data={categoryRevenueData}
+                            xKey="category"
+                            yKey="revenue"
+                            showGrid
+                            showTooltip
+                          />
+                        </div>
+                      </AppleCard.Body>
+                    </AppleCard>
+                  </div>
+
+                  {/* Recent Orders Table */}
+                  <AppleCard>
+                    <AppleCard.Header>
+                      <h4 className="font-semibold">Đơn hàng gần đây</h4>
+                    </AppleCard.Header>
+                    <AppleCard.Body>
+                      <AppleTable
+                        data={recentOrdersData}
+                        columns={[
+                          { key: 'id', label: 'Mã đơn' },
+                          { key: 'customer', label: 'Khách hàng' },
+                          { 
+                            key: 'amount', 
+                            label: 'Số tiền',
+                            render: (value) => `${value.toLocaleString('vi-VN')} ₫`
+                          },
+                          { key: 'status', label: 'Trạng thái' },
+                          { key: 'date', label: 'Ngày' }
+                        ]}
+                        pagination={false}
+                      />
+                    </AppleCard.Body>
+                  </AppleCard>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="mb-6 bg-blue-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-blue-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
+                  <li>Dashboard điều hành với nhiều chỉ số KPI</li>
+                  <li>Báo cáo phân tích theo thời gian</li>
+                  <li>So sánh hiệu suất giữa các kênh/danh mục</li>
+                  <li>Trang tổng quan doanh nghiệp hoặc chiến dịch</li>
+                </ul>
+              </div>
+
+              {/* Code Example */}
+              <CodeBlock
+                code={`import { 
+  AppleMetricCard, 
+  AppleChart, 
+  AppleFilterPanel,
+  AppleCard,
+  AppleTable 
+} from '@/components/apple';
+
+function AnalyticsDashboard() {
+  const [filters, setFilters] = useState({ dateRange: 'week', channel: 'all' });
+
+  const metrics = {
+    revenue: { value: 245000000, change: 18.5, changeType: 'increase' },
+    orders: { value: 1842, change: 12.3, changeType: 'increase' },
+    customers: { value: 856, change: 8.7, changeType: 'increase' },
+    conversion: { value: 3.4, change: -2.1, changeType: 'decrease' }
+  };
+
+  const revenueData = [
+    { date: '01/10', revenue: 15000000 },
+    { date: '05/10', revenue: 18000000 },
+    // ... more data
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header with filters */}
+      <div className="flex justify-between items-center">
+        <h1>Báo cáo phân tích</h1>
+        <AppleFilterPanel
+          filters={[
+            { id: 'dateRange', type: 'select', label: 'Thời gian', options: [...] },
+            { id: 'channel', type: 'select', label: 'Kênh', options: [...] }
+          ]}
+          onApply={setFilters}
+        />
+      </div>
+
+      {/* KPI Cards */}
+      <div className="grid grid-cols-4 gap-4">
+        <AppleMetricCard 
+          title="Doanh thu" 
+          value={metrics.revenue.value}
+          format="currency"
+          change={metrics.revenue.change}
+          changeType={metrics.revenue.changeType}
+        />
+        {/* More cards... */}
+      </div>
+
+      {/* Charts */}
+      <div className="grid grid-cols-2 gap-6">
+        <AppleCard>
+          <AppleCard.Header><h3>Xu hướng doanh thu</h3></AppleCard.Header>
+          <AppleCard.Body>
+            <AppleChart type="line" data={revenueData} xKey="date" yKey="revenue" />
+          </AppleCard.Body>
+        </AppleCard>
+        {/* More charts... */}
+      </div>
+
+      {/* Data Table */}
+      <AppleTable data={recentOrders} columns={orderColumns} />
+    </div>
+  );
+}`}
+              />
+            </div>
+
+            {/* Recipe 10: User Management with Notifications */}
+            <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+              <div className="mb-6">
+                <h3 className="text-2xl font-semibold mb-2" data-testid="heading-recipe-user-management">
+                  10. Quản lý người dùng / User Management with Notifications
+                </h3>
+                <p className="text-gray-600">
+                  Giao diện quản lý người dùng với thông báo thời gian thực, chi tiết người dùng và thao tác hàng loạt
+                </p>
+              </div>
+
+              {/* Components Used */}
+              <div className="mb-6">
+                <h4 className="text-sm font-semibold text-gray-700 mb-3">Components sử dụng:</h4>
+                <div className="flex flex-wrap gap-2">
+                  <AppleBadge variant="info" size="sm">AppleListDetailShell</AppleBadge>
+                  <AppleBadge variant="info" size="sm">AppleNotificationCenter</AppleBadge>
+                  <AppleBadge variant="info" size="sm">BulkActionToolbar</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTable</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleAvatar</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Demo */}
+              <div className="mb-6 border rounded-lg p-6 bg-gray-50">
+                <h4 className="font-semibold mb-4">Live Demo</h4>
+                <div className="space-y-6">
+                  {/* Header with Notification Center */}
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold">Quản lý người dùng</h3>
+                    <AppleNotificationCenter
+                      notifications={notificationsList}
+                      onMarkAsRead={(id) => {
+                        setNotificationsList(prev =>
+                          prev.map(notif => notif.id === id ? { ...notif, isRead: true } : notif)
+                        );
+                      }}
+                      onMarkAllAsRead={() => {
+                        setNotificationsList(prev =>
+                          prev.map(notif => ({ ...notif, isRead: true }))
+                        );
+                        toast.success('Đã đánh dấu tất cả là đã đọc');
+                      }}
+                      onClear={() => {
+                        setNotificationsList([]);
+                        toast.info('Đã xóa tất cả thông báo');
+                      }}
+                    />
+                  </div>
+
+                  {/* List-Detail Shell */}
+                  <AppleListDetailShell
+                    items={sampleUsers}
+                    selectedId={selectedUserIdForDetail}
+                    onSelect={(id) => setSelectedUserIdForDetail(id as number)}
+                    searchable
+                    searchPlaceholder="Tìm kiếm người dùng..."
+                    renderListItem={(user) => (
+                      <div className="flex items-center gap-3 w-full">
+                        <AppleAvatar src={user.avatar} fallback={user.name.charAt(0)} size="md" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium truncate">{user.name}</p>
+                          <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                        </div>
+                        <AppleBadge 
+                          variant={user.status === 'active' ? 'success' : 'default'}
+                          size="sm"
+                        >
+                          {user.status === 'active' ? 'Hoạt động' : 'Vô hiệu'}
+                        </AppleBadge>
+                      </div>
+                    )}
+                    renderDetail={(user) => (
+                      <div className="space-y-6">
+                        {/* User Info */}
+                        <div className="flex items-start gap-6 pb-6 border-b">
+                          <AppleAvatar src={user.avatar} fallback={user.name.charAt(0)} size="xl" />
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-bold mb-2">{user.name}</h3>
+                            <p className="text-gray-600 mb-3">{user.email}</p>
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                              <div>
+                                <span className="text-gray-500">Vai trò:</span>
+                                <span className="ml-2 font-medium">{user.role}</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">Phòng ban:</span>
+                                <span className="ml-2 font-medium">{user.department}</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">Điện thoại:</span>
+                                <span className="ml-2 font-medium">{user.phone}</span>
+                              </div>
+                              <div>
+                                <span className="text-gray-500">Ngày tham gia:</span>
+                                <span className="ml-2 font-medium">{user.joinDate}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Activity Table */}
+                        <div>
+                          <h4 className="font-semibold mb-3">Lịch sử hoạt động</h4>
+                          <AppleTable
+                            data={userActivitiesData}
+                            columns={[
+                              { key: 'action', label: 'Hành động', width: '35%' },
+                              { key: 'timestamp', label: 'Thời gian', width: '25%' },
+                              { key: 'ip', label: 'IP', width: '20%' },
+                              { key: 'device', label: 'Thiết bị', width: '20%' }
+                            ]}
+                            pagination={false}
+                          />
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-3 pt-6 border-t">
+                          <AppleButton variant="primary">
+                            <Edit className="w-4 h-4 mr-2" />
+                            Chỉnh sửa
+                          </AppleButton>
+                          <AppleButton variant="outline">
+                            <Mail className="w-4 h-4 mr-2" />
+                            Gửi thông báo
+                          </AppleButton>
+                          <AppleButton variant="destructive">
+                            <Trash className="w-4 h-4 mr-2" />
+                            Vô hiệu hóa
+                          </AppleButton>
+                        </div>
+                      </div>
+                    )}
+                  />
+
+                  {/* Bulk Actions (shown when users selected) */}
+                  {selectedUserIds.size > 0 && (
+                    <BulkActionToolbar
+                      selectedCount={selectedUserIds.size}
+                      totalCount={sampleUsers.length}
+                      onSelectAll={() => {
+                        setSelectedUserIds(new Set(sampleUsers.map(u => u.id)));
+                        toast.info('Đã chọn tất cả người dùng');
+                      }}
+                      onDeselectAll={() => {
+                        setSelectedUserIds(new Set());
+                        toast.info('Đã bỏ chọn tất cả');
+                      }}
+                      onExport={() => toast.success('Đang xuất danh sách người dùng...')}
+                      actions={[
+                        { 
+                          label: 'Kích hoạt', 
+                          onClick: () => {
+                            toast.success(`Đã kích hoạt ${selectedUserIds.size} người dùng`);
+                            setSelectedUserIds(new Set());
+                          }
+                        },
+                        { 
+                          label: 'Vô hiệu hóa', 
+                          variant: 'destructive', 
+                          onClick: () => {
+                            toast.error(`Đã vô hiệu hóa ${selectedUserIds.size} người dùng`);
+                            setSelectedUserIds(new Set());
+                          }
+                        }
+                      ]}
+                    />
+                  )}
+
+                  {/* Demo: Show bulk toolbar */}
+                  <div className="text-center pt-4 border-t">
+                    <AppleButton 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => {
+                        if (selectedUserIds.size === 0) {
+                          setSelectedUserIds(new Set([1, 2, 3]));
+                          toast.info('Đã chọn 3 người dùng để demo Bulk Actions');
+                        } else {
+                          setSelectedUserIds(new Set());
+                        }
+                      }}
+                    >
+                      {selectedUserIds.size > 0 ? 'Ẩn' : 'Hiện'} Bulk Actions Toolbar (Demo)
+                    </AppleButton>
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="mb-6 bg-purple-50 p-4 rounded-lg">
+                <h4 className="font-semibold text-purple-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
+                  <li>Quản lý người dùng/thành viên trong hệ thống</li>
+                  <li>Cần hiển thị thông báo và hoạt động real-time</li>
+                  <li>Thao tác hàng loạt trên nhiều người dùng</li>
+                  <li>Admin panel với chi tiết đầy đủ về từng user</li>
+                </ul>
+              </div>
+
+              {/* Code Example */}
+              <CodeBlock
+                code={`import { 
+  AppleListDetailShell,
+  AppleNotificationCenter,
+  BulkActionToolbar,
+  AppleTable,
+  AppleAvatar,
+  AppleButton
+} from '@/components/apple';
+
+function UserManagement() {
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  const [selectedUserIds, setSelectedUserIds] = useState<Set<number>>(new Set());
+  const [notifications, setNotifications] = useState<Notification[]>([...]);
+
+  const users = [
+    { 
+      id: 1, 
+      name: 'Nguyễn Văn An', 
+      email: 'nva@ikk.vn', 
+      role: 'Admin',
+      status: 'active',
+      department: 'Quản trị'
+    },
+    // ... more users
+  ];
+
+  const activities = [
+    { 
+      id: 1, 
+      action: 'Đăng nhập hệ thống', 
+      timestamp: '2024-10-13 09:30',
+      ip: '192.168.1.1'
+    },
+    // ... more activities
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Header with notifications */}
+      <div className="flex justify-between">
+        <h1>Quản lý người dùng</h1>
+        <AppleNotificationCenter
+          notifications={notifications}
+          onMarkAsRead={(id) => {/* mark as read */}}
+          onMarkAllAsRead={() => {/* mark all */}}
+        />
+      </div>
+
+      {/* List-Detail Layout */}
+      <AppleListDetailShell
+        items={users}
+        selectedId={selectedUserId}
+        onSelect={setSelectedUserId}
+        searchable
+        renderListItem={(user) => (
+          <div className="flex items-center gap-3">
+            <AppleAvatar src={user.avatar} fallback={user.name[0]} />
+            <div>
+              <p className="font-medium">{user.name}</p>
+              <p className="text-sm text-gray-500">{user.email}</p>
+            </div>
+            <AppleBadge variant={user.status === 'active' ? 'success' : 'default'}>
+              {user.status}
+            </AppleBadge>
+          </div>
+        )}
+        renderDetail={(user) => (
+          <div className="space-y-6">
+            {/* User info */}
+            <div className="flex gap-4">
+              <AppleAvatar src={user.avatar} size="xl" />
+              <div>
+                <h2>{user.name}</h2>
+                <p>{user.email}</p>
+                <p>Role: {user.role}</p>
+              </div>
+            </div>
+
+            {/* Activity table */}
+            <AppleTable
+              data={activities}
+              columns={[
+                { key: 'action', label: 'Hành động' },
+                { key: 'timestamp', label: 'Thời gian' },
+                { key: 'ip', label: 'IP' }
+              ]}
+            />
+
+            {/* Actions */}
+            <div className="flex gap-3">
+              <AppleButton>Chỉnh sửa</AppleButton>
+              <AppleButton variant="outline">Gửi thông báo</AppleButton>
+              <AppleButton variant="destructive">Vô hiệu hóa</AppleButton>
+            </div>
+          </div>
+        )}
+      />
+
+      {/* Bulk actions */}
+      {selectedUserIds.size > 0 && (
+        <BulkActionToolbar
+          selectedCount={selectedUserIds.size}
+          totalCount={users.length}
+          onSelectAll={() => setSelectedUserIds(new Set(users.map(u => u.id)))}
+          onDeselectAll={() => setSelectedUserIds(new Set())}
+          actions={[
+            { label: 'Kích hoạt', onClick: handleActivate },
+            { label: 'Vô hiệu hóa', variant: 'destructive', onClick: handleDeactivate }
+          ]}
+        />
+      )}
     </div>
   );
 }`}
@@ -6992,6 +8071,1546 @@ function TechDashboard() {
             </div>
           </div>
         </Section>
+
+        {/* Admin Patterns Guide (Phase 2) */}
+        <Section title="🔧 Admin Patterns Guide (Phase 2)">
+          <div className="space-y-12">
+            {/* Introduction */}
+            <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-8">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">Admin Patterns Guide</h3>
+              <p className="text-gray-700 text-lg mb-6">
+                Phase 2 introduces 5 advanced patterns specifically designed for admin interfaces and data-heavy applications. 
+                These patterns solve common challenges in enterprise applications: managing lists, hierarchical data, notifications, 
+                analytics dashboards, and bulk operations.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-2xl">📋</span> AppleListDetailShell
+                  </h4>
+                  <p className="text-sm text-gray-600">Master-detail layout for item management</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-2xl">🌳</span> AppleHierarchicalTable
+                  </h4>
+                  <p className="text-sm text-gray-600">Expandable nested data tables</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-2xl">🔔</span> AppleNotificationCenter
+                  </h4>
+                  <p className="text-sm text-gray-600">User notification management</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-2xl">📊</span> Advanced Dashboard
+                  </h4>
+                  <p className="text-sm text-gray-600">Analytics dashboard composition</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    <span className="text-2xl">⚡</span> Enhanced BulkActionToolbar
+                  </h4>
+                  <p className="text-sm text-gray-600">Bulk operations with undo & export</p>
+                </div>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg">
+                <h4 className="font-semibold text-gray-900 mb-3">Why These Patterns?</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start gap-3">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Consistency</p>
+                      <p className="text-sm text-gray-600">Unified UX across all admin pages</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Productivity</p>
+                      <p className="text-sm text-gray-600">Pre-built patterns save development time</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Accessibility</p>
+                      <p className="text-sm text-gray-600">WCAG 2.1 AA compliant out of the box</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-medium">Responsive</p>
+                      <p className="text-sm text-gray-600">Works seamlessly on all devices</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 1. AppleListDetailShell Deep Dive */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-blue-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">1. AppleListDetailShell</h3>
+                <p className="text-gray-600">Master-detail layout for efficient item management</p>
+              </div>
+
+              {/* When to Use */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">When to Use</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> User management interfaces
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Product catalogs
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Order management
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Settings and configuration panels
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Any scenario with list + detail view
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Simple lists without details
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Datasets {'<'} 10 items
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Mobile-first workflows (consider alternatives)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Responsive Behaviors */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop (≥1024px)</h5>
+                    <p className="text-sm text-blue-800">Side-by-side layout (30/70 split by default)</p>
+                  </div>
+                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet (768-1023px)</h5>
+                    <p className="text-sm text-purple-800">Side-by-side with adjusted ratio</p>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile ({'<'}768px)</h5>
+                    <p className="text-sm text-green-800">Stacked layout with drawer for details</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Accessibility */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="list"</code> on list panel
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-selected</code> on selected items
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="region"</code> with <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-label</code> on detail panel
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      Full keyboard navigation (arrow keys, Enter, Escape)
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      Focus management when opening/closing detail
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code Examples */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Code Examples</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇻🇳 Vietnamese Version</h5>
+                    <CodeBlock code={`import { AppleListDetailShell } from '@/components/apple';
+
+function UserManagement() {
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  
+  const users = [
+    { id: 1, name: 'Nguyễn Văn An', email: 'nva@ikk.vn', role: 'Admin' },
+    { id: 2, name: 'Trần Thị Bình', email: 'ttb@ikk.vn', role: 'Manager' },
+  ];
+
+  return (
+    <AppleListDetailShell
+      items={users}
+      selectedId={selectedUserId}
+      onSelect={(user) => setSelectedUserId(user.id)}
+      renderListItem={(user, isSelected) => (
+        <div className="p-3">
+          <p className="font-medium">{user.name}</p>
+          <p className="text-sm text-gray-500">{user.email}</p>
+        </div>
+      )}
+      renderDetail={(user) => user ? (
+        <div className="p-6">
+          <h2 className="text-2xl font-bold mb-4">{user.name}</h2>
+          <p className="text-gray-600">Email: {user.email}</p>
+          <p className="text-gray-600">Vai trò: {user.role}</p>
+        </div>
+      ) : null}
+      searchable
+      labels={{
+        searchPlaceholder: "Tìm kiếm người dùng...",
+        noItemsText: "Không có người dùng",
+        noSelectionText: "Chọn người dùng để xem chi tiết"
+      }}
+    />
+  );
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English Version</h5>
+                    <CodeBlock code={`import { AppleListDetailShell } from '@/components/apple';
+
+function UserManagement() {
+  const [selectedUserId, setSelectedUserId] = useState<number>();
+  
+  const users = [
+    { id: 1, name: 'John Smith', email: 'john@company.com', role: 'Admin' },
+    { id: 2, name: 'Jane Doe', email: 'jane@company.com', role: 'Manager' },
+  ];
+
+  return (
+    <AppleListDetailShell
+      items={users}
+      selectedId={selectedUserId}
+      onSelect={(user) => setSelectedUserId(user.id)}
+      renderListItem={(user, isSelected) => (
+        <div className="p-3">
+          <p className="font-medium">{user.name}</p>
+          <p className="text-sm text-gray-500">{user.email}</p>
+        </div>
+      )}
+      renderDetail={(user) => user ? (
+        <div className="p-6">
+          <h2 className="text-2xl font-bold mb-4">{user.name}</h2>
+          <p className="text-gray-600">Email: {user.email}</p>
+          <p className="text-gray-600">Role: {user.role}</p>
+        </div>
+      ) : null}
+      searchable
+      labels={{
+        searchPlaceholder: "Search users...",
+        noItemsText: "No users found",
+        noSelectionText: "Select a user to view details"
+      }}
+    />
+  );
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Best Practices</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">1.</span>
+                    <p className="text-sm text-gray-700">Keep list items concise - show only key information</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">2.</span>
+                    <p className="text-sm text-gray-700">Implement debounced search for large datasets ({'>'} 100 items)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">3.</span>
+                    <p className="text-sm text-gray-700">Show loading skeleton in detail panel while fetching</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">4.</span>
+                    <p className="text-sm text-gray-700">Preserve scroll position when navigating between items</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">5.</span>
+                    <p className="text-sm text-gray-700">Use keyboard shortcuts (Cmd+F for search, arrow keys for navigation)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">6.</span>
+                    <p className="text-sm text-gray-700">Display item count in header ("Showing 50 of 200 users")</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">7.</span>
+                    <p className="text-sm text-gray-700">Add quick actions in list items (icons for edit/delete)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
+                    <span className="text-green-600 font-bold">8.</span>
+                    <p className="text-sm text-gray-700">Handle empty states gracefully with actionable messages</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. AppleHierarchicalTable Deep Dive */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-purple-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">2. AppleHierarchicalTable</h3>
+                <p className="text-gray-600">Expandable nested data tables for tree structures</p>
+              </div>
+
+              {/* When to Use */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">When to Use</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Organizational charts
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> File system browsers
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Category trees
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Thread discussions
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Nested product categories
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Flat data structures
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Simple tables without nesting
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Very deep hierarchies ({'>'} 10 levels)
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Responsive Behaviors */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <p className="text-sm text-blue-800">Full table view with expand/collapse controls</p>
+                  </div>
+                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <p className="text-sm text-purple-800">Horizontal scroll if needed, collapsible columns</p>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <p className="text-sm text-green-800">Stacked card view with accordion-style expansion</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Accessibility */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="treegrid"</code> for hierarchical structure
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-level</code> indicates nesting depth
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-expanded</code> for expand/collapse state
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      Keyboard navigation (Arrow keys to navigate, Space to expand/collapse)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code Examples */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Code Examples</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇻🇳 Vietnamese - Organizational Chart</h5>
+                    <CodeBlock code={`import { AppleHierarchicalTable, TreeNode } from '@/components/apple';
+
+const orgData: TreeNode[] = [
+  {
+    id: 1,
+    data: { name: 'Nguyễn Minh Quang', position: 'CEO', department: 'Ban Giám Đốc' },
+    children: [
+      {
+        id: 2,
+        data: { name: 'Trần Văn Bình', position: 'CTO', department: 'Công Nghệ' },
+        children: [
+          { id: 3, data: { name: 'Lê Thị Hà', position: 'Tech Lead', department: 'Engineering' } }
+        ]
+      }
+    ]
+  }
+];
+
+const columns = [
+  { key: 'name', header: 'Tên', render: (node, depth) => node.data.name },
+  { key: 'position', header: 'Chức vụ', render: (node) => node.data.position },
+  { key: 'department', header: 'Phòng ban', render: (node) => node.data.department },
+];
+
+<AppleHierarchicalTable
+  data={orgData}
+  columns={columns}
+  showIndentLines
+  labels={{
+    expandAll: "Mở rộng tất cả",
+    collapseAll: "Thu gọn tất cả",
+    noData: "Không có dữ liệu"
+  }}
+/>`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English - File System</h5>
+                    <CodeBlock code={`import { AppleHierarchicalTable, TreeNode } from '@/components/apple';
+
+const fileData: TreeNode[] = [
+  {
+    id: 'root',
+    data: { name: 'Documents', type: 'folder', size: '-' },
+    children: [
+      {
+        id: 'projects',
+        data: { name: 'Projects', type: 'folder', size: '-' },
+        children: [
+          { id: 'file1', data: { name: 'project-spec.pdf', type: 'file', size: '2.4 MB' } }
+        ]
+      }
+    ]
+  }
+];
+
+const columns = [
+  { key: 'name', header: 'Name', render: (node, depth) => node.data.name },
+  { key: 'type', header: 'Type', render: (node) => node.data.type },
+  { key: 'size', header: 'Size', render: (node) => node.data.size },
+];
+
+<AppleHierarchicalTable
+  data={fileData}
+  columns={columns}
+  showIndentLines
+  labels={{
+    expandAll: "Expand All",
+    collapseAll: "Collapse All",
+    noData: "No files found"
+  }}
+/>`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Best Practices</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-600 font-bold">1.</span>
+                    <p className="text-sm text-gray-700">Lazy load children for deep trees ({'>'} 1000 nodes)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-600 font-bold">2.</span>
+                    <p className="text-sm text-gray-700">Set max visible depth (e.g., 5 levels) to prevent performance issues</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-600 font-bold">3.</span>
+                    <p className="text-sm text-gray-700">Use React.memo for row components to optimize re-renders</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-600 font-bold">4.</span>
+                    <p className="text-sm text-gray-700">Show expand/collapse all buttons for large trees</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
+                    <span className="text-purple-600 font-bold">5.</span>
+                    <p className="text-sm text-gray-700">Preserve expand state in localStorage for better UX</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 3. AppleNotificationCenter Deep Dive */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-red-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">3. AppleNotificationCenter</h3>
+                <p className="text-gray-600">Centralized notification management system</p>
+              </div>
+
+              {/* When to Use */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">When to Use</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> User alerts & updates
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Activity feeds
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> System messages
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Real-time updates
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Multi-type notifications (info, success, warning, error)
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Single toast messages (use AppleToast)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-red-600">•</span> Critical blocking dialogs
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Responsive Behaviors */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <p className="text-sm text-blue-800">Dropdown panel from header (top-right)</p>
+                  </div>
+                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <p className="text-sm text-purple-800">Similar to desktop, adjusted width</p>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <p className="text-sm text-green-800">Bottom drawer (full-width)</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Accessibility */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
+                <div className="space-y-2">
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="dialog"</code> for notification panel
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-live="polite"</code> for new notifications
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      Badge shows unread count with proper ARIA label
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      Escape key to close panel
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code Examples */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Code Examples</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇻🇳 Vietnamese Version</h5>
+                    <CodeBlock code={`import { AppleNotificationCenter, Notification } from '@/components/apple';
+
+function AdminHeader() {
+  const [notifications, setNotifications] = useState<Notification[]>([
+    {
+      id: '1',
+      type: 'success',
+      title: 'Chiến dịch được duyệt',
+      message: 'Chiến dịch "Tết 2025" đã được phê duyệt',
+      timestamp: new Date(Date.now() - 3600000),
+      isRead: false
+    },
+    {
+      id: '2',
+      type: 'info',
+      title: 'KOC mới đăng ký',
+      message: 'Nguyễn Minh Anh vừa đăng ký tham gia',
+      timestamp: new Date(Date.now() - 7200000),
+      isRead: false
+    }
+  ]);
+
+  return (
+    <AppleNotificationCenter
+      notifications={notifications}
+      onMarkAsRead={(id) => {
+        setNotifications(prev => prev.map(n => 
+          n.id === id ? { ...n, isRead: true } : n
+        ));
+      }}
+      onMarkAllAsRead={() => {
+        setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+      }}
+      labels={{
+        title: "Thông báo",
+        allTab: "Tất cả",
+        unreadTab: "Chưa đọc",
+        markAsRead: "Đánh dấu đã đọc",
+        markAllAsRead: "Đánh dấu tất cả đã đọc"
+      }}
+    />
+  );
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English Version</h5>
+                    <CodeBlock code={`import { AppleNotificationCenter, Notification } from '@/components/apple';
+
+function AdminHeader() {
+  const [notifications, setNotifications] = useState<Notification[]>([
+    {
+      id: '1',
+      type: 'success',
+      title: 'Campaign Approved',
+      message: 'Your campaign "Summer Sale" has been approved',
+      timestamp: new Date(Date.now() - 3600000),
+      isRead: false
+    },
+    {
+      id: '2',
+      type: 'info',
+      title: 'New Influencer',
+      message: 'Sarah Johnson just joined the platform',
+      timestamp: new Date(Date.now() - 7200000),
+      isRead: false
+    }
+  ]);
+
+  return (
+    <AppleNotificationCenter
+      notifications={notifications}
+      onMarkAsRead={(id) => {
+        setNotifications(prev => prev.map(n => 
+          n.id === id ? { ...n, isRead: true } : n
+        ));
+      }}
+      onMarkAllAsRead={() => {
+        setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+      }}
+      labels={{
+        title: "Notifications",
+        allTab: "All",
+        unreadTab: "Unread",
+        markAsRead: "Mark as read",
+        markAllAsRead: "Mark all as read"
+      }}
+    />
+  );
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Best Practices</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                    <span className="text-red-600 font-bold">1.</span>
+                    <p className="text-sm text-gray-700">Limit visible notifications to 50-100 (paginate or virtual scroll)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                    <span className="text-red-600 font-bold">2.</span>
+                    <p className="text-sm text-gray-700">Auto-refresh interval: 30-60 seconds for real-time updates</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                    <span className="text-red-600 font-bold">3.</span>
+                    <p className="text-sm text-gray-700">Format timestamps: "Just now", "5 mins ago", "Yesterday", or dates</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                    <span className="text-red-600 font-bold">4.</span>
+                    <p className="text-sm text-gray-700">Group notifications by date or type for better organization</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
+                    <span className="text-red-600 font-bold">5.</span>
+                    <p className="text-sm text-gray-700">Show action buttons for actionable notifications (View, Approve, etc.)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. Advanced Dashboard Pattern */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-indigo-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">4. Advanced Dashboard Pattern</h3>
+                <p className="text-gray-600">Composition approach for analytics dashboards</p>
+              </div>
+
+              {/* When to Use */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">When to Use</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Analytics pages
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Monitoring dashboards
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> KPI reporting
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Executive summaries
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Real-time data visualization
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-blue-700 mb-2">💡 Composition Approach:</h5>
+                    <p className="text-sm text-gray-700">
+                      This is NOT a single component, but a <strong>pattern</strong> combining:
+                    </p>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> AppleMetricCard
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> AppleChart
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> AppleFilterPanel
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> AppleGrid
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Responsive Behaviors */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Responsive Layout</h4>
+                <div className="space-y-4">
+                  <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <p className="text-sm text-blue-800">4-column metric cards, 2-column charts</p>
+                  </div>
+                  <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <p className="text-sm text-purple-800">2-column metric cards, 1-column charts</p>
+                  </div>
+                  <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <p className="text-sm text-green-800">1-column stack (metrics → charts → tables)</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code Examples */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Code Examples</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇻🇳 Vietnamese - Campaign Dashboard</h5>
+                    <CodeBlock code={`import { AppleGrid, AppleMetricCard, AppleChart, AppleFilterPanel } from '@/components/apple';
+
+function CampaignDashboard() {
+  const [filters, setFilters] = useState({ dateRange: 'week', channel: 'all' });
+  
+  const revenueData = [
+    { date: '01/10', value: 125000000 },
+    { date: '02/10', value: 145000000 },
+    { date: '03/10', value: 168000000 }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Filters */}
+      <AppleFilterPanel
+        filters={[
+          {
+            key: 'dateRange',
+            label: 'Khoảng thời gian',
+            type: 'select',
+            options: [
+              { value: 'week', label: 'Tuần này' },
+              { value: 'month', label: 'Tháng này' }
+            ]
+          },
+          {
+            key: 'channel',
+            label: 'Kênh',
+            type: 'select',
+            options: [
+              { value: 'all', label: 'Tất cả' },
+              { value: 'tiktok', label: 'TikTok' },
+              { value: 'instagram', label: 'Instagram' }
+            ]
+          }
+        ]}
+        values={filters}
+        onChange={setFilters}
+      />
+
+      {/* KPI Metrics */}
+      <AppleGrid cols={{ sm: 2, lg: 4 }} gap="md">
+        <AppleMetricCard
+          title="Tổng doanh thu"
+          value="438M VNĐ"
+          change={15.3}
+          changeType="increase"
+          icon={<TrendingUp />}
+        />
+        <AppleMetricCard
+          title="Chiến dịch"
+          value="24"
+          subtitle="Đang chạy"
+          change={-5}
+          changeType="decrease"
+        />
+        <AppleMetricCard
+          title="KOC tham gia"
+          value="1,245"
+          change={12}
+          changeType="increase"
+        />
+        <AppleMetricCard
+          title="Tỷ lệ chuyển đổi"
+          value="3.2%"
+          change={0.5}
+          changeType="increase"
+        />
+      </AppleGrid>
+
+      {/* Charts */}
+      <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
+        <AppleChart
+          data={revenueData}
+          type="line"
+          xKey="date"
+          yKey="value"
+          title="Doanh thu theo ngày"
+        />
+        <AppleChart
+          data={revenueData}
+          type="bar"
+          xKey="date"
+          yKey="value"
+          title="So sánh kênh"
+        />
+      </AppleGrid>
+    </div>
+  );
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English - Sales Dashboard</h5>
+                    <CodeBlock code={`import { AppleGrid, AppleMetricCard, AppleChart, AppleFilterPanel } from '@/components/apple';
+
+function SalesDashboard() {
+  const [filters, setFilters] = useState({ dateRange: 'month', region: 'all' });
+  
+  const salesData = [
+    { month: 'Jan', value: 125000 },
+    { month: 'Feb', value: 145000 },
+    { month: 'Mar', value: 168000 }
+  ];
+
+  return (
+    <div className="space-y-6">
+      {/* Filters */}
+      <AppleFilterPanel
+        filters={[
+          {
+            key: 'dateRange',
+            label: 'Time Period',
+            type: 'select',
+            options: [
+              { value: 'month', label: 'This Month' },
+              { value: 'quarter', label: 'This Quarter' }
+            ]
+          },
+          {
+            key: 'region',
+            label: 'Region',
+            type: 'select',
+            options: [
+              { value: 'all', label: 'All Regions' },
+              { value: 'north', label: 'North' },
+              { value: 'south', label: 'South' }
+            ]
+          }
+        ]}
+        values={filters}
+        onChange={setFilters}
+      />
+
+      {/* KPI Metrics */}
+      <AppleGrid cols={{ sm: 2, lg: 4 }} gap="md">
+        <AppleMetricCard
+          title="Total Revenue"
+          value="$438K"
+          change={15.3}
+          changeType="increase"
+          icon={<DollarSign />}
+        />
+        <AppleMetricCard
+          title="Active Deals"
+          value="24"
+          subtitle="In progress"
+          change={-5}
+          changeType="decrease"
+        />
+        <AppleMetricCard
+          title="Conversion Rate"
+          value="3.2%"
+          change={0.5}
+          changeType="increase"
+        />
+        <AppleMetricCard
+          title="Avg Deal Size"
+          value="$18.2K"
+          change={8.1}
+          changeType="increase"
+        />
+      </AppleGrid>
+
+      {/* Charts */}
+      <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
+        <AppleChart
+          data={salesData}
+          type="area"
+          xKey="month"
+          yKey="value"
+          title="Monthly Revenue"
+        />
+        <AppleChart
+          data={salesData}
+          type="bar"
+          xKey="month"
+          yKey="value"
+          title="Regional Comparison"
+        />
+      </AppleGrid>
+    </div>
+  );
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Best Practices</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 rounded-lg">
+                    <span className="text-indigo-600 font-bold">1.</span>
+                    <p className="text-sm text-gray-700">Lazy load charts below the fold to improve initial page load</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 rounded-lg">
+                    <span className="text-indigo-600 font-bold">2.</span>
+                    <p className="text-sm text-gray-700">Cache data with React Query (staleTime: 5 minutes)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 rounded-lg">
+                    <span className="text-indigo-600 font-bold">3.</span>
+                    <p className="text-sm text-gray-700">Implement auto-refresh with user control (pause/resume)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 rounded-lg">
+                    <span className="text-indigo-600 font-bold">4.</span>
+                    <p className="text-sm text-gray-700">Use responsive grid: 4 cols (desktop) → 2 cols (tablet) → 1 col (mobile)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-indigo-50 rounded-lg">
+                    <span className="text-indigo-600 font-bold">5.</span>
+                    <p className="text-sm text-gray-700">Show skeleton loaders for each metric card and chart while loading</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Enhanced BulkActionToolbar */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-orange-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">5. Enhanced BulkActionToolbar</h3>
+                <p className="text-gray-600">Advanced bulk operations with undo & export</p>
+              </div>
+
+              {/* When to Use */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">When to Use</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Data tables with multi-select
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> File managers
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Email interfaces
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Admin lists
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-green-600">•</span> Content moderation queues
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <h5 className="font-semibold text-blue-700 mb-2">✨ New Features:</h5>
+                    <ul className="space-y-1 text-sm text-gray-700">
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> Undo last action (Ctrl+Z)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> Export selected items (CSV, JSON)
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> Batch edit dialog
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-blue-600">•</span> Confirmation for destructive actions
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Keyboard Shortcuts */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Keyboard Shortcuts</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Undo</span>
+                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-mono">Ctrl + Z</kbd>
+                  </div>
+                  <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Select All</span>
+                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-mono">Ctrl + A</kbd>
+                  </div>
+                  <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Export</span>
+                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-mono">Ctrl + E</kbd>
+                  </div>
+                  <div className="p-3 bg-gray-50 rounded-lg flex items-center justify-between">
+                    <span className="text-sm text-gray-700">Delete</span>
+                    <kbd className="px-2 py-1 bg-white border border-gray-300 rounded text-xs font-mono">Delete</kbd>
+                  </div>
+                </div>
+              </div>
+
+              {/* Code Examples */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Code Examples</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇻🇳 Vietnamese - Product Management</h5>
+                    <CodeBlock code={`import { BulkActionToolbar } from '@/components/apple';
+
+function ProductList() {
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [lastAction, setLastAction] = useState<any>(null);
+
+  const handleBulkDelete = async () => {
+    const itemsToDelete = Array.from(selectedIds);
+    await deleteProducts(itemsToDelete);
+    setLastAction({ type: 'delete', items: itemsToDelete });
+  };
+
+  const handleUndo = () => {
+    if (lastAction?.type === 'delete') {
+      restoreProducts(lastAction.items);
+      setLastAction(null);
+    }
+  };
+
+  const handleExport = (format: 'csv' | 'json') => {
+    const selectedProducts = products.filter(p => selectedIds.has(p.id));
+    exportData(selectedProducts, format);
+  };
+
+  return (
+    <>
+      <BulkActionToolbar
+        selectedCount={selectedIds.size}
+        totalCount={products.length}
+        onSelectAll={() => setSelectedIds(new Set(products.map(p => p.id)))}
+        onDeselectAll={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            id: 'delete',
+            label: 'Xóa',
+            icon: <Trash />,
+            onClick: handleBulkDelete,
+            variant: 'destructive',
+            requireConfirm: true
+          },
+          {
+            id: 'export',
+            label: 'Xuất dữ liệu',
+            icon: <Download />,
+            onClick: () => handleExport('csv')
+          }
+        ]}
+        canUndo={!!lastAction}
+        onUndo={handleUndo}
+        labels={{
+          selected: "đã chọn",
+          undo: "Hoàn tác",
+          confirmDelete: "Xác nhận xóa"
+        }}
+      />
+      
+      {/* Your product table */}
+    </>
+  );
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English - User Management</h5>
+                    <CodeBlock code={`import { BulkActionToolbar } from '@/components/apple';
+
+function UserList() {
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const [lastAction, setLastAction] = useState<any>(null);
+
+  const handleBulkArchive = async () => {
+    const itemsToArchive = Array.from(selectedIds);
+    await archiveUsers(itemsToArchive);
+    setLastAction({ type: 'archive', items: itemsToArchive });
+  };
+
+  const handleUndo = () => {
+    if (lastAction?.type === 'archive') {
+      unarchiveUsers(lastAction.items);
+      setLastAction(null);
+    }
+  };
+
+  const handleExport = (format: 'csv' | 'json') => {
+    const selectedUsers = users.filter(u => selectedIds.has(u.id));
+    exportData(selectedUsers, format);
+  };
+
+  return (
+    <>
+      <BulkActionToolbar
+        selectedCount={selectedIds.size}
+        totalCount={users.length}
+        onSelectAll={() => setSelectedIds(new Set(users.map(u => u.id)))}
+        onDeselectAll={() => setSelectedIds(new Set())}
+        actions={[
+          {
+            id: 'archive',
+            label: 'Archive',
+            icon: <Archive />,
+            onClick: handleBulkArchive,
+            requireConfirm: true
+          },
+          {
+            id: 'export',
+            label: 'Export',
+            icon: <Download />,
+            onClick: () => handleExport('csv')
+          }
+        ]}
+        canUndo={!!lastAction}
+        onUndo={handleUndo}
+        labels={{
+          selected: "selected",
+          undo: "Undo",
+          confirmDelete: "Confirm Archive"
+        }}
+      />
+      
+      {/* Your user table */}
+    </>
+  );
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Best Practices</h4>
+                <div className="space-y-3">
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-600 font-bold">1.</span>
+                    <p className="text-sm text-gray-700">Keep undo buffer for last 10 actions (don't store everything)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-600 font-bold">2.</span>
+                    <p className="text-sm text-gray-700">Support CSV and JSON export formats</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-600 font-bold">3.</span>
+                    <p className="text-sm text-gray-700">Always confirm destructive actions (delete, archive)</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-600 font-bold">4.</span>
+                    <p className="text-sm text-gray-700">Show toast notification after bulk actions with undo button</p>
+                  </div>
+                  <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
+                    <span className="text-orange-600 font-bold">5.</span>
+                    <p className="text-sm text-gray-700">Disable actions during loading (prevent double-clicks)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 6. Combining Patterns */}
+            <div className="space-y-6">
+              <div className="border-l-4 border-green-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">6. Combining Patterns</h3>
+                <p className="text-gray-600">Real-world examples of pattern composition</p>
+              </div>
+
+              {/* Example 1: Complete Admin Panel */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Example 1: Complete Admin Panel</h4>
+                <p className="text-gray-600 mb-4">
+                  Combine List-Detail Shell, Notification Center, and Bulk Actions for a full-featured admin interface
+                </p>
+                <CodeBlock code={`// Complete Admin Panel Pattern
+import { 
+  AppleListDetailShell, 
+  AppleNotificationCenter, 
+  BulkActionToolbar,
+  AppleTable 
+} from '@/components/apple';
+
+function AdminPanel() {
+  return (
+    <div className="h-screen flex flex-col">
+      {/* Header with Notifications */}
+      <header className="border-b p-4 flex justify-between items-center">
+        <h1>User Management</h1>
+        <AppleNotificationCenter notifications={notifications} />
+      </header>
+
+      {/* List-Detail Layout */}
+      <div className="flex-1">
+        <AppleListDetailShell
+          items={users}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+          renderListItem={(user) => (
+            <div className="p-3">
+              <p>{user.name}</p>
+              <p className="text-sm text-gray-500">{user.email}</p>
+            </div>
+          )}
+          renderDetail={(user) => user ? (
+            <div className="p-6">
+              {/* Bulk Actions for detail items */}
+              <BulkActionToolbar
+                selectedCount={selectedItems.size}
+                totalCount={user.items.length}
+                actions={bulkActions}
+              />
+              
+              {/* Detail table */}
+              <AppleTable
+                columns={columns}
+                data={user.items}
+              />
+            </div>
+          ) : null}
+        />
+      </div>
+    </div>
+  );
+}`} />
+              </div>
+
+              {/* Example 2: Content Management System */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Example 2: Content Management System</h4>
+                <p className="text-gray-600 mb-4">
+                  Hierarchical file structure with bulk operations
+                </p>
+                <CodeBlock code={`// CMS Pattern
+import { 
+  AppleHierarchicalTable, 
+  BulkActionToolbar,
+  AppleSearchBar 
+} from '@/components/apple';
+
+function ContentManagement() {
+  const fileStructure: TreeNode[] = [
+    {
+      id: 'root',
+      data: { name: 'Content', type: 'folder' },
+      children: [
+        {
+          id: 'images',
+          data: { name: 'Images', type: 'folder' },
+          children: [
+            { id: 'img1', data: { name: 'hero.jpg', type: 'image' } }
+          ]
+        }
+      ]
+    }
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* Search */}
+      <AppleSearchBar 
+        value={searchQuery} 
+        onChange={setSearchQuery}
+        placeholder="Search files..."
+      />
+
+      {/* Bulk Actions */}
+      <BulkActionToolbar
+        selectedCount={selected.size}
+        totalCount={totalFiles}
+        actions={[
+          { id: 'move', label: 'Move', icon: <FolderMove /> },
+          { id: 'delete', label: 'Delete', icon: <Trash /> },
+          { id: 'download', label: 'Download', icon: <Download /> }
+        ]}
+      />
+
+      {/* Hierarchical File Browser */}
+      <AppleHierarchicalTable
+        data={fileStructure}
+        columns={columns}
+        showIndentLines
+        selectable
+        selectedIds={selected}
+        onSelect={(id) => toggleSelection(id)}
+      />
+    </div>
+  );
+}`} />
+              </div>
+
+              {/* Example 3: Analytics Admin */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">Example 3: Analytics Admin</h4>
+                <p className="text-gray-600 mb-4">
+                  Dashboard pattern with filters, metrics, and charts
+                </p>
+                <CodeBlock code={`// Analytics Dashboard Pattern
+import { 
+  AppleGrid,
+  AppleMetricCard,
+  AppleChart,
+  AppleFilterPanel 
+} from '@/components/apple';
+
+function AnalyticsDashboard() {
+  return (
+    <div className="space-y-6">
+      {/* Filters */}
+      <AppleFilterPanel
+        filters={[
+          { key: 'dateRange', label: 'Date Range', type: 'daterange' },
+          { key: 'channel', label: 'Channel', type: 'select', options: [...] }
+        ]}
+        values={filters}
+        onChange={setFilters}
+      />
+
+      {/* KPI Grid */}
+      <AppleGrid cols={{ sm: 2, lg: 4 }} gap="md">
+        <AppleMetricCard
+          title="Revenue"
+          value="$125K"
+          change={15.3}
+          changeType="increase"
+        />
+        <AppleMetricCard
+          title="Conversions"
+          value="2,345"
+          change={8.2}
+          changeType="increase"
+        />
+        <AppleMetricCard
+          title="Avg Order"
+          value="$53"
+          change={-2.1}
+          changeType="decrease"
+        />
+        <AppleMetricCard
+          title="Users"
+          value="12.5K"
+          change={12.8}
+          changeType="increase"
+        />
+      </AppleGrid>
+
+      {/* Charts Grid */}
+      <AppleGrid cols={{ sm: 1, lg: 2 }} gap="md">
+        <AppleChart
+          data={revenueData}
+          type="line"
+          title="Revenue Trend"
+        />
+        <AppleChart
+          data={channelData}
+          type="bar"
+          title="Channel Performance"
+        />
+      </AppleGrid>
+    </div>
+  );
+}`} />
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 p-8 rounded-lg border border-blue-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Phase 2 Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3">What You've Learned</h4>
+                  <ul className="text-sm text-gray-700 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span>AppleListDetailShell for master-detail layouts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span>AppleHierarchicalTable for tree structures</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span>AppleNotificationCenter for user alerts</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span>Advanced Dashboard composition</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span>Enhanced BulkActionToolbar with undo/export</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3">Next Steps</h4>
+                  <ul className="text-sm text-gray-700 space-y-2">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">1.</span>
+                      <span>Explore the Phase 2 tab for live demos</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">2.</span>
+                      <span>Try combining patterns in your project</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">3.</span>
+                      <span>Reference code examples for implementation</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">4.</span>
+                      <span>Follow best practices for each pattern</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600">5.</span>
+                      <span>Test accessibility on all devices</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Section>
         </>
         )}
 
@@ -8430,6 +11049,1250 @@ function ThemeSwitcher() {
                 </p>
               </div>
             </section>
+          </div>
+        )}
+
+        {/* Phase 2: List-Detail Shell Tab */}
+        {activeTab === 'list-detail' && (
+          <div className="space-y-8">
+            {/* Header */}
+            <AppleSectionHeader 
+              title="AppleListDetailShell"
+              description="Master-detail layout pattern for admin interfaces with built-in search, responsive design, and keyboard navigation"
+            />
+
+            {/* Live Demo */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4" data-testid="heading-list-detail-demo">Live Demo</h3>
+              <p className="text-gray-600 mb-6">Select a user to view details. Try searching and keyboard navigation (↑↓ arrows, Enter).</p>
+              
+              <div className="h-[500px] border border-gray-200 rounded-lg overflow-hidden">
+                <AppleListDetailShell
+                  items={filteredUsers}
+                  selectedId={selectedUserId}
+                  onSelect={(user) => setSelectedUserId(user.id)}
+                  searchable
+                  searchValue={listDetailSearchValue}
+                  onSearchChange={setListDetailSearchValue}
+                  renderListItem={(user, isSelected) => (
+                    <div className="p-3">
+                      <div className="flex items-center gap-3">
+                        <AppleAvatar name={user.name} size="md" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 truncate">{user.name}</p>
+                          <p className="text-sm text-gray-600 truncate">{user.email}</p>
+                        </div>
+                        {isSelected && (
+                          <ChevronRight className="w-4 h-4 text-[var(--apple-primary)]" />
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  renderDetail={(user) => (
+                    user ? (
+                      <div className="p-6 space-y-6">
+                        <div className="flex items-center gap-4">
+                          <AppleAvatar name={user.name} size="lg" />
+                          <div>
+                            <h3 className="text-2xl font-bold text-gray-900">{user.name}</h3>
+                            <p className="text-gray-600">{user.role}</p>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">Email</p>
+                            <p className="text-gray-900">{user.email}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">Phone</p>
+                            <p className="text-gray-900">{user.phone}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">Department</p>
+                            <p className="text-gray-900">{user.department}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">Join Date</p>
+                            <p className="text-gray-900">{user.joinDate}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-gray-500">Status</p>
+                            <AppleBadge variant={user.status === 'active' ? 'success' : 'error'}>
+                              {user.status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+                            </AppleBadge>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-4">
+                          <AppleButton size="sm" variant="primary">Edit User</AppleButton>
+                          <AppleButton size="sm" variant="outline">View Activity</AppleButton>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-6 flex items-center justify-center h-full">
+                        <EmptyState 
+                          title="Chọn một người dùng"
+                          description="Chọn một người dùng từ danh sách để xem thông tin chi tiết"
+                        />
+                      </div>
+                    )
+                  )}
+                  labels={{
+                    searchPlaceholder: "Tìm kiếm người dùng...",
+                    noItemsText: "Không tìm thấy người dùng",
+                    noSelectionText: "Chọn một người dùng để xem chi tiết",
+                  }}
+                  data-testid="list-detail-demo"
+                />
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Responsive layout (side-by-side desktop, drawer mobile)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Built-in search and filtering</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Keyboard navigation (arrow keys, enter)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Auto-scroll selected item into view</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Empty and loading states</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Theme-aware styling</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Vietnamese + i18n support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Accessibility WCAG 2.1 AA compliant</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Props Documentation */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Props Documentation</h3>
+              <AppleTable
+                columns={[
+                  { key: 'prop', header: 'Prop', render: (row: any) => <code className="text-sm bg-gray-100 px-2 py-1 rounded">{row.prop}</code> },
+                  { key: 'type', header: 'Type', render: (row: any) => <code className="text-sm text-blue-600">{row.type}</code> },
+                  { key: 'default', header: 'Default', render: (row: any) => <code className="text-sm text-gray-600">{row.default}</code> },
+                  { key: 'description', header: 'Description', render: (row: any) => row.description }
+                ]}
+                data={[
+                  { prop: 'items', type: 'T[]', default: 'required', description: 'Array of items to display in the list' },
+                  { prop: 'selectedId', type: 'string | number', default: 'undefined', description: 'Currently selected item ID' },
+                  { prop: 'onSelect', type: '(item: T) => void', default: 'required', description: 'Callback when item is selected' },
+                  { prop: 'renderListItem', type: '(item: T, isSelected: boolean) => ReactNode', default: 'required', description: 'Render function for list items' },
+                  { prop: 'renderDetail', type: '(item: T | null) => ReactNode', default: 'required', description: 'Render function for detail panel' },
+                  { prop: 'searchable', type: 'boolean', default: 'false', description: 'Enable search functionality' },
+                  { prop: 'searchValue', type: 'string', default: "''", description: 'Controlled search value' },
+                  { prop: 'onSearchChange', type: '(value: string) => void', default: 'undefined', description: 'Search change callback' },
+                  { prop: 'splitRatio', type: 'number', default: '30', description: 'List width percentage (0-100)' },
+                  { prop: 'isLoading', type: 'boolean', default: 'false', description: 'Show loading state' },
+                  { prop: 'labels', type: 'Labels', default: 'Vietnamese', description: 'i18n labels for UI text' },
+                ]}
+                data-testid="list-detail-props-table"
+              />
+            </div>
+
+            {/* Code Example */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Code Example</h3>
+              <CodeBlock code={`import { AppleListDetailShell } from '@/components/apple';
+
+const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+const [searchValue, setSearchValue] = useState('');
+
+<AppleListDetailShell
+  items={users}
+  selectedId={selectedUserId}
+  onSelect={(user) => setSelectedUserId(user.id)}
+  searchable
+  searchValue={searchValue}
+  onSearchChange={setSearchValue}
+  renderListItem={(user, isSelected) => (
+    <div className="p-3">
+      <div className="flex items-center gap-3">
+        <AppleAvatar name={user.name} size="md" />
+        <div className="flex-1">
+          <p className="font-semibold">{user.name}</p>
+          <p className="text-sm text-gray-600">{user.email}</p>
+        </div>
+      </div>
+    </div>
+  )}
+  renderDetail={(user) => (
+    user ? (
+      <div className="p-6">
+        <h3 className="text-2xl font-bold">{user.name}</h3>
+        <p className="text-gray-600">{user.role}</p>
+        {/* Detail content */}
+      </div>
+    ) : (
+      <EmptyState title="Chọn một mục" />
+    )
+  )}
+  labels={{
+    searchPlaceholder: "Tìm kiếm...",
+    noItemsText: "Không có dữ liệu"
+  }}
+/>`} />
+              <div className="mt-4">
+                <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
+                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                </AppleButton>
+              </div>
+            </div>
+
+            {/* i18n Comparison */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Vietnamese vs English</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇻🇳 Vietnamese (Default)
+                  </h4>
+                  <CodeBlock code={`<AppleListDetailShell
+  items={users}
+  labels={{
+    searchPlaceholder: "Tìm kiếm người dùng...",
+    noItemsText: "Không tìm thấy người dùng",
+    noSelectionText: "Chọn người dùng",
+    backButton: "Quay lại",
+    closeButton: "Đóng"
+  }}
+/>`} />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇺🇸 English
+                  </h4>
+                  <CodeBlock code={`<AppleListDetailShell
+  items={users}
+  labels={{
+    searchPlaceholder: "Search users...",
+    noItemsText: "No users found",
+    noSelectionText: "Select a user",
+    backButton: "Back",
+    closeButton: "Close"
+  }}
+/>`} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Phase 2: Hierarchical Table Tab */}
+        {activeTab === 'hierarchical-table' && (
+          <div className="space-y-8">
+            {/* Header */}
+            <AppleSectionHeader 
+              title="AppleHierarchicalTable"
+              description="Tree-based table component with expand/collapse, multiple nesting levels, and visual hierarchy indicators"
+            />
+
+            {/* Live Demo */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4" data-testid="heading-hierarchical-table-demo">Live Demo - Organization Structure</h3>
+              
+              <div className="flex gap-2 mb-4">
+                <AppleButton 
+                  size="sm" 
+                  onClick={() => {
+                    const getAllIds = (nodes: TreeNode[]): (string | number)[] => {
+                      return nodes.flatMap(node => [
+                        node.id,
+                        ...(node.children ? getAllIds(node.children) : [])
+                      ]);
+                    };
+                    const allIds = getAllIds(orgStructure);
+                    setExpandedNodeIds(new Set(allIds));
+                  }}
+                >
+                  Mở rộng tất cả
+                </AppleButton>
+                <AppleButton 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => setExpandedNodeIds(new Set())}
+                >
+                  Thu gọn tất cả
+                </AppleButton>
+                <AppleButton 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => setShowConnectingLines(!showConnectingLines)}
+                >
+                  {showConnectingLines ? 'Ẩn' : 'Hiện'} đường kết nối
+                </AppleButton>
+              </div>
+
+              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                <AppleHierarchicalTable
+                  data={orgStructure}
+                  columns={[
+                    { 
+                      key: 'name', 
+                      header: 'Tên nhân viên', 
+                      render: (node, depth) => (
+                        <div className="flex items-center gap-2">
+                          <AppleAvatar name={node.data.name} size="sm" />
+                          <span className="font-medium">{node.data.name}</span>
+                        </div>
+                      ),
+                      width: '30%'
+                    },
+                    { key: 'position', header: 'Chức vụ', render: (node) => node.data.position },
+                    { key: 'department', header: 'Phòng ban', render: (node) => node.data.department },
+                    { key: 'email', header: 'Email', render: (node) => <span className="text-sm text-gray-600">{node.data.email}</span> },
+                    { key: 'employees', header: 'Nhân viên', render: (node) => <AppleBadge>{node.data.employees || 0}</AppleBadge>, align: 'center' },
+                  ]}
+                  expandedIds={expandedNodeIds}
+                  onExpand={(id) => setExpandedNodeIds(new Set([...Array.from(expandedNodeIds), id]))}
+                  onCollapse={(id) => {
+                    const newSet = new Set(Array.from(expandedNodeIds));
+                    newSet.delete(id);
+                    setExpandedNodeIds(newSet);
+                  }}
+                  showIndentLines={showConnectingLines}
+                  selectable
+                  selectedIds={selectedOrgNodeIds}
+                  onSelect={(id) => {
+                    const newSet = new Set(Array.from(selectedOrgNodeIds));
+                    if (newSet.has(id)) {
+                      newSet.delete(id);
+                    } else {
+                      newSet.add(id);
+                    }
+                    setSelectedOrgNodeIds(newSet);
+                  }}
+                  showExpandAll
+                  labels={{
+                    expandAll: 'Mở rộng tất cả',
+                    collapseAll: 'Thu gọn tất cả',
+                    expandRow: 'Mở rộng',
+                    collapseRow: 'Thu gọn',
+                  }}
+                  data-testid="hierarchical-table-demo"
+                />
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Expand/collapse individual rows</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Multiple nesting levels support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Expand all / Collapse all</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Visual indentation with connecting lines</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Row selection (single/multiple)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Keyboard navigation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Lazy loading children support</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Controlled/Uncontrolled modes</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Props Documentation */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Props Documentation</h3>
+              <AppleTable
+                columns={[
+                  { key: 'prop', header: 'Prop', render: (row: any) => <code className="text-sm bg-gray-100 px-2 py-1 rounded">{row.prop}</code> },
+                  { key: 'type', header: 'Type', render: (row: any) => <code className="text-sm text-blue-600">{row.type}</code> },
+                  { key: 'default', header: 'Default', render: (row: any) => <code className="text-sm text-gray-600">{row.default}</code> },
+                  { key: 'description', header: 'Description', render: (row: any) => row.description }
+                ]}
+                data={[
+                  { prop: 'data', type: 'TreeNode<T>[]', default: 'required', description: 'Hierarchical data structure' },
+                  { prop: 'columns', type: 'Column<T>[]', default: 'required', description: 'Table column definitions' },
+                  { prop: 'expandedIds', type: 'Set<string | number>', default: 'undefined', description: 'Controlled expanded node IDs' },
+                  { prop: 'onExpand', type: '(id) => void', default: 'undefined', description: 'Callback when node expands' },
+                  { prop: 'onCollapse', type: '(id) => void', default: 'undefined', description: 'Callback when node collapses' },
+                  { prop: 'defaultExpanded', type: 'boolean | number', default: 'false', description: 'Auto-expand to level (true = all, number = depth)' },
+                  { prop: 'selectable', type: 'boolean', default: 'false', description: 'Enable row selection' },
+                  { prop: 'selectedIds', type: 'Set<string | number>', default: 'undefined', description: 'Selected node IDs' },
+                  { prop: 'onSelect', type: '(id) => void', default: 'undefined', description: 'Selection callback' },
+                  { prop: 'showExpandAll', type: 'boolean', default: 'false', description: 'Show expand/collapse all buttons' },
+                  { prop: 'showIndentLines', type: 'boolean', default: 'false', description: 'Show connecting lines' },
+                  { prop: 'indentSize', type: 'number', default: '24', description: 'Indentation pixels per level' },
+                  { prop: 'onLoadChildren', type: '(node) => Promise<TreeNode[]>', default: 'undefined', description: 'Lazy load children' },
+                ]}
+                data-testid="hierarchical-table-props-table"
+              />
+            </div>
+
+            {/* Code Example */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Code Example</h3>
+              <CodeBlock code={`import { AppleHierarchicalTable, TreeNode } from '@/components/apple';
+
+const orgData: TreeNode[] = [
+  {
+    id: 1,
+    data: { name: 'CEO', department: 'Executive' },
+    children: [
+      {
+        id: 2,
+        data: { name: 'CTO', department: 'Technology' },
+        children: [
+          { id: 3, data: { name: 'Dev Lead', department: 'Engineering' } }
+        ]
+      }
+    ]
+  }
+];
+
+<AppleHierarchicalTable
+  data={orgData}
+  columns={[
+    { 
+      key: 'name', 
+      header: 'Name',
+      render: (node) => node.data.name 
+    },
+    { 
+      key: 'dept', 
+      header: 'Department',
+      render: (node) => node.data.department 
+    }
+  ]}
+  defaultExpanded={1}
+  showExpandAll
+  showIndentLines
+  selectable
+/>`} />
+              <div className="mt-4">
+                <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
+                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                </AppleButton>
+              </div>
+            </div>
+
+            {/* i18n Comparison */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Vietnamese vs English</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇻🇳 Vietnamese (Default)
+                  </h4>
+                  <CodeBlock code={`<AppleHierarchicalTable
+  data={orgData}
+  columns={columns}
+  labels={{
+    expandAll: "Mở rộng tất cả",
+    collapseAll: "Thu gọn tất cả",
+    loading: "Đang tải...",
+    noData: "Không có dữ liệu",
+    expandRow: "Mở rộng",
+    collapseRow: "Thu gọn"
+  }}
+/>`} />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇺🇸 English
+                  </h4>
+                  <CodeBlock code={`<AppleHierarchicalTable
+  data={orgData}
+  columns={columns}
+  labels={{
+    expandAll: "Expand All",
+    collapseAll: "Collapse All",
+    loading: "Loading...",
+    noData: "No data",
+    expandRow: "Expand",
+    collapseRow: "Collapse"
+  }}
+/>`} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Phase 2: Notification Center Tab */}
+        {activeTab === 'notification-center' && (
+          <div className="space-y-8">
+            {/* Header */}
+            <AppleSectionHeader 
+              title="AppleNotificationCenter"
+              description="Comprehensive notification system with badge count, filtering, mark as read, and multiple notification types"
+            />
+
+            {/* Live Demo */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4" data-testid="heading-notification-center-demo">Live Demo</h3>
+              
+              <div className="flex gap-2 mb-6">
+                <AppleButton 
+                  size="sm" 
+                  onClick={() => {
+                    const newNotif: Notification = {
+                      id: `notif-${Date.now()}`,
+                      type: 'info',
+                      title: 'Thông báo mới',
+                      message: `Thông báo được tạo lúc ${new Date().toLocaleTimeString('vi-VN')}`,
+                      timestamp: new Date(),
+                      isRead: false,
+                    };
+                    setNotificationsList([newNotif, ...notificationsList]);
+                    toast.success('Đã thêm thông báo mới');
+                  }}
+                >
+                  Thêm thông báo
+                </AppleButton>
+                <AppleButton 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => {
+                    setNotificationsList(notificationsList.map(n => ({ ...n, isRead: true })));
+                    toast.success('Đã đánh dấu tất cả là đã đọc');
+                  }}
+                >
+                  Đánh dấu tất cả đã đọc
+                </AppleButton>
+                <AppleButton 
+                  size="sm" 
+                  variant="outline"
+                  onClick={() => {
+                    setNotificationsList([]);
+                    toast.success('Đã xóa tất cả thông báo');
+                  }}
+                >
+                  Xóa tất cả
+                </AppleButton>
+              </div>
+
+              <div className="flex justify-center">
+                <AppleNotificationCenter
+                  notifications={notificationsList}
+                  onMarkAsRead={(id) => {
+                    setNotificationsList(
+                      notificationsList.map(n => 
+                        n.id === id ? { ...n, isRead: true } : n
+                      )
+                    );
+                  }}
+                  onMarkAllAsRead={() => {
+                    setNotificationsList(notificationsList.map(n => ({ ...n, isRead: true })));
+                  }}
+                  onClearAll={() => {
+                    setNotificationsList([]);
+                  }}
+                  onNotificationClick={(notif) => {
+                    toast.info(`Clicked: ${notif.title}`);
+                  }}
+                  showClearAll
+                  labels={{
+                    title: "Thông báo",
+                    allTab: "Tất cả",
+                    unreadTab: "Chưa đọc",
+                    readTab: "Đã đọc",
+                    markAsRead: "Đánh dấu đã đọc",
+                    markAllAsRead: "Đánh dấu tất cả đã đọc",
+                    clearAll: "Xóa tất cả",
+                    noNotifications: "Không có thông báo",
+                    noUnreadNotifications: "Không có thông báo chưa đọc",
+                  }}
+                  data-testid="notification-center-demo"
+                />
+              </div>
+
+              <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-700">
+                  <strong>Số thông báo:</strong> {notificationsList.length} | 
+                  <strong className="ml-2">Chưa đọc:</strong> {notificationsList.filter(n => !n.isRead).length} | 
+                  <strong className="ml-2">Đã đọc:</strong> {notificationsList.filter(n => n.isRead).length}
+                </p>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Unread badge count with animation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Tab filtering (all/unread/read)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Mark individual as read</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Mark all as read</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Clear all notifications</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>4 notification types (info/success/warning/error)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Vietnamese time formatting</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Click outside to close</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Props Documentation */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Props Documentation</h3>
+              <AppleTable
+                columns={[
+                  { key: 'prop', header: 'Prop', render: (row: any) => <code className="text-sm bg-gray-100 px-2 py-1 rounded">{row.prop}</code> },
+                  { key: 'type', header: 'Type', render: (row: any) => <code className="text-sm text-blue-600">{row.type}</code> },
+                  { key: 'default', header: 'Default', render: (row: any) => <code className="text-sm text-gray-600">{row.default}</code> },
+                  { key: 'description', header: 'Description', render: (row: any) => row.description }
+                ]}
+                data={[
+                  { prop: 'notifications', type: 'Notification[]', default: 'required', description: 'Array of notification objects' },
+                  { prop: 'onMarkAsRead', type: '(id) => void', default: 'undefined', description: 'Mark single notification as read' },
+                  { prop: 'onMarkAllAsRead', type: '() => void', default: 'undefined', description: 'Mark all as read callback' },
+                  { prop: 'onClearAll', type: '() => void', default: 'undefined', description: 'Clear all notifications' },
+                  { prop: 'onNotificationClick', type: '(notif) => void', default: 'undefined', description: 'Click notification callback' },
+                  { prop: 'showClearAll', type: 'boolean', default: 'false', description: 'Show clear all button' },
+                  { prop: 'isLoading', type: 'boolean', default: 'false', description: 'Loading state' },
+                  { prop: 'hasMore', type: 'boolean', default: 'false', description: 'Has more to load' },
+                  { prop: 'onLoadMore', type: '() => void', default: 'undefined', description: 'Load more callback' },
+                  { prop: 'maxHeight', type: 'string', default: '"500px"', description: 'Max panel height' },
+                  { prop: 'labels', type: 'Labels', default: 'Vietnamese', description: 'i18n labels' },
+                ]}
+                data-testid="notification-center-props-table"
+              />
+            </div>
+
+            {/* Code Example */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Code Example</h3>
+              <CodeBlock code={`import { AppleNotificationCenter, Notification } from '@/components/apple';
+
+const [notifications, setNotifications] = useState<Notification[]>([
+  {
+    id: 1,
+    type: 'success',
+    title: 'Chiến dịch được duyệt',
+    message: 'Chiến dịch "Tết 2025" đã được phê duyệt',
+    timestamp: new Date(),
+    isRead: false,
+  },
+  // ... more notifications
+]);
+
+<AppleNotificationCenter
+  notifications={notifications}
+  onMarkAsRead={(id) => {
+    setNotifications(
+      notifications.map(n => 
+        n.id === id ? { ...n, isRead: true } : n
+      )
+    );
+  }}
+  onMarkAllAsRead={() => {
+    setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+  }}
+  onClearAll={() => setNotifications([])}
+  onNotificationClick={(notif) => {
+    console.log('Clicked:', notif);
+  }}
+  showClearAll
+  labels={{
+    title: "Thông báo",
+    allTab: "Tất cả",
+    unreadTab: "Chưa đọc",
+    markAsRead: "Đánh dấu đã đọc",
+  }}
+/>`} />
+              <div className="mt-4">
+                <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
+                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                </AppleButton>
+              </div>
+            </div>
+
+            {/* i18n Comparison */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Vietnamese vs English</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇻🇳 Vietnamese (Default)
+                  </h4>
+                  <CodeBlock code={`<AppleNotificationCenter
+  notifications={notifications}
+  labels={{
+    title: "Thông báo",
+    allTab: "Tất cả",
+    unreadTab: "Chưa đọc",
+    readTab: "Đã đọc",
+    markAsRead: "Đánh dấu đã đọc",
+    markAllAsRead: "Đánh dấu tất cả",
+    clearAll: "Xóa tất cả",
+    noNotifications: "Không có thông báo"
+  }}
+/>`} />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇺🇸 English
+                  </h4>
+                  <CodeBlock code={`<AppleNotificationCenter
+  notifications={notifications}
+  labels={{
+    title: "Notifications",
+    allTab: "All",
+    unreadTab: "Unread",
+    readTab: "Read",
+    markAsRead: "Mark as read",
+    markAllAsRead: "Mark all as read",
+    clearAll: "Clear all",
+    noNotifications: "No notifications"
+  }}
+/>`} />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Phase 2: Advanced Dashboard Tab */}
+        {activeTab === 'advanced-dashboard' && (
+          <div className="space-y-8">
+            {/* Header */}
+            <AppleSectionHeader 
+              title="Advanced Dashboard"
+              description="Composition pattern for complex dashboard layouts using Phase 2 components"
+            />
+
+            {/* Overview */}
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 border rounded-lg p-8 shadow-sm">
+              <h3 className="text-2xl font-bold mb-4">🎯 Dashboard Composition Pattern</h3>
+              <p className="text-gray-700 mb-6">
+                Advanced Dashboard demonstrates how to compose multiple Phase 2 components (List-Detail Shell, Hierarchical Table, Notification Center, Bulk Actions) into a cohesive admin interface.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-2">📊 Real-time Analytics</h4>
+                  <p className="text-sm text-gray-600">Charts, metrics, and KPIs</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-2">👥 User Management</h4>
+                  <p className="text-sm text-gray-600">List-Detail Shell for users</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-2">🔔 Live Notifications</h4>
+                  <p className="text-sm text-gray-600">Real-time updates</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Full Demo Link */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">View Full Dashboard Demo</h3>
+              <p className="text-gray-600 mb-6">
+                The full Advanced Dashboard demo is available on a separate page to showcase the complete experience without affecting this showcase page performance.
+              </p>
+              
+              <a href="/design-system/advanced-dashboard" target="_blank" rel="noopener noreferrer">
+                <AppleButton size="lg" variant="primary" data-testid="button-view-dashboard">
+                  🚀 View Full Dashboard Demo
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </AppleButton>
+              </a>
+            </div>
+
+            {/* Features */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-3">Key Features</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Component composition pattern</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Real-time data synchronization</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Responsive grid layout</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>State management with React hooks</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Data visualization with charts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Interactive filters and search</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Export and bulk actions</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Full i18n support</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Quick Code Snippet */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Basic Dashboard Structure</h3>
+              <CodeBlock code={`import { 
+  AppleListDetailShell, 
+  AppleHierarchicalTable,
+  AppleNotificationCenter,
+  BulkActionToolbar 
+} from '@/components/apple';
+
+function AdvancedDashboard() {
+  return (
+    <div className="grid grid-cols-12 gap-6">
+      {/* Top Bar with Metrics */}
+      <div className="col-span-12">
+        <div className="grid grid-cols-4 gap-4">
+          <AppleMetricCard title="Total Users" value="1,234" />
+          <AppleMetricCard title="Revenue" value="$45,678" />
+          <AppleMetricCard title="Active Campaigns" value="56" />
+          <AppleMetricCard title="Conversion" value="12.5%" />
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="col-span-8">
+        <AppleListDetailShell
+          items={users}
+          selectedId={selectedUserId}
+          onSelect={(user) => setSelectedUserId(user.id)}
+          renderListItem={renderUser}
+          renderDetail={renderUserDetail}
+          searchable
+        />
+      </div>
+
+      {/* Sidebar */}
+      <div className="col-span-4">
+        <AppleNotificationCenter
+          notifications={notifications}
+          onMarkAsRead={handleMarkAsRead}
+        />
+        
+        <AppleHierarchicalTable
+          data={orgStructure}
+          columns={orgColumns}
+        />
+      </div>
+    </div>
+  );
+}`} />
+              <div className="mt-4">
+                <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
+                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                </AppleButton>
+              </div>
+            </div>
+
+            {/* Architecture Pattern */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Composition Pattern Benefits</h3>
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">🧩</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Modular Components</h4>
+                    <p className="text-sm text-gray-600">Each component is independent and can be used separately or combined</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">🔄</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Reusable Logic</h4>
+                    <p className="text-sm text-gray-600">Shared state management and data fetching patterns</p>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-1">Performance Optimized</h4>
+                    <p className="text-sm text-gray-600">Lazy loading, virtualization, and memoization built-in</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Phase 2: Enhanced Bulk Actions Tab */}
+        {activeTab === 'enhanced-bulk-actions' && (
+          <div className="space-y-8">
+            {/* Header */}
+            <AppleSectionHeader 
+              title="Enhanced Bulk Actions"
+              description="Advanced bulk action toolbar with undo, export options, and destructive action confirmations"
+            />
+
+            {/* Live Demo */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4" data-testid="heading-bulk-actions-demo">Live Demo - Product Management</h3>
+              
+              {selectedProducts.size > 0 && (
+                <BulkActionToolbar
+                  selectedCount={selectedProducts.size}
+                  totalCount={sampleProducts.length}
+                  onSelectAll={() => setSelectedProducts(new Set(sampleProducts.map(p => p.id)))}
+                  onDeselectAll={() => setSelectedProducts(new Set())}
+                  onUndo={lastBulkAction ? () => {
+                    toast.info('Đã hoàn tác hành động');
+                    setLastBulkAction(null);
+                  } : undefined}
+                  onExport={(format) => {
+                    toast.success(`Đang xuất ${selectedProducts.size} sản phẩm dưới dạng ${format}`);
+                    setLastBulkAction({ type: 'export', format });
+                  }}
+                  onBatchEdit={() => {
+                    toast.info(`Chỉnh sửa ${selectedProducts.size} sản phẩm`);
+                    setLastBulkAction({ type: 'edit' });
+                  }}
+                  actions={[
+                    {
+                      label: 'Xóa',
+                      onClick: () => setBulkActionDialogOpen(true),
+                      variant: 'destructive' as const,
+                      icon: <Trash className="w-4 h-4" />
+                    }
+                  ]}
+                  labels={{
+                    selectAll: "Chọn tất cả",
+                    deselectAll: "Bỏ chọn tất cả",
+                    selected: "đã chọn",
+                    undo: "Hoàn tác",
+                    export: "Xuất dữ liệu",
+                    exportCsv: "Xuất CSV",
+                    exportExcel: "Xuất Excel",
+                    exportJson: "Xuất JSON",
+                    batchEdit: "Chỉnh sửa hàng loạt",
+                  }}
+                  data-testid="bulk-action-toolbar"
+                />
+              )}
+
+              <div className="mt-4 border border-gray-200 rounded-lg overflow-hidden">
+                <AppleTable
+                  columns={[
+                    { 
+                      key: 'select', 
+                      header: '',
+                      render: (row: any) => (
+                        <input
+                          type="checkbox"
+                          checked={selectedProducts.has(row.id)}
+                          onChange={(e) => {
+                            const newSet = new Set(Array.from(selectedProducts));
+                            if (e.target.checked) {
+                              newSet.add(row.id);
+                            } else {
+                              newSet.delete(row.id);
+                            }
+                            setSelectedProducts(newSet);
+                          }}
+                          className="w-5 h-5 text-[var(--apple-primary)] border-gray-300 rounded focus:ring-[var(--apple-primary)]"
+                        />
+                      ),
+                      width: '50px'
+                    },
+                    { key: 'sku', header: 'SKU', render: (row: any) => <code className="text-sm">{row.sku}</code> },
+                    { key: 'name', header: 'Tên sản phẩm', render: (row: any) => row.name },
+                    { key: 'price', header: 'Giá', render: (row: any) => <PriceDisplay price={row.price} /> },
+                    { key: 'stock', header: 'Tồn kho', render: (row: any) => (
+                      <AppleBadge variant={row.stock > 50 ? 'success' : row.stock > 0 ? 'warning' : 'error'}>
+                        {row.stock}
+                      </AppleBadge>
+                    )},
+                    { key: 'category', header: 'Danh mục', render: (row: any) => row.category },
+                    { key: 'status', header: 'Trạng thái', render: (row: any) => (
+                      <AppleBadge variant={
+                        row.status === 'active' ? 'success' : 
+                        row.status === 'low_stock' ? 'warning' : 'error'
+                      }>
+                        {row.status === 'active' ? 'Hoạt động' : 
+                         row.status === 'low_stock' ? 'Sắp hết' : 'Hết hàng'}
+                      </AppleBadge>
+                    )},
+                  ]}
+                  data={sampleProducts}
+                  data-testid="products-table"
+                />
+              </div>
+
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm text-gray-700">
+                  <strong>Đã chọn:</strong> {selectedProducts.size}/{sampleProducts.length} sản phẩm |
+                  <strong className="ml-2">Keyboard shortcuts:</strong> Ctrl+A (Select All), Ctrl+Z (Undo)
+                </p>
+              </div>
+            </div>
+
+            {/* Delete Confirmation Dialog */}
+            <AppleDialog
+              open={bulkActionDialogOpen}
+              onClose={() => setBulkActionDialogOpen(false)}
+              title="Xác nhận xóa"
+              description={`Bạn có chắc chắn muốn xóa ${selectedProducts.size} sản phẩm đã chọn? Hành động này không thể hoàn tác.`}
+              confirmText="Xóa"
+              cancelText="Hủy"
+              variant="destructive"
+              onConfirm={() => {
+                toast.success(`Đã xóa ${selectedProducts.size} sản phẩm`);
+                setLastBulkAction({ type: 'delete', count: selectedProducts.size });
+                setSelectedProducts(new Set());
+                setBulkActionDialogOpen(false);
+              }}
+            />
+
+            {/* Features */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Select all / Deselect all</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Undo last action with state restoration</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Export dropdown (CSV/Excel/JSON)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Batch edit button</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Destructive actions with confirmation</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Keyboard shortcuts (Ctrl+Z, Ctrl+A)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Selected count indicator</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-green-500">✅</span>
+                  <span>Responsive toolbar layout</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Props Documentation */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Props Documentation</h3>
+              <AppleTable
+                columns={[
+                  { key: 'prop', header: 'Prop', render: (row: any) => <code className="text-sm bg-gray-100 px-2 py-1 rounded">{row.prop}</code> },
+                  { key: 'type', header: 'Type', render: (row: any) => <code className="text-sm text-blue-600">{row.type}</code> },
+                  { key: 'default', header: 'Default', render: (row: any) => <code className="text-sm text-gray-600">{row.default}</code> },
+                  { key: 'description', header: 'Description', render: (row: any) => row.description }
+                ]}
+                data={[
+                  { prop: 'selectedCount', type: 'number', default: 'required', description: 'Number of selected items' },
+                  { prop: 'onSelectAll', type: '() => void', default: 'undefined', description: 'Select all callback' },
+                  { prop: 'onDeselectAll', type: '() => void', default: 'undefined', description: 'Deselect all callback' },
+                  { prop: 'onUndo', type: '() => void', default: 'undefined', description: 'Undo last action (shows button if provided)' },
+                  { prop: 'onExport', type: '(format: string) => void', default: 'undefined', description: 'Export callback with format' },
+                  { prop: 'onBatchEdit', type: '() => void', default: 'undefined', description: 'Batch edit callback' },
+                  { prop: 'onDelete', type: '() => void', default: 'undefined', description: 'Delete callback (destructive)' },
+                  { prop: 'exportFormats', type: 'string[]', default: "['csv','excel','json']", description: 'Available export formats' },
+                  { prop: 'showKeyboardShortcuts', type: 'boolean', default: 'true', description: 'Enable keyboard shortcuts' },
+                  { prop: 'labels', type: 'Labels', default: 'Vietnamese', description: 'i18n labels' },
+                ]}
+                data-testid="bulk-actions-props-table"
+              />
+            </div>
+
+            {/* Code Example */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Code Example</h3>
+              <CodeBlock code={`import { BulkActionToolbar } from '@/components/apple';
+
+const [selectedProducts, setSelectedProducts] = useState<Set<number>>(new Set());
+const [lastAction, setLastAction] = useState<any>(null);
+
+<BulkActionToolbar
+  selectedCount={selectedProducts.size}
+  onSelectAll={() => setSelectedProducts(new Set(products.map(p => p.id)))}
+  onDeselectAll={() => setSelectedProducts(new Set())}
+  onUndo={lastAction ? () => {
+    // Restore previous state
+    setLastAction(null);
+  } : undefined}
+  onExport={(format) => {
+    console.log(\`Exporting \${selectedProducts.size} items as \${format}\`);
+    setLastAction({ type: 'export', format });
+  }}
+  onBatchEdit={() => {
+    console.log(\`Editing \${selectedProducts.size} items\`);
+    setLastAction({ type: 'edit' });
+  }}
+  onDelete={() => {
+    // Show confirmation dialog
+    setDialogOpen(true);
+  }}
+  exportFormats={['csv', 'excel', 'json']}
+  labels={{
+    selectAll: "Chọn tất cả",
+    deselectAll: "Bỏ chọn",
+    undo: "Hoàn tác",
+    export: "Xuất dữ liệu"
+  }}
+/>`} />
+              <div className="mt-4">
+                <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
+                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                </AppleButton>
+              </div>
+            </div>
+
+            {/* i18n Comparison */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Vietnamese vs English</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇻🇳 Vietnamese (Default)
+                  </h4>
+                  <CodeBlock code={`<BulkActionToolbar
+  selectedCount={5}
+  labels={{
+    selectAll: "Chọn tất cả",
+    deselectAll: "Bỏ chọn tất cả",
+    selected: "đã chọn",
+    undo: "Hoàn tác",
+    export: "Xuất dữ liệu",
+    exportCsv: "Xuất CSV",
+    exportExcel: "Xuất Excel",
+    exportJson: "Xuất JSON",
+    batchEdit: "Chỉnh sửa hàng loạt"
+  }}
+/>`} />
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-3 flex items-center gap-2">
+                    🇺🇸 English
+                  </h4>
+                  <CodeBlock code={`<BulkActionToolbar
+  selectedCount={5}
+  labels={{
+    selectAll: "Select All",
+    deselectAll: "Deselect All",
+    selected: "selected",
+    undo: "Undo",
+    export: "Export",
+    exportCsv: "Export CSV",
+    exportExcel: "Export Excel",
+    exportJson: "Export JSON",
+    batchEdit: "Batch Edit"
+  }}
+/>`} />
+                </div>
+              </div>
+            </div>
+
+            {/* Use Cases */}
+            <div className="bg-white border rounded-lg p-6 shadow-sm">
+              <h3 className="text-lg font-semibold mb-4">Common Use Cases</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">📦 Product Management</h4>
+                  <p className="text-sm text-gray-600">Bulk update prices, categories, or stock levels for multiple products</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">👥 User Management</h4>
+                  <p className="text-sm text-gray-600">Assign roles, send notifications, or export user data in bulk</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">📧 Email Campaigns</h4>
+                  <p className="text-sm text-gray-600">Send bulk emails, schedule campaigns, or manage recipients</p>
+                </div>
+                <div className="p-4 bg-gray-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">📊 Data Export</h4>
+                  <p className="text-sm text-gray-600">Export selected data to various formats for analysis</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </main>

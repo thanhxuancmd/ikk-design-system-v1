@@ -29,7 +29,13 @@ import {
   AppleModal,
   AppleInput,
   AppleSelect,
-  AppleBadge
+  AppleBadge,
+  AppleListDetailShell,
+  AppleAvatar,
+  AppleButton,
+  AppleTable,
+  StatsCard,
+  RankingBadge
 } from "@/components/apple"
 import {
   Form,
@@ -63,6 +69,21 @@ interface KOCProfile {
   totalPoints: number
   level: string
   isVerified: boolean
+  stats?: {
+    campaigns: number
+    campaignsTrend: number
+    revenue: number
+    revenueTrend: number
+    conversionRate: number
+    conversionTrend: number
+  }
+  recentCampaigns?: Array<{
+    id: string
+    name: string
+    status: string
+    revenue: number
+    startDate: string
+  }>
 }
 
 interface KOCProfilesResponse {
@@ -109,6 +130,19 @@ function getLevelBadgeVariant(level: string): 'info' | 'warning' | 'default' {
   }
 }
 
+function getRankingTier(level: string): 'Nano' | 'Micro' | 'Macro' | 'Celebrity' {
+  switch (level) {
+    case 'Celebrity':
+      return 'Celebrity'
+    case 'Macro':
+      return 'Macro'
+    case 'Micro':
+      return 'Micro'
+    default:
+      return 'Nano'
+  }
+}
+
 const AVAILABLE_CATEGORIES = [
   'Phụ Kiện Thời Trang',
   'Thời Trang Nữ',
@@ -119,6 +153,44 @@ const AVAILABLE_CATEGORIES = [
   'Túi Ví Nữ',
   'Điện Thoại & Phụ Kiện'
 ]
+
+// Mock data generator for stats and campaigns
+function generateMockStats(koc: KOCProfile) {
+  return {
+    campaigns: koc.completedCampaigns || Math.floor(Math.random() * 50) + 10,
+    campaignsTrend: Math.random() > 0.5 ? Math.random() * 20 : -Math.random() * 10,
+    revenue: Math.floor(Math.random() * 100000000) + 10000000,
+    revenueTrend: Math.random() > 0.5 ? Math.random() * 15 : -Math.random() * 8,
+    conversionRate: Math.random() * 5 + 1,
+    conversionTrend: Math.random() > 0.5 ? Math.random() * 2 : -Math.random() * 1.5
+  }
+}
+
+function generateMockCampaigns(kocId: string) {
+  return [
+    {
+      id: `${kocId}-c1`,
+      name: 'Chiến dịch Mùa Hè 2024',
+      status: 'Hoàn thành',
+      revenue: 25000000,
+      startDate: '2024-06-01'
+    },
+    {
+      id: `${kocId}-c2`,
+      name: 'Flash Sale Cuối Tuần',
+      status: 'Đang chạy',
+      revenue: 18500000,
+      startDate: '2024-07-15'
+    },
+    {
+      id: `${kocId}-c3`,
+      name: 'Back to School',
+      status: 'Hoàn thành',
+      revenue: 32000000,
+      startDate: '2024-08-01'
+    }
+  ]
+}
 
 // Extend insertKocProfileSchema for UI-specific validation
 const createKocFormSchema = insertKocProfileSchema.omit({
@@ -154,331 +226,328 @@ interface User {
 
 export default function AdminKOCPage() {
   const [searchValue, setSearchValue] = useState('')
+  const [selectedKocId, setSelectedKocId] = useState<string | null>(null)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [selectedKoc, setSelectedKoc] = useState<KOCProfile | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [kocToDelete, setKocToDelete] = useState<KOCProfile | null>(null)
+  
   const { data: kocData, isLoading } = useQuery<KOCProfilesResponse>({
     queryKey: ['/api/koc-profiles']
   })
 
+  // Enrich KOC profiles with mock stats and campaigns
+  const enrichedKocs = (kocData?.profiles || []).map(koc => ({
+    ...koc,
+    stats: generateMockStats(koc),
+    recentCampaigns: generateMockCampaigns(koc.id)
+  }))
+
+  // Filter KOCs based on search
+  const filteredKocs = enrichedKocs.filter(koc => 
+    koc.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+    koc.username.toLowerCase().includes(searchValue.toLowerCase()) ||
+    koc.email.toLowerCase().includes(searchValue.toLowerCase())
+  )
+
+  // Get selected KOC
+  const selectedKocData = filteredKocs.find(koc => koc.id === selectedKocId) || null
+
+  // Campaign table columns
+  const campaignColumns = [
+    {
+      key: 'name',
+      header: 'Tên chiến dịch',
+      sortable: true,
+    },
+    {
+      key: 'status',
+      header: 'Trạng thái',
+      render: (campaign: any) => (
+        <AppleBadge variant={campaign.status === 'Hoàn thành' ? 'success' : 'info'}>
+          {campaign.status}
+        </AppleBadge>
+      ),
+    },
+    {
+      key: 'revenue',
+      header: 'Doanh số',
+      render: (campaign: any) => (
+        <span>{campaign.revenue.toLocaleString('vi-VN')} ₫</span>
+      ),
+    },
+    {
+      key: 'startDate',
+      header: 'Ngày bắt đầu',
+    },
+  ]
+
   return (
     <IKKAdminLayout>
-      <section className="max-w-7xl mx-auto px-4 mb-12" data-testid="section-koc-management">
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-900" data-testid="heading-koc-management">Quản lý KOC</h2>
-            <Button 
-              className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
-              onClick={() => setIsCreateDialogOpen(true)}
-              data-testid="button-create-koc"
-            >
-              <HiPlus className="w-5 h-5 mr-2" />
-              Thêm mới KOC
-            </Button>
-          </div>
-          
-          {/* Search Bar - with explicit i18n props */}
-          {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
-          <AppleSearchBar
-            value={searchValue}
-            onChange={setSearchValue}
-            placeholder="Tìm theo tên KOL"
-            recentLabel="Tìm kiếm gần đây"
-            noResultsText="Không tìm thấy kết quả"
-            clearButtonLabel="Xóa tìm kiếm"
-            onSearch={(query) => {
-              console.log('Search:', query)
+      <section className="h-[calc(100vh-200px)] max-w-7xl mx-auto px-4" data-testid="section-koc-management">
+        {/* Header with Create Button */}
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900" data-testid="heading-koc-management">
+            Quản lý KOC
+          </h2>
+          <Button 
+            className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+            onClick={() => setIsCreateDialogOpen(true)}
+            data-testid="button-create-koc"
+          >
+            <HiPlus className="w-5 h-5 mr-2" />
+            Thêm mới KOC
+          </Button>
+        </div>
+
+        {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
+        <AppleListDetailShell
+          items={filteredKocs}
+          selectedId={selectedKocId || undefined}
+          onSelect={(koc) => setSelectedKocId(koc.id)}
+          renderListItem={(koc, isSelected) => (
+            <div className="p-3 space-y-2">
+              <div className="flex items-start gap-3">
+                <AppleAvatar 
+                  src={koc.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${koc.username}`}
+                  name={koc.name}
+                  size="md"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-gray-900 truncate" data-testid={`text-name-${koc.id}`}>
+                      {koc.name}
+                    </span>
+                    {koc.isVerified && (
+                      <HiCheckCircle className="w-4 h-4 text-blue-500 flex-shrink-0" data-testid={`icon-verified-${koc.id}`} />
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 truncate" data-testid={`text-username-${koc.id}`}>
+                    @{koc.username}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {formatFollowers(getTotalFollowers(koc.followers))} người theo dõi
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-2 flex-wrap">
+                <RankingBadge 
+                  rank={Math.floor(Math.random() * 100) + 1}
+                  level={getRankingTier(koc.level)}
+                  size="sm"
+                  tierLabels={{
+                    nanoLabel: 'Nano',
+                    microLabel: 'Micro', 
+                    macroLabel: 'Macro',
+                    celebrityLabel: 'Celebrity'
+                  }}
+                />
+                <AppleBadge variant={koc.isVerified ? 'success' : 'default'} size="sm">
+                  {koc.isVerified ? 'Đã xác minh' : 'Chưa xác minh'}
+                </AppleBadge>
+              </div>
+            </div>
+          )}
+          renderDetail={(koc) => koc ? (
+            <div className="p-6 space-y-6 h-full overflow-y-auto">
+              {/* KOC Header */}
+              <div className="flex items-start gap-4 pb-6 border-b border-gray-200">
+                <AppleAvatar 
+                  src={koc.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${koc.username}`}
+                  name={koc.name}
+                  size="lg"
+                />
+                <div className="flex-1">
+                  <h2 className="text-2xl font-bold text-gray-900">{koc.name}</h2>
+                  <p className="text-gray-600 mt-1">{koc.email}</p>
+                  <div className="flex gap-2 mt-3 flex-wrap">
+                    <RankingBadge 
+                      rank={Math.floor(Math.random() * 100) + 1}
+                      level={getRankingTier(koc.level)}
+                      tierLabels={{
+                        nanoLabel: 'Nano',
+                        microLabel: 'Micro',
+                        macroLabel: 'Macro',
+                        celebrityLabel: 'Celebrity'
+                      }}
+                    />
+                    <AppleBadge variant="info">
+                      {formatFollowers(getTotalFollowers(koc.followers))} người theo dõi
+                    </AppleBadge>
+                    {koc.categories.length > 0 && (
+                      <AppleBadge variant="default">
+                        {koc.categories[0]}
+                        {koc.categories.length > 1 && ` +${koc.categories.length - 1}`}
+                      </AppleBadge>
+                    )}
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <AppleButton 
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedKoc(koc)
+                      setIsEditDialogOpen(true)
+                    }}
+                    data-testid={`button-edit-koc-detail-${koc.userId}`}
+                  >
+                    Chỉnh sửa
+                  </AppleButton>
+                  <AppleButton
+                    onClick={() => {
+                      setKocToDelete(koc)
+                      setIsDeleteDialogOpen(true)
+                    }}
+                    data-testid={`button-delete-koc-detail-${koc.userId}`}
+                  >
+                    Xóa
+                  </AppleButton>
+                </div>
+              </div>
+
+              {/* Stats Cards */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Thống kê hiệu suất</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <StatsCard
+                    id={`campaigns-${koc.id}`}
+                    title="Tổng chiến dịch"
+                    value={koc.stats?.campaigns || 0}
+                    change={koc.stats?.campaignsTrend}
+                    changeType={koc.stats && koc.stats.campaignsTrend > 0 ? 'increase' : 'decrease'}
+                    changeLabels={{
+                      increaseLabel: 'tăng',
+                      decreaseLabel: 'giảm'
+                    }}
+                  />
+                  <StatsCard
+                    id={`revenue-${koc.id}`}
+                    title="Doanh số"
+                    value={`${((koc.stats?.revenue || 0) / 1000000).toFixed(1)}M ₫`}
+                    change={koc.stats?.revenueTrend}
+                    changeType={koc.stats && koc.stats.revenueTrend > 0 ? 'increase' : 'decrease'}
+                    changeLabels={{
+                      increaseLabel: 'tăng',
+                      decreaseLabel: 'giảm'
+                    }}
+                  />
+                  <StatsCard
+                    id={`conversion-${koc.id}`}
+                    title="Tỷ lệ chuyển đổi"
+                    value={`${(koc.stats?.conversionRate || 0).toFixed(1)}%`}
+                    change={koc.stats?.conversionTrend}
+                    changeType={koc.stats && koc.stats.conversionTrend > 0 ? 'increase' : 'decrease'}
+                    changeLabels={{
+                      increaseLabel: 'tăng',
+                      decreaseLabel: 'giảm'
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Recent Campaigns Table */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Chiến dịch gần đây</h3>
+                <AppleTable
+                  data={koc.recentCampaigns || []}
+                  columns={campaignColumns}
+                  emptyMessage="Chưa có chiến dịch nào"
+                  striped
+                  hoverable
+                />
+              </div>
+
+              {/* Social Media Details */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Mạng xã hội</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {Object.entries(koc.followers).map(([platform, count]) => {
+                    if (!count) return null
+                    const platformInfo = getPlatformIcon(platform)
+                    return (
+                      <div 
+                        key={platform}
+                        className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                      >
+                        <span className={platformInfo.color}>{platformInfo.icon}</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900 capitalize">{platform}</p>
+                          <p className="text-sm text-gray-600">{formatFollowers(count)} người theo dõi</p>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Additional Info */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Thông tin chi tiết</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Địa điểm</p>
+                    <p className="text-sm font-medium text-gray-900">{koc.location || 'Chưa cập nhật'}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Đánh giá</p>
+                    <div className="flex items-center gap-1">
+                      <HiStar className="w-4 h-4 text-yellow-500" />
+                      <p className="text-sm font-medium text-gray-900">{koc.rating || 'N/A'}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Cấp độ</p>
+                    <AppleBadge variant={getLevelBadgeVariant(koc.level)}>
+                      {koc.level || 'Chưa xác định'}
+                    </AppleBadge>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Tổng điểm</p>
+                    <p className="text-sm font-medium text-gray-900">{koc.totalPoints?.toLocaleString('vi-VN') || '0'}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-500">
+              Chọn một KOC để xem chi tiết
+            </div>
+          )}
+          searchable
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+          splitRatio={30}
+          isLoading={isLoading}
+          labels={{
+            searchPlaceholder: "Tìm kiếm KOC...",
+            noItemsText: "Không có KOC nào",
+            noSelectionText: "Chọn một KOC để xem chi tiết",
+            backButton: "Quay lại",
+            closeButton: "Đóng"
+          }}
+          listAriaLabel="Danh sách KOC"
+          detailAriaLabel="Chi tiết KOC"
+        />
+        {/* External dev would use:
+          <AppleListDetailShell
+            items={kocs}
+            selectedId={selectedKocId}
+            onSelect={(koc) => setSelectedKocId(koc.id)}
+            renderListItem={...}
+            renderDetail={...}
+            searchable
+            searchValue={searchValue}
+            onSearchChange={setSearchValue}
+            labels={{
+              searchPlaceholder: "Search KOCs...",
+              noItemsText: "No KOCs found",
+              noSelectionText: "Select a KOC to view details",
+              backButton: "Back",
+              closeButton: "Close"
             }}
-            data-testid="input-search-kol"
-            className="mb-4"
           />
-          {/* External dev would use:
-            <AppleSearchBar 
-              value={searchValue}
-              onChange={setSearchValue}
-              placeholder="Search by KOL name"
-              recentLabel="Recent searches"
-              noResultsText="No results found"
-              clearButtonLabel="Clear search"
-              onSearch={(query) => console.log('Search:', query)}
-            />
-          */}
-
-          {/* Category Filters */}
-          <div className="mb-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-600">Ngành hàng</span>
-              <AppleBadge variant="info" className="cursor-pointer" data-testid="chip-category-all">
-                Tất cả
-              </AppleBadge>
-              {AVAILABLE_CATEGORIES.map((category, idx) => (
-                <AppleBadge
-                  key={idx}
-                  variant="default"
-                  className="cursor-pointer"
-                  data-testid={`chip-category-${idx}`}
-                >
-                  {category}
-                </AppleBadge>
-              ))}
-              <Button variant="ghost" size="sm" className="text-gray-600" data-testid="button-expand-categories">
-                Mở rộng
-                <HiChevronDown className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-          </div>
-
-          {/* Platform Filters */}
-          <div className="mb-3">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-600">Mạng xã hội</span>
-              <AppleBadge variant="info" className="cursor-pointer" data-testid="chip-platform-all">
-                Tất cả
-              </AppleBadge>
-              {[
-                { name: 'Shopee Live', icon: <HiShoppingBag className="w-3 h-3" /> },
-                { name: 'Shopee Video', icon: <HiVideoCamera className="w-3 h-3" /> },
-                { name: 'Instagram', icon: <FaInstagram className="w-3 h-3" /> },
-                { name: 'Tiktok', icon: <FaTiktok className="w-3 h-3" /> },
-                { name: 'Facebook', icon: <FaFacebookF className="w-3 h-3" /> },
-                { name: 'X(Twitter)', icon: <HiShare className="w-3 h-3" /> },
-                { name: 'YouTube', icon: <FaYoutube className="w-3 h-3" /> }
-              ].map((platform, idx) => (
-                <AppleBadge
-                  key={idx}
-                  variant="default"
-                  className="cursor-pointer flex items-center gap-1"
-                  data-testid={`chip-platform-${idx}`}
-                >
-                  {platform.icon}
-                  {platform.name}
-                </AppleBadge>
-              ))}
-            </div>
-          </div>
-
-          {/* Cooperation Filters */}
-          <div className="mb-4">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-600">Hợp tác</span>
-              <AppleBadge
-                variant="default"
-                className="cursor-pointer flex items-center gap-1"
-                data-testid="toggle-gold-kol"
-              >
-                <HiSparkles className="w-3 h-3 text-yellow-500" />
-                KOL tích vàng
-              </AppleBadge>
-              <AppleBadge
-                variant="default"
-                className="cursor-pointer flex items-center gap-1"
-                data-testid="toggle-good-sample"
-              >
-                <HiCheckCircle className="w-3 h-3 text-green-500" />
-                Tỷ lệ hoàn thành Dự án sản phẩm mẫu miễn phí ở mức tốt
-              </AppleBadge>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex items-center gap-3 mb-4">
-            <Button className="bg-[#ff0086] hover:bg-[#e6007a] text-white" data-testid="button-apply-filters">
-              Áp dụng
-            </Button>
-            <Button variant="outline" data-testid="button-reset-filters">
-              Đặt Lại
-            </Button>
-            <Button variant="ghost" className="text-gray-600" data-testid="link-expand-filters">
-              Mở Rộng Bộ Lọc
-              <HiChevronDown className="w-4 h-4 ml-1" />
-            </Button>
-          </div>
-        </div>
-
-        {/* Table Header with View Toggle */}
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900" data-testid="heading-kol-list">Danh sách KOL</h3>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" data-testid="btn-view-grid">
-              <HiSquares2X2 className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" data-testid="btn-view-list">
-              <HiListBullet className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-
-        {/* KOL Table */}
-        <Card className="bg-white border-gray-100">
-          <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full" data-testid="table-kol">
-                <thead>
-                  <tr className="border-b border-gray-200 bg-gray-50">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-user">Tên tài khoản KOL</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-followers">
-                      Người theo dõi
-                      <HiChevronDown className="w-3 h-3 inline ml-1" />
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-rating">
-                      Đánh giá
-                      <HiChevronDown className="w-3 h-3 inline ml-1" />
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-campaigns">
-                      Chiến dịch
-                      <HiChevronDown className="w-3 h-3 inline ml-1" />
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-level">
-                      Cấp độ
-                    </th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700" data-testid="col-actions">Hoạt động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {isLoading ? (
-                    <tr>
-                      <td colSpan={6} className="text-center py-8 text-gray-500" data-testid="loading-state">
-                        Đang tải...
-                      </td>
-                    </tr>
-                  ) : !kocData?.profiles || kocData.profiles.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="text-center py-8 text-gray-500" data-testid="empty-state">
-                        Chưa có KOC nào
-                      </td>
-                    </tr>
-                  ) : (
-                    kocData.profiles.map((koc) => {
-                      const totalFollowers = getTotalFollowers(koc.followers)
-                      const platforms = Object.keys(koc.followers).filter(
-                        (key) => koc.followers[key as keyof typeof koc.followers]
-                      )
-                      
-                      return (
-                        <tr key={koc.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-testid={`row-kol-${koc.id}`}>
-                          <td className="py-4 px-4">
-                            <div className="flex items-start gap-3">
-                              <div className="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0 overflow-hidden">
-                                <img 
-                                  src={koc.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${koc.username}`} 
-                                  alt={koc.name} 
-                                  className="w-full h-full object-cover" 
-                                />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="font-medium text-gray-900" data-testid={`text-name-${koc.id}`}>{koc.name}</span>
-                                  {koc.isVerified && (
-                                    <HiCheckCircle className="w-4 h-4 text-blue-500" data-testid={`icon-verified-${koc.id}`} />
-                                  )}
-                                </div>
-                                <div className="text-xs text-gray-500 mb-1" data-testid={`text-username-${koc.id}`}>@{koc.username}</div>
-                                <div className="flex items-center gap-1 mb-1">
-                                  {platforms.map((platform) => {
-                                    const platformInfo = getPlatformIcon(platform)
-                                    return (
-                                      <span key={platform} className={platformInfo.color} data-testid={`icon-platform-${koc.id}-${platform}`}>
-                                        {platformInfo.icon}
-                                      </span>
-                                    )
-                                  })}
-                                </div>
-                                {koc.categories.length > 0 && (
-                                  <AppleBadge variant="default" size="sm" data-testid={`badge-category-${koc.id}`}>
-                                    {koc.categories[0]}
-                                    {koc.categories.length > 1 && ` +${koc.categories.length - 1}`}
-                                  </AppleBadge>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm text-gray-900" data-testid={`text-followers-${koc.id}`}>
-                              {formatFollowers(totalFollowers)}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <div className="flex items-center gap-1">
-                              <HiStar className="w-4 h-4 text-yellow-500" />
-                              <span className="text-sm text-gray-900" data-testid={`text-rating-${koc.id}`}>
-                                {koc.rating}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="py-4 px-4">
-                            <span className="text-sm text-gray-900" data-testid={`text-campaigns-${koc.id}`}>
-                              {koc.completedCampaigns}
-                            </span>
-                          </td>
-                          <td className="py-4 px-4">
-                            <AppleBadge variant={getLevelBadgeVariant(koc.level)} data-testid={`badge-level-${koc.id}`}>
-                              {koc.level}
-                            </AppleBadge>
-                          </td>
-                          <td className="py-4 px-4">
-                            <div className="flex flex-col gap-2">
-                              <Button
-                                size="sm"
-                                className="bg-[#ff0086] hover:bg-[#e6007a] text-white w-full"
-                                data-testid={`btn-collab-${koc.id}`}
-                              >
-                                Hợp tác
-                              </Button>
-                              <div className="flex items-center gap-2 justify-center">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="p-1 h-8 w-8"
-                                  onClick={() => {
-                                    setSelectedKoc(koc)
-                                    setIsEditDialogOpen(true)
-                                  }}
-                                  data-testid={`button-edit-koc-${koc.userId}`}
-                                >
-                                  <HiPencilSquare className="w-4 h-4 text-gray-600" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="p-1 h-8 w-8"
-                                  onClick={() => {
-                                    setKocToDelete(koc)
-                                    setIsDeleteDialogOpen(true)
-                                  }}
-                                  data-testid={`button-delete-koc-${koc.userId}`}
-                                >
-                                  <HiTrash className="w-4 h-4 text-red-600 hover:text-red-700" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="p-1 h-8 w-8"
-                                  data-testid={`btn-chat-${koc.id}`}
-                                >
-                                  <HiChatBubbleLeftRight className="w-4 h-4 text-gray-600" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="p-1 h-8 w-8"
-                                  data-testid={`btn-fav-${koc.id}`}
-                                >
-                                  <HiStar className="w-4 h-4 text-gray-600" />
-                                </Button>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
+        */}
       </section>
 
       <CreateKocDialog
@@ -1183,42 +1252,6 @@ function EditKocDialog({ open, onOpenChange, selectedKoc }: EditKocDialogProps) 
 
               <FormField
                 control={form.control}
-                name="completedCampaigns"
-                render={({ field, fieldState }) => (
-                  <AppleInput
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                    label="Chiến dịch hoàn thành"
-                    type="number"
-                    min="0"
-                    placeholder="0"
-                    error={fieldState.error?.message}
-                    data-testid="input-completed-campaigns-edit"
-                  />
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="totalPoints"
-                render={({ field, fieldState }) => (
-                  <AppleInput
-                    {...field}
-                    value={field.value ?? ''}
-                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
-                    label="Tổng điểm"
-                    type="number"
-                    min="0"
-                    placeholder="0"
-                    error={fieldState.error?.message}
-                    data-testid="input-total-points-edit"
-                  />
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="isVerified"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 pt-8">
@@ -1276,11 +1309,8 @@ function DeleteKocDialog({ open, onOpenChange, kocToDelete }: DeleteKocDialogPro
     }
   })
 
-  const handleDelete = (e?: React.MouseEvent) => {
-    e?.preventDefault()
-    if (kocToDelete) {
-      deleteMutation.mutate(kocToDelete.userId)
-    }
+  const handleDelete = () => {
+    deleteMutation.mutate(kocToDelete.userId)
   }
 
   return (
@@ -1288,13 +1318,17 @@ function DeleteKocDialog({ open, onOpenChange, kocToDelete }: DeleteKocDialogPro
       open={open}
       onClose={() => onOpenChange(false)}
       title="Xác nhận xóa KOC"
-      message={`Bạn có chắc chắn muốn xóa KOC ${kocToDelete.name} (@${kocToDelete.username})? Hành động này không thể hoàn tác.`}
-      variant="destructive"
-      confirmLabel={deleteMutation.isPending ? "Đang xóa..." : "Xóa"}
-      cancelLabel="Hủy"
+      variant="danger"
+      confirmText="Xóa"
+      cancelText="Hủy"
       onConfirm={handleDelete}
-      disabled={deleteMutation.isPending}
+      onCancel={() => onOpenChange(false)}
       data-testid="dialog-delete-koc"
-    />
+    >
+      <p className="text-sm text-gray-600">
+        Bạn có chắc chắn muốn xóa KOC <strong>{kocToDelete.name}</strong> (@{kocToDelete.username}) khỏi hệ thống?
+        Hành động này không thể hoàn tác.
+      </p>
+    </AppleDialog>
   )
 }

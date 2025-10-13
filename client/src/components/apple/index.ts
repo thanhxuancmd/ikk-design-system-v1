@@ -89,7 +89,7 @@ export type { ErrorBoundaryProps, ErrorBoundaryState } from './ErrorBoundary';
 export { OnboardingStepper } from './OnboardingStepper';
 export type { OnboardingStep, OnboardingStepperProps } from './OnboardingStepper';
 export { BulkActionToolbar } from './BulkActionToolbar';
-export type { BulkAction, BulkActionToolbarProps } from './BulkActionToolbar';
+export type { BulkAction, ActionItem, BulkActionToolbarProps } from './BulkActionToolbar';
 
 // Admin/Moderation Components
 export { ContentModerationQueue } from './ContentModerationQueue';

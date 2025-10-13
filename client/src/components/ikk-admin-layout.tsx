@@ -21,6 +21,7 @@ import {
 import { Link, useLocation } from "wouter"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { AppleNotificationCenter, type Notification } from "@/components/apple/AppleNotificationCenter"
 
 const adminMenuItems = [
   {
@@ -203,12 +204,72 @@ const AdminNavigationSample = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
 }
 
 
+// Mock notification data for admin
+const mockAdminNotifications: Notification[] = [
+  {
+    id: 'notif-1',
+    type: 'info',
+    title: 'KOC mới đăng ký',
+    message: 'Nguyễn Văn A đã đăng ký làm KOC',
+    timestamp: new Date(Date.now() - 300000),
+    isRead: false
+  },
+  {
+    id: 'notif-2',
+    type: 'success',
+    title: 'Chiến dịch hoàn thành',
+    message: 'Chiến dịch "Ưu đãi mùa hè" đã hoàn thành',
+    timestamp: new Date(Date.now() - 3600000),
+    isRead: false
+  },
+  {
+    id: 'notif-3',
+    type: 'warning',
+    title: 'KOC cần xác minh',
+    message: '5 KOC đang chờ xác minh hồ sơ',
+    timestamp: new Date(Date.now() - 7200000),
+    isRead: true
+  },
+  {
+    id: 'notif-4',
+    type: 'error',
+    title: 'Thanh toán thất bại',
+    message: 'Thanh toán cho chiến dịch #1234 thất bại',
+    timestamp: new Date(Date.now() - 86400000),
+    isRead: true
+  },
+  {
+    id: 'notif-5',
+    type: 'info',
+    title: 'Thương hiệu mới',
+    message: 'Công ty ABC đã đăng ký tài khoản thương hiệu',
+    timestamp: new Date(Date.now() - 172800000),
+    isRead: false
+  }
+];
+
 interface IKKAdminLayoutProps {
   children: React.ReactNode
 }
 
 export default function IKKAdminLayout({ children }: IKKAdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [notifications, setNotifications] = useState<Notification[]>(mockAdminNotifications)
+
+  // IKK usage (Vietnamese) - demonstrates i18n prop usage
+  const handleMarkAsRead = (notificationId: string | number) => {
+    setNotifications(prev =>
+      prev.map(notif =>
+        notif.id === notificationId ? { ...notif, isRead: true } : notif
+      )
+    )
+  }
+
+  const handleMarkAllAsRead = () => {
+    setNotifications(prev =>
+      prev.map(notif => ({ ...notif, isRead: true }))
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
@@ -224,6 +285,7 @@ export default function IKKAdminLayout({ children }: IKKAdminLayoutProps) {
             variant="ghost"
             size="sm"
             onClick={() => setSidebarOpen(true)}
+            data-testid="button-mobile-menu"
           >
             <HiBars3 className="w-5 h-5" />
           </Button>
@@ -235,7 +297,61 @@ export default function IKKAdminLayout({ children }: IKKAdminLayoutProps) {
             <span className="font-semibold text-gray-900 text-sm">IKK Admin</span>
           </div>
           
-          <div className="w-8" /> {/* Spacer for centering */}
+          {/* Notification Center - Mobile */}
+          <AppleNotificationCenter
+            notifications={notifications}
+            onMarkAsRead={handleMarkAsRead}
+            onMarkAllAsRead={handleMarkAllAsRead}
+            labels={{
+              title: "Thông báo",
+              allTab: "Tất cả",
+              unreadTab: "Chưa đọc",
+              readTab: "Đã đọc",
+              markAsRead: "Đánh dấu đã đọc",
+              markAllAsRead: "Đánh dấu tất cả đã đọc",
+              clearAll: "Xóa tất cả",
+              noNotifications: "Không có thông báo",
+              noUnreadNotifications: "Không có thông báo chưa đọc"
+            }}
+          />
+          {/* External dev would use:
+            <AppleNotificationCenter
+              notifications={notifications}
+              onMarkAsRead={handleMarkAsRead}
+              onMarkAllAsRead={handleMarkAllAsRead}
+              labels={{
+                title: "Notifications",
+                allTab: "All",
+                unreadTab: "Unread",
+                readTab: "Read",
+                markAsRead: "Mark as read",
+                markAllAsRead: "Mark all as read",
+                clearAll: "Clear all",
+                noNotifications: "No notifications",
+                noUnreadNotifications: "No unread notifications"
+              }}
+            />
+          */}
+        </div>
+
+        {/* Desktop Header with Notification Center */}
+        <div className="hidden lg:flex items-center justify-end p-4 bg-white border-b border-gray-200">
+          <AppleNotificationCenter
+            notifications={notifications}
+            onMarkAsRead={handleMarkAsRead}
+            onMarkAllAsRead={handleMarkAllAsRead}
+            labels={{
+              title: "Thông báo",
+              allTab: "Tất cả",
+              unreadTab: "Chưa đọc",
+              readTab: "Đã đọc",
+              markAsRead: "Đánh dấu đã đọc",
+              markAllAsRead: "Đánh dấu tất cả đã đọc",
+              clearAll: "Xóa tất cả",
+              noNotifications: "Không có thông báo",
+              noUnreadNotifications: "Không có thông báo chưa đọc"
+            }}
+          />
         </div>
         
         {/* Main Content */}
