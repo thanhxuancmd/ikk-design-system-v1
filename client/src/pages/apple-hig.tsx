@@ -67,8 +67,19 @@ import {
 } from '@/components/apple';
 import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
-import { HiOutlineCheckCircle, HiOutlineXCircle } from 'react-icons/hi2';
-import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command } from 'lucide-react';
+import { HiOutlineCheckCircle, HiOutlineXCircle, HiEye, HiHeart, HiCurrencyDollar, HiArrowTrendingUp, HiCheckCircle as HiCheckCircleSolid } from 'react-icons/hi2';
+import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command, DollarSign, Heart, Eye } from 'lucide-react';
+import { 
+  LineChart as RechartsLineChart, 
+  Line, 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip as RechartsTooltip, 
+  ResponsiveContainer 
+} from 'recharts';
 
 function AppleHIGShowcaseContent() {
   const [activeTab, setActiveTab] = useState<string>('overview');
@@ -121,6 +132,12 @@ function AppleHIGShowcaseContent() {
 
   // Admin tab state
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  
+  // Admin Use Cases state
+  const [adminFormOpen, setAdminFormOpen] = useState(false);
+  const [adminFilterTab, setAdminFilterTab] = useState('all');
+  const [adminSearchValue, setAdminSearchValue] = useState('');
+  const [analyticsTab, setAnalyticsTab] = useState('week');
 
   // Sample commands for command palette
   const sampleCommands = [
@@ -335,7 +352,7 @@ function AppleHIGShowcaseContent() {
                 }`}
                 data-testid={`button-tab-${tab}`}
               >
-                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Quản trị' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Admin Use Cases' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>
@@ -6404,66 +6421,515 @@ export default function MyPage() {
           </div>
         )}
 
-        {/* Admin Tab */}
+        {/* Admin Use Cases Tab */}
         {activeTab === 'admin' && (
           <div className="space-y-12">
             <AppleSectionHeader 
-              title="Admin & Moderation Components"
-              description="Các components cho quản trị: kiểm duyệt nội dung, quản lý hoa hồng, xuất dữ liệu"
+              title="Admin Use Cases - Các Mẫu Quản Trị Thực Tế"
+              description="Các pattern admin từ IKK Platform đã được migrate sang 100% Apple HIG. Giảm ~540 dòng code, tăng consistency và UX."
             />
 
-            {/* ContentModerationQueue */}
-            <section>
-              <h3 className="text-lg font-semibold mb-4">ContentModerationQueue - Hàng Đợi Kiểm Duyệt</h3>
-              <ContentModerationQueue
-                items={[
-                  {
-                    id: '1',
-                    type: 'stream',
-                    content: 'Review sản phẩm làm đẹp XYZ - Hiệu quả tuyệt vời!',
-                    user: {id: 'u1', name: 'Nguyễn Minh Anh'},
-                    timestamp: new Date().toISOString(),
-                    status: 'pending'
-                  }
-                ]}
-                onApprove={(id) => toast.success(`Đã phê duyệt ${id}`)}
-                onReject={(id) => toast.error(`Đã từ chối ${id}`)}
-              />
+            {/* Pattern 1: Dashboard Metrics Grid */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-metrics">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 1: Dashboard Metrics Grid</h3>
+                <p className="text-gray-600 mb-2">Lưới 4 cột metric cards cho admin dashboards - hiển thị KPI chính</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">AppleMetricCard</AppleBadge>
+                  <AppleBadge variant="default" size="sm">Grid Layout</AppleBadge>
+                  <AppleBadge variant="default" size="sm">Icons</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <AppleMetricCard
+                    title="Tổng người dùng"
+                    value="12,845"
+                    change={8.3}
+                    trend="up"
+                    icon={<Users className="w-5 h-5 text-blue-600" />}
+                    data-testid="metric-users"
+                  />
+                  <AppleMetricCard
+                    title="Chiến dịch hoạt động"
+                    value="156"
+                    change={12.5}
+                    trend="up"
+                    icon={<TrendingUp className="w-5 h-5 text-green-600" />}
+                    data-testid="metric-campaigns"
+                  />
+                  <AppleMetricCard
+                    title="Doanh thu (VNĐ)"
+                    value="856.4M"
+                    change={15.3}
+                    trend="up"
+                    icon={<DollarSign className="w-5 h-5 text-purple-600" />}
+                    data-testid="metric-revenue"
+                  />
+                  <AppleMetricCard
+                    title="KOC tham gia"
+                    value="2,847"
+                    description="+342 KOC tuần này"
+                    icon={<Users className="w-5 h-5 text-orange-600" />}
+                    data-testid="metric-koc"
+                  />
+                </div>
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Used in: Analytics, Campaigns, Financial pages
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <AppleMetricCard
+    title="Tổng người dùng"
+    value="12,845"
+    change={8.3}
+    trend="up"
+    icon={<Users className="w-5 h-5 text-blue-600" />}
+  />
+  <AppleMetricCard
+    title="Chiến dịch hoạt động"
+    value="156"
+    change={12.5}
+    trend="up"
+    icon={<TrendingUp className="w-5 h-5 text-green-600" />}
+  />
+  {/* More metrics... */}
+</div>`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> Analytics, Campaigns, Financial pages • 
+                <strong> Lợi ích:</strong> Consistent metric display, responsive grid, built-in trend indicators
+              </p>
             </section>
 
-            {/* CommissionRulesEditor */}
-            <section>
-              <h3 className="text-lg font-semibold mb-4">CommissionRulesEditor - Quản Lý Quy Tắc Hoa Hồng</h3>
-              <CommissionRulesEditor
-                rules={[
-                  {id: '1', tier: 'nano', commissionRate: 5},
-                  {id: '2', tier: 'micro', commissionRate: 8}
-                ]}
-                onChange={(rules) => console.log('Rules changed:', rules)}
-                onSave={(rules) => toast.success(`Đã lưu ${rules.length} quy tắc`)}
-                categories={['Thời trang', 'Làm đẹp', 'Công nghệ']}
-              />
+            {/* Pattern 2: Content Moderation Queue */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-moderation">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 2: Content Moderation Pattern</h3>
+                <p className="text-gray-600 mb-2">Workflow kiểm duyệt nội dung hoàn chỉnh với filter tabs, status badges, approve/reject actions</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">ContentModerationQueue</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTabs</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleBadge</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                <ContentModerationQueue
+                  items={[
+                    {
+                      id: '1',
+                      type: 'stream',
+                      content: 'Review Son Môi Maybelline SuperStay - Màu đẹp lắm mọi người ơi! 💄',
+                      user: {id: 'u1', name: 'Nguyễn Minh Anh', avatar: ''},
+                      timestamp: new Date(Date.now() - 3600000).toISOString(),
+                      status: 'pending'
+                    },
+                    {
+                      id: '2',
+                      type: 'post',
+                      content: 'Unboxing Kem Nền Loreal Paris - Chất lượng tuyệt vời!',
+                      user: {id: 'u2', name: 'Trần Hương Giang', avatar: ''},
+                      timestamp: new Date(Date.now() - 7200000).toISOString(),
+                      status: 'approved'
+                    }
+                  ]}
+                  onApprove={(id) => toast.success(`Đã phê duyệt nội dung ${id}`)}
+                  onReject={(id) => toast.error(`Đã từ chối nội dung ${id}`)}
+                />
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Used in: Content Management page (56.7% code reduction!)
+<ContentModerationQueue
+  items={contentItems}
+  onApprove={(id) => handleApprove(id)}
+  onReject={(id) => handleReject(id)}
+/>
+
+// Handles filtering, status badges, and actions automatically`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> Content Management page • 
+                <strong> Code reduction:</strong> 56.7% (240 → 104 lines) • 
+                <strong> Lợi ích:</strong> Built-in filtering, status management, action buttons
+              </p>
             </section>
 
-            {/* DataExportDialog */}
-            <section>
-              <h3 className="text-lg font-semibold mb-4">DataExportDialog - Xuất Dữ Liệu</h3>
-              <AppleButton onClick={() => setExportDialogOpen(true)} data-testid="button-open-export-dialog">
-                Mở Dialog Xuất Dữ Liệu
-              </AppleButton>
-              <DataExportDialog
-                open={exportDialogOpen}
-                onOpenChange={setExportDialogOpen}
-                availableFields={[
-                  {id: 'name', label: 'Tên', checked: true},
-                  {id: 'email', label: 'Email', checked: true},
-                  {id: 'phone', label: 'Số điện thoại', checked: false}
-                ]}
-                onExport={async (config) => {
-                  await new Promise(resolve => setTimeout(resolve, 2000));
-                  return {url: '#', filename: `export.${config.format}`};
-                }}
-              />
+            {/* Pattern 3: Admin Form Dialog */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-form">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 3: Create/Edit Form Dialog Pattern</h3>
+                <p className="text-gray-600 mb-2">AppleDialog + AppleInput/Select/Textarea cho CRUD operations với react-hook-form + zod validation</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">AppleDialog</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleInput</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleSelect</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTextarea</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example Trigger */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                <AppleButton 
+                  onClick={() => setAdminFormOpen(true)}
+                  data-testid="button-open-admin-form"
+                  className="mb-4"
+                >
+                  Mở Form Thêm Brand (Demo)
+                </AppleButton>
+
+                {/* Example Form Dialog */}
+                <AppleDialog
+                  open={adminFormOpen}
+                  onClose={() => setAdminFormOpen(false)}
+                  title="Thêm mới thương hiệu"
+                  size="lg"
+                >
+                  <p className="text-sm text-gray-600 mb-4">Điền thông tin để tạo thương hiệu mới</p>
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <AppleInput
+                        label="Tên thương hiệu *"
+                        placeholder="VD: Nike"
+                        data-testid="input-brand-name"
+                      />
+                      <AppleSelect
+                        label="Loại hình *"
+                        options={[
+                          { value: '', label: 'Chọn loại hình' },
+                          { value: 'fashion', label: 'Thời trang' },
+                          { value: 'beauty', label: 'Làm đẹp' },
+                          { value: 'tech', label: 'Công nghệ' }
+                        ]}
+                        data-testid="select-brand-type"
+                      />
+                    </div>
+                    <AppleTextarea
+                      label="Mô tả"
+                      placeholder="Nhập mô tả thương hiệu..."
+                      rows={3}
+                      data-testid="textarea-description"
+                    />
+                    <div className="flex justify-end gap-3 pt-4">
+                      <AppleButton 
+                        variant="outline" 
+                        onClick={() => setAdminFormOpen(false)}
+                        data-testid="button-cancel-form"
+                      >
+                        Hủy
+                      </AppleButton>
+                      <AppleButton 
+                        onClick={() => {
+                          toast.success('Đã tạo thương hiệu thành công!');
+                          setAdminFormOpen(false);
+                        }}
+                        data-testid="button-submit-form"
+                      >
+                        Tạo mới
+                      </AppleButton>
+                    </div>
+                  </div>
+                </AppleDialog>
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Used in: Brands, KOC pages with react-hook-form + zod
+<AppleDialog
+  open={formOpen}
+  onClose={() => setFormOpen(false)}
+  title="Thêm mới Brand"
+  size="lg"
+>
+  <Form {...form}>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <AppleInput label="Tên thương hiệu *" {...field} />
+      <AppleSelect label="Loại hình *" options={types} {...field} />
+      <AppleTextarea label="Mô tả" {...field} />
+      
+      <div className="flex justify-end gap-3">
+        <AppleButton variant="outline">Hủy</AppleButton>
+        <AppleButton type="submit">Tạo mới</AppleButton>
+      </div>
+    </form>
+  </Form>
+</AppleDialog>`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> Brands, KOC pages • 
+                <strong> Lợi ích:</strong> Consistent dialogs, built-in validation display, responsive forms
+              </p>
+            </section>
+
+            {/* Pattern 4: Search & Filter Pattern */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-search-filter">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 4: Search & Filter Pattern</h3>
+                <p className="text-gray-600 mb-2">AppleSearchBar + AppleTabs + AppleBadge filters cho tìm kiếm và lọc dữ liệu</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">AppleSearchBar</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTabs</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleBadge</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4 space-y-4">
+                <AppleSearchBar
+                  value={adminSearchValue}
+                  onChange={setAdminSearchValue}
+                  placeholder="Tìm kiếm theo tên, mã, thương hiệu..."
+                  onSearch={(query) => toast.info(`Tìm kiếm: ${query}`)}
+                  data-testid="search-admin-demo"
+                />
+
+                <AppleTabs
+                  tabs={[
+                    { id: 'all', label: 'Tất cả (348)' },
+                    { id: 'active', label: 'Hoạt động (156)' },
+                    { id: 'draft', label: 'Nháp (42)' },
+                    { id: 'completed', label: 'Hoàn thành (128)' }
+                  ]}
+                  activeTab={adminFilterTab}
+                  onChange={(tabId) => setAdminFilterTab(tabId)}
+                  variant="underline"
+                />
+
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm text-gray-600">Cấp độ KOC:</span>
+                  <AppleBadge variant="info" className="cursor-pointer" data-testid="filter-diamond">Diamond</AppleBadge>
+                  <AppleBadge variant="warning" className="cursor-pointer" data-testid="filter-gold">Gold</AppleBadge>
+                  <AppleBadge variant="default" className="cursor-pointer" data-testid="filter-silver">Silver</AppleBadge>
+                  <AppleBadge variant="default" className="cursor-pointer" data-testid="filter-bronze">Bronze</AppleBadge>
+                </div>
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Used in: KOC, Campaigns pages
+<AppleSearchBar 
+  placeholder="Tìm kiếm..."
+  onSearch={(q) => handleSearch(q)}
+/>
+
+<AppleTabs
+  tabs={[
+    { id: 'all', label: 'Tất cả' },
+    { id: 'active', label: 'Hoạt động' },
+    { id: 'inactive', label: 'Không hoạt động' }
+  ]}
+  activeTab={currentTab}
+  onChange={(id) => setCurrentTab(id)}
+/>
+
+<div className="flex gap-2">
+  <AppleBadge variant="info">Diamond</AppleBadge>
+  <AppleBadge variant="warning">Gold</AppleBadge>
+</div>`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> KOC, Campaigns pages • 
+                <strong> Lợi ích:</strong> Consistent search UI, tab filtering, badge filters with active states
+              </p>
+            </section>
+
+            {/* Pattern 5: Analytics Dashboard Pattern */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-analytics">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 5: Analytics Dashboard Pattern</h3>
+                <p className="text-gray-600 mb-2">Complete analytics view: Metrics Grid + Time Period Tabs + Charts (Recharts)</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">AppleMetricCard</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTabs</AppleBadge>
+                  <AppleBadge variant="default" size="sm">Recharts</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4 space-y-4">
+                {/* Metrics Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <AppleMetricCard
+                    title="Views"
+                    value="2.4M"
+                    change={12.5}
+                    trend="up"
+                    icon={<Eye className="w-5 h-5 text-blue-600" />}
+                    data-testid="analytics-views"
+                  />
+                  <AppleMetricCard
+                    title="Engagement"
+                    value="8.42%"
+                    change={2.3}
+                    trend="up"
+                    icon={<Heart className="w-5 h-5 text-pink-600" />}
+                    data-testid="analytics-engagement"
+                  />
+                  <AppleMetricCard
+                    title="Revenue"
+                    value="456M"
+                    prefix="đ"
+                    change={18.7}
+                    trend="up"
+                    icon={<DollarSign className="w-5 h-5 text-green-600" />}
+                    data-testid="analytics-revenue"
+                  />
+                  <AppleMetricCard
+                    title="Growth"
+                    value="+24.8%"
+                    description="Tháng này"
+                    icon={<TrendingUp className="w-5 h-5 text-purple-600" />}
+                    data-testid="analytics-growth"
+                  />
+                </div>
+
+                {/* Time Period Tabs */}
+                <AppleTabs
+                  tabs={[
+                    { id: 'day', label: 'Hôm nay' },
+                    { id: 'week', label: '7 ngày' },
+                    { id: 'month', label: '30 ngày' },
+                    { id: 'quarter', label: '90 ngày' }
+                  ]}
+                  activeTab={analyticsTab}
+                  onChange={(tabId) => setAnalyticsTab(tabId)}
+                  variant="underline"
+                />
+
+                {/* Chart */}
+                <div className="bg-white p-4 rounded-lg border border-gray-200">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-4">Xu hướng doanh thu</h4>
+                  <div className="h-64">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={[
+                          { day: 'T2', revenue: 45, target: 40 },
+                          { day: 'T3', revenue: 52, target: 45 },
+                          { day: 'T4', revenue: 48, target: 50 },
+                          { day: 'T5', revenue: 61, target: 55 },
+                          { day: 'T6', revenue: 55, target: 50 },
+                          { day: 'T7', revenue: 67, target: 60 },
+                          { day: 'CN', revenue: 72, target: 65 }
+                        ]}
+                      >
+                        <defs>
+                          <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#ff0086" stopOpacity={0.3}/>
+                            <stop offset="95%" stopColor="#ff0086" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                        <XAxis dataKey="day" stroke="#9ca3af" style={{ fontSize: '12px' }} />
+                        <YAxis stroke="#9ca3af" style={{ fontSize: '12px' }} />
+                        <RechartsTooltip 
+                          contentStyle={{
+                            backgroundColor: '#fff',
+                            border: '1px solid #e5e7eb',
+                            borderRadius: '8px',
+                            fontSize: '12px'
+                          }}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="revenue"
+                          stroke="#ff0086"
+                          strokeWidth={2}
+                          fillOpacity={1}
+                          fill="url(#colorRevenue)"
+                          name="Doanh thu"
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="target"
+                          stroke="#cbd5e1"
+                          strokeWidth={2}
+                          strokeDasharray="5 5"
+                          fill="none"
+                          name="Mục tiêu"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="flex items-center justify-center gap-6 mt-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-[#ff0086] rounded-full"></div>
+                      <span className="text-xs text-gray-600">Doanh thu</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 border-2 border-gray-400 rounded-full"></div>
+                      <span className="text-xs text-gray-600">Mục tiêu</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Used in: Analytics, Financial pages
+// Metrics Grid
+<div className="grid grid-cols-4 gap-4">
+  <AppleMetricCard title="Views" value="2.4M" change={12.5} trend="up" />
+  <AppleMetricCard title="Revenue" value="456M" prefix="đ" change={18.7} trend="up" />
+</div>
+
+// Time Period Tabs
+<AppleTabs
+  tabs={[
+    { id: 'day', label: 'Hôm nay' },
+    { id: 'week', label: '7 ngày' },
+    { id: 'month', label: '30 ngày' }
+  ]}
+  activeTab={period}
+  onChange={(id) => setPeriod(id)}
+/>
+
+// Chart (Recharts)
+<ResponsiveContainer width="100%" height={300}>
+  <AreaChart data={analyticsData}>
+    <Area dataKey="revenue" stroke="#ff0086" fill="url(#gradient)" />
+  </AreaChart>
+</ResponsiveContainer>`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> Analytics, Financial pages • 
+                <strong> Lợi ích:</strong> Complete analytics dashboard pattern, time period switching, visual data representation
+              </p>
+            </section>
+
+            {/* Summary Section */}
+            <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border border-purple-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-3">📊 Migration Impact Summary</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-[#ff0086]">~540 lines</div>
+                  <div className="text-sm text-gray-600">Code reduction</div>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-purple-600">6 pages</div>
+                  <div className="text-sm text-gray-600">Migrated to 100% Apple HIG</div>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-blue-600">5 patterns</div>
+                  <div className="text-sm text-gray-600">Reusable admin patterns</div>
+                </div>
+              </div>
+              <p className="text-sm text-gray-700">
+                <strong>Migrated pages:</strong> Analytics • Campaigns • Content • KOC • Brands • Financial
+              </p>
+              <p className="text-sm text-gray-700 mt-2">
+                <strong>Key benefits:</strong> Consistent UI/UX, reduced code duplication, easier maintenance, better accessibility, responsive design
+              </p>
             </section>
           </div>
         )}
