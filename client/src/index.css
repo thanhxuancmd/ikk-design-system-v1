@@ -91,6 +91,16 @@
   --radius: 0.75rem;
   --radius-soop: 0.75rem;
   --radius-soop-lg: 1rem;
+  
+  /* Apple Theme CSS Variables */
+  --apple-primary: #ff0086;
+  --apple-primary-hover: #e6007a;
+  --apple-primary-active: #cc006e;
+  --apple-destructive: #ef4444;
+  --apple-destructive-hover: #dc2626;
+  --apple-success: #10b981;
+  --apple-warning: #f59e0b;
+  --apple-accent: #3b82f6;
 }
 
 @layer base {

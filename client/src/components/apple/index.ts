@@ -93,3 +93,7 @@ export { CommissionRulesEditor } from './CommissionRulesEditor';
 export type { KOCTier, CommissionRule, CommissionRulesEditorProps } from './CommissionRulesEditor';
 export { DataExportDialog } from './DataExportDialog';
 export type { ExportFormat, ExportField, ExportConfig, DataExportDialogProps } from './DataExportDialog';
+
+// Theme System
+export * from './theme';
+export * from './ThemeProvider';
