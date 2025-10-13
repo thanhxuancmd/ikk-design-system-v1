@@ -57,22 +57,38 @@ export default function AdminAnalyticsPage() {
           </CardHeader>
 
           <CardContent className="p-6">
-            {/* Overview Metrics - Using AppleMetricCard */}
+            {/* Overview Metrics - Using AppleMetricCard with explicit i18n props */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
               <AppleMetricCard
                 title="Tổng lượt xem"
                 value="2,456,789"
                 change={12.5}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 icon={<HiEye className="w-5 h-5 text-blue-600" />}
                 valueTestId="value-metric-views"
               />
+              {/* External dev would use:
+                <AppleMetricCard 
+                  title="Total Views"
+                  value="2,456,789"
+                  change={12.5}
+                  trend="up"
+                  changeLabel="vs last month"
+                  locale="en-US"
+                  icon={<HiEye className="w-5 h-5 text-blue-600" />}
+                />
+              */}
               
               <AppleMetricCard
                 title="Tỷ lệ tương tác"
                 value="8.42%"
                 change={2.3}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 icon={<HiHeart className="w-5 h-5 text-pink-600" />}
                 valueTestId="value-metric-engagement"
               />
@@ -83,6 +99,8 @@ export default function AdminAnalyticsPage() {
                 prefix="đ"
                 change={18.7}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 icon={<HiCurrencyDollar className="w-5 h-5 text-green-600" />}
                 valueTestId="value-metric-revenue"
               />
@@ -91,6 +109,7 @@ export default function AdminAnalyticsPage() {
                 title="Tốc độ tăng trưởng"
                 value="+24.8%"
                 description="Tháng này"
+                locale="vi-VN"
                 icon={<HiArrowTrendingUp className="w-5 h-5 text-purple-600" />}
                 valueTestId="value-metric-growth"
               />

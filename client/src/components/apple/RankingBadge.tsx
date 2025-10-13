@@ -1,13 +1,28 @@
 import { Trophy, Star, Award } from 'lucide-react';
 import { designTokens } from '@/constants/design-tokens';
 
+interface RankingBadgeTierLabels {
+  nanoLabel?: string;
+  microLabel?: string;
+  macroLabel?: string;
+  celebrityLabel?: string;
+}
+
 interface RankingBadgeProps {
   rank: number;
   level: 'Nano' | 'Micro' | 'Macro' | 'Celebrity';
   showIcon?: boolean;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  tierLabels?: Partial<RankingBadgeTierLabels>;
 }
+
+const defaultTierLabels: RankingBadgeTierLabels = {
+  nanoLabel: 'Nano',
+  microLabel: 'Micro',
+  macroLabel: 'Macro',
+  celebrityLabel: 'Celebrity',
+};
 
 export function RankingBadge({
   rank,
@@ -15,7 +30,10 @@ export function RankingBadge({
   showIcon = true,
   size = 'md',
   className = '',
+  tierLabels: customTierLabels,
 }: RankingBadgeProps) {
+  const tierLabels = { ...defaultTierLabels, ...customTierLabels };
+  
   const levelColors = {
     Nano: {
       bg: 'bg-gray-100',
@@ -57,11 +75,14 @@ export function RankingBadge({
     },
   };
 
-  const levelLabels = {
-    Nano: 'Nano',
-    Micro: 'Micro',
-    Macro: 'Macro',
-    Celebrity: 'Celebrity',
+  const getLevelLabel = (level: 'Nano' | 'Micro' | 'Macro' | 'Celebrity'): string => {
+    const labelMap = {
+      Nano: tierLabels.nanoLabel,
+      Micro: tierLabels.microLabel,
+      Macro: tierLabels.macroLabel,
+      Celebrity: tierLabels.celebrityLabel,
+    };
+    return labelMap[level] || level;
   };
 
   const getRankIcon = () => {
@@ -103,7 +124,7 @@ export function RankingBadge({
         #{rank}
       </span>
       <span data-testid={`rank-level-${level}`} className={sizes.rank}>
-        {levelLabels[level]}
+        {getLevelLabel(level)}
       </span>
     </div>
   );

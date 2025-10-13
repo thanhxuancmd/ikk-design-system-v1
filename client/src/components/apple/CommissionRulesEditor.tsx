@@ -8,33 +8,99 @@ import { AppleCard } from './AppleCard';
 import { AppleDatePicker } from './AppleDatePicker';
 import { DateRange } from 'react-day-picker';
 
-export type KOCTier = 'nano' | 'micro' | 'macro' | 'mega' | 'celebrity';
+// Keep for backward compatibility, but now it's a string type
+export type KOCTier = string;
 
 export interface CommissionRule {
   id: string;
-  tier: KOCTier;
+  tier: string;
   category?: string;
   commissionRate: number;
   startDate?: string;
   endDate?: string;
 }
 
+export interface CommissionRulesLabels {
+  // Headers
+  title?: string;
+  levelColumn?: string;
+  categoryColumn?: string;
+  rateColumn?: string;
+  validityPeriodColumn?: string;
+  
+  // Buttons
+  addRuleButton?: string;
+  removeRuleButton?: string;
+  saveButton?: string;
+  savingButton?: string;
+  cancelButton?: string;
+  
+  // Category options
+  allCategoriesOption?: string;
+  
+  // Preview
+  previewTitle?: string;
+  previewPriceLabel?: string;
+  previewRateLabel?: string;
+  previewCommissionLabel?: string;
+  previewNote?: string;
+  
+  // Errors
+  minRulesError?: string;
+  rateRangeError?: string;
+}
+
+// Default IKK tier options
+const defaultLevelOptions = [
+  'Nano (< 10K followers)',
+  'Micro (10K - 100K)',
+  'Macro (100K - 1M)',
+  'Mega (1M - 10M)',
+  'Celebrity (> 10M)',
+];
+
+// Default IKK category options
+const defaultCategoryOptions = [
+  'Fashion & Beauty',
+  'Tech & Gaming',
+  'Food & Beverage',
+  'Lifestyle',
+  'Sports',
+];
+
+// Default Vietnamese labels
+const defaultLabels: CommissionRulesLabels = {
+  title: 'Quản lý Quy tắc Hoa hồng',
+  levelColumn: 'Cấp độ KOC',
+  categoryColumn: 'Danh mục',
+  rateColumn: 'Tỷ lệ hoa hồng',
+  validityPeriodColumn: 'Thời gian hiệu lực',
+  addRuleButton: 'Thêm quy tắc mới',
+  removeRuleButton: 'Xóa',
+  saveButton: 'Lưu thay đổi',
+  savingButton: 'Đang lưu...',
+  cancelButton: 'Hủy bỏ',
+  allCategoriesOption: 'Tất cả danh mục',
+  previewTitle: 'Xem trước tính toán',
+  previewPriceLabel: 'Giá sản phẩm',
+  previewRateLabel: 'Tỷ lệ hoa hồng',
+  previewCommissionLabel: 'Hoa hồng nhận được',
+  previewNote: '* Đây là tính toán mẫu với sản phẩm giá 1.000.000đ',
+  minRulesError: 'Phải có ít nhất 1 quy tắc',
+  rateRangeError: 'Tỷ lệ hoa hồng phải từ 0% đến 100%',
+};
+
 export interface CommissionRulesEditorProps {
   rules: CommissionRule[];
   onChange: (rules: CommissionRule[]) => void;
   onSave: (rules: CommissionRule[]) => void;
   onCancel?: () => void;
-  categories?: string[];
+  categories?: string[]; // Kept for backward compatibility
+  levelOptions?: string[]; // Custom tier names
+  categoryOptions?: string[]; // Custom categories
+  labels?: Partial<CommissionRulesLabels>; // Custom UI text
   isLoading?: boolean;
 }
-
-const tierLabels: Record<KOCTier, string> = {
-  nano: 'Nano (< 10K followers)',
-  micro: 'Micro (10K - 100K)',
-  macro: 'Macro (100K - 1M)',
-  mega: 'Mega (1M - 10M)',
-  celebrity: 'Celebrity (> 10M)',
-};
 
 export function CommissionRulesEditor({
   rules,
@@ -42,8 +108,16 @@ export function CommissionRulesEditor({
   onSave,
   onCancel,
   categories = [],
+  levelOptions: customLevelOptions,
+  categoryOptions: customCategoryOptions,
+  labels: customLabels,
   isLoading = false,
 }: CommissionRulesEditorProps) {
+  // Merge custom options with defaults
+  const levelOptions = customLevelOptions || defaultLevelOptions;
+  const categoryOptions = customCategoryOptions || (categories.length > 0 ? categories : defaultCategoryOptions);
+  const labels = { ...defaultLabels, ...customLabels };
+
   const [localRules, setLocalRules] = useState<CommissionRule[]>(rules);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -56,7 +130,7 @@ export function CommissionRulesEditor({
   const addRule = () => {
     const newRule: CommissionRule = {
       id: generateId(),
-      tier: 'nano',
+      tier: levelOptions[0], // Use first level option as default
       category: undefined,
       commissionRate: 10,
       startDate: undefined,
@@ -69,7 +143,7 @@ export function CommissionRulesEditor({
 
   const removeRule = (ruleId: string) => {
     if (localRules.length <= 1) {
-      setErrors({ general: 'Phải có ít nhất 1 quy tắc' });
+      setErrors({ general: labels.minRulesError || defaultLabels.minRulesError! });
       return;
     }
     const updatedRules = localRules.filter((rule) => rule.id !== ruleId);
@@ -91,12 +165,12 @@ export function CommissionRulesEditor({
 
     localRules.forEach((rule) => {
       if (rule.commissionRate < 0 || rule.commissionRate > 100) {
-        newErrors[rule.id] = 'Tỷ lệ hoa hồng phải từ 0% đến 100%';
+        newErrors[rule.id] = labels.rateRangeError || defaultLabels.rateRangeError!;
       }
     });
 
     if (localRules.length === 0) {
-      newErrors.general = 'Phải có ít nhất 1 quy tắc';
+      newErrors.general = labels.minRulesError || defaultLabels.minRulesError!;
     }
 
     setErrors(newErrors);
@@ -129,21 +203,21 @@ export function CommissionRulesEditor({
     };
   };
 
-  const tierOptions = Object.entries(tierLabels).map(([value, label]) => ({
-    value,
-    label,
+  const tierSelectOptions = levelOptions.map((label) => ({
+    value: label,
+    label: label,
   }));
 
-  const categoryOptions = [
-    { value: '', label: 'Tất cả danh mục' },
-    ...categories.map((cat) => ({ value: cat, label: cat })),
+  const categorySelectOptions = [
+    { value: '', label: labels.allCategoriesOption || defaultLabels.allCategoriesOption! },
+    ...categoryOptions.map((cat) => ({ value: cat, label: cat })),
   ];
 
   return (
     <div className="w-full space-y-6" data-testid="commission-rules-editor">
       <div className="flex items-center justify-between">
         <h2 className={`${designTokens.typography.h2} text-gray-900`}>
-          Quản lý Quy tắc Hoa hồng
+          {labels.title}
         </h2>
       </div>
 
@@ -151,10 +225,10 @@ export function CommissionRulesEditor({
         <div className="lg:col-span-2 space-y-4">
           {/* Table Header */}
           <div className="grid grid-cols-12 gap-4 px-4 py-2 bg-gray-100 rounded-lg">
-            <div className="col-span-3 text-sm font-semibold text-gray-700">Cấp độ KOC</div>
-            <div className="col-span-2 text-sm font-semibold text-gray-700">Danh mục</div>
-            <div className="col-span-2 text-sm font-semibold text-gray-700">Tỷ lệ hoa hồng</div>
-            <div className="col-span-4 text-sm font-semibold text-gray-700">Thời gian hiệu lực</div>
+            <div className="col-span-3 text-sm font-semibold text-gray-700">{labels.levelColumn}</div>
+            <div className="col-span-2 text-sm font-semibold text-gray-700">{labels.categoryColumn}</div>
+            <div className="col-span-2 text-sm font-semibold text-gray-700">{labels.rateColumn}</div>
+            <div className="col-span-4 text-sm font-semibold text-gray-700">{labels.validityPeriodColumn}</div>
             <div className="col-span-1 text-sm font-semibold text-gray-700"></div>
           </div>
 
@@ -169,9 +243,9 @@ export function CommissionRulesEditor({
             >
               <div className="col-span-3">
                 <AppleSelect
-                  options={tierOptions}
+                  options={tierSelectOptions}
                   value={rule.tier}
-                  onChange={(e) => updateRule(rule.id, { tier: e.target.value as KOCTier })}
+                  onChange={(e) => updateRule(rule.id, { tier: e.target.value })}
                   disabled={isLoading}
                   name={`tier-${rule.id}`}
                   data-testid={`select-tier-${rule.id}`}
@@ -180,7 +254,7 @@ export function CommissionRulesEditor({
 
               <div className="col-span-2">
                 <AppleSelect
-                  options={categoryOptions}
+                  options={categorySelectOptions}
                   value={rule.category || ''}
                   onChange={(e) => updateRule(rule.id, { category: e.target.value || undefined })}
                   disabled={isLoading}
@@ -260,7 +334,7 @@ export function CommissionRulesEditor({
             className="w-full inline-flex items-center justify-center gap-2"
           >
             <Plus className="w-5 h-5" />
-            Thêm quy tắc mới
+            {labels.addRuleButton}
           </AppleButton>
         </div>
 
@@ -270,7 +344,7 @@ export function CommissionRulesEditor({
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-gray-900">
                 <Calculator className="w-5 h-5 text-[#ff0086]" />
-                <h3 className={`${designTokens.typography.h3}`}>Xem trước tính toán</h3>
+                <h3 className={`${designTokens.typography.h3}`}>{labels.previewTitle}</h3>
               </div>
 
               <div className={`p-4 bg-gray-50 ${designTokens.borderRadius.lg} space-y-3`}>
@@ -279,16 +353,16 @@ export function CommissionRulesEditor({
                   return (
                     <div key={rule.id} className="space-y-1 pb-3 border-b border-gray-200 last:border-0 last:pb-0">
                       <p className="text-xs font-semibold text-gray-600">
-                        {tierLabels[rule.tier]}
+                        {rule.tier}
                       </p>
                       <p className="text-sm text-gray-700">
-                        Giá sản phẩm: <span className="font-semibold">{formatCurrency(preview.price)}</span>
+                        {labels.previewPriceLabel}: <span className="font-semibold">{formatCurrency(preview.price)}</span>
                       </p>
                       <p className="text-sm text-gray-700">
-                        Tỷ lệ hoa hồng: <span className="font-semibold">{preview.rate}%</span>
+                        {labels.previewRateLabel}: <span className="font-semibold">{preview.rate}%</span>
                       </p>
                       <p className="text-sm text-[#ff0086] font-semibold">
-                        Hoa hồng nhận được: {formatCurrency(preview.commission)}
+                        {labels.previewCommissionLabel}: {formatCurrency(preview.commission)}
                       </p>
                     </div>
                   );
@@ -296,7 +370,7 @@ export function CommissionRulesEditor({
               </div>
 
               <p className="text-xs text-gray-500">
-                * Đây là tính toán mẫu với sản phẩm giá 1.000.000đ
+                {labels.previewNote}
               </p>
             </div>
           </AppleCard>
@@ -312,7 +386,7 @@ export function CommissionRulesEditor({
           disabled={isLoading}
           data-testid="button-cancel"
         >
-          Hủy bỏ
+          {labels.cancelButton}
         </AppleButton>
         <AppleButton
           variant="primary"
@@ -321,7 +395,7 @@ export function CommissionRulesEditor({
           disabled={isLoading}
           data-testid="button-save"
         >
-          {isLoading ? 'Đang lưu...' : 'Lưu thay đổi'}
+          {isLoading ? labels.savingButton : labels.saveButton}
         </AppleButton>
       </div>
     </div>

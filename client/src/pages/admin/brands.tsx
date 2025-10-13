@@ -726,6 +726,7 @@ export default function AdminBrandsPage() {
           </div>
           
           <div className="mb-4">
+            {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
             <AppleSearchBar
               value={searchTerm}
               onChange={setSearchTerm}
@@ -733,8 +734,22 @@ export default function AdminBrandsPage() {
                 console.log('Tìm kiếm:', query)
               }}
               placeholder="Tìm kiếm thương hiệu..."
+              recentLabel="Tìm kiếm gần đây"
+              noResultsText="Không tìm thấy kết quả"
+              clearButtonLabel="Xóa tìm kiếm"
               data-testid="input-search-brand"
             />
+            {/* External dev would use:
+              <AppleSearchBar 
+                value={searchTerm}
+                onChange={setSearchTerm}
+                placeholder="Search brands..."
+                recentLabel="Recent searches"
+                noResultsText="No results found"
+                clearButtonLabel="Clear search"
+                onSearch={(query) => console.log('Search:', query)}
+              />
+            */}
           </div>
 
           <div className="mb-3">

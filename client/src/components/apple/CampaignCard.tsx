@@ -5,6 +5,22 @@ import { Calendar, Users, Award } from 'lucide-react';
 type CampaignType = 'review' | 'checkin' | 'cpi' | 'cpa' | 'seeding';
 type CampaignStatus = 'draft' | 'recruiting' | 'in-progress' | 'completed';
 
+interface CampaignCardLabels {
+  draftLabel?: string;
+  recruitingLabel?: string;
+  inProgressLabel?: string;
+  completedLabel?: string;
+  rewardLabel?: string;
+  pointsLabel?: string;
+  kocNeededLabel?: string;
+  kocAppliedSuffix?: string;
+  deadlineLabel?: string;
+  expiredLabel?: string;
+  todayLabel?: string;
+  tomorrowLabel?: string;
+  daysLabel?: string;
+}
+
 interface CampaignCardProps {
   id: string;
   title: string;
@@ -18,7 +34,25 @@ interface CampaignCardProps {
   deadline: string;
   status: CampaignStatus;
   onClick?: () => void;
+  labels?: Partial<CampaignCardLabels>;
+  locale?: string;
 }
+
+const defaultLabels: CampaignCardLabels = {
+  draftLabel: 'Bản nháp',
+  recruitingLabel: 'Đang tuyển',
+  inProgressLabel: 'Đang thực hiện',
+  completedLabel: 'Hoàn thành',
+  rewardLabel: 'Thưởng:',
+  pointsLabel: 'điểm',
+  kocNeededLabel: 'KOC cần',
+  kocAppliedSuffix: 'KOC đã ứng tuyển',
+  deadlineLabel: 'Hạn nộp:',
+  expiredLabel: 'Đã hết hạn',
+  todayLabel: 'Hôm nay',
+  tomorrowLabel: 'Ngày mai',
+  daysLabel: 'ngày',
+};
 
 const typeConfig: Record<CampaignType, { label: string; variant: 'default' | 'info' | 'success' | 'warning' | 'error' }> = {
   review: { label: 'Review', variant: 'info' },
@@ -28,11 +62,11 @@ const typeConfig: Record<CampaignType, { label: string; variant: 'default' | 'in
   seeding: { label: 'Seeding', variant: 'default' },
 };
 
-const statusConfig: Record<CampaignStatus, { label: string; color: string }> = {
-  draft: { label: 'Bản nháp', color: 'bg-gray-100 text-gray-800' },
-  recruiting: { label: 'Đang tuyển', color: 'bg-blue-100 text-blue-800' },
-  'in-progress': { label: 'Đang thực hiện', color: 'bg-orange-100 text-orange-800' },
-  completed: { label: 'Hoàn thành', color: 'bg-green-100 text-green-800' },
+const statusConfigColors: Record<CampaignStatus, { color: string }> = {
+  draft: { color: 'bg-gray-100 text-gray-800' },
+  recruiting: { color: 'bg-blue-100 text-blue-800' },
+  'in-progress': { color: 'bg-orange-100 text-orange-800' },
+  completed: { color: 'bg-green-100 text-green-800' },
 };
 
 export function CampaignCard({
@@ -48,10 +82,23 @@ export function CampaignCard({
   deadline,
   status,
   onClick,
+  labels: customLabels,
+  locale = 'vi-VN',
 }: CampaignCardProps) {
+  const labels = { ...defaultLabels, ...customLabels };
   const typeInfo = typeConfig[type];
-  const statusInfo = statusConfig[status];
+  const statusInfo = statusConfigColors[status];
   const progress = (kocApplied / kocNeeded) * 100;
+  
+  const getStatusLabel = (status: CampaignStatus): string => {
+    const statusLabelMap = {
+      draft: labels.draftLabel,
+      recruiting: labels.recruitingLabel,
+      'in-progress': labels.inProgressLabel,
+      completed: labels.completedLabel,
+    };
+    return statusLabelMap[status] || status;
+  };
 
   const formatDeadline = (dateString: string): string => {
     const deadlineDate = new Date(dateString);
@@ -60,20 +107,20 @@ export function CampaignCard({
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays < 0) {
-      return 'Đã hết hạn';
+      return labels.expiredLabel || 'Expired';
     } else if (diffDays === 0) {
-      return 'Hôm nay';
+      return labels.todayLabel || 'Today';
     } else if (diffDays === 1) {
-      return 'Ngày mai';
+      return labels.tomorrowLabel || 'Tomorrow';
     } else if (diffDays < 7) {
-      return `${diffDays} ngày`;
+      return `${diffDays} ${labels.daysLabel || 'days'}`;
     } else {
-      return deadlineDate.toLocaleDateString('vi-VN');
+      return deadlineDate.toLocaleDateString(locale);
     }
   };
 
   const formatReward = (amount: number): string => {
-    return amount.toLocaleString('vi-VN');
+    return amount.toLocaleString(locale);
   };
 
   return (
@@ -89,7 +136,7 @@ export function CampaignCard({
         max-w-md
       `}
       onClick={onClick}
-      aria-label={`${title} - ${brandName} - ${statusInfo.label}`}
+      aria-label={`${title} - ${brandName} - ${getStatusLabel(status)}`}
     >
       {/* Header Section */}
       <div className="p-6 pb-4">
@@ -137,7 +184,7 @@ export function CampaignCard({
                 `}
                 data-testid={`status-badge-${id}`}
               >
-                {statusInfo.label}
+                {getStatusLabel(status)}
               </span>
             </div>
           </div>
@@ -148,12 +195,12 @@ export function CampaignCard({
       <div className="px-6 pb-4">
         <div className="flex items-center gap-2">
           <Award className="w-4 h-4 text-[#ff0086]" />
-          <span className="text-sm text-gray-600">Thưởng:</span>
+          <span className="text-sm text-gray-600">{labels.rewardLabel}</span>
           <span
             className="font-semibold text-[#ff0086]"
             data-testid={`reward-${id}`}
           >
-            {formatReward(reward)} điểm
+            {formatReward(reward)} {labels.pointsLabel}
           </span>
         </div>
       </div>
@@ -164,7 +211,7 @@ export function CampaignCard({
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
               <Users className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-600">KOC cần</span>
+              <span className="text-gray-600">{labels.kocNeededLabel}</span>
             </div>
             <span
               className="font-semibold text-gray-900"
@@ -178,7 +225,7 @@ export function CampaignCard({
               className="bg-[#ff0086] h-full transition-all duration-300 rounded-full"
               style={{ width: `${Math.min(progress, 100)}%` }}
               data-testid={`progress-bar-${id}`}
-              aria-label={`${progress.toFixed(0)}% KOC đã ứng tuyển`}
+              aria-label={`${progress.toFixed(0)}% ${labels.kocAppliedSuffix}`}
             />
           </div>
         </div>
@@ -188,7 +235,7 @@ export function CampaignCard({
       <div className="px-6 pb-6 pt-2 border-t border-gray-100">
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-gray-400" />
-          <span className="text-sm text-gray-600">Hạn nộp:</span>
+          <span className="text-sm text-gray-600">{labels.deadlineLabel}</span>
           <span
             className="text-sm font-medium text-gray-900"
             data-testid={`deadline-${id}`}

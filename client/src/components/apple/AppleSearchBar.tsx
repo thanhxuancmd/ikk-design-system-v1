@@ -14,6 +14,9 @@ interface AppleSearchBarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCh
   recentSearches?: string[];
   onSelectSuggestion?: (suggestion: string) => void;
   disabled?: boolean;
+  recentLabel?: string;
+  noResultsText?: string;
+  clearButtonLabel?: string;
 }
 
 export function AppleSearchBar({
@@ -28,6 +31,9 @@ export function AppleSearchBar({
   onSelectSuggestion,
   disabled = false,
   className = '',
+  recentLabel = 'Tìm kiếm gần đây',
+  noResultsText = 'Không có kết quả',
+  clearButtonLabel = 'Xóa tìm kiếm',
   ...divProps
 }: AppleSearchBarProps) {
   const id = useId();
@@ -247,7 +253,7 @@ export function AppleSearchBar({
                 <button
                   type="button"
                   onClick={handleClear}
-                  aria-label="Xóa tìm kiếm"
+                  aria-label={clearButtonLabel}
                   disabled={disabled}
                   data-testid="searchbar-clear"
                   className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -279,7 +285,7 @@ export function AppleSearchBar({
           >
             {allItems.length === 0 ? (
               <div className="px-3 py-4 text-center text-gray-500 text-sm">
-                Không có kết quả
+                {noResultsText}
               </div>
             ) : (
               <div>
@@ -287,7 +293,7 @@ export function AppleSearchBar({
                 {showRecent && recentSearches.length > 0 && !value && (
                   <div>
                     <div className="px-3 py-2 text-xs font-medium text-gray-500 border-b bg-gray-50">
-                      Tìm kiếm gần đây
+                      {recentLabel}
                     </div>
                     {recentSearches.map((search, index) => {
                       const globalIndex = index;

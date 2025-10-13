@@ -179,17 +179,32 @@ export default function AdminKOCPage() {
             </Button>
           </div>
           
-          {/* Search Bar */}
+          {/* Search Bar - with explicit i18n props */}
+          {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
           <AppleSearchBar
             value={searchValue}
             onChange={setSearchValue}
             placeholder="Tìm theo tên KOL"
+            recentLabel="Tìm kiếm gần đây"
+            noResultsText="Không tìm thấy kết quả"
+            clearButtonLabel="Xóa tìm kiếm"
             onSearch={(query) => {
               console.log('Search:', query)
             }}
             data-testid="input-search-kol"
             className="mb-4"
           />
+          {/* External dev would use:
+            <AppleSearchBar 
+              value={searchValue}
+              onChange={setSearchValue}
+              placeholder="Search by KOL name"
+              recentLabel="Recent searches"
+              noResultsText="No results found"
+              clearButtonLabel="Clear search"
+              onSearch={(query) => console.log('Search:', query)}
+            />
+          */}
 
           {/* Category Filters */}
           <div className="mb-3">

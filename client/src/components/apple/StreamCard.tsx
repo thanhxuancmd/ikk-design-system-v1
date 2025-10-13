@@ -13,6 +13,9 @@ interface StreamCardProps {
   category: string;
   variant?: 'default' | 'compact';
   onClick?: () => void;
+  liveLabel?: string;
+  viewersLabel?: string;
+  locale?: string;
 }
 
 export function StreamCard({
@@ -26,6 +29,9 @@ export function StreamCard({
   category,
   variant = 'default',
   onClick,
+  liveLabel = 'TRỰC TIẾP',
+  viewersLabel = 'người xem',
+  locale = 'vi-VN',
 }: StreamCardProps) {
   const isCompact = variant === 'compact';
   
@@ -36,7 +42,7 @@ export function StreamCard({
     if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}K`;
     }
-    return count.toString();
+    return count.toLocaleString(locale);
   };
 
   return (
@@ -73,7 +79,7 @@ export function StreamCard({
             aria-label="Live stream"
           >
             <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-            TRỰC TIẾP
+            {liveLabel}
           </div>
         )}
         
@@ -84,7 +90,7 @@ export function StreamCard({
           aria-label={`${viewerCount} viewers`}
         >
           <Eye className="w-3.5 h-3.5" />
-          {formatViewerCount(viewerCount)} người xem
+          {formatViewerCount(viewerCount)} {viewersLabel}
         </div>
       </div>
 

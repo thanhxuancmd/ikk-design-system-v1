@@ -25,32 +25,91 @@ export interface ExportConfig {
   fields: string[];
 }
 
+export interface DataExportDialogLabels {
+  // Dialog
+  title: string;
+  description: string;
+  closeButton: string;
+  
+  // Format section
+  formatLabel: string;
+  csvFormat: string;
+  csvFormatDescription: string;
+  excelFormat: string;
+  excelFormatDescription: string;
+  jsonFormat: string;
+  jsonFormatDescription: string;
+  
+  // Date range section
+  dateRangeLabel: string;
+  startDateLabel: string;
+  endDateLabel: string;
+  
+  // Fields section
+  fieldsLabel: string;
+  selectAllFields: string;
+  
+  // Actions
+  exportButton: string;
+  cancelButton: string;
+  
+  // Progress/Status
+  exportingMessage: string;
+  exportingButton: string;
+  successMessage: string;
+  completeButton: string;
+  
+  // Error messages
+  noFieldsSelectedError: string;
+  exportError: string;
+}
+
+const defaultLabels: DataExportDialogLabels = {
+  // Dialog
+  title: "Xuất dữ liệu",
+  description: "Chọn định dạng và các trường dữ liệu bạn muốn xuất",
+  closeButton: "Đóng",
+  
+  // Format section
+  formatLabel: "Định dạng file",
+  csvFormat: "CSV (Comma-separated)",
+  csvFormatDescription: "File văn bản với dấu phân cách",
+  excelFormat: "Excel (XLSX)",
+  excelFormatDescription: "Microsoft Excel workbook",
+  jsonFormat: "JSON (JavaScript)",
+  jsonFormatDescription: "JavaScript Object Notation",
+  
+  // Date range section
+  dateRangeLabel: "Lọc theo khoảng thời gian",
+  startDateLabel: "Từ ngày",
+  endDateLabel: "Đến ngày",
+  
+  // Fields section
+  fieldsLabel: "Chọn trường dữ liệu",
+  selectAllFields: "Chọn tất cả",
+  
+  // Actions
+  exportButton: "Xuất dữ liệu",
+  cancelButton: "Hủy",
+  
+  // Progress/Status
+  exportingMessage: "Đang xuất dữ liệu...",
+  exportingButton: "Đang xuất...",
+  successMessage: "Hoàn tất!",
+  completeButton: "Hoàn tất",
+  
+  // Error messages
+  noFieldsSelectedError: "Vui lòng chọn ít nhất 1 trường dữ liệu",
+  exportError: "Có lỗi xảy ra khi xuất dữ liệu",
+};
+
 export interface DataExportDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   availableFields: ExportField[];
   onExport: (config: ExportConfig) => Promise<{ url: string; filename: string }>;
-  title?: string;
-  description?: string;
+  labels?: Partial<DataExportDialogLabels>;
 }
-
-const formatOptions = [
-  {
-    value: 'csv',
-    label: 'CSV (Comma-separated)',
-    description: 'File văn bản với dấu phân cách',
-  },
-  {
-    value: 'excel',
-    label: 'Excel (XLSX)',
-    description: 'Microsoft Excel workbook',
-  },
-  {
-    value: 'json',
-    label: 'JSON (JavaScript)',
-    description: 'JavaScript Object Notation',
-  },
-];
 
 const formatIcons: Record<ExportFormat, JSX.Element> = {
   csv: <FileText className="w-5 h-5" />,
@@ -63,9 +122,10 @@ export function DataExportDialog({
   onOpenChange,
   availableFields,
   onExport,
-  title = 'Xuất dữ liệu',
-  description = 'Chọn định dạng và các trường dữ liệu bạn muốn xuất',
+  labels: customLabels,
 }: DataExportDialogProps) {
+  const labels = { ...defaultLabels, ...customLabels };
+  
   const [format, setFormat] = useState<ExportFormat>('csv');
   const [enableDateRange, setEnableDateRange] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
@@ -73,6 +133,24 @@ export function DataExportDialog({
   const [isExporting, setIsExporting] = useState(false);
   const [exportComplete, setExportComplete] = useState(false);
   const [error, setError] = useState('');
+
+  const formatOptions = [
+    {
+      value: 'csv',
+      label: labels.csvFormat,
+      description: labels.csvFormatDescription,
+    },
+    {
+      value: 'excel',
+      label: labels.excelFormat,
+      description: labels.excelFormatDescription,
+    },
+    {
+      value: 'json',
+      label: labels.jsonFormat,
+      description: labels.jsonFormatDescription,
+    },
+  ];
 
   useEffect(() => {
     if (open) {
@@ -111,7 +189,7 @@ export function DataExportDialog({
 
   const handleExport = async () => {
     if (selectedFields.length === 0) {
-      setError('Vui lòng chọn ít nhất 1 trường dữ liệu');
+      setError(labels.noFieldsSelectedError);
       return;
     }
 
@@ -142,7 +220,7 @@ export function DataExportDialog({
         }, 500);
       }, 1000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Có lỗi xảy ra khi xuất dữ liệu');
+      setError(err instanceof Error ? err.message : labels.exportError);
       setIsExporting(false);
     }
   };
@@ -170,10 +248,10 @@ export function DataExportDialog({
           <div className="flex items-start justify-between mb-4">
             <div>
               <Dialog.Title className={`${designTokens.typography.h2} text-gray-900 mb-1`}>
-                {title}
+                {labels.title}
               </Dialog.Title>
               <Dialog.Description className="text-sm text-gray-600">
-                {description}
+                {labels.description}
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
@@ -182,7 +260,7 @@ export function DataExportDialog({
                   p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100
                   ${designTokens.borderRadius.md} ${designTokens.transitions.base}
                 `}
-                aria-label="Đóng"
+                aria-label={labels.closeButton}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -193,7 +271,7 @@ export function DataExportDialog({
             {/* Format Selection */}
             <div>
               <label className={`block ${designTokens.typography.small} font-semibold text-gray-700 mb-3`}>
-                Định dạng file
+                {labels.formatLabel}
               </label>
               <AppleRadioGroup
                 name="format"
@@ -210,7 +288,7 @@ export function DataExportDialog({
             {/* Date Range */}
             <div>
               <AppleCheckbox
-                label="Lọc theo khoảng thời gian"
+                label={labels.dateRangeLabel}
                 checked={enableDateRange}
                 onChange={(e) => setEnableDateRange(e.target.checked)}
                 name="enable-date-range"
@@ -220,7 +298,7 @@ export function DataExportDialog({
               {enableDateRange && (
                 <div className="mt-3 grid grid-cols-2 gap-4">
                   <AppleDatePicker
-                    label="Từ ngày"
+                    label={labels.startDateLabel}
                     mode="single"
                     selected={dateRange?.from}
                     onSelect={(date) => {
@@ -232,7 +310,7 @@ export function DataExportDialog({
                     data-testid="datepicker-from"
                   />
                   <AppleDatePicker
-                    label="Đến ngày"
+                    label={labels.endDateLabel}
                     mode="single"
                     selected={dateRange?.to}
                     onSelect={(date) => {
@@ -251,12 +329,12 @@ export function DataExportDialog({
             {/* Field Selection */}
             <div>
               <label className={`block ${designTokens.typography.small} font-semibold text-gray-700 mb-3`}>
-                Chọn trường dữ liệu
+                {labels.fieldsLabel}
               </label>
 
               <div className="space-y-2">
                 <AppleCheckbox
-                  label="Chọn tất cả"
+                  label={labels.selectAllFields}
                   checked={allFieldsSelected}
                   onChange={handleSelectAll}
                   name="select-all"
@@ -299,12 +377,12 @@ export function DataExportDialog({
                 {exportComplete ? (
                   <>
                     <Check className="w-5 h-5 text-green-600" />
-                    <span className="text-sm font-medium text-green-700">Hoàn tất!</span>
+                    <span className="text-sm font-medium text-green-700">{labels.successMessage}</span>
                   </>
                 ) : (
                   <>
                     <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm font-medium text-blue-700">Đang xuất dữ liệu...</span>
+                    <span className="text-sm font-medium text-blue-700">{labels.exportingMessage}</span>
                   </>
                 )}
               </div>
@@ -320,7 +398,7 @@ export function DataExportDialog({
               disabled={isExporting}
               data-testid="button-cancel"
             >
-              Hủy
+              {labels.cancelButton}
             </AppleButton>
             <AppleButton
               variant="primary"
@@ -334,18 +412,18 @@ export function DataExportDialog({
                 exportComplete ? (
                   <>
                     <Check className="w-5 h-5" />
-                    Hoàn tất
+                    {labels.completeButton}
                   </>
                 ) : (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Đang xuất...
+                    {labels.exportingButton}
                   </>
                 )
               ) : (
                 <>
                   <Download className="w-5 h-5" />
-                  Xuất dữ liệu
+                  {labels.exportButton}
                 </>
               )}
             </AppleButton>

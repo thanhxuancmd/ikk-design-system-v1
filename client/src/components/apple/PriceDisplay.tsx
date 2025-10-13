@@ -7,6 +7,7 @@ interface PriceDisplayProps {
   size?: 'sm' | 'md' | 'lg';
   currency?: string;
   className?: string;
+  locale?: string;
 }
 
 export function PriceDisplay({
@@ -16,9 +17,10 @@ export function PriceDisplay({
   size = 'md',
   currency = 'đ',
   className = '',
+  locale = 'vi-VN',
 }: PriceDisplayProps) {
   const formatPrice = (amount: number): string => {
-    return amount.toLocaleString('vi-VN');
+    return amount.toLocaleString(locale);
   };
 
   const discount = originalPrice && originalPrice > price

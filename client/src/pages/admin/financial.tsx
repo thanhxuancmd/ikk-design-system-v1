@@ -70,23 +70,39 @@ export default function AdminFinancialPage() {
           </CardHeader>
 
           <CardContent className="p-6">
-            {/* Financial Overview Metrics */}
+            {/* Financial Overview Metrics - with explicit i18n props */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
               <AppleMetricCard
                 title="Tổng doanh thu (VNĐ)"
                 value="856.4M"
                 change={15.3}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 description="Tăng so với tháng trước"
                 icon={<DollarSign className="w-5 h-5 text-green-600" />}
                 valueTestId="stat-revenue"
               />
+              {/* External dev would use:
+                <AppleMetricCard 
+                  title="Total Revenue (USD)"
+                  value="856.4M"
+                  change={15.3}
+                  trend="up"
+                  changeLabel="vs last month"
+                  locale="en-US"
+                  icon={<DollarSign className="w-5 h-5 text-green-600" />}
+                />
+              */}
 
               <AppleMetricCard
                 title="Tổng chi phí (VNĐ)"
                 value="324.2M"
                 change={8.2}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 description="Bao gồm marketing, vận hành"
                 icon={<CreditCard className="w-5 h-5 text-red-600" />}
                 valueTestId="stat-expenses"
@@ -97,6 +113,8 @@ export default function AdminFinancialPage() {
                 value="532.2M"
                 change={22.8}
                 trend="up"
+                changeLabel="so với tháng trước"
+                locale="vi-VN"
                 description="Tăng trưởng mạnh"
                 icon={<TrendingUp className="w-5 h-5 text-blue-600" />}
                 valueTestId="stat-profit"
@@ -106,6 +124,7 @@ export default function AdminFinancialPage() {
                 title="Công nợ chưa thanh toán (VNĐ)"
                 value="128.6M"
                 description="12 giao dịch đang chờ"
+                locale="vi-VN"
                 icon={<AlertCircle className="w-5 h-5 text-orange-600" />}
                 valueTestId="stat-outstanding"
               />

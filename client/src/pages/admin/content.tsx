@@ -238,14 +238,81 @@ export default function AdminContentPage() {
           </Card>
         </div>
 
-        {/* Content Moderation Queue */}
+        {/* Content Moderation Queue - with explicit i18n labels */}
+        {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
         <ContentModerationQueue
           items={moderationItems}
           onApprove={handleApprove}
           onReject={handleReject}
           onFilterChange={(filter) => setStatusFilter(filter)}
           currentFilter={statusFilter}
+          labels={{
+            // Tabs
+            allTab: "Tất cả",
+            pendingTab: "Chờ duyệt",
+            approvedTab: "Đã duyệt",
+            rejectedTab: "Từ chối",
+            
+            // Actions
+            approveButton: "Phê duyệt",
+            rejectButton: "Từ chối",
+            
+            // Status badges
+            pendingStatus: "Chờ duyệt",
+            approvedStatus: "Đã duyệt",
+            rejectedStatus: "Từ chối",
+            
+            // Table headers
+            contentColumn: "Nội dung",
+            userColumn: "Người dùng",
+            typeColumn: "Loại",
+            timeColumn: "Thời gian",
+            statusColumn: "Trạng thái",
+            actionsColumn: "Thao tác",
+            
+            // Content types
+            streamType: "Livestream",
+            commentType: "Bình luận",
+            productType: "Sản phẩm",
+            postType: "Bài viết",
+            
+            // Empty state
+            emptyTitle: "Không có nội dung cần kiểm duyệt",
+            emptyDescription: "Chưa có nội dung nào cần được kiểm duyệt trong danh mục này",
+            
+            // Dialog
+            rejectDialogTitle: "Từ chối nội dung",
+            rejectDialogDescription: "Vui lòng nhập lý do từ chối nội dung này (tùy chọn)",
+            rejectReasonPlaceholder: "Nhập lý do từ chối...",
+            cancelButton: "Hủy",
+            rejectDialogButton: "Từ chối",
+            
+            // Other
+            reasonPrefix: "Lý do:",
+          }}
         />
+        {/* External dev would use:
+          <ContentModerationQueue 
+            items={moderationItems}
+            onApprove={handleApprove}
+            onReject={handleReject}
+            labels={{
+              allTab: "All",
+              pendingTab: "Pending",
+              approvedTab: "Approved",
+              rejectedTab: "Rejected",
+              approveButton: "Approve",
+              rejectButton: "Reject",
+              contentColumn: "Content",
+              userColumn: "User",
+              typeColumn: "Type",
+              timeColumn: "Time",
+              statusColumn: "Status",
+              actionsColumn: "Actions",
+              // ... other English labels
+            }}
+          />
+        */}
       </div>
     </IKKAdminLayout>
   )

@@ -4,16 +4,36 @@ import { Clock } from 'lucide-react';
 type LiveStatus = 'live' | 'offline' | 'scheduled';
 type LiveStatusSize = 'sm' | 'md';
 
+interface LiveStatusLabels {
+  liveLabel?: string;
+  offlineLabel?: string;
+  scheduledLabel?: string;
+  liveAriaLabel?: string;
+  offlineAriaLabel?: string;
+  scheduledAriaLabel?: string;
+}
+
 interface LiveStatusBadgeProps {
   status: LiveStatus;
   scheduledTime?: string;
   size?: LiveStatusSize;
+  labels?: Partial<LiveStatusLabels>;
+  locale?: string;
 }
 
-const statusConfig: Record<LiveStatus, { label: string; color: string; bgColor: string }> = {
-  live: { label: 'TRỰC TIẾP', color: 'text-white', bgColor: 'bg-red-600' },
-  offline: { label: 'Ngoại tuyến', color: 'text-gray-700', bgColor: 'bg-gray-200' },
-  scheduled: { label: 'Dự kiến', color: 'text-white', bgColor: 'bg-blue-600' },
+const defaultLabels: LiveStatusLabels = {
+  liveLabel: 'TRỰC TIẾP',
+  offlineLabel: 'Ngoại tuyến',
+  scheduledLabel: 'Dự kiến',
+  liveAriaLabel: 'Đang phát trực tiếp',
+  offlineAriaLabel: 'Ngoại tuyến',
+  scheduledAriaLabel: 'Dự kiến lúc',
+};
+
+const statusConfigColors: Record<LiveStatus, { color: string; bgColor: string }> = {
+  live: { color: 'text-white', bgColor: 'bg-red-600' },
+  offline: { color: 'text-gray-700', bgColor: 'bg-gray-200' },
+  scheduled: { color: 'text-white', bgColor: 'bg-blue-600' },
 };
 
 const sizeConfig: Record<LiveStatusSize, { text: string; padding: string; dotSize: string }> = {
@@ -25,13 +45,25 @@ export function LiveStatusBadge({
   status,
   scheduledTime,
   size = 'md',
+  labels: customLabels,
+  locale = 'vi-VN',
 }: LiveStatusBadgeProps) {
-  const statusInfo = statusConfig[status];
+  const labels = { ...defaultLabels, ...customLabels };
+  const statusInfo = statusConfigColors[status];
   const sizeInfo = sizeConfig[size];
+  
+  const getStatusLabel = (status: LiveStatus): string => {
+    const labelMap = {
+      live: labels.liveLabel,
+      offline: labels.offlineLabel,
+      scheduled: labels.scheduledLabel,
+    };
+    return labelMap[status] || status;
+  };
 
   const formatScheduledTime = (timeString: string): string => {
     const date = new Date(timeString);
-    return date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
   };
 
   return (
@@ -46,7 +78,7 @@ export function LiveStatusBadge({
         font-semibold
         relative
       `}
-      aria-label={status === 'live' ? 'Đang phát trực tiếp' : status === 'scheduled' ? `Dự kiến lúc ${scheduledTime}` : 'Ngoại tuyến'}
+      aria-label={status === 'live' ? labels.liveAriaLabel : status === 'scheduled' ? `${labels.scheduledAriaLabel} ${scheduledTime}` : labels.offlineAriaLabel}
     >
       <span className="flex items-center gap-2">
         {status === 'live' && (
@@ -72,7 +104,7 @@ export function LiveStatusBadge({
           <span className={`${sizeInfo.dotSize} bg-gray-500 rounded-full`} />
         )}
         <span>
-          {statusInfo.label}
+          {getStatusLabel(status)}
           {status === 'scheduled' && scheduledTime && ` ${formatScheduledTime(scheduledTime)}`}
         </span>
       </span>

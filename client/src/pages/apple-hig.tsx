@@ -63,7 +63,11 @@ import {
   BulkActionToolbar,
   ContentModerationQueue,
   CommissionRulesEditor,
-  DataExportDialog
+  DataExportDialog,
+  AppleThemeProvider,
+  ikkTheme,
+  appleTheme,
+  useAppleTheme
 } from '@/components/apple';
 import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
@@ -322,6 +326,37 @@ function AppleHIGShowcaseContent() {
     </div>
   );
 
+  const ThemeSwitcher = () => {
+    const { theme, setTheme } = useAppleTheme();
+    
+    return (
+      <div className="flex gap-3 mb-6" data-testid="theme-switcher">
+        <button
+          onClick={() => setTheme(ikkTheme)}
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            theme.name === 'IKK Pink'
+              ? 'bg-[#ff0086] text-white shadow-lg'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+          data-testid="button-ikk-theme"
+        >
+          🌸 IKK Pink Theme
+        </button>
+        <button
+          onClick={() => setTheme(appleTheme)}
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            theme.name === 'Apple Blue'
+              ? 'bg-[#007AFF] text-white shadow-lg'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          }`}
+          data-testid="button-apple-theme"
+        >
+          🍎 Apple Blue Theme
+        </button>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
@@ -334,6 +369,10 @@ function AppleHIGShowcaseContent() {
             Standardized components following Apple Human Interface Guidelines for consistent, 
             accessible, and beautiful user experiences
           </p>
+          
+          <div className="mt-8">
+            <ThemeSwitcher />
+          </div>
         </div>
       </header>
 
@@ -341,7 +380,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'recipes', 'guides', 'examples'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'reusability', 'recipes', 'guides', 'examples'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -352,7 +391,7 @@ function AppleHIGShowcaseContent() {
                 }`}
                 data-testid={`button-tab-${tab}`}
               >
-                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Admin Use Cases' : tab.charAt(0).toUpperCase() + tab.slice(1)}
+                {tab === 'ecommerce' ? 'E-commerce' : tab === 'utilities' ? 'Tiện ích' : tab === 'admin' ? 'Admin Use Cases' : tab === 'reusability' ? 'External Reusability' : tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
             ))}
           </nav>
@@ -5940,6 +5979,1019 @@ import { designTokens } from '@/constants/design-tokens';
             </div>
           </div>
         </Section>
+
+        {/* Theming & I18n Guide Section */}
+        <Section title="🎨 Theming & Internationalization Guide">
+          <div className="space-y-12">
+            {/* Introduction */}
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Complete Guide to Theming & i18n</h3>
+              <p className="text-gray-700 mb-4">
+                Learn how to customize the Apple HIG Design System with your own brand colors (theming) and translate it to any language (internationalization). 
+                This guide covers everything external developers need to adapt the system to their own applications.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    🎨 Theming System
+                  </h4>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• 2 Predefined themes (IKK Pink, Apple Blue)</li>
+                    <li>• 18 CSS variables for easy customization</li>
+                    <li>• Instant theme switching</li>
+                    <li>• Create unlimited custom themes</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold mb-2 flex items-center gap-2">
+                    🌍 Internationalization
+                  </h4>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• 8 components with i18n support</li>
+                    <li>• Locale-aware number/date formatting</li>
+                    <li>• Customizable labels & text</li>
+                    <li>• Backward compatible with IKK defaults</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* ===== THEMING SYSTEM ===== */}
+            <div className="space-y-8">
+              <div className="border-l-4 border-purple-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Part 1: Theming System</h3>
+                <p className="text-gray-600">Complete guide to customizing colors and creating themes</p>
+              </div>
+
+              {/* 1.1 Overview */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">1.1 What is the Theming System?</h4>
+                <p className="text-gray-600 mb-4">
+                  The theming system allows you to customize the entire design system's color palette with your brand colors. 
+                  All components automatically respond to theme changes through CSS variables, making it easy to maintain consistent branding.
+                </p>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <h5 className="font-semibold text-blue-900 mb-2">Key Features:</h5>
+                  <ul className="text-sm text-blue-800 space-y-1">
+                    <li>✅ <strong>CSS Variables:</strong> All colors use CSS custom properties for instant updates</li>
+                    <li>✅ <strong>Instant Switching:</strong> Change themes without page reload</li>
+                    <li>✅ <strong>TypeScript Support:</strong> Fully typed theme objects</li>
+                    <li>✅ <strong>Custom Themes:</strong> Create unlimited themes with createTheme()</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* 1.2 Quick Start */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">1.2 Quick Start - Setup in 3 Steps</h4>
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="font-medium text-gray-900 mb-2">Step 1: Import Theme Components</h5>
+                    <CodeBlock code={`import { 
+  AppleThemeProvider, 
+  ikkTheme, 
+  appleTheme, 
+  createTheme, 
+  useAppleTheme 
+} from '@/components/apple'`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-gray-900 mb-2">Step 2: Wrap Your App</h5>
+                    <CodeBlock code={`export default function App() {
+  return (
+    <AppleThemeProvider defaultTheme={ikkTheme}>
+      <YourApp />
+    </AppleThemeProvider>
+  )
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-gray-900 mb-2">Step 3: Use Theme Hook (Optional)</h5>
+                    <CodeBlock code={`function ThemeSwitcher() {
+  const { theme, setTheme } = useAppleTheme()
+  
+  return (
+    <button onClick={() => setTheme(appleTheme)}>
+      Switch to Apple Blue
+    </button>
+  )
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* 1.3 Predefined Themes */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">1.3 Predefined Themes</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div className="border-2 border-pink-200 rounded-lg p-4 bg-pink-50">
+                    <h5 className="font-semibold text-lg mb-3">🌸 IKK Pink Theme (Default)</h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#ff0086' }}></div>
+                        <span className="font-mono">primary: #ff0086</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#e6007a' }}></div>
+                        <span className="font-mono">primaryHover: #e6007a</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#10b981' }}></div>
+                        <span className="font-mono">success: #10b981</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#f59e0b' }}></div>
+                        <span className="font-mono">warning: #f59e0b</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#ef4444' }}></div>
+                        <span className="font-mono">destructive: #ef4444</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
+                    <h5 className="font-semibold text-lg mb-3">🍎 Apple Blue Theme</h5>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#007AFF' }}></div>
+                        <span className="font-mono">primary: #007AFF</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#0066CC' }}></div>
+                        <span className="font-mono">primaryHover: #0066CC</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#34C759' }}></div>
+                        <span className="font-mono">success: #34C759</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#FF9500' }}></div>
+                        <span className="font-mono">warning: #FF9500</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded" style={{ backgroundColor: '#FF3B30' }}></div>
+                        <span className="font-mono">destructive: #FF3B30</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <CodeBlock code={`// Using IKK Pink Theme (Default)
+<AppleThemeProvider defaultTheme={ikkTheme}>
+  <App />
+</AppleThemeProvider>
+
+// Using Apple Blue Theme
+<AppleThemeProvider defaultTheme={appleTheme}>
+  <App />
+</AppleThemeProvider>`} />
+              </div>
+
+              {/* 1.4 Creating Custom Themes */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">1.4 Creating Custom Themes</h4>
+                <p className="text-gray-600 mb-4">
+                  Use the <code className="bg-gray-100 px-2 py-1 rounded">createTheme()</code> function to create your own theme. 
+                  You only need to override the colors you want to change.
+                </p>
+
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="font-medium text-gray-900 mb-2">Example: Purple Theme</h5>
+                    <CodeBlock code={`import { createTheme } from '@/components/apple'
+
+const purpleTheme = createTheme({
+  colors: {
+    primary: '#8B5CF6',        // Purple
+    primaryHover: '#7C3AED',   // Darker purple on hover
+    primaryActive: '#6D28D9',  // Even darker on click
+    primarySoft: 'rgba(139, 92, 246, 0.1)',
+    // All other colors inherit from ikkTheme
+  },
+  name: 'Purple Theme'
+})
+
+// Use it
+<AppleThemeProvider defaultTheme={purpleTheme}>
+  <App />
+</AppleThemeProvider>`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium text-gray-900 mb-2">Example: Dark Mode Theme</h5>
+                    <CodeBlock code={`const darkTheme = createTheme({
+  colors: {
+    primary: '#60A5FA',           // Light blue for dark bg
+    primaryHover: '#3B82F6',
+    primarySoft: 'rgba(96, 165, 250, 0.2)',
+    destructive: '#F87171',       // Softer red for dark
+    destructiveHover: '#EF4444',
+    success: '#4ADE80',           // Softer green
+    warning: '#FBBF24',           // Softer yellow
+  },
+  name: 'Dark Mode'
+})
+
+// Combine with dark mode class on body
+<body className="dark bg-gray-900">
+  <AppleThemeProvider defaultTheme={darkTheme}>
+    <App />
+  </AppleThemeProvider>
+</body>`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* 1.5 CSS Variables Reference */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">1.5 CSS Variables Reference</h4>
+                <p className="text-gray-600 mb-4">
+                  All components use these 18 CSS variables. Change the theme, and all components update automatically.
+                </p>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm border-collapse">
+                    <thead>
+                      <tr className="bg-gray-100">
+                        <th className="border border-gray-300 px-4 py-2 text-left">Variable</th>
+                        <th className="border border-gray-300 px-4 py-2 text-left">Purpose</th>
+                        <th className="border border-gray-300 px-4 py-2 text-left">Used In</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-primary</td>
+                        <td className="border border-gray-300 px-4 py-2">Primary brand color</td>
+                        <td className="border border-gray-300 px-4 py-2">Buttons, links, active states</td>
+                      </tr>
+                      <tr className="bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-primary-hover</td>
+                        <td className="border border-gray-300 px-4 py-2">Primary hover state</td>
+                        <td className="border border-gray-300 px-4 py-2">Button hovers, interactive elements</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-primary-active</td>
+                        <td className="border border-gray-300 px-4 py-2">Primary active/pressed</td>
+                        <td className="border border-gray-300 px-4 py-2">Button clicks, active tabs</td>
+                      </tr>
+                      <tr className="bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-primary-soft</td>
+                        <td className="border border-gray-300 px-4 py-2">Soft primary background</td>
+                        <td className="border border-gray-300 px-4 py-2">Badges, highlights, selections</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-destructive</td>
+                        <td className="border border-gray-300 px-4 py-2">Destructive/error color</td>
+                        <td className="border border-gray-300 px-4 py-2">Delete buttons, error messages</td>
+                      </tr>
+                      <tr className="bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-success</td>
+                        <td className="border border-gray-300 px-4 py-2">Success/positive color</td>
+                        <td className="border border-gray-300 px-4 py-2">Success badges, positive trends</td>
+                      </tr>
+                      <tr>
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-warning</td>
+                        <td className="border border-gray-300 px-4 py-2">Warning/caution color</td>
+                        <td className="border border-gray-300 px-4 py-2">Warning badges, pending states</td>
+                      </tr>
+                      <tr className="bg-gray-50">
+                        <td className="border border-gray-300 px-4 py-2 font-mono">--apple-accent</td>
+                        <td className="border border-gray-300 px-4 py-2">Accent/secondary color</td>
+                        <td className="border border-gray-300 px-4 py-2">Info badges, secondary actions</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                  <h5 className="font-semibold text-yellow-900 mb-2">💡 Pro Tip:</h5>
+                  <p className="text-sm text-yellow-800">
+                    You can also use CSS variables directly in your custom components:
+                  </p>
+                  <CodeBlock code={`// In your custom component
+<div style={{ backgroundColor: 'var(--apple-primary)' }}>
+  This uses the current theme's primary color
+</div>
+
+// Or in CSS/Tailwind
+.my-custom-class {
+  border-color: var(--apple-primary);
+  color: var(--apple-primary-hover);
+}`} />
+                </div>
+              </div>
+            </div>
+
+            {/* ===== I18N SYSTEM ===== */}
+            <div className="space-y-8 mt-16">
+              <div className="border-l-4 border-blue-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Part 2: Internationalization (i18n)</h3>
+                <p className="text-gray-600">Complete guide to translating components to any language</p>
+              </div>
+
+              {/* 2.1 Overview */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">2.1 What is i18n Support?</h4>
+                <p className="text-gray-600 mb-4">
+                  8 components in the design system support internationalization through customizable text props and locale-aware formatting. 
+                  This allows external developers to use the system in any language without modifying component source code.
+                </p>
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <h5 className="font-semibold text-green-900 mb-2">Supported Features:</h5>
+                  <ul className="text-sm text-green-800 space-y-1">
+                    <li>✅ <strong>Text Customization:</strong> All labels, messages, and UI text can be customized via props</li>
+                    <li>✅ <strong>Locale Formatting:</strong> Numbers, dates, and currencies formatted per locale (vi-VN, en-US, etc.)</li>
+                    <li>✅ <strong>Backward Compatible:</strong> Vietnamese defaults for IKK, fully customizable for external use</li>
+                    <li>✅ <strong>TypeScript Support:</strong> Full typing for all i18n props</li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* 2.2 Component-by-Component Guide */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-6">2.2 Component-by-Component i18n Guide</h4>
+                
+                <div className="space-y-8">
+                  {/* AppleMetricCard */}
+                  <div className="border-l-2 border-blue-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">📊 AppleMetricCard</h5>
+                    <p className="text-sm text-gray-600 mb-3">Metric display with locale-aware number formatting and customizable change label.</p>
+                    <CodeBlock code={`interface AppleMetricCardProps {
+  changeLabel?: string  // Default: "so với tháng trước"
+  locale?: string       // Default: "vi-VN"
+}
+
+// Vietnamese (Default)
+<AppleMetricCard 
+  title="Doanh thu"
+  value={1234567}
+  change={12.5}
+  // Uses default Vietnamese labels
+/>
+// Displays: "1.234.567" and "+12,5% so với tháng trước"
+
+// English
+<AppleMetricCard 
+  title="Revenue"
+  value={1234567}
+  change={12.5}
+  changeLabel="vs last month"
+  locale="en-US"
+/>
+// Displays: "1,234,567" and "+12.5% vs last month"`} />
+                  </div>
+
+                  {/* AppleSearchBar */}
+                  <div className="border-l-2 border-purple-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">🔍 AppleSearchBar</h5>
+                    <p className="text-sm text-gray-600 mb-3">Search component with customizable placeholder and UI text.</p>
+                    <CodeBlock code={`interface AppleSearchBarProps {
+  placeholder?: string         // Default: "Tìm kiếm..."
+  recentLabel?: string         // Default: "Tìm kiếm gần đây"
+  noResultsText?: string       // Default: "Không có kết quả"
+  clearButtonLabel?: string    // Default: "Xóa tìm kiếm"
+}
+
+// English Example
+<AppleSearchBar
+  value={search}
+  onChange={setSearch}
+  onSearch={handleSearch}
+  placeholder="Search products..."
+  recentLabel="Recent searches"
+  noResultsText="No results found"
+  clearButtonLabel="Clear search"
+/>`} />
+                  </div>
+
+                  {/* PriceDisplay */}
+                  <div className="border-l-2 border-green-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">💰 PriceDisplay</h5>
+                    <p className="text-sm text-gray-600 mb-3">Price component with locale-specific formatting and currency symbols.</p>
+                    <CodeBlock code={`interface PriceDisplayProps {
+  currency?: string    // Default: "đ"
+  locale?: string      // Default: "vi-VN"
+}
+
+// Vietnamese
+<PriceDisplay price={350000} currency="đ" locale="vi-VN" />
+// Displays: "350.000đ"
+
+// US Dollars
+<PriceDisplay price={15.99} currency="$" locale="en-US" />
+// Displays: "$15.99"
+
+// Euros
+<PriceDisplay price={12.50} currency="€" locale="de-DE" />
+// Displays: "12,50€"`} />
+                  </div>
+
+                  {/* StreamCard */}
+                  <div className="border-l-2 border-red-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">🎥 StreamCard</h5>
+                    <p className="text-sm text-gray-600 mb-3">Livestream card with customizable live badge and viewer count text.</p>
+                    <CodeBlock code={`interface StreamCardProps {
+  liveLabel?: string      // Default: "TRỰC TIẾP"
+  viewersLabel?: string   // Default: "người xem"
+  locale?: string         // Default: "vi-VN"
+}
+
+// English
+<StreamCard
+  title="Product Review 2024"
+  viewerCount={2500}
+  isLive={true}
+  liveLabel="LIVE"
+  viewersLabel="viewers"
+  locale="en-US"
+/>
+// Displays: "LIVE" badge and "2,500 viewers"`} />
+                  </div>
+
+                  {/* ProductCard */}
+                  <div className="border-l-2 border-yellow-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">🛍️ ProductCard</h5>
+                    <p className="text-sm text-gray-600 mb-3">Product card with customizable labels and locale-aware price formatting.</p>
+                    <CodeBlock code={`interface ProductCardProps {
+  labels?: Partial<ProductCardLabels>
+  currencySymbol?: string  // Default: "đ"
+  locale?: string          // Default: "vi-VN"
+}
+
+interface ProductCardLabels {
+  discountPrefix?: string  // Default: "Giảm"
+  soldPrefix?: string      // Default: "Đã bán"
+}
+
+// English
+<ProductCard
+  name="Premium T-Shirt"
+  price={15.99}
+  soldCount={1234}
+  currencySymbol="$"
+  locale="en-US"
+  labels={{
+    discountPrefix: "Save",
+    soldPrefix: "Sold"
+  }}
+/>
+// Displays: "Save 30%" and "Sold 1,234"`} />
+                  </div>
+
+                  {/* ContentModerationQueue */}
+                  <div className="border-l-2 border-indigo-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">🛡️ ContentModerationQueue</h5>
+                    <p className="text-sm text-gray-600 mb-3">Comprehensive moderation UI with full label customization (32+ labels).</p>
+                    <CodeBlock code={`interface ContentModerationLabels {
+  // Tabs
+  allTab?: string
+  pendingTab?: string
+  approvedTab?: string
+  rejectedTab?: string
+  
+  // Actions
+  approveButton?: string
+  rejectButton?: string
+  
+  // Table headers
+  contentColumn?: string
+  userColumn?: string
+  typeColumn?: string
+  statusColumn?: string
+  actionsColumn?: string
+  
+  // ... and 20+ more labels
+}
+
+// English Example
+<ContentModerationQueue
+  items={items}
+  onApprove={handleApprove}
+  onReject={handleReject}
+  labels={{
+    allTab: "All",
+    pendingTab: "Pending",
+    approvedTab: "Approved",
+    rejectedTab: "Rejected",
+    approveButton: "Approve",
+    rejectButton: "Reject",
+    contentColumn: "Content",
+    userColumn: "User",
+    typeColumn: "Type",
+    statusColumn: "Status",
+    actionsColumn: "Actions"
+  }}
+/>`} />
+                  </div>
+
+                  {/* CommissionRulesEditor */}
+                  <div className="border-l-2 border-pink-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">💸 CommissionRulesEditor</h5>
+                    <p className="text-sm text-gray-600 mb-3">Commission rules editor with customizable labels, tier names, and categories.</p>
+                    <CodeBlock code={`interface CommissionRulesEditorProps {
+  labels?: Partial<CommissionRulesLabels>
+  levelOptions?: string[]     // Custom tier names
+  categoryOptions?: string[]  // Custom categories
+}
+
+// English Example
+<CommissionRulesEditor
+  rules={rules}
+  onChange={setRules}
+  onSave={handleSave}
+  levelOptions={[
+    'Bronze (< 10K)',
+    'Silver (10K - 50K)',
+    'Gold (50K - 100K)',
+    'Platinum (> 100K)'
+  ]}
+  categoryOptions={[
+    'Fashion',
+    'Beauty',
+    'Technology'
+  ]}
+  labels={{
+    title: "Commission Rules Management",
+    levelColumn: "Level",
+    categoryColumn: "Category",
+    rateColumn: "Commission Rate",
+    addRuleButton: "Add New Rule",
+    saveButton: "Save Changes"
+  }}
+/>`} />
+                  </div>
+
+                  {/* DataExportDialog */}
+                  <div className="border-l-2 border-teal-400 pl-4">
+                    <h5 className="text-lg font-semibold mb-3">📥 DataExportDialog</h5>
+                    <p className="text-sm text-gray-600 mb-3">Data export dialog with comprehensive label customization (25+ labels).</p>
+                    <CodeBlock code={`interface DataExportDialogLabels {
+  title: string
+  description: string
+  formatLabel: string
+  csvFormat: string
+  excelFormat: string
+  jsonFormat: string
+  exportButton: string
+  // ... and 18+ more labels
+}
+
+// English Example
+<DataExportDialog
+  open={exportOpen}
+  onOpenChange={setExportOpen}
+  availableFields={fields}
+  onExport={handleExport}
+  labels={{
+    title: "Export Data",
+    description: "Select format and fields to export",
+    formatLabel: "File Format",
+    csvFormat: "CSV (Comma-separated)",
+    excelFormat: "Excel (XLSX)",
+    jsonFormat: "JSON",
+    dateRangeLabel: "Filter by Date Range",
+    fieldsLabel: "Select Fields",
+    exportButton: "Export Data",
+    cancelButton: "Cancel"
+  }}
+/>`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.3 Locale Support Guide */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">2.3 Locale Support & Formatting</h4>
+                <p className="text-gray-600 mb-4">
+                  The <code className="bg-gray-100 px-2 py-1 rounded">locale</code> prop controls number, date, and currency formatting using JavaScript's Intl API.
+                </p>
+
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="font-medium mb-2">Supported Locales (Examples)</h5>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-gray-50 p-3 rounded">
+                        <div className="font-mono text-sm mb-1">vi-VN (Vietnamese)</div>
+                        <div className="text-sm text-gray-600">1.234.567 • 12,5% • 1.000đ</div>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded">
+                        <div className="font-mono text-sm mb-1">en-US (US English)</div>
+                        <div className="text-sm text-gray-600">1,234,567 • 12.5% • $1,000</div>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded">
+                        <div className="font-mono text-sm mb-1">de-DE (German)</div>
+                        <div className="text-sm text-gray-600">1.234.567 • 12,5% • 1.000€</div>
+                      </div>
+                      <div className="bg-gray-50 p-3 rounded">
+                        <div className="font-mono text-sm mb-1">ja-JP (Japanese)</div>
+                        <div className="text-sm text-gray-600">1,234,567 • 12.5% • ¥1,000</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium mb-2">Number Formatting Examples</h5>
+                    <CodeBlock code={`// AppleMetricCard with different locales
+<AppleMetricCard value={1234567} locale="vi-VN" />  // 1.234.567
+<AppleMetricCard value={1234567} locale="en-US" />  // 1,234,567
+<AppleMetricCard value={1234567} locale="de-DE" />  // 1.234.567
+<AppleMetricCard value={1234567} locale="fr-FR" />  // 1 234 567`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium mb-2">Currency Formatting Examples</h5>
+                    <CodeBlock code={`// PriceDisplay with different locales and currencies
+<PriceDisplay price={1500} currency="đ" locale="vi-VN" />    // 1.500đ
+<PriceDisplay price={15.99} currency="$" locale="en-US" />   // $15.99
+<PriceDisplay price={12.50} currency="€" locale="de-DE" />   // 12,50€
+<PriceDisplay price={1200} currency="¥" locale="ja-JP" />    // ¥1,200`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* 2.4 Best Practices */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">2.4 i18n Best Practices</h4>
+                
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold mb-2">1. When to Use i18n Props</h5>
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <ul className="text-sm text-blue-900 space-y-2">
+                        <li>✅ <strong>Always</strong> set <code>locale</code> for apps targeting non-Vietnamese markets</li>
+                        <li>✅ <strong>Always</strong> customize labels when translating to another language</li>
+                        <li>✅ <strong>Optional</strong> for IKK internal apps (defaults are Vietnamese)</li>
+                        <li>✅ Store locale preference in user settings/localStorage</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">2. How to Organize Translations</h5>
+                    <CodeBlock code={`// Create a translations file
+// translations/en.ts
+export const en = {
+  metricCard: {
+    changeLabel: "vs last month"
+  },
+  searchBar: {
+    placeholder: "Search...",
+    recentLabel: "Recent searches",
+    noResultsText: "No results found"
+  },
+  moderation: {
+    allTab: "All",
+    pendingTab: "Pending",
+    approvedTab: "Approved",
+    // ... all labels
+  }
+}
+
+// translations/vi.ts
+export const vi = {
+  metricCard: {
+    changeLabel: "so với tháng trước"
+  },
+  // ... Vietnamese translations
+}
+
+// Use in your app
+import { en } from './translations/en'
+
+function Dashboard() {
+  const locale = useUserLocale() // Get from settings
+  const t = locale === 'en' ? en : vi
+  
+  return (
+    <AppleMetricCard 
+      changeLabel={t.metricCard.changeLabel}
+      locale={locale}
+    />
+  )
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">3. Backward Compatibility</h5>
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                      <p className="text-sm text-green-900 mb-2">All i18n props are optional and have Vietnamese defaults:</p>
+                      <ul className="text-sm text-green-800 space-y-1">
+                        <li>• IKK developers don't need to change existing code</li>
+                        <li>• External developers can customize as needed</li>
+                        <li>• No breaking changes to existing implementations</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">4. Performance Considerations</h5>
+                    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                      <ul className="text-sm text-yellow-900 space-y-2">
+                        <li>✅ Label props don't cause re-renders (passed directly)</li>
+                        <li>✅ Intl.NumberFormat is memoized internally</li>
+                        <li>✅ Use same locale string reference to avoid recreating formatters</li>
+                        <li>⚠️ Avoid creating new label objects on every render</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ===== MIGRATION GUIDES ===== */}
+            <div className="space-y-8 mt-16">
+              <div className="border-l-4 border-green-600 pl-6">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Part 3: Migration Guides</h3>
+                <p className="text-gray-600">How to adopt theming & i18n in your projects</p>
+              </div>
+
+              {/* For IKK Developers */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">3.1 For IKK Internal Developers</h4>
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
+                  <h5 className="font-semibold text-green-900 mb-2">✅ Great News: No Changes Required!</h5>
+                  <p className="text-sm text-green-800">
+                    All theming and i18n features are backward compatible. Your existing code continues to work with Vietnamese defaults and IKK Pink theme.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="font-medium mb-2">Optional: Explicit Theme Setup</h5>
+                    <CodeBlock code={`// You can explicitly set the IKK theme (optional, it's already the default)
+import { AppleThemeProvider, ikkTheme } from '@/components/apple'
+
+function App() {
+  return (
+    <AppleThemeProvider defaultTheme={ikkTheme}>
+      {/* Your existing code works as-is */}
+    </AppleThemeProvider>
+  )
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-medium mb-2">Optional: Explicit i18n Props for Clarity</h5>
+                    <CodeBlock code={`// Before (still works)
+<AppleMetricCard title="Doanh thu" value={1000000} change={5.2} />
+
+// After (more explicit, same result)
+<AppleMetricCard 
+  title="Doanh thu" 
+  value={1000000} 
+  change={5.2}
+  changeLabel="so với tháng trước"  // Explicit
+  locale="vi-VN"                     // Explicit
+/>`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* For External Developers */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">3.2 For External Developers</h4>
+                <p className="text-gray-600 mb-4">
+                  Follow these steps to customize the design system for your brand and language:
+                </p>
+
+                <div className="space-y-6">
+                  <div>
+                    <h5 className="font-semibold mb-2">Step 1: Create Your Custom Theme</h5>
+                    <CodeBlock code={`// themes/myBrand.ts
+import { createTheme } from '@/components/apple'
+
+export const myBrandTheme = createTheme({
+  colors: {
+    primary: '#2563EB',        // Your brand blue
+    primaryHover: '#1D4ED8',
+    primaryActive: '#1E40AF',
+    primarySoft: 'rgba(37, 99, 235, 0.1)',
+    // Customize other colors as needed
+  },
+  name: 'My Brand Theme'
+})`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">Step 2: Create Translation Files</h5>
+                    <CodeBlock code={`// translations/en.ts
+export const enTranslations = {
+  // AppleMetricCard
+  metricCard: {
+    changeLabel: "vs last month"
+  },
+  
+  // AppleSearchBar
+  searchBar: {
+    placeholder: "Search...",
+    recentLabel: "Recent searches",
+    noResultsText: "No results found",
+    clearButtonLabel: "Clear"
+  },
+  
+  // ContentModerationQueue
+  moderation: {
+    allTab: "All",
+    pendingTab: "Pending",
+    approvedTab: "Approved",
+    rejectedTab: "Rejected",
+    approveButton: "Approve",
+    rejectButton: "Reject",
+    contentColumn: "Content",
+    userColumn: "User",
+    // ... add all needed labels
+  },
+  
+  // Add translations for all components you use
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">Step 3: Apply Theme and Translations</h5>
+                    <CodeBlock code={`// App.tsx
+import { AppleThemeProvider } from '@/components/apple'
+import { myBrandTheme } from './themes/myBrand'
+import { enTranslations } from './translations/en'
+
+function App() {
+  return (
+    <AppleThemeProvider defaultTheme={myBrandTheme}>
+      <Dashboard translations={enTranslations} />
+    </AppleThemeProvider>
+  )
+}
+
+// Dashboard.tsx
+function Dashboard({ translations }) {
+  const t = translations
+  
+  return (
+    <div>
+      <AppleMetricCard
+        title="Revenue"
+        value={1000000}
+        change={12.5}
+        changeLabel={t.metricCard.changeLabel}
+        locale="en-US"
+      />
+      
+      <AppleSearchBar
+        placeholder={t.searchBar.placeholder}
+        recentLabel={t.searchBar.recentLabel}
+        noResultsText={t.searchBar.noResultsText}
+        // ... other props
+      />
+    </div>
+  )
+}`} />
+                  </div>
+
+                  <div>
+                    <h5 className="font-semibold mb-2">Step 4: Add Theme Switcher (Optional)</h5>
+                    <CodeBlock code={`import { useAppleTheme, ikkTheme, appleTheme } from '@/components/apple'
+import { myBrandTheme } from './themes/myBrand'
+
+function ThemeSwitcher() {
+  const { theme, setTheme } = useAppleTheme()
+  
+  return (
+    <select 
+      value={theme.name} 
+      onChange={(e) => {
+        const themes = { 
+          'My Brand Theme': myBrandTheme,
+          'IKK Pink': ikkTheme,
+          'Apple Blue': appleTheme 
+        }
+        setTheme(themes[e.target.value])
+      }}
+    >
+      <option>My Brand Theme</option>
+      <option>IKK Pink</option>
+      <option>Apple Blue</option>
+    </select>
+  )
+}`} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Complete Example */}
+              <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <h4 className="text-xl font-semibold mb-4">3.3 Complete Working Example</h4>
+                <p className="text-gray-600 mb-4">
+                  A fully working example showing theme customization and English translation:
+                </p>
+                <CodeBlock code={`// 1. Create theme
+const techTheme = createTheme({
+  colors: {
+    primary: '#10B981',
+    primaryHover: '#059669',
+    success: '#3B82F6',
+  },
+  name: 'Tech Green'
+})
+
+// 2. Create translations
+const en = {
+  search: { placeholder: "Search products...", noResults: "Nothing found" },
+  metric: { vsLabel: "vs last quarter" },
+}
+
+// 3. Use in app
+function TechDashboard() {
+  return (
+    <AppleThemeProvider defaultTheme={techTheme}>
+      <div className="p-8">
+        <h1>Tech Dashboard</h1>
+        
+        {/* Search with English labels */}
+        <AppleSearchBar
+          placeholder={en.search.placeholder}
+          noResultsText={en.search.noResults}
+          locale="en-US"
+        />
+        
+        {/* Metrics with English labels and US formatting */}
+        <div className="grid grid-cols-3 gap-4 mt-6">
+          <AppleMetricCard
+            title="Revenue"
+            value={2500000}
+            change={18.5}
+            changeLabel={en.metric.vsLabel}
+            locale="en-US"
+            prefix="$"
+          />
+          
+          <AppleMetricCard
+            title="Users"
+            value={125000}
+            change={12.3}
+            changeLabel={en.metric.vsLabel}
+            locale="en-US"
+          />
+          
+          <AppleMetricCard
+            title="Conversion"
+            value={3.45}
+            change={0.8}
+            changeLabel={en.metric.vsLabel}
+            locale="en-US"
+            suffix="%"
+          />
+        </div>
+        
+        {/* All components use the Tech Green theme automatically */}
+        <AppleButton variant="primary">
+          Analyze Data
+        </AppleButton>
+      </div>
+    </AppleThemeProvider>
+  )
+}
+
+// Everything is themed in Tech Green and translated to English!`} />
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-8 rounded-lg border border-indigo-200 mt-12">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Summary: What You've Learned</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3">🎨 Theming System</h4>
+                  <ul className="text-sm text-gray-700 space-y-2">
+                    <li>✅ Use AppleThemeProvider to enable theming</li>
+                    <li>✅ Choose from ikkTheme or appleTheme presets</li>
+                    <li>✅ Create custom themes with createTheme()</li>
+                    <li>✅ All 18 CSS variables update automatically</li>
+                    <li>✅ Use useAppleTheme() hook for theme switching</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3">🌍 Internationalization</h4>
+                  <ul className="text-sm text-gray-700 space-y-2">
+                    <li>✅ 8 components support full i18n</li>
+                    <li>✅ Customize labels via props</li>
+                    <li>✅ Use locale prop for number/date formatting</li>
+                    <li>✅ Vietnamese defaults (backward compatible)</li>
+                    <li>✅ Organize translations in separate files</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-white rounded-lg">
+                <p className="text-gray-700">
+                  <strong>🚀 Ready to Use:</strong> The Apple HIG Design System is now fully customizable for external developers. 
+                  With theming and i18n support, you can adapt it to any brand and any language while maintaining all the quality, 
+                  accessibility, and consistency of the original design system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Section>
         </>
         )}
 
@@ -6933,6 +7985,453 @@ export default function MyPage() {
             </section>
           </div>
         )}
+
+        {/* External Reusability Section */}
+        {activeTab === 'reusability' && (
+          <div className="space-y-12">
+            <AppleSectionHeader 
+              title="🌍 External Reusability - Theme & i18n"
+              description="Demonstrate how external developers can customize the design system with theming and internationalization"
+            />
+
+            {/* Theme Switching Demo */}
+            <Section title="Live Theme Switching">
+              <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+                <h3 className="text-xl font-semibold mb-6">Try Theme Switching</h3>
+                <p className="text-gray-600 mb-6">
+                  Click the theme buttons in the header above to see all components update with the new theme colors in real-time.
+                </p>
+
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900">Buttons respond to theme:</h4>
+                      <div className="flex gap-3">
+                        <AppleButton variant="primary" size="md">Primary Button</AppleButton>
+                        <AppleButton variant="secondary" size="md">Secondary</AppleButton>
+                      </div>
+                    </div>
+                    <div className="space-y-4">
+                      <h4 className="font-medium text-gray-900">Badges respond to theme:</h4>
+                      <div className="flex gap-2">
+                        <AppleBadge variant="success" size="md">Active</AppleBadge>
+                        <AppleBadge variant="warning" size="md">Pending</AppleBadge>
+                        <AppleBadge variant="error" size="md">Failed</AppleBadge>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Theme Implementation Code:</h4>
+                    <CodeBlock
+                      code={`import { AppleThemeProvider, ikkTheme, appleTheme, useAppleTheme } from '@/components/apple'
+
+// Wrap your app with the theme provider
+export default function App() {
+  return (
+    <AppleThemeProvider defaultTheme={ikkTheme}>
+      <YourApp />
+    </AppleThemeProvider>
+  )
+}
+
+// Use the theme switcher in your app
+function ThemeSwitcher() {
+  const { theme, setTheme } = useAppleTheme()
+  
+  return (
+    <div className="flex gap-2">
+      <button onClick={() => setTheme(ikkTheme)}>
+        IKK Pink Theme
+      </button>
+      <button onClick={() => setTheme(appleTheme)}>
+        Apple Blue Theme
+      </button>
+    </div>
+  )
+}`}
+                    />
+                  </div>
+                </div>
+              </div>
+            </Section>
+
+            {/* I18n Components Demo */}
+            <Section title="Internationalization (i18n) Examples">
+              <div className="space-y-8">
+                {/* AppleMetricCard i18n */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold mb-6">AppleMetricCard - Vietnamese vs English</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇻🇳 Vietnamese (Default)</h4>
+                      <AppleMetricCard 
+                        title="Lượt xem"
+                        value={1234567}
+                        change={5.2}
+                        icon={<Eye className="w-5 h-5" />}
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇺🇸 English (Custom)</h4>
+                      <AppleMetricCard 
+                        title="Views"
+                        value={1234567}
+                        change={5.2}
+                        changeLabel="vs last month"
+                        locale="en-US"
+                        icon={<Eye className="w-5 h-5" />}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Code Examples:</h4>
+                    <CodeBlock
+                      code={`// Vietnamese (default)
+<AppleMetricCard 
+  title="Lượt xem" 
+  value={1234567} 
+  change={5.2} 
+/>
+
+// English (custom)
+<AppleMetricCard 
+  title="Views" 
+  value={1234567} 
+  change={5.2}
+  changeLabel="vs last month"
+  locale="en-US"
+/>`}
+                    />
+                  </div>
+                </div>
+
+                {/* AppleSearchBar i18n */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold mb-6">AppleSearchBar - Vietnamese vs English</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇻🇳 Vietnamese (Default)</h4>
+                      <AppleSearchBar
+                        value=""
+                        onChange={() => {}}
+                        onSearch={() => {}}
+                        placeholder="Tìm kiếm..."
+                        recentLabel="Tìm kiếm gần đây"
+                        noResultsText="Không có kết quả"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇺🇸 English (Custom)</h4>
+                      <AppleSearchBar
+                        value=""
+                        onChange={() => {}}
+                        onSearch={() => {}}
+                        placeholder="Search..."
+                        recentLabel="Recent searches"
+                        noResultsText="No results found"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Code Examples:</h4>
+                    <CodeBlock
+                      code={`// Vietnamese (default)
+<AppleSearchBar
+  value={value}
+  onChange={setValue}
+  onSearch={handleSearch}
+  placeholder="Tìm kiếm..."
+  recentLabel="Tìm kiếm gần đây"
+  noResultsText="Không có kết quả"
+/>
+
+// English (custom)
+<AppleSearchBar
+  value={value}
+  onChange={setValue}
+  onSearch={handleSearch}
+  placeholder="Search..."
+  recentLabel="Recent searches"
+  noResultsText="No results found"
+/>`}
+                    />
+                  </div>
+                </div>
+
+                {/* StreamCard i18n */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold mb-6">StreamCard - Vietnamese vs English</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇻🇳 Vietnamese (Default)</h4>
+                      <StreamCard
+                        id="stream-1"
+                        title="Review sản phẩm mới 2024"
+                        streamerName="Nguyễn Mai Anh"
+                        thumbnail="https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400&h=300&fit=crop"
+                        viewerCount={2500}
+                        isLive={true}
+                        category="Làm đẹp"
+                        liveLabel="TRỰC TIẾP"
+                        viewersLabel="người xem"
+                        locale="vi-VN"
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇺🇸 English (Custom)</h4>
+                      <StreamCard
+                        id="stream-2"
+                        title="New Product Review 2024"
+                        streamerName="Sarah Johnson"
+                        thumbnail="https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=400&h=300&fit=crop"
+                        viewerCount={2500}
+                        isLive={true}
+                        category="Beauty"
+                        liveLabel="LIVE"
+                        viewersLabel="viewers"
+                        locale="en-US"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Code Examples:</h4>
+                    <CodeBlock
+                      code={`// Vietnamese (default)
+<StreamCard
+  title="Review sản phẩm mới 2024"
+  streamerName="Nguyễn Mai Anh"
+  viewerCount={2500}
+  isLive={true}
+  liveLabel="TRỰC TIẾP"
+  viewersLabel="người xem"
+  locale="vi-VN"
+/>
+
+// English (custom)
+<StreamCard
+  title="New Product Review 2024"
+  streamerName="Sarah Johnson"
+  viewerCount={2500}
+  isLive={true}
+  liveLabel="LIVE"
+  viewersLabel="viewers"
+  locale="en-US"
+/>`}
+                    />
+                  </div>
+                </div>
+
+                {/* ProductCard i18n */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold mb-6">ProductCard - Vietnamese vs English</h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇻🇳 Vietnamese (Default)</h4>
+                      <ProductCard
+                        id="product-1"
+                        name="Áo thun Premium Cotton"
+                        price={350000}
+                        originalPrice={500000}
+                        image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"
+                        rating={4.5}
+                        soldCount={1234}
+                        currencySymbol="đ"
+                        locale="vi-VN"
+                        labels={{
+                          discountPrefix: "Giảm",
+                          soldPrefix: "Đã bán"
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-gray-700 mb-3">🇺🇸 English (Custom)</h4>
+                      <ProductCard
+                        id="product-2"
+                        name="Premium Cotton T-Shirt"
+                        price={15}
+                        originalPrice={22}
+                        image="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"
+                        rating={4.5}
+                        soldCount={1234}
+                        currencySymbol="$"
+                        locale="en-US"
+                        labels={{
+                          discountPrefix: "Save",
+                          soldPrefix: "Sold"
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Code Examples:</h4>
+                    <CodeBlock
+                      code={`// Vietnamese (default)
+<ProductCard
+  name="Áo thun Premium Cotton"
+  price={350000}
+  originalPrice={500000}
+  currencySymbol="đ"
+  locale="vi-VN"
+  labels={{
+    discountPrefix: "Giảm",
+    soldPrefix: "Đã bán"
+  }}
+/>
+
+// English (custom)
+<ProductCard
+  name="Premium Cotton T-Shirt"
+  price={15}
+  originalPrice={22}
+  currencySymbol="$"
+  locale="en-US"
+  labels={{
+    discountPrefix: "Save",
+    soldPrefix: "Sold"
+  }}
+/>`}
+                    />
+                  </div>
+                </div>
+
+                {/* ContentModerationQueue i18n */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold mb-6">ContentModerationQueue - Vietnamese vs English</h3>
+                  
+                  <p className="text-gray-600 mb-4">
+                    The ContentModerationQueue component supports comprehensive i18n through a labels object.
+                  </p>
+
+                  <div className="pt-6 border-t border-gray-200">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Code Examples:</h4>
+                    <CodeBlock
+                      code={`// Vietnamese (default)
+<ContentModerationQueue
+  items={items}
+  onApprove={handleApprove}
+  onReject={handleReject}
+  // Uses default Vietnamese labels
+/>
+
+// English (custom)
+<ContentModerationQueue
+  items={items}
+  onApprove={handleApprove}
+  onReject={handleReject}
+  labels={{
+    allTab: "All",
+    pendingTab: "Pending",
+    approvedTab: "Approved",
+    rejectedTab: "Rejected",
+    approveButton: "Approve",
+    rejectButton: "Reject",
+    contentColumn: "Content",
+    userColumn: "User",
+    typeColumn: "Type",
+    statusColumn: "Status",
+    actionsColumn: "Actions",
+    emptyTitle: "No content to moderate",
+    emptyDescription: "There is no content pending moderation"
+  }}
+/>`}
+                    />
+                  </div>
+                </div>
+              </div>
+            </Section>
+
+            {/* Before/After Comparison */}
+            <Section title="Before/After: External Developer Experience">
+              <ComparisonCard
+                title="Customization for External Developers"
+                before={
+                  <div className="space-y-4">
+                    <p className="text-sm text-gray-700">❌ <strong>Before:</strong> Hardcoded Vietnamese, single theme</p>
+                    <div className="bg-gray-50 p-4 rounded">
+                      <AppleBadge variant="success" size="md">Đã duyệt</AppleBadge>
+                      <p className="text-xs text-gray-500 mt-2">Can't change language or theme</p>
+                    </div>
+                  </div>
+                }
+                after={
+                  <div className="space-y-4">
+                    <p className="text-sm text-gray-700">✅ <strong>After:</strong> Fully customizable themes & i18n</p>
+                    <div className="bg-gray-50 p-4 rounded space-y-3">
+                      <div>
+                        <AppleBadge variant="success" size="md">Approved</AppleBadge>
+                        <p className="text-xs text-gray-500 mt-1">English labels via props</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <AppleButton variant="primary" size="sm">Custom Theme</AppleButton>
+                        <p className="text-xs text-gray-500 self-center">Theme switches instantly</p>
+                      </div>
+                    </div>
+                  </div>
+                }
+                beforeCode={`// Hardcoded, not customizable
+<AppleBadge variant="success">
+  Đã duyệt
+</AppleBadge>`}
+                afterCode={`// Fully customizable
+<AppleThemeProvider defaultTheme={customTheme}>
+  <AppleBadge variant="success">
+    Approved
+  </AppleBadge>
+</AppleThemeProvider>
+
+// i18n support
+<AppleMetricCard 
+  title="Views"
+  changeLabel="vs last month"
+  locale="en-US"
+/>`}
+              />
+            </Section>
+
+            {/* Summary */}
+            <section className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-lg border border-blue-200">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Why This Matters for External Developers</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                    🎨 Theme Customization
+                  </h4>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• Switch between IKK Pink and Apple Blue themes instantly</li>
+                    <li>• Create custom themes with your brand colors</li>
+                    <li>• All components respond to theme changes automatically</li>
+                    <li>• CSS variables make theming effortless</li>
+                  </ul>
+                </div>
+                <div className="bg-white p-6 rounded-lg">
+                  <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                    🌍 Internationalization
+                  </h4>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li>• Support for any language via props</li>
+                    <li>• Locale-aware number and date formatting</li>
+                    <li>• Easy to translate labels and text</li>
+                    <li>• Works great for global applications</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-white rounded-lg">
+                <p className="text-gray-700">
+                  <strong>Bottom Line:</strong> External developers can take this design system and easily adapt it to their brand (theme) and market (language) with minimal code changes. The system is built for reusability from day one.
+                </p>
+              </div>
+            </section>
+          </div>
+        )}
       </main>
 
       {/* Footer */}
@@ -6952,7 +8451,9 @@ export default function MyPage() {
 export default function AppleHIGShowcase() {
   return (
     <AppleToastProvider>
-      <AppleHIGShowcaseContent />
+      <AppleThemeProvider defaultTheme={ikkTheme}>
+        <AppleHIGShowcaseContent />
+      </AppleThemeProvider>
     </AppleToastProvider>
   );
 }

@@ -82,12 +82,13 @@ export default function AdminCampaignsPage() {
           </CardHeader>
 
           <CardContent className="p-6">
-            {/* Overview Statistics */}
+            {/* Overview Statistics - with explicit i18n props */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <AppleMetricCard
                 title="Tổng chiến dịch"
                 value="348"
                 description="+24 chiến dịch mới tháng này"
+                locale="vi-VN"
                 icon={<Megaphone className="w-5 h-5 text-blue-600" />}
                 valueTestId="stat-total-campaigns"
               />
@@ -96,6 +97,7 @@ export default function AdminCampaignsPage() {
                 title="Đang hoạt động"
                 value="156"
                 description="89 chiến dịch đang tuyển KOC"
+                locale="vi-VN"
                 icon={<Activity className="w-5 h-5 text-green-600" />}
                 valueTestId="stat-active-campaigns"
               />
@@ -104,6 +106,7 @@ export default function AdminCampaignsPage() {
                 title="KOC tham gia"
                 value="2,847"
                 description="+342 KOC tuần này"
+                locale="vi-VN"
                 icon={<Users className="w-5 h-5 text-purple-600" />}
                 valueTestId="stat-koc-participants"
               />
@@ -112,6 +115,7 @@ export default function AdminCampaignsPage() {
                 title="Tổng ngân sách (VNĐ)"
                 value="12.4B"
                 description="8.7B đã chi tiêu (70%)"
+                locale="vi-VN"
                 icon={<DollarSign className="w-5 h-5 text-orange-600" />}
                 valueTestId="stat-total-budget"
               />
@@ -137,13 +141,28 @@ export default function AdminCampaignsPage() {
             <div className="bg-gray-50 rounded-xl p-4 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
                 <div className="md:col-span-5">
+                  {/* IKK usage (Vietnamese) - demonstrates i18n prop usage */}
                   <AppleSearchBar
                     value={searchValue}
                     onChange={setSearchValue}
                     placeholder="Tìm kiếm theo tên chiến dịch, mã, thương hiệu..."
+                    recentLabel="Tìm kiếm gần đây"
+                    noResultsText="Không tìm thấy kết quả"
+                    clearButtonLabel="Xóa tìm kiếm"
                     onSearch={(query) => console.log('Search:', query)}
                     data-testid="input-search-campaign"
                   />
+                  {/* External dev would use:
+                    <AppleSearchBar 
+                      value={searchValue}
+                      onChange={setSearchValue}
+                      placeholder="Search by campaign name, code, brand..."
+                      recentLabel="Recent searches"
+                      noResultsText="No results found"
+                      clearButtonLabel="Clear search"
+                      onSearch={(query) => console.log('Search:', query)}
+                    />
+                  */}
                 </div>
                 <div className="md:col-span-2">
                   <Select>

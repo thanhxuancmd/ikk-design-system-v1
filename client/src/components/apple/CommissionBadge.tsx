@@ -8,6 +8,9 @@ interface CommissionBadgeProps {
   type?: CommissionType;
   amount?: number;
   size?: CommissionSize;
+  label?: string;
+  currencySymbol?: string;
+  locale?: string;
 }
 
 const sizeConfig: Record<CommissionSize, { text: string; padding: string }> = {
@@ -21,6 +24,9 @@ export function CommissionBadge({
   type = 'percentage',
   amount,
   size = 'md',
+  label = 'Hoa hồng',
+  currencySymbol = 'đ',
+  locale = 'vi-VN',
 }: CommissionBadgeProps) {
   const sizeInfo = sizeConfig[size];
 
@@ -40,12 +46,12 @@ export function CommissionBadge({
   const shouldShimmer = type === 'percentage' && rate > 20;
 
   const formatAmount = (value: number): string => {
-    return value.toLocaleString('vi-VN');
+    return value.toLocaleString(locale);
   };
 
   const displayValue = type === 'percentage' 
     ? `${rate}%` 
-    : `${formatAmount(amount || 0)}đ`;
+    : `${formatAmount(amount || 0)}${currencySymbol}`;
 
   return (
     <span
@@ -60,7 +66,7 @@ export function CommissionBadge({
         relative
         overflow-hidden
       `}
-      aria-label={type === 'percentage' ? `Hoa hồng ${rate}%` : `Hoa hồng ${formatAmount(amount || 0)} đồng`}
+      aria-label={type === 'percentage' ? `${label} ${rate}%` : `${label} ${formatAmount(amount || 0)} ${currencySymbol}`}
     >
       {shouldShimmer && (
         <span

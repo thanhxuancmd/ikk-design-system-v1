@@ -2,6 +2,11 @@ import { designTokens } from '@/constants/design-tokens';
 import { AppleBadge } from '@/components/apple';
 import { Star } from 'lucide-react';
 
+interface ProductCardLabels {
+  discountPrefix?: string;
+  soldPrefix?: string;
+}
+
 interface ProductCardProps {
   id: string;
   name: string;
@@ -13,7 +18,15 @@ interface ProductCardProps {
   soldCount?: number;
   badges?: string[];
   onClick?: () => void;
+  currencySymbol?: string;
+  locale?: string;
+  labels?: Partial<ProductCardLabels>;
 }
+
+const defaultLabels: ProductCardLabels = {
+  discountPrefix: 'Giảm',
+  soldPrefix: 'Đã bán',
+};
 
 export function ProductCard({
   id,
@@ -26,9 +39,14 @@ export function ProductCard({
   soldCount,
   badges = [],
   onClick,
+  currencySymbol = 'đ',
+  locale = 'vi-VN',
+  labels: customLabels,
 }: ProductCardProps) {
+  const labels = { ...defaultLabels, ...customLabels };
+  
   const formatPrice = (amount: number): string => {
-    return amount.toLocaleString('vi-VN');
+    return amount.toLocaleString(locale);
   };
 
   const calculateDiscount = (): number => {
@@ -110,7 +128,7 @@ export function ProductCard({
             data-testid={`discount-badge-${id}`}
             aria-label={`${discountPercentage}% discount`}
           >
-            Giảm {discountPercentage}%
+            {labels.discountPrefix} {discountPercentage}%
           </div>
         )}
 
@@ -160,7 +178,7 @@ export function ProductCard({
             data-testid={`price-${id}`}
             aria-label={`Price: ${formatPrice(price)} Vietnamese Dong`}
           >
-            {formatPrice(price)}đ
+            {formatPrice(price)}{currencySymbol}
           </span>
           {originalPrice && originalPrice > price && (
             <span
@@ -168,7 +186,7 @@ export function ProductCard({
               data-testid={`original-price-${id}`}
               aria-label={`Original price: ${formatPrice(originalPrice)} Vietnamese Dong`}
             >
-              {formatPrice(originalPrice)}đ
+              {formatPrice(originalPrice)}{currencySymbol}
             </span>
           )}
         </div>
@@ -176,7 +194,7 @@ export function ProductCard({
         {/* Sold Count */}
         {soldCount !== undefined && (
           <div className="text-xs text-gray-600" data-testid={`sold-count-${id}`}>
-            Đã bán {formatPrice(soldCount)}
+            {labels.soldPrefix} {formatPrice(soldCount)}
           </div>
         )}
       </div>

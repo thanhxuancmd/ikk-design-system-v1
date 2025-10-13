@@ -4,6 +4,16 @@ import { Star, CheckCircle, Users, TrendingUp } from 'lucide-react';
 
 type KOCLevel = 'Nano' | 'Micro' | 'Macro' | 'Celebrity';
 
+interface KOCCardLabels {
+  verifiedLabel?: string;
+  followersLabel?: string;
+  campaignsLabel?: string;
+  nanoLabel?: string;
+  microLabel?: string;
+  macroLabel?: string;
+  celebrityLabel?: string;
+}
+
 interface KOCCardProps {
   id: string;
   name: string;
@@ -15,13 +25,25 @@ interface KOCCardProps {
   categories: string[];
   isVerified: boolean;
   onClick?: () => void;
+  labels?: Partial<KOCCardLabels>;
+  locale?: string;
 }
 
-const levelConfig: Record<KOCLevel, { color: string; label: string; variant: 'default' | 'info' | 'success' | 'warning' | 'error' }> = {
-  Nano: { color: 'bg-blue-100 text-blue-800', label: 'Nano', variant: 'info' },
-  Micro: { color: 'bg-green-100 text-green-800', label: 'Micro', variant: 'success' },
-  Macro: { color: 'bg-purple-100 text-purple-800', label: 'Macro', variant: 'warning' },
-  Celebrity: { color: 'bg-pink-100 text-pink-800', label: 'Celebrity', variant: 'error' },
+const defaultLabels: KOCCardLabels = {
+  verifiedLabel: 'Đã xác minh',
+  followersLabel: 'Người theo dõi',
+  campaignsLabel: 'Chiến dịch',
+  nanoLabel: 'Nano',
+  microLabel: 'Micro',
+  macroLabel: 'Macro',
+  celebrityLabel: 'Celebrity',
+};
+
+const levelConfig: Record<KOCLevel, { color: string; variant: 'default' | 'info' | 'success' | 'warning' | 'error' }> = {
+  Nano: { color: 'bg-blue-100 text-blue-800', variant: 'info' },
+  Micro: { color: 'bg-green-100 text-green-800', variant: 'success' },
+  Macro: { color: 'bg-purple-100 text-purple-800', variant: 'warning' },
+  Celebrity: { color: 'bg-pink-100 text-pink-800', variant: 'error' },
 };
 
 export function KOCCard({
@@ -35,7 +57,11 @@ export function KOCCard({
   categories,
   isVerified,
   onClick,
+  labels: customLabels,
+  locale = 'vi-VN',
 }: KOCCardProps) {
+  const labels = { ...defaultLabels, ...customLabels };
+  
   const formatFollowers = (count: number): string => {
     if (count >= 1000000) {
       return `${(count / 1000000).toFixed(1)}M`;
@@ -43,7 +69,17 @@ export function KOCCard({
     if (count >= 1000) {
       return `${(count / 1000).toFixed(1)}K`;
     }
-    return count.toLocaleString('vi-VN');
+    return count.toLocaleString(locale);
+  };
+  
+  const getLevelLabel = (level: KOCLevel): string => {
+    const labelMap = {
+      Nano: labels.nanoLabel,
+      Micro: labels.microLabel,
+      Macro: labels.macroLabel,
+      Celebrity: labels.celebrityLabel,
+    };
+    return labelMap[level] || level;
   };
 
   const levelInfo = levelConfig[level];
@@ -116,7 +152,7 @@ export function KOCCard({
                 <CheckCircle
                   className="w-5 h-5 text-[#ff0086] flex-shrink-0"
                   data-testid={`verified-badge-${id}`}
-                  aria-label="Đã xác minh"
+                  aria-label={labels.verifiedLabel}
                 />
               )}
             </div>
@@ -128,7 +164,7 @@ export function KOCCard({
                 size="sm"
                 data-testid={`level-badge-${id}`}
               >
-                {levelInfo.label}
+                {getLevelLabel(level)}
               </AppleBadge>
             </div>
 
@@ -151,7 +187,7 @@ export function KOCCard({
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-gray-400" />
             <div>
-              <p className="text-xs text-gray-500">Người theo dõi</p>
+              <p className="text-xs text-gray-500">{labels.followersLabel}</p>
               <p className="font-semibold text-gray-900" data-testid={`followers-${id}`}>
                 {formatFollowers(followers)}
               </p>
@@ -160,7 +196,7 @@ export function KOCCard({
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-gray-400" />
             <div>
-              <p className="text-xs text-gray-500">Chiến dịch</p>
+              <p className="text-xs text-gray-500">{labels.campaignsLabel}</p>
               <p className="font-semibold text-gray-900" data-testid={`campaigns-${id}`}>
                 {completedCampaigns}
               </p>

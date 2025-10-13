@@ -2,6 +2,12 @@ import { ReactNode, useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { designTokens } from '@/constants/design-tokens';
 
+interface StatsCardChangeLabels {
+  increaseLabel?: string;
+  decreaseLabel?: string;
+  neutralLabel?: string;
+}
+
 interface StatsCardProps {
   id: string;
   title: string;
@@ -12,7 +18,15 @@ interface StatsCardProps {
   color?: string;
   onClick?: () => void;
   className?: string;
+  changeLabels?: Partial<StatsCardChangeLabels>;
+  locale?: string;
 }
+
+const defaultChangeLabels: StatsCardChangeLabels = {
+  increaseLabel: 'tăng',
+  decreaseLabel: 'giảm',
+  neutralLabel: '',
+};
 
 export function StatsCard({
   id,
@@ -24,7 +38,10 @@ export function StatsCard({
   color,
   onClick,
   className = '',
+  changeLabels: customChangeLabels,
+  locale = 'vi-VN',
 }: StatsCardProps) {
+  const changeLabels = { ...defaultChangeLabels, ...customChangeLabels };
   const [displayValue, setDisplayValue] = useState<number>(0);
   const numericValue = typeof value === 'number' ? value : parseFloat(value) || 0;
 
@@ -63,10 +80,10 @@ export function StatsCard({
     neutral: <Minus className="w-4 h-4" />,
   };
 
-  const changeLabels = {
-    increase: 'tăng',
-    decrease: 'giảm',
-    neutral: '',
+  const changeLabelMap = {
+    increase: changeLabels.increaseLabel,
+    decrease: changeLabels.decreaseLabel,
+    neutral: changeLabels.neutralLabel,
   };
 
   return (
@@ -95,7 +112,7 @@ export function StatsCard({
             className="text-3xl font-bold text-gray-900"
             style={color ? { color } : undefined}
           >
-            {typeof value === 'number' ? displayValue.toLocaleString('vi-VN') : value}
+            {typeof value === 'number' ? displayValue.toLocaleString(locale) : value}
           </p>
 
           {change !== undefined && (
@@ -105,7 +122,7 @@ export function StatsCard({
             >
               {changeIcons[changeType]}
               <span className="text-sm font-medium">
-                {Math.abs(change)}% {changeLabels[changeType]}
+                {Math.abs(change)}% {changeLabelMap[changeType]}
               </span>
             </div>
           )}

@@ -32,6 +32,51 @@ export interface ModerationItem {
   reason?: string;
 }
 
+export interface ContentModerationLabels {
+  // Tabs
+  allTab?: string;
+  pendingTab?: string;
+  approvedTab?: string;
+  rejectedTab?: string;
+  
+  // Actions
+  approveButton?: string;
+  rejectButton?: string;
+  
+  // Status badges
+  pendingStatus?: string;
+  approvedStatus?: string;
+  rejectedStatus?: string;
+  
+  // Table headers
+  contentColumn?: string;
+  userColumn?: string;
+  typeColumn?: string;
+  timeColumn?: string;
+  statusColumn?: string;
+  actionsColumn?: string;
+  
+  // Content types
+  streamType?: string;
+  commentType?: string;
+  productType?: string;
+  postType?: string;
+  
+  // Empty state
+  emptyTitle?: string;
+  emptyDescription?: string;
+  
+  // Dialog
+  rejectDialogTitle?: string;
+  rejectDialogDescription?: string;
+  rejectReasonPlaceholder?: string;
+  cancelButton?: string;
+  rejectDialogButton?: string;
+  
+  // Other
+  reasonPrefix?: string;
+}
+
 export interface ContentModerationQueueProps {
   items: ModerationItem[];
   onApprove: (itemId: string) => void;
@@ -44,13 +89,52 @@ export interface ContentModerationQueueProps {
     totalPages: number;
     onPageChange: (page: number) => void;
   };
+  labels?: Partial<ContentModerationLabels>;
 }
 
-const contentTypeLabels: Record<ContentType, string> = {
-  stream: 'Livestream',
-  comment: 'Bình luận',
-  product: 'Sản phẩm',
-  post: 'Bài viết',
+const defaultLabels: ContentModerationLabels = {
+  // Tabs
+  allTab: 'Tất cả',
+  pendingTab: 'Chờ duyệt',
+  approvedTab: 'Đã duyệt',
+  rejectedTab: 'Từ chối',
+  
+  // Actions
+  approveButton: 'Phê duyệt',
+  rejectButton: 'Từ chối',
+  
+  // Status badges
+  pendingStatus: 'Chờ duyệt',
+  approvedStatus: 'Đã duyệt',
+  rejectedStatus: 'Từ chối',
+  
+  // Table headers
+  contentColumn: 'Nội dung',
+  userColumn: 'Người dùng',
+  typeColumn: 'Loại',
+  timeColumn: 'Thời gian',
+  statusColumn: 'Trạng thái',
+  actionsColumn: 'Thao tác',
+  
+  // Content types
+  streamType: 'Livestream',
+  commentType: 'Bình luận',
+  productType: 'Sản phẩm',
+  postType: 'Bài viết',
+  
+  // Empty state
+  emptyTitle: 'Không có nội dung cần kiểm duyệt',
+  emptyDescription: 'Chưa có nội dung nào cần được kiểm duyệt trong danh mục này',
+  
+  // Dialog
+  rejectDialogTitle: 'Từ chối nội dung',
+  rejectDialogDescription: 'Vui lòng nhập lý do từ chối nội dung này (tùy chọn)',
+  rejectReasonPlaceholder: 'Nhập lý do từ chối...',
+  cancelButton: 'Hủy',
+  rejectDialogButton: 'Từ chối',
+  
+  // Other
+  reasonPrefix: 'Lý do:',
 };
 
 const contentTypeIcons: Record<ContentType, JSX.Element> = {
@@ -58,12 +142,6 @@ const contentTypeIcons: Record<ContentType, JSX.Element> = {
   comment: <MessageSquare className="w-4 h-4" />,
   product: <Package className="w-4 h-4" />,
   post: <FileText className="w-4 h-4" />,
-};
-
-const statusLabels: Record<ModerationStatus, string> = {
-  pending: 'Chờ duyệt',
-  approved: 'Đã duyệt',
-  rejected: 'Từ chối',
 };
 
 const statusVariants: Record<ModerationStatus, 'warning' | 'success' | 'error'> = {
@@ -80,16 +158,32 @@ export function ContentModerationQueue({
   currentFilter = 'all',
   isLoading = false,
   pagination,
+  labels: customLabels,
 }: ContentModerationQueueProps) {
+  const labels = { ...defaultLabels, ...customLabels };
+  
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState('');
 
+  const contentTypeLabels: Record<ContentType, string> = {
+    stream: labels.streamType!,
+    comment: labels.commentType!,
+    product: labels.productType!,
+    post: labels.postType!,
+  };
+
+  const statusLabels: Record<ModerationStatus, string> = {
+    pending: labels.pendingStatus!,
+    approved: labels.approvedStatus!,
+    rejected: labels.rejectedStatus!,
+  };
+
   const filterTabs = [
-    { id: 'all', label: 'Tất cả' },
-    { id: 'pending', label: 'Chờ duyệt' },
-    { id: 'approved', label: 'Đã duyệt' },
-    { id: 'rejected', label: 'Từ chối' },
+    { id: 'all', label: labels.allTab! },
+    { id: 'pending', label: labels.pendingTab! },
+    { id: 'approved', label: labels.approvedTab! },
+    { id: 'rejected', label: labels.rejectedTab! },
   ];
 
   const handleRejectClick = (itemId: string) => {
@@ -125,7 +219,7 @@ export function ContentModerationQueue({
   const columns = [
     {
       key: 'content',
-      header: 'Nội dung',
+      header: labels.contentColumn!,
       render: (item: ModerationItem) => (
         <div className="flex items-start gap-3 min-w-[300px]">
           {item.preview && (
@@ -146,7 +240,7 @@ export function ContentModerationQueue({
     },
     {
       key: 'user',
-      header: 'Người dùng',
+      header: labels.userColumn!,
       render: (item: ModerationItem) => (
         <div className="flex items-center gap-2 min-w-[150px]">
           <AppleAvatar
@@ -162,7 +256,7 @@ export function ContentModerationQueue({
     },
     {
       key: 'type',
-      header: 'Loại',
+      header: labels.typeColumn!,
       render: (item: ModerationItem) => (
         <AppleBadge
           variant="default"
@@ -177,7 +271,7 @@ export function ContentModerationQueue({
     },
     {
       key: 'timestamp',
-      header: 'Thời gian',
+      header: labels.timeColumn!,
       render: (item: ModerationItem) => (
         <span className="text-sm text-gray-600" data-testid={`timestamp-${item.id}`}>
           {formatTimestamp(item.timestamp)}
@@ -186,7 +280,7 @@ export function ContentModerationQueue({
     },
     {
       key: 'status',
-      header: 'Trạng thái',
+      header: labels.statusColumn!,
       render: (item: ModerationItem) => (
         <AppleBadge
           variant={statusVariants[item.status]}
@@ -199,7 +293,7 @@ export function ContentModerationQueue({
     },
     {
       key: 'actions',
-      header: 'Thao tác',
+      header: labels.actionsColumn!,
       render: (item: ModerationItem) => (
         <div className="flex items-center gap-2">
           {item.status === 'pending' && (
@@ -212,7 +306,7 @@ export function ContentModerationQueue({
                 data-testid={`button-approve-${item.id}`}
               >
                 <Check className="w-4 h-4" />
-                Phê duyệt
+                {labels.approveButton}
               </AppleButton>
               <AppleButton
                 size="sm"
@@ -222,13 +316,13 @@ export function ContentModerationQueue({
                 data-testid={`button-reject-${item.id}`}
               >
                 <X className="w-4 h-4" />
-                Từ chối
+                {labels.rejectButton}
               </AppleButton>
             </>
           )}
           {item.status === 'rejected' && item.reason && (
             <span className="text-xs text-gray-500" data-testid={`reason-${item.id}`}>
-              Lý do: {item.reason}
+              {labels.reasonPrefix} {item.reason}
             </span>
           )}
         </div>
@@ -267,8 +361,8 @@ export function ContentModerationQueue({
       {items.length === 0 ? (
         <EmptyState
           variant="noData"
-          title="Không có nội dung cần kiểm duyệt"
-          description="Chưa có nội dung nào cần được kiểm duyệt trong danh mục này"
+          title={labels.emptyTitle!}
+          description={labels.emptyDescription!}
         />
       ) : (
         <>
@@ -322,16 +416,16 @@ export function ContentModerationQueue({
             `}
           >
             <h2 id="reject-dialog-title" className="text-lg font-semibold mb-2">
-              Từ chối nội dung
+              {labels.rejectDialogTitle}
             </h2>
             <p className="text-sm text-gray-600 mb-4">
-              Vui lòng nhập lý do từ chối nội dung này (tùy chọn)
+              {labels.rejectDialogDescription}
             </p>
             <div className="mb-6">
               <AppleTextarea
                 value={rejectionReason}
                 onChange={(e) => setRejectionReason(e.target.value)}
-                placeholder="Nhập lý do từ chối..."
+                placeholder={labels.rejectReasonPlaceholder}
                 rows={4}
                 data-testid="rejection-reason-input"
               />
@@ -346,7 +440,7 @@ export function ContentModerationQueue({
                   setRejectionReason('');
                 }}
               >
-                Hủy
+                {labels.cancelButton}
               </AppleButton>
               <AppleButton
                 variant="primary"
@@ -354,7 +448,7 @@ export function ContentModerationQueue({
                 onClick={handleRejectConfirm}
                 className="!bg-red-600 hover:!bg-red-700"
               >
-                Từ chối
+                {labels.rejectDialogButton}
               </AppleButton>
             </div>
           </div>
