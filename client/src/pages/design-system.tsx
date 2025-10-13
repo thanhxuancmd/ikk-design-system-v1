@@ -480,6 +480,45 @@ export default function DesignSystem() {
         </div>
       </section>
 
+      {/* Featured Pattern - Advanced Dashboard Demo */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        <Link to="/design-system/advanced-dashboard">
+          <div className="bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 cursor-pointer group">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex-1 text-white">
+                <div className="inline-block bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                  ⭐ PATTERN MỚI
+                </div>
+                <h2 className="text-3xl font-bold mb-3">Advanced Dashboard Composition Pattern</h2>
+                <p className="text-white/90 text-lg mb-4">
+                  Khám phá mẫu thiết kế dashboard nâng cao với KPIs, Charts, Filters & Tables. 
+                  Sử dụng 100% Apple HIG components có sẵn!
+                </p>
+                <div className="flex items-center gap-6 text-sm">
+                  <div className="flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5" />
+                    <span>3 Dashboard Templates</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Code className="w-5 h-5" />
+                    <span>Copy-Paste Ready</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Layout className="w-5 h-5" />
+                    <span>Fully Responsive</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <div className="w-32 h-32 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <BarChart3 className="w-20 h-20 text-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </section>
+
       {/* Category Icon Menu Section - exactly like home */}
       <section className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">

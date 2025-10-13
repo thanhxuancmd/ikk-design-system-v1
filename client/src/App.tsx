@@ -49,6 +49,8 @@ import AdminDesignSystem from "@/pages/design-system/admin"
 import AppleHIGShowcase from "@/pages/apple-hig"
 import AppleHIGFeedbackPage from "@/pages/apple-hig-feedback"
 import FilterPanelDemo from "@/pages/filter-panel-demo"
+import HierarchicalTableDemo from "@/pages/design-system/hierarchical-table-demo"
+import AdvancedDashboardDemo from "@/pages/design-system/advanced-dashboard-demo"
 
 
 function Router() {
@@ -101,6 +103,8 @@ function Router() {
         {/* Design System Routes */}
         <Route path="/design-system" component={DesignSystem} />
         <Route path="/design-system/admin" component={AdminDesignSystem} />
+        <Route path="/design-system/hierarchical-table" component={HierarchicalTableDemo} />
+        <Route path="/design-system/advanced-dashboard" component={AdvancedDashboardDemo} />
         <Route path="/apple-hig" component={AppleHIGShowcase} />
         <Route path="/apple-hig-feedback" component={AppleHIGFeedbackPage} />
         <Route path="/filter-panel-demo" component={FilterPanelDemo} />

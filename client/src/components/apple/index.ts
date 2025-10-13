@@ -16,6 +16,8 @@ export { AppleFileUpload } from './AppleFileUpload';
 export { AppleContainer } from './AppleContainer';
 export { AppleGrid } from './AppleGrid';
 export { AppleStack } from './AppleStack';
+export { AppleListDetailShell } from './AppleListDetailShell';
+export type { AppleListDetailShellProps } from './AppleListDetailShell';
 
 // Navigation Components
 export { AppleTabs } from './AppleTabs';
@@ -40,12 +42,15 @@ export { AppleTooltip } from './AppleTooltip';
 export { ApplePopover } from './ApplePopover';
 export { AppleDropdown } from './AppleDropdown';
 export { AppleCommandPalette, type CommandItem } from './AppleCommandPalette';
+export { AppleNotificationCenter, type Notification, type AppleNotificationCenterProps } from './AppleNotificationCenter';
 
 // Hooks
 export { useAppleToast } from '../../hooks/useAppleToast';
 
 // Data Display Components
 export { AppleTable } from './AppleTable';
+export { AppleHierarchicalTable } from './AppleHierarchicalTable';
+export type { TreeNode, Column as HierarchicalColumn, AppleHierarchicalTableProps } from './AppleHierarchicalTable';
 export { AppleCard } from './AppleCard';
 export { AppleAvatar } from './AppleAvatar';
 export { AppleList } from './AppleList';
