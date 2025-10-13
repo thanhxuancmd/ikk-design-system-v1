@@ -83,11 +83,12 @@ export const designTokens = {
       lg: 'px-8 py-3 text-base',
     },
     variants: {
-      primary: 'bg-[#ff0086] hover:bg-[#e60078] active:bg-[#cc006a] text-white',
+      primary: 'bg-[var(--apple-primary)] hover:bg-[var(--apple-primary-hover)] active:bg-[var(--apple-primary-active)] text-white',
       secondary: 'bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700',
-      outline: 'border-2 border-[#ff0086] hover:bg-[#ffe6f2] active:bg-[#ff4da6]/20 text-[#ff0086]',
+      outline: 'border-2 border-[var(--apple-primary)] hover:bg-[var(--apple-primary-light)] active:bg-[var(--apple-primary-active)]/20 text-[var(--apple-primary)]',
+      destructive: 'bg-[var(--apple-destructive)] hover:bg-[var(--apple-destructive-hover)] text-white',
     },
-    base: 'rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#ff0086] focus:ring-offset-2',
+    base: 'rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[var(--apple-primary)] focus:ring-offset-2',
   },
   badge: {
     sizes: {
@@ -95,10 +96,12 @@ export const designTokens = {
       md: 'text-xs px-2.5 py-1',
     },
     variants: {
-      success: 'bg-green-100 text-green-800',
-      warning: 'bg-yellow-100 text-yellow-800',
-      error: 'bg-red-100 text-red-800',
-      info: 'bg-blue-100 text-blue-800',
+      primary: 'bg-[var(--apple-primary)] text-white',
+      success: 'bg-[var(--apple-success-soft)] text-[var(--apple-success)]',
+      warning: 'bg-[var(--apple-warning-soft)] text-[var(--apple-warning)]',
+      error: 'bg-[var(--apple-destructive-soft)] text-[var(--apple-destructive)]',
+      destructive: 'bg-[var(--apple-destructive-soft)] text-[var(--apple-destructive)]',
+      info: 'bg-[var(--apple-accent-soft)] text-[var(--apple-accent)]',
       default: 'bg-gray-100 text-gray-800',
     },
     base: 'rounded-md font-medium inline-flex items-center',

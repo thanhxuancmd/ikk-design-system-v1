@@ -69,8 +69,8 @@ export function AppleDialog({
   };
 
   const confirmButtonClass = variant === 'danger' || variant === 'destructive'
-    ? 'bg-red-600 hover:bg-red-700 text-white'
-    : 'bg-[#ff0086] hover:bg-[#e60078] text-white';
+    ? 'bg-[var(--apple-destructive)] hover:bg-[var(--apple-destructive-hover)] text-white'
+    : 'bg-[var(--apple-primary)] hover:bg-[var(--apple-primary-hover)] text-white';
 
   const sizeClasses = {
     sm: 'max-w-sm',

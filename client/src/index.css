@@ -92,15 +92,30 @@
   --radius-soop: 0.75rem;
   --radius-soop-lg: 1rem;
   
-  /* Apple Theme CSS Variables */
+  /* Apple Theme CSS Variables - Extended */
   --apple-primary: #ff0086;
   --apple-primary-hover: #e6007a;
   --apple-primary-active: #cc006e;
+  --apple-primary-soft: rgba(255, 0, 134, 0.1);
+  --apple-primary-light: rgba(255, 0, 134, 0.2);
+  
   --apple-destructive: #ef4444;
   --apple-destructive-hover: #dc2626;
+  --apple-destructive-soft: rgba(239, 68, 68, 0.1);
+  
   --apple-success: #10b981;
+  --apple-success-soft: rgba(16, 185, 129, 0.2);
+  
   --apple-warning: #f59e0b;
+  --apple-warning-soft: rgba(245, 158, 11, 0.2);
+  
   --apple-accent: #3b82f6;
+  --apple-accent-soft: rgba(59, 130, 246, 0.2);
+  
+  --apple-success-text: #065f46;
+  --apple-destructive-text: #991b1b;
+  --apple-warning-text: #92400e;
+  --apple-accent-text: #1e40af;
 }
 
 @layer base {

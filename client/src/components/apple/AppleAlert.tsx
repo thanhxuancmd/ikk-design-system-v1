@@ -19,28 +19,28 @@ const iconMap = {
 
 const colorMap = {
   success: {
-    bg: 'bg-[#6ee7b7]/20',
-    border: 'border-[#10b981]',
-    text: 'text-[#065f46]',
-    icon: 'text-[#10b981]',
+    bg: 'bg-[var(--apple-success-soft)]',
+    border: 'border-[var(--apple-success)]',
+    text: 'text-[var(--apple-success-text)]',
+    icon: 'text-[var(--apple-success)]',
   },
   error: {
-    bg: 'bg-[#fca5a5]/20',
-    border: 'border-[#ef4444]',
-    text: 'text-[#991b1b]',
-    icon: 'text-[#ef4444]',
+    bg: 'bg-[var(--apple-destructive-soft)]',
+    border: 'border-[var(--apple-destructive)]',
+    text: 'text-[var(--apple-destructive-text)]',
+    icon: 'text-[var(--apple-destructive)]',
   },
   warning: {
-    bg: 'bg-[#fbbf24]/20',
-    border: 'border-[#f59e0b]',
-    text: 'text-[#92400e]',
-    icon: 'text-[#f59e0b]',
+    bg: 'bg-[var(--apple-warning-soft)]',
+    border: 'border-[var(--apple-warning)]',
+    text: 'text-[var(--apple-warning-text)]',
+    icon: 'text-[var(--apple-warning)]',
   },
   info: {
-    bg: 'bg-[#93c5fd]/20',
-    border: 'border-[#3b82f6]',
-    text: 'text-[#1e40af]',
-    icon: 'text-[#3b82f6]',
+    bg: 'bg-[var(--apple-accent-soft)]',
+    border: 'border-[var(--apple-accent)]',
+    text: 'text-[var(--apple-accent-text)]',
+    icon: 'text-[var(--apple-accent)]',
   },
 };
 
