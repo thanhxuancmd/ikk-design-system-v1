@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
 import { 
-  HiMagnifyingGlass,
   HiChevronDown,
   HiSquares2X2,
   HiListBullet,
@@ -20,24 +19,6 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import {
   Form,
   FormControl,
   FormField,
@@ -45,15 +26,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { 
+  AppleDialog,
+  AppleInput, 
+  AppleSelect,
+  AppleTextarea,
+  AppleSearchBar 
+} from "@/components/apple"
 import IKKAdminLayout from "@/components/ikk-admin-layout"
 import type { Brand, InsertBrand } from "@shared/schema"
 import { insertBrandSchema } from "@shared/schema"
@@ -178,247 +157,268 @@ function BrandFormDialog({ open, onOpenChange, brand }: BrandFormDialogProps) {
 
   const isPending = createMutation.isPending || updateMutation.isPending
 
+  const brandTypeOptions = [
+    { value: '', label: 'Chọn loại hình' },
+    { value: 'Bank', label: 'Bank' },
+    { value: 'Fintech', label: 'Fintech' },
+    { value: 'Insurance', label: 'Insurance' },
+    { value: 'Securities', label: 'Securities' },
+    { value: 'E-wallet', label: 'E-wallet' },
+    { value: 'Investment', label: 'Investment' },
+  ]
+
+  const statusOptions = [
+    { value: '', label: 'Chọn trạng thái' },
+    { value: 'Active', label: 'Active' },
+    { value: 'Pending', label: 'Pending' },
+  ]
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="dialog-brand-form">
-        <DialogHeader>
-          <DialogTitle data-testid="dialog-title-brand">
-            {isEdit ? "Chỉnh sửa thương hiệu" : "Thêm mới thương hiệu"}
-          </DialogTitle>
-          <DialogDescription>
-            {isEdit ? "Cập nhật thông tin thương hiệu" : "Điền thông tin để tạo thương hiệu mới"}
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="brandId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mã thương hiệu <span className="text-red-500">*</span></FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="VD: BRAND001" data-testid="input-brand-id" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tên thương hiệu <span className="text-red-500">*</span></FormLabel>
-                    <FormControl>
-                      <Input {...field} placeholder="Nhập tên thương hiệu" data-testid="input-brand-name" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="brandType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Loại hình <span className="text-red-500">*</span></FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-brand-type">
-                          <SelectValue placeholder="Chọn loại hình" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Bank">Bank</SelectItem>
-                        <SelectItem value="Fintech">Fintech</SelectItem>
-                        <SelectItem value="Insurance">Insurance</SelectItem>
-                        <SelectItem value="Securities">Securities</SelectItem>
-                        <SelectItem value="E-wallet">E-wallet</SelectItem>
-                        <SelectItem value="Investment">Investment</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="industry"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Ngành nghề <span className="text-red-500">*</span></FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="VD: Tài chính" data-testid="input-industry" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Danh mục</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="Nhập danh mục" data-testid="input-category" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Trạng thái</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-status">
-                          <SelectValue placeholder="Chọn trạng thái" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Active">Active</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="totalCampaigns"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Số chiến dịch</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        type="number" 
-                        placeholder="0"
-                        value={field.value ?? 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        data-testid="input-total-campaigns"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="avgReward"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Phần thưởng TB</FormLabel>
-                    <FormControl>
-                      <Input 
-                        {...field} 
-                        type="number" 
-                        placeholder="0"
-                        value={field.value ?? 0}
-                        onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        data-testid="input-avg-reward"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="platforms"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nền tảng</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="VD: Facebook,Instagram" data-testid="input-platforms" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="website"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Website</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="https://example.com" data-testid="input-website" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="contactEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email liên hệ</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} type="email" placeholder="contact@example.com" data-testid="input-contact-email" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
+    <AppleDialog
+      open={open}
+      onClose={() => onOpenChange(false)}
+      title={isEdit ? "Chỉnh sửa thương hiệu" : "Thêm mới thương hiệu"}
+      size="lg"
+    >
+      <p className="text-sm text-gray-600 mb-4" data-testid="dialog-description-brand">
+        {isEdit ? "Cập nhật thông tin thương hiệu" : "Điền thông tin để tạo thương hiệu mới"}
+      </p>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" data-testid="form-brand">
+          <div className="grid grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mô tả</FormLabel>
-                  <FormControl>
-                    <Textarea {...field} value={field.value || ''} placeholder="Nhập mô tả thương hiệu" rows={3} data-testid="input-description" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+              name="brandId"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Mã thương hiệu *"
+                    placeholder="VD: BRAND001"
+                    error={fieldState.error?.message}
+                    data-testid="input-brand-id"
+                  />
+                </FormControl>
               )}
             />
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isPending}
-                data-testid="button-cancel-brand"
-              >
-                Hủy
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
-                disabled={isPending}
-                data-testid="button-submit-brand"
-              >
-                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isPending ? "Đang xử lý..." : isEdit ? "Cập nhật" : "Tạo mới"}
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    label="Tên thương hiệu *"
+                    placeholder="Nhập tên thương hiệu"
+                    error={fieldState.error?.message}
+                    data-testid="input-brand-name"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="brandType"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleSelect
+                    {...field}
+                    label="Loại hình *"
+                    options={brandTypeOptions}
+                    value={field.value || ''}
+                    error={fieldState.error?.message}
+                    data-testid="select-brand-type"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="industry"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Ngành nghề *"
+                    placeholder="VD: Tài chính"
+                    error={fieldState.error?.message}
+                    data-testid="input-industry"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Danh mục"
+                    placeholder="Nhập danh mục"
+                    error={fieldState.error?.message}
+                    data-testid="input-category"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleSelect
+                    {...field}
+                    label="Trạng thái"
+                    options={statusOptions}
+                    value={field.value || ''}
+                    error={fieldState.error?.message}
+                    data-testid="select-status"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="totalCampaigns"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    type="number"
+                    label="Số chiến dịch"
+                    placeholder="0"
+                    value={field.value ?? 0}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    error={fieldState.error?.message}
+                    data-testid="input-total-campaigns"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="avgReward"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    type="number"
+                    label="Phần thưởng TB"
+                    placeholder="0"
+                    value={field.value ?? 0}
+                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                    error={fieldState.error?.message}
+                    data-testid="input-avg-reward"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="platforms"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Nền tảng"
+                    placeholder="VD: Facebook,Instagram"
+                    error={fieldState.error?.message}
+                    data-testid="input-platforms"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="website"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Website"
+                    placeholder="https://example.com"
+                    error={fieldState.error?.message}
+                    data-testid="input-website"
+                  />
+                </FormControl>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="contactEmail"
+              render={({ field, fieldState }) => (
+                <FormControl>
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    type="email"
+                    label="Email liên hệ"
+                    placeholder="contact@example.com"
+                    error={fieldState.error?.message}
+                    data-testid="input-contact-email"
+                  />
+                </FormControl>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field, fieldState }) => (
+              <FormControl>
+                <AppleTextarea
+                  {...field}
+                  value={field.value || ''}
+                  label="Mô tả"
+                  placeholder="Nhập mô tả thương hiệu"
+                  rows={3}
+                  error={fieldState.error?.message}
+                  data-testid="input-description"
+                />
+              </FormControl>
+            )}
+          />
+
+          <div className="flex justify-end gap-3 mt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              disabled={isPending}
+              data-testid="button-cancel-brand"
+            >
+              Hủy
+            </Button>
+            <Button
+              type="submit"
+              className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+              disabled={isPending}
+              data-testid="button-submit-brand"
+            >
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {isPending ? "Đang xử lý..." : isEdit ? "Cập nhật" : "Tạo mới"}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </AppleDialog>
   )
 }
 
@@ -432,84 +432,83 @@ function ViewBrandDialog({ open, onOpenChange, brand }: ViewBrandDialogProps) {
   if (!brand) return null
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="dialog-view-brand">
-        <DialogHeader>
-          <DialogTitle data-testid="dialog-title-view">Chi tiết thương hiệu</DialogTitle>
-          <DialogDescription>
-            Xem thông tin chi tiết của thương hiệu
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4 pb-4 border-b">
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ff0086] to-purple-600 flex items-center justify-center text-white font-semibold text-2xl">
-              {brand.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900" data-testid="text-brand-name">{brand.name}</h3>
-              <p className="text-sm text-gray-500 font-mono" data-testid="text-brand-id">{brand.brandId || brand.id}</p>
-            </div>
+    <AppleDialog
+      open={open}
+      onClose={() => onOpenChange(false)}
+      title="Chi tiết thương hiệu"
+      size="lg"
+    >
+      <p className="text-sm text-gray-600 mb-4">Xem thông tin chi tiết của thương hiệu</p>
+      <div className="space-y-4" data-testid="dialog-view-brand">
+        <div className="flex items-center gap-4 pb-4 border-b">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#ff0086] to-purple-600 flex items-center justify-center text-white font-semibold text-2xl">
+            {brand.name.charAt(0).toUpperCase()}
           </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700">Loại hình</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-brand-type">{brand.brandType || 'Chưa cập nhật'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Ngành nghề</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-industry">{brand.industry || 'Chưa cập nhật'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Danh mục</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-category">{brand.category || 'Chưa cập nhật'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Trạng thái</label>
-              <div className="mt-1" data-testid="text-status">
-                <Badge className={brand.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}>
-                  {brand.status || 'Pending'}
-                </Badge>
-              </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Số chiến dịch</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-total-campaigns">{brand.totalCampaigns || 0}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Phần thưởng trung bình</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-avg-reward">
-                {brand.avgReward ? `${brand.avgReward.toLocaleString('vi-VN')}đ` : 'Chưa cập nhật'}
-              </p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Nền tảng</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-platforms">{brand.platforms || 'Chưa cập nhật'}</p>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700">Website</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-website">
-                {brand.website ? (
-                  <a href={brand.website} target="_blank" rel="noopener noreferrer" className="text-[#ff0086] hover:underline">
-                    {brand.website}
-                  </a>
-                ) : 'Chưa cập nhật'}
-              </p>
-            </div>
-            <div className="col-span-2">
-              <label className="text-sm font-medium text-gray-700">Email liên hệ</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-contact-email">{brand.contactEmail || 'Chưa cập nhật'}</p>
-            </div>
+          <div>
+            <h3 className="text-xl font-semibold text-gray-900" data-testid="text-brand-name">{brand.name}</h3>
+            <p className="text-sm text-gray-500 font-mono" data-testid="text-brand-id">{brand.brandId || brand.id}</p>
           </div>
-
-          {brand.description && (
-            <div>
-              <label className="text-sm font-medium text-gray-700">Mô tả</label>
-              <p className="mt-1 text-sm text-gray-900" data-testid="text-description">{brand.description}</p>
-            </div>
-          )}
         </div>
-        <DialogFooter>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm font-medium text-gray-700">Loại hình</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-brand-type">{brand.brandType || 'Chưa cập nhật'}</p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Ngành nghề</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-industry">{brand.industry || 'Chưa cập nhật'}</p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Danh mục</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-category">{brand.category || 'Chưa cập nhật'}</p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Trạng thái</label>
+            <div className="mt-1" data-testid="text-status">
+              <Badge className={brand.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}>
+                {brand.status || 'Pending'}
+              </Badge>
+            </div>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Số chiến dịch</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-total-campaigns">{brand.totalCampaigns || 0}</p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Phần thưởng trung bình</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-avg-reward">
+              {brand.avgReward ? `${brand.avgReward.toLocaleString('vi-VN')}đ` : 'Chưa cập nhật'}
+            </p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Nền tảng</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-platforms">{brand.platforms || 'Chưa cập nhật'}</p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-700">Website</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-website">
+              {brand.website ? (
+                <a href={brand.website} target="_blank" rel="noopener noreferrer" className="text-[#ff0086] hover:underline">
+                  {brand.website}
+                </a>
+              ) : 'Chưa cập nhật'}
+            </p>
+          </div>
+          <div className="col-span-2">
+            <label className="text-sm font-medium text-gray-700">Email liên hệ</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-contact-email">{brand.contactEmail || 'Chưa cập nhật'}</p>
+          </div>
+        </div>
+
+        {brand.description && (
+          <div>
+            <label className="text-sm font-medium text-gray-700">Mô tả</label>
+            <p className="mt-1 text-sm text-gray-900" data-testid="text-description">{brand.description}</p>
+          </div>
+        )}
+
+        <div className="flex justify-end mt-6">
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
@@ -517,9 +516,9 @@ function ViewBrandDialog({ open, onOpenChange, brand }: ViewBrandDialogProps) {
           >
             Đóng
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </div>
+      </div>
+    </AppleDialog>
   )
 }
 
@@ -552,27 +551,38 @@ function DeleteBrandDialog({ open, onOpenChange, brand }: DeleteBrandDialogProps
   })
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent data-testid="dialog-delete-brand">
-        <AlertDialogHeader>
-          <AlertDialogTitle data-testid="dialog-title-delete">Xác nhận xóa</AlertDialogTitle>
-          <AlertDialogDescription data-testid="dialog-description-delete">
-            Bạn có chắc chắn muốn xóa thương hiệu <strong>{brand?.name}</strong>?
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel data-testid="button-cancel-delete">Hủy</AlertDialogCancel>
-          <AlertDialogAction
+    <AppleDialog
+      open={open}
+      onClose={() => onOpenChange(false)}
+      title="Xác nhận xóa"
+      variant="destructive"
+    >
+      <div data-testid="dialog-delete-brand">
+        <p className="text-sm text-gray-700 mb-2" data-testid="dialog-description-delete">
+          Bạn có chắc chắn muốn xóa thương hiệu <strong>{brand?.name}</strong>?
+        </p>
+        <p className="text-sm text-gray-600">Hành động này không thể hoàn tác.</p>
+        
+        <div className="flex justify-end gap-3 mt-6">
+          <Button 
+            variant="outline" 
+            onClick={() => onOpenChange(false)}
+            disabled={deleteMutation.isPending}
+            data-testid="button-cancel-delete"
+          >
+            Hủy
+          </Button>
+          <Button 
+            variant="destructive"
             onClick={() => brand?.id && deleteMutation.mutate(brand.id)}
-            className="bg-red-600 hover:bg-red-700"
             disabled={deleteMutation.isPending}
             data-testid="button-confirm-delete"
           >
-            {deleteMutation.isPending ? "Đang xóa..." : "Xóa"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            {deleteMutation.isPending ? "Đang xóa..." : "Xóa thương hiệu"}
+          </Button>
+        </div>
+      </div>
+    </AppleDialog>
   )
 }
 
@@ -715,14 +725,14 @@ export default function AdminBrandsPage() {
             </Button>
           </div>
           
-          <div className="relative mb-4">
-            <HiMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Tìm theo tên thương hiệu"
+          <div className="mb-4">
+            <AppleSearchBar
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] transition-colors"
+              onChange={setSearchTerm}
+              onSearch={(query) => {
+                console.log('Tìm kiếm:', query)
+              }}
+              placeholder="Tìm kiếm thương hiệu..."
               data-testid="input-search-brand"
             />
           </div>

@@ -28,6 +28,7 @@ import {
   ResponsiveContainer
 } from "recharts"
 import IKKAdminLayout from "@/components/ikk-admin-layout"
+import { AppleMetricCard, AppleTabs } from "@/components/apple"
 
 export default function AdminAnalyticsPage() {
   const [selectedReportTab, setSelectedReportTab] = useState<'overview' | 'revenue' | 'performance'>('overview')
@@ -56,66 +57,43 @@ export default function AdminAnalyticsPage() {
           </CardHeader>
 
           <CardContent className="p-6">
-            {/* Overview Metrics - 4 cards in a grid */}
+            {/* Overview Metrics - Using AppleMetricCard */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              {/* Total Views */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all" data-testid="card-metric-views">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <HiEye className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <HiArrowTrendingUp className="w-4 h-4" />
-                    <span className="text-xs font-medium" data-testid="change-metric-views">+12.5%</span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500 mb-1">Tổng lượt xem</p>
-                <p className="text-2xl font-bold text-gray-900" data-testid="value-metric-views">2,456,789</p>
-              </div>
-
-              {/* Engagement Rate */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all" data-testid="card-metric-engagement">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-pink-100 rounded-lg flex items-center justify-center">
-                    <HiHeart className="w-5 h-5 text-pink-600" />
-                  </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <HiArrowTrendingUp className="w-4 h-4" />
-                    <span className="text-xs font-medium" data-testid="change-metric-engagement">+2.3%</span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500 mb-1">Tỷ lệ tương tác</p>
-                <p className="text-2xl font-bold text-gray-900" data-testid="value-metric-engagement">8.42%</p>
-              </div>
-
-              {/* Total Revenue */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all" data-testid="card-metric-revenue">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                    <HiCurrencyDollar className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div className="flex items-center gap-1 text-green-600">
-                    <HiArrowTrendingUp className="w-4 h-4" />
-                    <span className="text-xs font-medium" data-testid="change-metric-revenue">+18.7%</span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500 mb-1">Tổng doanh thu</p>
-                <p className="text-2xl font-bold text-gray-900" data-testid="value-metric-revenue">đ456,780,000</p>
-              </div>
-
-              {/* Growth Rate */}
-              <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all" data-testid="card-metric-growth">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <HiArrowTrendingUp className="w-5 h-5 text-purple-600" />
-                  </div>
-                  <div className="flex items-center gap-1 text-gray-500">
-                    <span className="text-xs font-medium" data-testid="change-metric-growth">Tháng này</span>
-                  </div>
-                </div>
-                <p className="text-xs text-gray-500 mb-1">Tốc độ tăng trưởng</p>
-                <p className="text-2xl font-bold text-gray-900" data-testid="value-metric-growth">+24.8%</p>
-              </div>
+              <AppleMetricCard
+                title="Tổng lượt xem"
+                value="2,456,789"
+                change={12.5}
+                trend="up"
+                icon={<HiEye className="w-5 h-5 text-blue-600" />}
+                valueTestId="value-metric-views"
+              />
+              
+              <AppleMetricCard
+                title="Tỷ lệ tương tác"
+                value="8.42%"
+                change={2.3}
+                trend="up"
+                icon={<HiHeart className="w-5 h-5 text-pink-600" />}
+                valueTestId="value-metric-engagement"
+              />
+              
+              <AppleMetricCard
+                title="Tổng doanh thu"
+                value="456,780,000"
+                prefix="đ"
+                change={18.7}
+                trend="up"
+                icon={<HiCurrencyDollar className="w-5 h-5 text-green-600" />}
+                valueTestId="value-metric-revenue"
+              />
+              
+              <AppleMetricCard
+                title="Tốc độ tăng trưởng"
+                value="+24.8%"
+                description="Tháng này"
+                icon={<HiArrowTrendingUp className="w-5 h-5 text-purple-600" />}
+                valueTestId="value-metric-growth"
+              />
             </div>
 
             {/* Time Period & Actions */}
@@ -145,41 +123,18 @@ export default function AdminAnalyticsPage() {
               </Button>
             </div>
 
-            {/* Three Tabs */}
-            <div className="flex items-center gap-4 mb-6 border-b border-gray-200">
-              <button
-                onClick={() => setSelectedReportTab('overview')}
-                className={`pb-3 px-4 text-sm font-medium transition-colors border-b-2 ${
-                  selectedReportTab === 'overview'
-                    ? 'border-[#ff0086] text-[#ff0086]'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-                data-testid="tab-overview"
-              >
-                Tổng quan
-              </button>
-              <button
-                onClick={() => setSelectedReportTab('revenue')}
-                className={`pb-3 px-4 text-sm font-medium transition-colors border-b-2 ${
-                  selectedReportTab === 'revenue'
-                    ? 'border-[#ff0086] text-[#ff0086]'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-                data-testid="tab-revenue"
-              >
-                Phân tích doanh thu
-              </button>
-              <button
-                onClick={() => setSelectedReportTab('performance')}
-                className={`pb-3 px-4 text-sm font-medium transition-colors border-b-2 ${
-                  selectedReportTab === 'performance'
-                    ? 'border-[#ff0086] text-[#ff0086]'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
-                }`}
-                data-testid="tab-performance"
-              >
-                Hiệu suất KOC
-              </button>
+            {/* Apple HIG Tabs */}
+            <div className="mb-6">
+              <AppleTabs
+                tabs={[
+                  { id: 'overview', label: 'Tổng quan' },
+                  { id: 'revenue', label: 'Phân tích doanh thu' },
+                  { id: 'performance', label: 'Hiệu suất KOC' }
+                ]}
+                activeTab={selectedReportTab}
+                onChange={(tabId) => setSelectedReportTab(tabId as 'overview' | 'revenue' | 'performance')}
+                variant="underline"
+              />
             </div>
 
             {/* Charts Section */}

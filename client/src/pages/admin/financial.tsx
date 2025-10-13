@@ -22,6 +22,7 @@ import {
   FileText,
   BarChart3
 } from "lucide-react"
+import { AppleMetricCard, AppleTabs } from "@/components/apple"
 import {
   AreaChart,
   Area,
@@ -71,62 +72,43 @@ export default function AdminFinancialPage() {
           <CardContent className="p-6">
             {/* Financial Overview Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-green-500 text-white hover:bg-green-500">+15.3%</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-revenue">856.4M</p>
-                <p className="text-sm text-gray-600">Tổng doanh thu (VNĐ)</p>
-                <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  Tăng so với tháng trước
-                </p>
-              </div>
+              <AppleMetricCard
+                title="Tổng doanh thu (VNĐ)"
+                value="856.4M"
+                change={15.3}
+                trend="up"
+                description="Tăng so với tháng trước"
+                icon={<DollarSign className="w-5 h-5 text-green-600" />}
+                valueTestId="stat-revenue"
+              />
 
-              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-5 border border-red-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
-                    <CreditCard className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-red-500 text-white hover:bg-red-500">+8.2%</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-expenses">324.2M</p>
-                <p className="text-sm text-gray-600">Tổng chi phí (VNĐ)</p>
-                <p className="text-xs text-gray-600 mt-2">Bao gồm marketing, vận hành</p>
-              </div>
+              <AppleMetricCard
+                title="Tổng chi phí (VNĐ)"
+                value="324.2M"
+                change={8.2}
+                trend="up"
+                description="Bao gồm marketing, vận hành"
+                icon={<CreditCard className="w-5 h-5 text-red-600" />}
+                valueTestId="stat-expenses"
+              />
 
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-blue-500 text-white hover:bg-blue-500">+22.8%</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-profit">532.2M</p>
-                <p className="text-sm text-gray-600">Lợi nhuận ròng (VNĐ)</p>
-                <p className="text-xs text-blue-600 mt-2 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  Tăng trưởng mạnh
-                </p>
-              </div>
+              <AppleMetricCard
+                title="Lợi nhuận ròng (VNĐ)"
+                value="532.2M"
+                change={22.8}
+                trend="up"
+                description="Tăng trưởng mạnh"
+                icon={<TrendingUp className="w-5 h-5 text-blue-600" />}
+                valueTestId="stat-profit"
+              />
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                    <AlertCircle className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-orange-500 text-white hover:bg-orange-500">12 chờ</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-outstanding">128.6M</p>
-                <p className="text-sm text-gray-600">Công nợ chưa thanh toán (VNĐ)</p>
-                <p className="text-xs text-orange-600 mt-2 flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  12 giao dịch đang chờ
-                </p>
-              </div>
+              <AppleMetricCard
+                title="Công nợ chưa thanh toán (VNĐ)"
+                value="128.6M"
+                description="12 giao dịch đang chờ"
+                icon={<AlertCircle className="w-5 h-5 text-orange-600" />}
+                valueTestId="stat-outstanding"
+              />
             </div>
 
             {/* Date Range & Period Selector */}
@@ -157,27 +139,17 @@ export default function AdminFinancialPage() {
             </div>
 
             {/* Tabs */}
-            <div className="border-b border-gray-200 mb-6">
-              <div className="flex items-center gap-1 overflow-x-auto">
-                {[
-                  { key: 'overview', label: 'Tổng quan' },
-                  { key: 'income', label: 'Thu nhập' },
-                  { key: 'expenses', label: 'Chi phí' }
-                ].map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => setSelectedFinancialTab(tab.key as any)}
-                    className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                      selectedFinancialTab === tab.key
-                        ? 'border-[#ff0086] text-[#ff0086]'
-                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
-                    }`}
-                    data-testid={`tab-${tab.key}`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+            <div className="mb-6">
+              <AppleTabs
+                tabs={[
+                  { id: 'overview', label: 'Tổng quan' },
+                  { id: 'income', label: 'Thu nhập' },
+                  { id: 'expenses', label: 'Chi phí' }
+                ]}
+                activeTab={selectedFinancialTab}
+                onChange={(tabId) => setSelectedFinancialTab(tabId as 'overview' | 'income' | 'expenses')}
+                variant="underline"
+              />
             </div>
 
             {/* Charts Section */}

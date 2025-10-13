@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, ReactNode } from 'react';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleDialogProps {
@@ -8,9 +8,11 @@ interface AppleDialogProps {
   description?: string;
   confirmText?: string;
   cancelText?: string;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   onCancel?: () => void;
-  variant?: 'default' | 'danger';
+  variant?: 'default' | 'danger' | 'destructive';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  children?: ReactNode;
 }
 
 export function AppleDialog({
@@ -23,6 +25,8 @@ export function AppleDialog({
   onConfirm,
   onCancel,
   variant = 'default',
+  size = 'sm',
+  children,
 }: AppleDialogProps) {
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -58,17 +62,26 @@ export function AppleDialog({
   };
 
   const handleConfirm = () => {
-    onConfirm();
-    onClose();
+    if (onConfirm) {
+      onConfirm();
+      onClose();
+    }
   };
 
-  const confirmButtonClass = variant === 'danger'
+  const confirmButtonClass = variant === 'danger' || variant === 'destructive'
     ? 'bg-red-600 hover:bg-red-700 text-white'
     : 'bg-[#ff0086] hover:bg-[#e60078] text-white';
 
+  const sizeClasses = {
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+  };
+
   return (
     <div
-      role="alertdialog"
+      role="dialog"
       aria-modal="true"
       aria-labelledby="dialog-title"
       aria-describedby={description ? 'dialog-description' : undefined}
@@ -86,7 +99,8 @@ export function AppleDialog({
       <div
         data-testid="dialog-content"
         className={`
-          max-w-sm w-full
+          ${sizeClasses[size]} w-full
+          ${children ? 'max-h-[90vh] overflow-y-auto' : ''}
           bg-white ${designTokens.borderRadius.lg} ${designTokens.shadows.xl}
           relative animate-scale-in
           p-6
@@ -96,39 +110,50 @@ export function AppleDialog({
           {title}
         </h2>
         
-        {description && (
+        {description && !children && (
           <p id="dialog-description" className="text-sm text-gray-600 mb-6" data-testid="dialog-description">
             {description}
           </p>
         )}
 
-        <div className="flex gap-3 justify-end">
-          <button
-            onClick={handleCancel}
-            data-testid="dialog-cancel"
-            className={`
-              px-4 py-2 rounded-lg
-              bg-gray-100 hover:bg-gray-200 text-gray-700
-              font-medium text-sm
-              ${designTokens.transitions.fast}
-            `}
-          >
-            {cancelText}
-          </button>
-          
-          <button
-            onClick={handleConfirm}
-            data-testid="dialog-confirm"
-            className={`
-              px-4 py-2 rounded-lg
-              ${confirmButtonClass}
-              font-medium text-sm
-              ${designTokens.transitions.fast}
-            `}
-          >
-            {confirmText}
-          </button>
-        </div>
+        {children ? (
+          <div className="mt-4">{children}</div>
+        ) : (
+          <>
+            {description && (
+              <p id="dialog-description" className="text-sm text-gray-600 mb-6" data-testid="dialog-description">
+                {description}
+              </p>
+            )}
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancel}
+                data-testid="dialog-cancel"
+                className={`
+                  px-4 py-2 rounded-lg
+                  bg-gray-100 hover:bg-gray-200 text-gray-700
+                  font-medium text-sm
+                  ${designTokens.transitions.fast}
+                `}
+              >
+                {cancelText}
+              </button>
+              
+              <button
+                onClick={handleConfirm}
+                data-testid="dialog-confirm"
+                className={`
+                  px-4 py-2 rounded-lg
+                  ${confirmButtonClass}
+                  font-medium text-sm
+                  ${designTokens.transitions.fast}
+                `}
+              >
+                {confirmText}
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { AppleMetricCard, AppleTabs, AppleSearchBar } from "@/components/apple"
 import {
   Megaphone,
   Download,
@@ -45,6 +46,7 @@ import IKKAdminLayout from "@/components/ikk-admin-layout"
 export default function AdminCampaignsPage() {
   const [campaignTab, setCampaignTab] = useState<'all' | 'active' | 'draft' | 'completed' | 'paused'>('all');
   const [showCampaignForm, setShowCampaignForm] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <IKKAdminLayout>
@@ -82,100 +84,66 @@ export default function AdminCampaignsPage() {
           <CardContent className="p-6">
             {/* Overview Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-5 border border-blue-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <Megaphone className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-blue-500 text-white hover:bg-blue-500">Tổng</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-total-campaigns">348</p>
-                <p className="text-sm text-gray-600">Tổng chiến dịch</p>
-                <p className="text-xs text-blue-600 mt-2 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  +24 chiến dịch mới tháng này
-                </p>
-              </div>
+              <AppleMetricCard
+                title="Tổng chiến dịch"
+                value="348"
+                description="+24 chiến dịch mới tháng này"
+                icon={<Megaphone className="w-5 h-5 text-blue-600" />}
+                valueTestId="stat-total-campaigns"
+              />
 
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-5 border border-green-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                    <Activity className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-green-500 text-white hover:bg-green-500">Active</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-active-campaigns">156</p>
-                <p className="text-sm text-gray-600">Đang hoạt động</p>
-                <p className="text-xs text-green-600 mt-2">89 chiến dịch đang tuyển KOC</p>
-              </div>
+              <AppleMetricCard
+                title="Đang hoạt động"
+                value="156"
+                description="89 chiến dịch đang tuyển KOC"
+                icon={<Activity className="w-5 h-5 text-green-600" />}
+                valueTestId="stat-active-campaigns"
+              />
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-5 border border-purple-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <Users className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-purple-500 text-white hover:bg-purple-500">KOC</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-koc-participants">2,847</p>
-                <p className="text-sm text-gray-600">KOC tham gia</p>
-                <p className="text-xs text-purple-600 mt-2 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  +342 KOC tuần này
-                </p>
-              </div>
+              <AppleMetricCard
+                title="KOC tham gia"
+                value="2,847"
+                description="+342 KOC tuần này"
+                icon={<Users className="w-5 h-5 text-purple-600" />}
+                valueTestId="stat-koc-participants"
+              />
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                    <DollarSign className="w-5 h-5 text-white" />
-                  </div>
-                  <Badge className="bg-orange-500 text-white hover:bg-orange-500">Budget</Badge>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1" data-testid="stat-total-budget">12.4B</p>
-                <p className="text-sm text-gray-600">Tổng ngân sách (VNĐ)</p>
-                <p className="text-xs text-gray-600 mt-2">8.7B đã chi tiêu (70%)</p>
-              </div>
+              <AppleMetricCard
+                title="Tổng ngân sách (VNĐ)"
+                value="12.4B"
+                description="8.7B đã chi tiêu (70%)"
+                icon={<DollarSign className="w-5 h-5 text-orange-600" />}
+                valueTestId="stat-total-budget"
+              />
             </div>
 
             {/* Tabs */}
-            <div className="border-b border-gray-200 mb-6">
-              <div className="flex items-center gap-1 overflow-x-auto">
-                {[
-                  { key: 'all', label: 'Tất cả', count: 348 },
-                  { key: 'active', label: 'Đang chạy', count: 156 },
-                  { key: 'draft', label: 'Nháp', count: 42 },
-                  { key: 'completed', label: 'Hoàn thành', count: 128 },
-                  { key: 'paused', label: 'Tạm dừng', count: 22 }
-                ].map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => setCampaignTab(tab.key as any)}
-                    className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
-                      campaignTab === tab.key
-                        ? 'border-[#ff0086] text-[#ff0086]'
-                        : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
-                    }`}
-                    data-testid={`tab-${tab.key}`}
-                  >
-                    {tab.label} ({tab.count})
-                  </button>
-                ))}
-              </div>
+            <div className="mb-6">
+              <AppleTabs
+                tabs={[
+                  { id: 'all', label: 'Tất cả (348)' },
+                  { id: 'active', label: 'Đang chạy (156)' },
+                  { id: 'draft', label: 'Nháp (42)' },
+                  { id: 'completed', label: 'Hoàn thành (128)' },
+                  { id: 'paused', label: 'Tạm dừng (22)' }
+                ]}
+                activeTab={campaignTab}
+                onChange={(tabId) => setCampaignTab(tabId as 'all' | 'active' | 'draft' | 'completed' | 'paused')}
+                variant="underline"
+              />
             </div>
 
             {/* Search and Filters */}
             <div className="bg-gray-50 rounded-xl p-4 mb-6">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
                 <div className="md:col-span-5">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Tìm kiếm theo tên chiến dịch, mã, thương hiệu..."
-                      className="w-full pl-10 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] text-sm"
-                      data-testid="input-search-campaign"
-                    />
-                  </div>
+                  <AppleSearchBar
+                    value={searchValue}
+                    onChange={setSearchValue}
+                    placeholder="Tìm kiếm theo tên chiến dịch, mã, thương hiệu..."
+                    onSearch={(query) => console.log('Search:', query)}
+                    data-testid="input-search-campaign"
+                  />
                 </div>
                 <div className="md:col-span-2">
                   <Select>

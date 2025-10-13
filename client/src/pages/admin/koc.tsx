@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { 
-  HiMagnifyingGlass,
   HiChevronDown,
   HiSquares2X2,
   HiListBullet,
@@ -23,26 +22,15 @@ import { z } from "zod"
 import { apiRequest, queryClient } from "@/lib/queryClient"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/hooks/use-toast"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+  AppleSearchBar,
+  AppleDialog,
+  AppleModal,
+  AppleInput,
+  AppleSelect,
+  AppleBadge
+} from "@/components/apple"
 import {
   Form,
   FormControl,
@@ -51,14 +39,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import IKKAdminLayout from "@/components/ikk-admin-layout"
 import { insertKocProfileSchema } from "@shared/schema"
@@ -118,18 +98,14 @@ function getPlatformIcon(platform: string) {
   }
 }
 
-function getLevelColor(level: string): string {
+function getLevelBadgeVariant(level: string): 'info' | 'warning' | 'default' {
   switch (level) {
     case 'Diamond':
-      return 'bg-blue-100 text-blue-800'
+      return 'info'
     case 'Gold':
-      return 'bg-yellow-100 text-yellow-800'
-    case 'Silver':
-      return 'bg-gray-100 text-gray-800'
-    case 'Bronze':
-      return 'bg-orange-100 text-orange-800'
+      return 'warning'
     default:
-      return 'bg-gray-100 text-gray-600'
+      return 'default'
   }
 }
 
@@ -177,6 +153,7 @@ interface User {
 }
 
 export default function AdminKOCPage() {
+  const [searchValue, setSearchValue] = useState('')
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
   const [selectedKoc, setSelectedKoc] = useState<KOCProfile | null>(null)
@@ -203,32 +180,33 @@ export default function AdminKOCPage() {
           </div>
           
           {/* Search Bar */}
-          <div className="relative mb-4">
-            <HiMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Tìm theo tên KOL"
-              className="w-full pl-10 pr-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#ff0086]/20 focus:border-[#ff0086] transition-colors"
-              data-testid="input-search-kol"
-            />
-          </div>
+          <AppleSearchBar
+            value={searchValue}
+            onChange={setSearchValue}
+            placeholder="Tìm theo tên KOL"
+            onSearch={(query) => {
+              console.log('Search:', query)
+            }}
+            data-testid="input-search-kol"
+            className="mb-4"
+          />
 
           {/* Category Filters */}
           <div className="mb-3">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm text-gray-600">Ngành hàng</span>
-              <Badge className="bg-[#ff0086] text-white hover:bg-[#e6007a] border-0 cursor-pointer" data-testid="chip-category-all">
+              <AppleBadge variant="info" className="cursor-pointer" data-testid="chip-category-all">
                 Tất cả
-              </Badge>
+              </AppleBadge>
               {AVAILABLE_CATEGORIES.map((category, idx) => (
-                <Badge
+                <AppleBadge
                   key={idx}
-                  variant="outline"
-                  className="bg-white hover:bg-gray-50 cursor-pointer"
+                  variant="default"
+                  className="cursor-pointer"
                   data-testid={`chip-category-${idx}`}
                 >
                   {category}
-                </Badge>
+                </AppleBadge>
               ))}
               <Button variant="ghost" size="sm" className="text-gray-600" data-testid="button-expand-categories">
                 Mở rộng
@@ -241,9 +219,9 @@ export default function AdminKOCPage() {
           <div className="mb-3">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm text-gray-600">Mạng xã hội</span>
-              <Badge className="bg-[#ff0086] text-white hover:bg-[#e6007a] border-0 cursor-pointer" data-testid="chip-platform-all">
+              <AppleBadge variant="info" className="cursor-pointer" data-testid="chip-platform-all">
                 Tất cả
-              </Badge>
+              </AppleBadge>
               {[
                 { name: 'Shopee Live', icon: <HiShoppingBag className="w-3 h-3" /> },
                 { name: 'Shopee Video', icon: <HiVideoCamera className="w-3 h-3" /> },
@@ -253,15 +231,15 @@ export default function AdminKOCPage() {
                 { name: 'X(Twitter)', icon: <HiShare className="w-3 h-3" /> },
                 { name: 'YouTube', icon: <FaYoutube className="w-3 h-3" /> }
               ].map((platform, idx) => (
-                <Badge
+                <AppleBadge
                   key={idx}
-                  variant="outline"
-                  className="bg-white hover:bg-gray-50 cursor-pointer flex items-center gap-1"
+                  variant="default"
+                  className="cursor-pointer flex items-center gap-1"
                   data-testid={`chip-platform-${idx}`}
                 >
                   {platform.icon}
                   {platform.name}
-                </Badge>
+                </AppleBadge>
               ))}
             </div>
           </div>
@@ -270,22 +248,22 @@ export default function AdminKOCPage() {
           <div className="mb-4">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-sm text-gray-600">Hợp tác</span>
-              <Badge
-                variant="outline"
-                className="bg-white hover:bg-gray-50 cursor-pointer flex items-center gap-1"
+              <AppleBadge
+                variant="default"
+                className="cursor-pointer flex items-center gap-1"
                 data-testid="toggle-gold-kol"
               >
                 <HiSparkles className="w-3 h-3 text-yellow-500" />
                 KOL tích vàng
-              </Badge>
-              <Badge
-                variant="outline"
-                className="bg-white hover:bg-gray-50 cursor-pointer flex items-center gap-1"
+              </AppleBadge>
+              <AppleBadge
+                variant="default"
+                className="cursor-pointer flex items-center gap-1"
                 data-testid="toggle-good-sample"
               >
                 <HiCheckCircle className="w-3 h-3 text-green-500" />
                 Tỷ lệ hoàn thành Dự án sản phẩm mẫu miễn phí ở mức tốt
-              </Badge>
+              </AppleBadge>
             </div>
           </div>
 
@@ -393,10 +371,10 @@ export default function AdminKOCPage() {
                                   })}
                                 </div>
                                 {koc.categories.length > 0 && (
-                                  <Badge className="bg-gray-100 text-gray-700 border-0 text-xs" data-testid={`badge-category-${koc.id}`}>
+                                  <AppleBadge variant="default" size="sm" data-testid={`badge-category-${koc.id}`}>
                                     {koc.categories[0]}
                                     {koc.categories.length > 1 && ` +${koc.categories.length - 1}`}
-                                  </Badge>
+                                  </AppleBadge>
                                 )}
                               </div>
                             </div>
@@ -420,9 +398,9 @@ export default function AdminKOCPage() {
                             </span>
                           </td>
                           <td className="py-4 px-4">
-                            <Badge className={`${getLevelColor(koc.level)} border-0`} data-testid={`badge-level-${koc.id}`}>
+                            <AppleBadge variant={getLevelBadgeVariant(koc.level)} data-testid={`badge-level-${koc.id}`}>
                               {koc.level}
-                            </Badge>
+                            </AppleBadge>
                           </td>
                           <td className="py-4 px-4">
                             <div className="flex flex-col gap-2">
@@ -599,49 +577,71 @@ function CreateKocDialog({ open, onOpenChange }: CreateKocDialogProps) {
     onOpenChange(newOpen)
   }
 
+  const userOptions = usersData?.users.map(user => ({
+    value: user.id,
+    label: `${user.name} (@${user.username})`
+  })) || []
+
+  const ratingOptions = ['5.0', '4.5', '4.0', '3.5', '3.0', '2.5', '2.0', '1.5', '1.0', '0.5', '0.0'].map(r => ({
+    value: r,
+    label: r
+  }))
+
+  const levelOptions = ['Nano', 'Micro', 'Macro', 'Celebrity', 'Diamond', 'Gold', 'Silver', 'Bronze'].map(l => ({
+    value: l,
+    label: l
+  }))
+
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto" data-testid="dialog-create-koc">
-        <DialogHeader>
-          <DialogTitle data-testid="dialog-title-koc">Thêm KOC Mới</DialogTitle>
-          <DialogDescription>
-            Điền thông tin để thêm KOC vào hệ thống
-          </DialogDescription>
-        </DialogHeader>
-        
+    <AppleModal
+      open={open}
+      onClose={() => handleOpenChange(false)}
+      title="Thêm KOC Mới"
+      size="xl"
+      footer={
+        <div className="flex gap-3 justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+            disabled={createMutation.isPending}
+            data-testid="button-cancel"
+          >
+            Hủy
+          </Button>
+          <Button
+            type="submit"
+            form="create-koc-form"
+            className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+            disabled={createMutation.isPending}
+            data-testid="button-submit-create-koc"
+          >
+            {createMutation.isPending ? "Đang xử lý..." : "Thêm KOC"}
+          </Button>
+        </div>
+      }
+    >
+      <div data-testid="dialog-create-koc">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form id="create-koc-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* User Selection Section */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-gray-900">Chọn người dùng</h3>
               <FormField
                 control={form.control}
                 name="userId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Người dùng <span className="text-red-500">*</span></FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-user">
-                          <SelectValue placeholder="Chọn người dùng" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {isLoadingUsers ? (
-                          <SelectItem value="loading" disabled>Đang tải...</SelectItem>
-                        ) : usersData && usersData.users.length > 0 ? (
-                          usersData.users.map((user) => (
-                            <SelectItem key={user.id} value={user.id}>
-                              {user.name} (@{user.username})
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value="none" disabled>Không có người dùng</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    label="Người dùng *"
+                    options={[
+                      { value: '', label: isLoadingUsers ? 'Đang tải...' : 'Chọn người dùng' },
+                      ...userOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-user"
+                    disabled={isLoadingUsers || userOptions.length === 0}
+                  />
                 )}
               />
             </div>
@@ -653,56 +653,64 @@ function CreateKocDialog({ open, onOpenChange }: CreateKocDialogProps) {
                 <FormField
                   control={form.control}
                   name="facebookFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Facebook</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-facebook-followers" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="Facebook"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-facebook-followers"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="instagramFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instagram</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-instagram-followers" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="Instagram"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-instagram-followers"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="tiktokFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>TikTok</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-tiktok-followers" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="TikTok"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-tiktok-followers"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="youtubeFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>YouTube</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-youtube-followers" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="YouTube"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-youtube-followers"
+                    />
                   )}
                 />
               </div>
@@ -761,73 +769,51 @@ function CreateKocDialog({ open, onOpenChange }: CreateKocDialogProps) {
               <FormField
                 control={form.control}
                 name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Địa điểm</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="Nhập địa điểm" data-testid="input-location" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Địa điểm"
+                    placeholder="Nhập địa điểm"
+                    error={fieldState.error?.message}
+                    data-testid="input-location"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="rating"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Đánh giá</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-rating">
-                          <SelectValue placeholder="Chọn đánh giá" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="5.0">5.0</SelectItem>
-                        <SelectItem value="4.5">4.5</SelectItem>
-                        <SelectItem value="4.0">4.0</SelectItem>
-                        <SelectItem value="3.5">3.5</SelectItem>
-                        <SelectItem value="3.0">3.0</SelectItem>
-                        <SelectItem value="2.5">2.5</SelectItem>
-                        <SelectItem value="2.0">2.0</SelectItem>
-                        <SelectItem value="1.5">1.5</SelectItem>
-                        <SelectItem value="1.0">1.0</SelectItem>
-                        <SelectItem value="0.5">0.5</SelectItem>
-                        <SelectItem value="0.0">0.0</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    value={field.value || ''}
+                    label="Đánh giá"
+                    options={[
+                      { value: '', label: 'Chọn đánh giá' },
+                      ...ratingOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-rating"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="level"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cấp độ</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-level">
-                          <SelectValue placeholder="Chọn cấp độ" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Nano">Nano</SelectItem>
-                        <SelectItem value="Micro">Micro</SelectItem>
-                        <SelectItem value="Macro">Macro</SelectItem>
-                        <SelectItem value="Celebrity">Celebrity</SelectItem>
-                        <SelectItem value="Diamond">Diamond</SelectItem>
-                        <SelectItem value="Gold">Gold</SelectItem>
-                        <SelectItem value="Silver">Silver</SelectItem>
-                        <SelectItem value="Bronze">Bronze</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    value={field.value || ''}
+                    label="Cấp độ"
+                    options={[
+                      { value: '', label: 'Chọn cấp độ' },
+                      ...levelOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-level"
+                  />
                 )}
               />
 
@@ -853,29 +839,10 @@ function CreateKocDialog({ open, onOpenChange }: CreateKocDialogProps) {
               />
             </div>
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleOpenChange(false)}
-                disabled={createMutation.isPending}
-                data-testid="button-cancel"
-              >
-                Hủy
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
-                disabled={createMutation.isPending}
-                data-testid="button-submit-create-koc"
-              >
-                {createMutation.isPending ? "Đang xử lý..." : "Thêm KOC"}
-              </Button>
-            </DialogFooter>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </AppleModal>
   )
 }
 
@@ -959,49 +926,71 @@ function EditKocDialog({ open, onOpenChange, selectedKoc }: EditKocDialogProps) 
     onOpenChange(newOpen)
   }
 
+  const userOptions = usersData?.users.map(user => ({
+    value: user.id,
+    label: `${user.name} (@${user.username})`
+  })) || []
+
+  const ratingOptions = ['5.0', '4.5', '4.0', '3.5', '3.0', '2.5', '2.0', '1.5', '1.0', '0.5', '0.0'].map(r => ({
+    value: r,
+    label: r
+  }))
+
+  const levelOptions = ['Nano', 'Micro', 'Macro', 'Celebrity', 'Diamond', 'Gold', 'Silver', 'Bronze'].map(l => ({
+    value: l,
+    label: l
+  }))
+
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto" data-testid="dialog-edit-koc">
-        <DialogHeader>
-          <DialogTitle data-testid="dialog-title-edit-koc">Chỉnh sửa KOC</DialogTitle>
-          <DialogDescription>
-            Cập nhật thông tin KOC
-          </DialogDescription>
-        </DialogHeader>
-        
+    <AppleModal
+      open={open}
+      onClose={() => handleOpenChange(false)}
+      title="Chỉnh sửa KOC"
+      size="xl"
+      footer={
+        <div className="flex gap-3 justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+            disabled={updateMutation.isPending}
+            data-testid="button-cancel-edit"
+          >
+            Hủy
+          </Button>
+          <Button
+            type="submit"
+            form="edit-koc-form"
+            className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
+            disabled={updateMutation.isPending}
+            data-testid="button-submit-edit-koc"
+          >
+            {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}
+          </Button>
+        </div>
+      }
+    >
+      <div data-testid="dialog-edit-koc">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form id="edit-koc-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             {/* User Selection Section - Disabled/Read-only */}
             <div className="space-y-4">
               <h3 className="text-sm font-semibold text-gray-900">Người dùng</h3>
               <FormField
                 control={form.control}
                 name="userId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Người dùng <span className="text-red-500">*</span></FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} disabled>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-user-edit" disabled>
-                          <SelectValue placeholder="Chọn người dùng" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {isLoadingUsers ? (
-                          <SelectItem value="loading" disabled>Đang tải...</SelectItem>
-                        ) : usersData && usersData.users.length > 0 ? (
-                          usersData.users.map((user) => (
-                            <SelectItem key={user.id} value={user.id}>
-                              {user.name} (@{user.username})
-                            </SelectItem>
-                          ))
-                        ) : (
-                          <SelectItem value="none" disabled>Không có người dùng</SelectItem>
-                        )}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    label="Người dùng *"
+                    options={[
+                      { value: '', label: isLoadingUsers ? 'Đang tải...' : 'Chọn người dùng' },
+                      ...userOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-user-edit"
+                    disabled={true}
+                  />
                 )}
               />
             </div>
@@ -1013,56 +1002,64 @@ function EditKocDialog({ open, onOpenChange, selectedKoc }: EditKocDialogProps) 
                 <FormField
                   control={form.control}
                   name="facebookFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Facebook</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-facebook-followers-edit" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="Facebook"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-facebook-followers-edit"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="instagramFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Instagram</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-instagram-followers-edit" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="Instagram"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-instagram-followers-edit"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="tiktokFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>TikTok</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-tiktok-followers-edit" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="TikTok"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-tiktok-followers-edit"
+                    />
                   )}
                 />
 
                 <FormField
                   control={form.control}
                   name="youtubeFollowers"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>YouTube</FormLabel>
-                      <FormControl>
-                        <Input {...field} type="number" min="0" placeholder="0" data-testid="input-youtube-followers-edit" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  render={({ field, fieldState }) => (
+                    <AppleInput
+                      {...field}
+                      label="YouTube"
+                      type="number"
+                      min="0"
+                      placeholder="0"
+                      error={fieldState.error?.message}
+                      data-testid="input-youtube-followers-edit"
+                    />
                   )}
                 />
               </div>
@@ -1121,101 +1118,87 @@ function EditKocDialog({ open, onOpenChange, selectedKoc }: EditKocDialogProps) 
               <FormField
                 control={form.control}
                 name="location"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Địa điểm</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value || ''} placeholder="Nhập địa điểm" data-testid="input-location-edit" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleInput
+                    {...field}
+                    value={field.value || ''}
+                    label="Địa điểm"
+                    placeholder="Nhập địa điểm"
+                    error={fieldState.error?.message}
+                    data-testid="input-location-edit"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="rating"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Đánh giá</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-rating-edit">
-                          <SelectValue placeholder="Chọn đánh giá" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="5.0">5.0</SelectItem>
-                        <SelectItem value="4.5">4.5</SelectItem>
-                        <SelectItem value="4.0">4.0</SelectItem>
-                        <SelectItem value="3.5">3.5</SelectItem>
-                        <SelectItem value="3.0">3.0</SelectItem>
-                        <SelectItem value="2.5">2.5</SelectItem>
-                        <SelectItem value="2.0">2.0</SelectItem>
-                        <SelectItem value="1.5">1.5</SelectItem>
-                        <SelectItem value="1.0">1.0</SelectItem>
-                        <SelectItem value="0.5">0.5</SelectItem>
-                        <SelectItem value="0.0">0.0</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    value={field.value || ''}
+                    label="Đánh giá"
+                    options={[
+                      { value: '', label: 'Chọn đánh giá' },
+                      ...ratingOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-rating-edit"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="level"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Cấp độ</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value || undefined}>
-                      <FormControl>
-                        <SelectTrigger data-testid="select-level-edit">
-                          <SelectValue placeholder="Chọn cấp độ" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Nano">Nano</SelectItem>
-                        <SelectItem value="Micro">Micro</SelectItem>
-                        <SelectItem value="Macro">Macro</SelectItem>
-                        <SelectItem value="Celebrity">Celebrity</SelectItem>
-                        <SelectItem value="Diamond">Diamond</SelectItem>
-                        <SelectItem value="Gold">Gold</SelectItem>
-                        <SelectItem value="Silver">Silver</SelectItem>
-                        <SelectItem value="Bronze">Bronze</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleSelect
+                    {...field}
+                    value={field.value || ''}
+                    label="Cấp độ"
+                    options={[
+                      { value: '', label: 'Chọn cấp độ' },
+                      ...levelOptions
+                    ]}
+                    error={fieldState.error?.message}
+                    data-testid="select-level-edit"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="completedCampaigns"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Chiến dịch hoàn thành</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)} type="number" min="0" placeholder="0" data-testid="input-completed-campaigns-edit" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleInput
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
+                    label="Chiến dịch hoàn thành"
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                    error={fieldState.error?.message}
+                    data-testid="input-completed-campaigns-edit"
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
                 name="totalPoints"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tổng điểm</FormLabel>
-                    <FormControl>
-                      <Input {...field} value={field.value ?? ''} onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)} type="number" min="0" placeholder="0" data-testid="input-total-points-edit" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                render={({ field, fieldState }) => (
+                  <AppleInput
+                    {...field}
+                    value={field.value ?? ''}
+                    onChange={(e) => field.onChange(e.target.value ? Number(e.target.value) : null)}
+                    label="Tổng điểm"
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                    error={fieldState.error?.message}
+                    data-testid="input-total-points-edit"
+                  />
                 )}
               />
 
@@ -1241,29 +1224,10 @@ function EditKocDialog({ open, onOpenChange, selectedKoc }: EditKocDialogProps) 
               />
             </div>
 
-            <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => handleOpenChange(false)}
-                disabled={updateMutation.isPending}
-                data-testid="button-cancel-edit"
-              >
-                Hủy
-              </Button>
-              <Button
-                type="submit"
-                className="bg-[#ff0086] hover:bg-[#e6007a] text-white"
-                disabled={updateMutation.isPending}
-                data-testid="button-submit-edit-koc"
-              >
-                {updateMutation.isPending ? "Đang cập nhật..." : "Cập nhật"}
-              </Button>
-            </DialogFooter>
           </form>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </AppleModal>
   )
 }
 
@@ -1305,31 +1269,17 @@ function DeleteKocDialog({ open, onOpenChange, kocToDelete }: DeleteKocDialogPro
   }
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent data-testid="dialog-delete-koc">
-        <AlertDialogHeader>
-          <AlertDialogTitle data-testid="dialog-title-delete-koc">Xác nhận xóa KOC</AlertDialogTitle>
-          <AlertDialogDescription data-testid="dialog-description-delete-koc">
-            Bạn có chắc chắn muốn xóa KOC <strong>{kocToDelete.name}</strong> (<strong>@{kocToDelete.username}</strong>)? Hành động này không thể hoàn tác.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel data-testid="button-cancel-delete-koc">
-            Hủy
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={(e) => {
-              e.preventDefault()
-              handleDelete()
-            }}
-            disabled={deleteMutation.isPending}
-            className="bg-red-600 hover:bg-red-700 text-white"
-            data-testid="button-confirm-delete-koc"
-          >
-            {deleteMutation.isPending ? "Đang xóa..." : "Xóa"}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <AppleDialog
+      open={open}
+      onClose={() => onOpenChange(false)}
+      title="Xác nhận xóa KOC"
+      message={`Bạn có chắc chắn muốn xóa KOC ${kocToDelete.name} (@${kocToDelete.username})? Hành động này không thể hoàn tác.`}
+      variant="destructive"
+      confirmLabel={deleteMutation.isPending ? "Đang xóa..." : "Xóa"}
+      cancelLabel="Hủy"
+      onConfirm={handleDelete}
+      disabled={deleteMutation.isPending}
+      data-testid="dialog-delete-koc"
+    />
   )
 }

@@ -12,6 +12,7 @@ interface AppleMetricCardProps {
   description?: string;
   icon?: ReactNode;
   variant?: 'default' | 'success' | 'warning' | 'error';
+  valueTestId?: string;
 }
 
 export function AppleMetricCard({
@@ -24,6 +25,7 @@ export function AppleMetricCard({
   description,
   icon,
   variant = 'default',
+  valueTestId = 'metric-value',
 }: AppleMetricCardProps) {
   const formatValue = (val: number | string): string => {
     if (typeof val === 'number') {
@@ -74,7 +76,7 @@ export function AppleMetricCard({
 
       <div className="flex flex-col md:flex-row md:items-center md:gap-3 mb-2">
         <p
-          data-testid="metric-value"
+          data-testid={valueTestId}
           className={`text-3xl font-bold ${variantColors[variant]}`}
         >
           {prefix && <span>{prefix}</span>}
