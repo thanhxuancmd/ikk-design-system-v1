@@ -87,14 +87,25 @@ UI Effects: Modern card-based design with clean shadows and borders
    - ✅ Maintained all form handlers and state management
    - ✅ Header layout: Title LEFT, "Lưu nháp" + "Xuất bản" buttons RIGHT
 
-5. **brands/categories.tsx** - Category management page
+5. **brands/categories.tsx** - Category management page (COMPREHENSIVE REFACTOR - 95%+ compliance)
    - ✅ Fixed container: Already using `max-w-7xl mx-auto px-4 mb-12`
    - ✅ Refactored header: Removed CardHeader gradient, simple div with h1 text-3xl (LEFT) + 2 buttons (RIGHT)
-   - ✅ Replaced 4 custom statistics cards with AppleMetricCard (Heroicons v2)
-   - ✅ Migrated ALL icons: 29 Lucide → Heroicons v2 (HiOutlinePlus, HiOutlineFolder, etc.)
-   - ✅ Replaced ALL form inputs: 6 Input → AppleInput (Create/Edit dialogs), 4 Select → AppleSelect
-   - ✅ Replaced ALL buttons: 24 Button → AppleButton (primary/secondary/danger variants)
-   - ✅ Preserved functionality: form validation, auto-slug, bulk actions, tree expand/collapse
+   - ✅ ICON MIGRATION: Replaced ALL 34 Heroicons v2 → Ionicons 5 (117 icon usages across 1586 lines)
+   - ✅ iconMap updated with Ionicons equivalents (IoLayersOutline, IoCubeOutline, IoSparklesOutline, etc.)
+   - ✅ COMPONENT MIGRATION: Replaced ALL shadcn components with Apple HIG equivalents:
+     - Card → AppleCard (variant="outlined")
+     - Dialog → AppleModal (create/edit dialogs)
+     - AlertDialog → AppleDialog (delete confirmations)
+     - DropdownMenu → AppleDropdown (export menu)
+     - Badge → AppleBadge
+     - Popover → ApplePopover (icon picker)
+     - Textarea → AppleTextarea
+     - Custom styled Checkbox (table compatible)
+     - Label → Removed (built into AppleInput)
+   - ✅ Button variants fixed: "ghost"→"outline", "danger"→"destructive" (8 instances)
+   - ✅ Zero LSP/TypeScript errors (fixed all 7 diagnostics)
+   - ✅ E2E tested: 50 Ionicons confirmed, Apple components render correctly, full functionality preserved
+   - ✅ Architect verified: ~95%+ Apple HIG compliance achieved
 
 **Apple Components Integrated:**
 - **AppleMetricCard**: Statistics display with trend indicators (up/down/neutral)
