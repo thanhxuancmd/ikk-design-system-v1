@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { Link, useLocation } from "wouter"
 import { 
-  HiOutlineHome, 
-  HiOutlineCog6Tooth, 
-  HiOutlineShieldCheck, 
-  HiOutlinePaintBrush, 
-  HiOutlineBuildingOffice2, 
-  HiOutlinePlus, 
-  HiOutlineMinus,
-  HiOutlineSparkles
-} from "react-icons/hi2"
+  IoHomeOutline, 
+  IoSettingsOutline, 
+  IoShieldCheckmarkOutline, 
+  IoBrushOutline, 
+  IoBusinessOutline, 
+  IoAddOutline, 
+  IoRemoveOutline,
+  IoSparklesOutline
+} from "react-icons/io5"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -21,32 +21,32 @@ const QuickNavigation = () => {
     {
       href: "/admin",
       label: "Admin",
-      icon: HiOutlineShieldCheck,
+      icon: IoShieldCheckmarkOutline,
     },
     {
       href: "/home", 
       label: "IKK Home",
-      icon: HiOutlineHome,
+      icon: IoHomeOutline,
     },
     {
       href: "/dashboard",
       label: "Dashboard KOC",
-      icon: HiOutlineCog6Tooth,
+      icon: IoSettingsOutline,
     },
     {
       href: "/brand-dashboard",
       label: "Dashboard Brands", 
-      icon: HiOutlineBuildingOffice2,
+      icon: IoBusinessOutline,
     },
     {
       href: "/design-system",
       label: "Design System",
-      icon: HiOutlinePaintBrush,
+      icon: IoBrushOutline,
     },
     {
       href: "/apple-hig",
       label: "Apple HIG",
-      icon: HiOutlineSparkles,
+      icon: IoSparklesOutline,
     },
   ]
 
@@ -62,7 +62,7 @@ const QuickNavigation = () => {
               className="w-8 h-8 hover:bg-gradient-to-r hover:from-[#ff0086] hover:to-pink-600 hover:text-white transition-all"
               onClick={() => setIsExpanded(!isExpanded)}
             >
-              {isExpanded ? <HiOutlineMinus className="h-4 w-4" /> : <HiOutlinePlus className="h-4 w-4" />}
+              {isExpanded ? <IoRemoveOutline className="h-4 w-4" /> : <IoAddOutline className="h-4 w-4" />}
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left" className="mr-2">

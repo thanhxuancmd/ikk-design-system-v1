@@ -3,11 +3,11 @@ import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 import { Button } from "@/components/ui/button"
 import { 
-  HiOutlineArrowTrendingUp, 
-  HiOutlineUsers, 
-  HiOutlineEye, 
-  HiOutlineHeart 
-} from "react-icons/hi2"
+  IoTrendingUpOutline, 
+  IoPeopleOutline, 
+  IoEyeOutline, 
+  IoHeartOutline 
+} from "react-icons/io5"
 
 export function AdminOverview() {
   const kocMetrics = [
@@ -15,7 +15,7 @@ export function AdminOverview() {
       title: "Total Reach",
       value: "2.9M",
       change: "+15% so với tuần trước",
-      icon: HiOutlineEye,
+      icon: IoEyeOutline,
       gradient: "from-pink-500 to-pink-600",
       bgGradient: "from-pink-500/10 to-pink-600/10",
     },
@@ -23,7 +23,7 @@ export function AdminOverview() {
       title: "Total Engagement",
       value: "119K",
       change: "+8% so với tuần trước",
-      icon: HiOutlineHeart,
+      icon: IoHeartOutline,
       gradient: "from-purple-500 to-purple-600",
       bgGradient: "from-purple-500/10 to-purple-600/10",
     },
@@ -31,7 +31,7 @@ export function AdminOverview() {
       title: "KOC tham gia",
       value: "1,247",
       change: "+12% so với tuần trước",
-      icon: HiOutlineUsers,
+      icon: IoPeopleOutline,
       gradient: "from-blue-500 to-blue-600",
       bgGradient: "from-blue-500/10 to-blue-600/10",
     },
@@ -39,7 +39,7 @@ export function AdminOverview() {
       title: "Engagement Rate",
       value: "4.16%",
       change: "+0.3% so với tuần trước",
-      icon: HiOutlineArrowTrendingUp,
+      icon: IoTrendingUpOutline,
       gradient: "from-green-500 to-green-600",
       bgGradient: "from-green-500/10 to-green-600/10",
     },

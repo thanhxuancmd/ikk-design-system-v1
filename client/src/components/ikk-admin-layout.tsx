@@ -2,22 +2,22 @@
 
 import React, { useState } from "react"
 import { 
-  HiOutlineRectangleGroup as HiRectangleGroup,
-  HiOutlineCursorArrowRays as HiCursorArrowRays,
-  HiOutlineCog6Tooth as HiCog6Tooth,
-  HiOutlineQuestionMarkCircle as HiQuestionMarkCircle,
-  HiOutlineShieldCheck as HiShieldCheck,
-  HiOutlineBuildingOffice2 as HiBuildingOffice2,
-  HiOutlineBell as HiBell,
-  HiOutlineWallet as HiWallet,
-  HiOutlineBookOpen as HiBookOpen,
-  HiOutlineUsers as HiUsers,
-  HiOutlineArrowTrendingUp as HiArrowTrendingUp,
-  HiOutlineEye as HiEye,
-  HiOutlineBars3 as HiBars3,
-  HiOutlineXMark as HiXMark,
-  HiOutlineChevronDown as HiChevronDown
-} from "react-icons/hi2"
+  IoGridOutline,
+  IoNavigateOutline,
+  IoSettingsOutline,
+  IoHelpCircleOutline,
+  IoShieldCheckmarkOutline,
+  IoBusinessOutline,
+  IoNotificationsOutline,
+  IoWalletOutline,
+  IoBookOutline,
+  IoPeopleOutline,
+  IoTrendingUpOutline,
+  IoEyeOutline,
+  IoMenuOutline,
+  IoCloseOutline,
+  IoChevronDownOutline
+} from "react-icons/io5"
 import { Link, useLocation } from "wouter"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -27,12 +27,12 @@ const adminMenuItems = [
   {
     title: "Dashboard Admin",
     href: "/admin",
-    icon: HiRectangleGroup,
+    icon: IoGridOutline,
   },
   {
     title: "Quản lý Chiến dịch",
     href: "/admin/campaigns",
-    icon: HiCursorArrowRays,
+    icon: IoNavigateOutline,
     submenu: [
       { title: "Thêm chiến dịch", href: "/admin/campaigns/new", slug: "new" },
       { title: "Quản lý chiến dịch TikTok", href: "/admin/campaigns/tiktok", slug: "tiktok" },
@@ -41,7 +41,7 @@ const adminMenuItems = [
   {
     title: "Quản lý Thương hiệu",
     href: "/admin/brands",
-    icon: HiBuildingOffice2,
+    icon: IoBusinessOutline,
     submenu: [
       { title: "Quản lý danh mục", href: "/admin/brands/categories", slug: "categories" },
     ],
@@ -49,7 +49,7 @@ const adminMenuItems = [
   {
     title: "Quản lý KOC",
     href: "/admin/koc",
-    icon: HiUsers,
+    icon: IoPeopleOutline,
     submenu: [
       { title: "Dashboard KOC", href: "/admin/koc", slug: "dashboard" },
       { title: "Hệ thống Xếp hạng KOC", href: "/admin/koc/ranking", slug: "ranking" },
@@ -58,7 +58,7 @@ const adminMenuItems = [
   {
     title: "Quản lý nội dung",
     href: "/admin/content",
-    icon: HiEye,
+    icon: IoEyeOutline,
     submenu: [
       { title: "Nội dung Facebook", href: "/admin/content/facebook", slug: "facebook" },
       { title: "Nội dung TikTok", href: "/admin/content/tiktok", slug: "tiktok" },
@@ -68,17 +68,17 @@ const adminMenuItems = [
   {
     title: "Analytics & Báo cáo",
     href: "/admin/analytics",
-    icon: HiArrowTrendingUp,
+    icon: IoTrendingUpOutline,
   },
   {
     title: "Quản lý Tài chính & Thanh toán",
     href: "/admin/financial",
-    icon: HiWallet,
+    icon: IoWalletOutline,
   },
   {
     title: "Quản lý Người dùng",
     href: "/admin/users",
-    icon: HiUsers,
+    icon: IoPeopleOutline,
     submenu: [
       { title: "Quản lý Quyền", href: "/admin/users/permissions", slug: "permissions" },
     ],
@@ -86,7 +86,7 @@ const adminMenuItems = [
   {
     title: "Cài đặt Hệ thống",
     href: "/admin/settings",
-    icon: HiCog6Tooth,
+    icon: IoSettingsOutline,
   },
 ]
 
@@ -117,7 +117,7 @@ const AdminNavigationSample = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
           <div className="flex items-center justify-between mb-6 lg:mb-8">
             <div className="flex items-center gap-3" data-testid="admin-nav-logo">
               <div className="w-8 h-8 bg-gradient-to-r from-[#ff0086] to-pink-500 rounded-lg flex items-center justify-center">
-                <HiShieldCheck className="text-white h-4 w-4" />
+                <IoShieldCheckmarkOutline className="text-white h-4 w-4" />
               </div>
               <div>
                 <div className="font-bold text-gray-900 text-sm lg:text-base">IKK Admin</div>
@@ -133,7 +133,7 @@ const AdminNavigationSample = ({ isOpen, onClose }: { isOpen: boolean; onClose: 
               onClick={onClose}
               data-testid="admin-nav-close"
             >
-              <HiXMark className="w-4 h-4" />
+              <IoCloseOutline className="w-4 h-4" />
             </Button>
           </div>
 
@@ -287,12 +287,12 @@ export default function IKKAdminLayout({ children }: IKKAdminLayoutProps) {
             onClick={() => setSidebarOpen(true)}
             data-testid="button-mobile-menu"
           >
-            <HiBars3 className="w-5 h-5" />
+            <IoMenuOutline className="w-5 h-5" />
           </Button>
           
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 bg-gradient-to-r from-[#ff0086] to-pink-500 rounded-md flex items-center justify-center">
-              <HiShieldCheck className="text-white h-3 w-3" />
+              <IoShieldCheckmarkOutline className="text-white h-3 w-3" />
             </div>
             <span className="font-semibold text-gray-900 text-sm">IKK Admin</span>
           </div>
