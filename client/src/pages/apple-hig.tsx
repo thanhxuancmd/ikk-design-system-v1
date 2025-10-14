@@ -169,6 +169,16 @@ function AppleHIGShowcaseContent() {
   const [adminSearchValue, setAdminSearchValue] = useState('');
   const [analyticsTab, setAnalyticsTab] = useState('week');
 
+  // Campaign Management state
+  const [selectedCampaignId, setSelectedCampaignId] = useState<number | undefined>(1);
+  const [campaignSearchValue, setCampaignSearchValue] = useState('');
+  const [selectedCampaigns, setSelectedCampaigns] = useState<Set<string | number>>(new Set());
+  const [campaignFilters, setCampaignFilters] = useState<Record<string, any>>({
+    status: 'all',
+    dateRange: 'month'
+  });
+  const [pauseCampaignDialogOpen, setPauseCampaignDialogOpen] = useState(false);
+
   // Phase 2 components state
   // List-Detail Shell state
   const [selectedUserId, setSelectedUserId] = useState<number | undefined>(undefined);
@@ -268,6 +278,25 @@ function AppleHIGShowcaseContent() {
   // Recipe 10 state - User Management with Notifications
   const [selectedUserIds, setSelectedUserIds] = useState<Set<number>>(new Set());
   const [selectedUserIdForDetail, setSelectedUserIdForDetail] = useState<number | undefined>(1);
+
+  // Campaign Management mock data
+  const campaignList = [
+    { id: 1, name: 'Tết 2025 Mega Sale', status: 'active', kocCount: 45, budget: 250000000, revenue: 420000000, roi: 68, startDate: '01/01/2025' },
+    { id: 2, name: 'Beauty Spring Collection', status: 'active', kocCount: 32, budget: 180000000, revenue: 310000000, roi: 72, startDate: '15/03/2025' },
+    { id: 3, name: 'Fashion Week Collab', status: 'paused', kocCount: 28, budget: 150000000, revenue: 180000000, roi: 20, startDate: '20/02/2025' },
+    { id: 4, name: 'Summer Livestream Series', status: 'draft', kocCount: 0, budget: 200000000, revenue: 0, roi: 0, startDate: '01/06/2025' },
+    { id: 5, name: 'Black Friday 2024', status: 'completed', kocCount: 67, budget: 400000000, revenue: 850000000, roi: 113, startDate: '24/11/2024' }
+  ];
+
+  const campaignRevenueData = [
+    { date: 'T1', revenue: 45000000, target: 40000000 },
+    { date: 'T2', revenue: 52000000, target: 45000000 },
+    { date: 'T3', revenue: 48000000, target: 48000000 },
+    { date: 'T4', revenue: 65000000, target: 50000000 },
+    { date: 'T5', revenue: 70000000, target: 55000000 },
+    { date: 'T6', revenue: 82000000, target: 60000000 },
+    { date: 'T7', revenue: 90000000, target: 65000000 }
+  ];
 
   // Sample commands for command palette
   const sampleCommands = [
