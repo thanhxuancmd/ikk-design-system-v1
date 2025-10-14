@@ -1,41 +1,40 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import { 
- 
-  HiOutlineSparkles, 
-  HiOutlinePlusCircle,
-  HiOutlineStar,
-  HiOutlineClock,
-  HiOutlineEye,
-  HiOutlineMapPin,
-  HiOutlineBookmark,
-  HiOutlineShoppingBag,
-  HiUserPlus,
-  HiOutlineVideoCamera,
-  HiOutlineRocketLaunch,
-  HiOutlineUsers,
-  HiOutlineHeart,
-  HiOutlineShare,
-  HiOutlineDevicePhoneMobile,
-  HiOutlineSquares2X2,
-  HiOutlineTrophy,
-  HiOutlineBars3,
-  HiOutlineXMark,
-  HiOutlineChevronRight,
-  HiOutlineChevronLeft,
-  HiOutlineChevronDown,
-  HiOutlineMagnifyingGlass,
-  HiOutlineBell,
-  HiOutlineGlobeAlt,
-  HiOutlineBolt,
-  HiOutlineClipboardDocumentList,
-  HiOutlineCurrencyDollar,
-  HiOutlineCheckCircle,
-  HiOutlineFunnel,
-  HiOutlineArrowTrendingUp,
-  HiOutlinePlay,
-  HiOutlineBuildingStorefront
-} from 'react-icons/hi2';
+  IoSparklesOutline, 
+  IoAddCircleOutline,
+  IoStarOutline,
+  IoTimeOutline,
+  IoEyeOutline,
+  IoLocationOutline,
+  IoBookmarkOutline,
+  IoBagOutline,
+  IoPersonAddOutline,
+  IoVideocamOutline,
+  IoRocketOutline,
+  IoPeopleOutline,
+  IoHeartOutline,
+  IoShareSocialOutline,
+  IoPhonePortraitOutline,
+  IoGridOutline,
+  IoTrophyOutline,
+  IoMenuOutline,
+  IoCloseOutline,
+  IoChevronForwardOutline,
+  IoChevronBackOutline,
+  IoChevronDownOutline,
+  IoSearchOutline,
+  IoNotificationsOutline,
+  IoGlobeOutline,
+  IoFlashOutline,
+  IoClipboardOutline,
+  IoCashOutline,
+  IoCheckmarkCircleOutline,
+  IoFunnelOutline,
+  IoTrendingUpOutline,
+  IoPlayOutline,
+  IoStorefrontOutline
+} from 'react-icons/io5';
 import { FaTiktok, FaInstagram, FaYoutube, FaFacebookF } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import MainNavigation from "@/components/MainNavigation";
@@ -655,7 +654,7 @@ export default function Home() {
                           <div className="p-4 md:p-5 border-b md:border-b-0 md:border-r border-gray-100">
                             <div className="flex items-center gap-2 mb-3">
                               <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <HiOutlineClipboardDocumentList className="w-5 h-5 text-gray-700" />
+                                <IoClipboardOutline className="w-5 h-5 text-gray-700" />
                               </div>
                               <h3 className="font-semibold text-gray-900 text-sm">DỊCH VỤ</h3>
                             </div>
@@ -680,7 +679,7 @@ export default function Home() {
                           <div className="p-4 md:p-5 border-b md:border-b-0 md:border-r border-gray-100">
                             <div className="flex items-center gap-2 mb-3">
                               <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <HiOutlineCurrencyDollar className="w-5 h-5 text-gray-700" />
+                                <IoCashOutline className="w-5 h-5 text-gray-700" />
                               </div>
                               <h3 className="font-semibold text-gray-900 text-sm">SẢN PHẨM</h3>
                             </div>
@@ -704,7 +703,7 @@ export default function Home() {
                           <div className="p-4 md:p-5 border-b md:border-b-0 lg:border-r border-gray-100">
                             <div className="flex items-center gap-2 mb-3">
                               <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                                <HiOutlineVideoCamera className="w-5 h-5 text-gray-700" />
+                                <IoVideocamOutline className="w-5 h-5 text-gray-700" />
                               </div>
                               <h3 className="font-semibold text-gray-900 text-sm">SẢN PHẨM</h3>
                             </div>
@@ -724,7 +723,7 @@ export default function Home() {
                               <li className="pt-2" role="none">
                                 <Link to="/admin/brands/categories" className="flex items-center gap-1 text-sm text-[#ff0086] font-medium hover:text-[#e6007a] transition-colors" data-testid="link-categories-all" role="menuitem">
                                   Xem tất cả
-                                  <HiOutlineChevronRight className="w-3 h-3" />
+                                  <IoChevronForwardOutline className="w-3 h-3" />
                                 </Link>
                               </li>
                             </ul>
@@ -787,7 +786,7 @@ export default function Home() {
                         }}
                       >
                         Dành cho KOC
-                        <HiOutlineChevronDown className="w-4 h-4" />
+                        <IoChevronDownOutline className="w-4 h-4" />
                         <span className="sr-only">Xem các tùy chọn dành cho KOC</span>
                       </button>
                       <div 
@@ -827,7 +826,7 @@ export default function Home() {
                       aria-label="Search"
                       data-testid="button-search"
                     >
-                      <HiOutlineMagnifyingGlass className="w-5 h-5 text-gray-500" />
+                      <IoSearchOutline className="w-5 h-5 text-gray-500" />
                     </button>
 
                     {/* Notification */}
@@ -836,7 +835,7 @@ export default function Home() {
                       aria-label="Notifications"
                       data-testid="button-notifications"
                     >
-                      <HiOutlineBell className="w-5 h-5 text-gray-500" />
+                      <IoNotificationsOutline className="w-5 h-5 text-gray-500" />
                       <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" aria-hidden="true"></span>
                       <span className="sr-only">You have new notifications</span>
                     </button>
@@ -884,9 +883,9 @@ export default function Home() {
                       data-testid="button-mobile-menu"
                     >
                       {mobileMenuOpen ? (
-                        <HiOutlineXMark className="w-5 h-5 text-gray-600" />
+                        <IoCloseOutline className="w-5 h-5 text-gray-600" />
                       ) : (
-                        <HiOutlineBars3 className="w-5 h-5 text-gray-600" />
+                        <IoMenuOutline className="w-5 h-5 text-gray-600" />
                       )}
                     </button>
                   </div>
@@ -975,7 +974,7 @@ export default function Home() {
                   aria-controls="carousel-slides"
                   data-testid="button-carousel-previous"
                 >
-                  <HiOutlineChevronLeft className="w-5 h-5 text-gray-700 group-hover:text-pink-600 transition-colors" />
+                  <IoChevronBackOutline className="w-5 h-5 text-gray-700 group-hover:text-pink-600 transition-colors" />
                 </button>
 
                 {/* Next Button */}
@@ -986,7 +985,7 @@ export default function Home() {
                   aria-controls="carousel-slides"
                   data-testid="button-carousel-next"
                 >
-                  <HiOutlineChevronRight className="w-5 h-5 text-gray-700 group-hover:text-pink-600 transition-colors" />
+                  <IoChevronForwardOutline className="w-5 h-5 text-gray-700 group-hover:text-pink-600 transition-colors" />
                 </button>
 
                 {/* Carousel Container */}
@@ -1058,7 +1057,7 @@ export default function Home() {
                   {isPlaying ? (
                     <div className="w-2 h-2 bg-gray-700 group-hover:bg-pink-600 transition-colors" />
                   ) : (
-                    <HiOutlinePlay className="w-4 h-4 text-gray-700 group-hover:text-pink-600 transition-colors ml-0.5" />
+                    <IoPlayOutline className="w-4 h-4 text-gray-700 group-hover:text-pink-600 transition-colors ml-0.5" />
                   )}
                 </button>
               </div>
@@ -1089,14 +1088,14 @@ export default function Home() {
                 ].map((category, idx) => (
                   <div key={idx} className="flex flex-col items-center group cursor-pointer">
                     <div className={`w-14 h-14 bg-gradient-to-br ${category.bgGradient} rounded-xl flex items-center justify-center mb-2 transition-all duration-300 shadow-sm group-hover:shadow-md`}>
-                      {category.icon === 'sparkles' && <HiOutlineSparkles className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'device-phone' && <HiOutlineDevicePhoneMobile className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'shopping-bag' && <HiOutlineShoppingBag className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'map-pin' && <HiOutlineMapPin className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'squares-2x2' && <HiOutlineSquares2X2 className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'heart' && <HiOutlineHeart className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'video-camera' && <HiOutlineVideoCamera className={`w-7 h-7 ${category.iconColor}`} />}
-                      {category.icon === 'coffee' && <HiOutlineBuildingStorefront className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'sparkles' && <IoSparklesOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'device-phone' && <IoPhonePortraitOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'shopping-bag' && <IoBagOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'map-pin' && <IoLocationOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'squares-2x2' && <IoGridOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'heart' && <IoHeartOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'video-camera' && <IoVideocamOutline className={`w-7 h-7 ${category.iconColor}`} />}
+                      {category.icon === 'coffee' && <IoStorefrontOutline className={`w-7 h-7 ${category.iconColor}`} />}
                     </div>
                     <span className="text-xs font-medium text-gray-700 text-center group-hover:text-[#ff0086] transition-colors">
                       {category.name}
@@ -1116,7 +1115,7 @@ export default function Home() {
                 <div className="flex items-center space-x-4">
                   <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors" data-testid="button-filter-topics">
                     <span className="flex items-center space-x-2">
-                      <HiOutlineFunnel className="w-4 h-4" />
+                      <IoFunnelOutline className="w-4 h-4" />
                       <span>Bộ lọc</span>
                     </span>
                   </button>
@@ -1249,7 +1248,7 @@ export default function Home() {
                         {/* Verified indicator */}
                         {koc.verified && (
                           <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                            <HiOutlineCheckCircle className="w-3 h-3 text-white" />
+                            <IoCheckmarkCircleOutline className="w-3 h-3 text-white" />
                           </div>
                         )}
                       </div>
@@ -1259,7 +1258,7 @@ export default function Home() {
                         <div className="flex items-center space-x-2 mb-1">
                           <span className="font-bold text-sm text-gray-900 truncate" data-testid={`text-koc-name-${index + 1}`}>{koc.name}</span>
                           <div className="flex items-center space-x-1">
-                            <HiOutlineStar className="w-3 h-3 text-yellow-500 fill-current" />
+                            <IoStarOutline className="w-3 h-3 text-yellow-500 fill-current" />
                             <span className="text-xs text-gray-600">{koc.rating}</span>
                           </div>
                         </div>
@@ -1282,7 +1281,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-8">
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                    <HiOutlineRocketLaunch className="w-6 h-6 text-[#ff0086]" />
+                    <IoRocketOutline className="w-6 h-6 text-[#ff0086]" />
                     Chiến dịch KOC đặc sắc
                   </h2>
                   <p className="text-gray-600">Khám phá những cơ hội hợp tác thú vị với các thương hiệu hàng đầu</p>
@@ -1323,11 +1322,11 @@ export default function Home() {
                       </p>
                       <div className="flex items-center space-x-6 text-sm">
                         <div className="flex items-center space-x-1">
-                          <HiOutlineUsers className="w-4 h-4" />
+                          <IoPeopleOutline className="w-4 h-4" />
                           <span>1,200+ KOC tham gia</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <HiOutlineClock className="w-4 h-4" />
+                          <IoTimeOutline className="w-4 h-4" />
                           <span>Còn 15 ngày</span>
                         </div>
                       </div>
@@ -1587,11 +1586,11 @@ export default function Home() {
 
                   const getCampaignTypeIcon = (type: string) => {
                     switch(type) {
-                      case 'Review': return <HiOutlineStar className="w-4 h-4 text-amber-500" />;
-                      case 'Unboxing': return <HiOutlineShoppingBag className="w-4 h-4 text-blue-500" />;
-                      case 'Check-in': return <HiOutlineMapPin className="w-4 h-4 text-green-500" />;
-                      case 'Styling': return <HiOutlineShoppingBag className="w-4 h-4 text-purple-500" />;
-                      default: return <HiOutlineCheckCircle className="w-4 h-4 text-gray-500" />;
+                      case 'Review': return <IoStarOutline className="w-4 h-4 text-amber-500" />;
+                      case 'Unboxing': return <IoBagOutline className="w-4 h-4 text-blue-500" />;
+                      case 'Check-in': return <IoLocationOutline className="w-4 h-4 text-green-500" />;
+                      case 'Styling': return <IoBagOutline className="w-4 h-4 text-purple-500" />;
+                      default: return <IoCheckmarkCircleOutline className="w-4 h-4 text-gray-500" />;
                     }
                   };
 
@@ -1700,7 +1699,7 @@ export default function Home() {
                             <div className="flex items-center justify-between text-xs text-gray-500">
                               <div className="flex items-center space-x-3">
                                 <div className={`flex items-center space-x-1 ${campaign.daysLeft <= 7 ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
-                                  <HiOutlineClock className="w-3 h-3" />
+                                  <IoTimeOutline className="w-3 h-3" />
                                   <span>
                                     {campaign.daysLeft <= 7 
                                       ? `Còn ${campaign.daysLeft} ngày` 
@@ -1714,13 +1713,13 @@ export default function Home() {
                                     className="p-0 bg-transparent border-none cursor-pointer"
                                     data-testid={`button-favorite-${campaign.id}`}
                                   >
-                                    <HiOutlineHeart className="w-3 h-3 text-red-500" />
+                                    <IoHeartOutline className="w-3 h-3 text-red-500" />
                                   </button>
                                   <span>{campaign.engagement}</span>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-1 text-xs font-medium text-[#ff0086]">
-                                <HiOutlineClock className="w-3 h-3" />
+                                <IoTimeOutline className="w-3 h-3" />
                                 <span>{campaign.countdown}</span>
                               </div>
                             </div>
@@ -1728,14 +1727,14 @@ export default function Home() {
                           
                           {/* Location */}
                           <div className="flex items-center space-x-1 mb-3 text-xs text-gray-600">
-                            <HiOutlineMapPin className="w-3 h-3 text-blue-500" />
+                            <IoLocationOutline className="w-3 h-3 text-blue-500" />
                             <span>{campaign.location}</span>
                           </div>
                           
                           {/* Action Buttons - Premium Style (3 buttons in one row like Affiliate) */}
                           <div className="flex space-x-2">
                             <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white text-sm font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1">
-                              <HiOutlinePlusCircle className="w-4 h-4" />
+                              <IoAddCircleOutline className="w-4 h-4" />
                               <span>Ứng tuyển</span>
                             </button>
                             <button 
@@ -1743,14 +1742,14 @@ export default function Home() {
                               aria-label="Bookmark campaign"
                               data-testid={`button-bookmark-${campaign.id}`}
                             >
-                              <HiOutlineBookmark className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
+                              <IoBookmarkOutline className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
                             </button>
                             <button 
                               className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors group"
                               aria-label="Share campaign"
                               data-testid={`button-share-${campaign.id}`}
                             >
-                              <HiOutlineShare className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
+                              <IoShareSocialOutline className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
                             </button>
                           </div>
                         </div>
@@ -1766,7 +1765,7 @@ export default function Home() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
                     <div className="text-center">
                       <div className="w-12 h-12 bg-[#ff0086] rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineFunnel className="w-6 h-6 text-white" />
+                        <IoFunnelOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">127</div>
                       <div className="text-xs text-gray-600">Chiến dịch</div>
@@ -1774,7 +1773,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-[#ff0086] rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineUsers className="w-6 h-6 text-white" />
+                        <IoPeopleOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">15.2K</div>
                       <div className="text-xs text-gray-600">KOC</div>
@@ -1782,7 +1781,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-[#ff0086] rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineCurrencyDollar className="w-6 h-6 text-white" />
+                        <IoCashOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">45B+</div>
                       <div className="text-xs text-gray-600">Giải thưởng</div>
@@ -1790,7 +1789,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-[#ff0086] rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineArrowTrendingUp className="w-6 h-6 text-white" />
+                        <IoTrendingUpOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">850M</div>
                       <div className="text-xs text-gray-600">Lượt tiếp cận</div>
@@ -1805,7 +1804,7 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3">
                       <Link to="/register">
                         <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                          <HiOutlinePlusCircle className="w-4 h-4" />
+                          <IoAddCircleOutline className="w-4 h-4" />
                           <span>Đăng ký KOC</span>
                         </button>
                       </Link>
@@ -2003,7 +2002,7 @@ export default function Home() {
                       case 'instagram': return <FaInstagram className="w-4 h-4 text-pink-500" />;
                       case 'youtube': return <FaYoutube className="w-4 h-4 text-red-500" />;
                       case 'facebook': return <FaFacebookF className="w-4 h-4 text-blue-600" />;
-                      case 'twitch': return <HiOutlineVideoCamera className="w-4 h-4 text-purple-500" />;
+                      case 'twitch': return <IoVideocamOutline className="w-4 h-4 text-purple-500" />;
                       default: return null;
                     }
                   };
@@ -2029,7 +2028,7 @@ export default function Home() {
                           <div className="flex items-center space-x-2">
                             {/* Compact Premium Status Badge */}
                             <div className={`px-2 py-0.5 rounded-md text-[10px] font-medium text-white shadow-sm ${campaign.statusColor} flex items-center space-x-1`}>
-                              <HiOutlineTrophy className="w-3 h-3" />
+                              <IoTrophyOutline className="w-3 h-3" />
                               <span>{campaign.status}</span>
                             </div>
                             {/* Days Left Indicator */}
@@ -2085,7 +2084,7 @@ export default function Home() {
                           </div>
                           {/* Rating */}
                           <div className="flex items-center space-x-1 text-yellow-500">
-                            <HiOutlineStar className="w-4 h-4 fill-current" />
+                            <IoStarOutline className="w-4 h-4 fill-current" />
                             <span className="text-xs font-bold text-gray-900">{campaign.rating}</span>
                           </div>
                         </div>
@@ -2118,11 +2117,11 @@ export default function Home() {
                         <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                           <div className="flex items-center space-x-3">
                             <div className="flex items-center space-x-1">
-                              <HiOutlineClock className="w-3 h-3" />
+                              <IoTimeOutline className="w-3 h-3" />
                               <span>{campaign.timeCommitment}</span>
                             </div>
                             <div className="flex items-center space-x-1">
-                              <HiOutlineEye className="w-3 h-3" />
+                              <IoEyeOutline className="w-3 h-3" />
                               <span>{campaign.engagement}</span>
                             </div>
                           </div>
@@ -2130,18 +2129,18 @@ export default function Home() {
 
                         {/* Location */}
                         <div className="flex items-center space-x-1 mb-3 text-xs text-gray-600">
-                          <HiOutlineMapPin className="w-3 h-3 text-blue-500" />
+                          <IoLocationOutline className="w-3 h-3 text-blue-500" />
                           <span>{campaign.location}</span>
                         </div>
 
                         {/* Action Buttons */}
                         <div className="flex space-x-2">
                           <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white text-sm font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1">
-                            <HiOutlinePlusCircle className="w-4 h-4" />
+                            <IoAddCircleOutline className="w-4 h-4" />
                             <span>Ứng tuyển</span>
                           </button>
                           <button className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors">
-                            <HiOutlineBookmark className="w-4 h-4" />
+                            <IoBookmarkOutline className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
@@ -2154,7 +2153,7 @@ export default function Home() {
               <div className="mt-12 text-center">
                 <div className="bg-gradient-to-r from-[#ff0086]/5 to-pink-500/5 rounded-2xl border border-[#ff0086]/20 p-6">
                   <div className="inline-flex items-center space-x-2 bg-[#ff0086] text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    <HiOutlineTrophy className="w-4 h-4" />
+                    <IoTrophyOutline className="w-4 h-4" />
                     <span>PREMIUM OPPORTUNITIES</span>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -2165,7 +2164,7 @@ export default function Home() {
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3">
                     <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                      <HiOutlinePlusCircle className="w-4 h-4" />
+                      <IoAddCircleOutline className="w-4 h-4" />
                       <span>Đăng ký KOC</span>
                     </button>
                     <button className="border border-[#ff0086] text-[#ff0086] hover:bg-[#ff0086]/5 px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -2189,7 +2188,7 @@ export default function Home() {
                     data-testid="filter-shopee-campaigns"
                   >
                     <span className="flex items-center space-x-2">
-                      <HiOutlineFunnel className="w-4 h-4" />
+                      <IoFunnelOutline className="w-4 h-4" />
                       <span>Bộ lọc</span>
                     </span>
                   </button>
@@ -2332,7 +2331,7 @@ export default function Home() {
                       case 'instagram': return <FaInstagram className="w-4 h-4 text-pink-500" />;
                       case 'youtube': return <FaYoutube className="w-4 h-4 text-red-500" />;
                       case 'facebook': return <FaFacebookF className="w-4 h-4 text-blue-600" />;
-                      case 'twitch': return <HiOutlineVideoCamera className="w-4 h-4 text-purple-500" />;
+                      case 'twitch': return <IoVideocamOutline className="w-4 h-4 text-purple-500" />;
                       default: return null;
                     }
                   };
@@ -2358,7 +2357,7 @@ export default function Home() {
                         <div className="flex items-center space-x-2">
                           {/* Compact Premium Status Badge */}
                           <div className={`px-2 py-0.5 rounded-md text-[10px] font-medium text-white shadow-sm ${campaign.statusColor} flex items-center space-x-1`}>
-                            <HiOutlineSparkles className="w-3 h-3" />
+                            <IoSparklesOutline className="w-3 h-3" />
                             <span>{campaign.status}</span>
                           </div>
                           {/* Days Left Indicator */}
@@ -2430,7 +2429,7 @@ export default function Home() {
                         </div>
                         {/* Rating */}
                         <div className="flex items-center space-x-1 text-yellow-500">
-                          <HiOutlineStar className="w-4 h-4 fill-current" />
+                          <IoStarOutline className="w-4 h-4 fill-current" />
                           <span className="text-xs font-bold text-gray-900">{campaign.rating}</span>
                         </div>
                       </div>
@@ -2477,11 +2476,11 @@ export default function Home() {
                       <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
                         <div className="flex items-center space-x-3">
                           <div className="flex items-center space-x-1">
-                            <HiOutlineClock className="w-3 h-3" />
+                            <IoTimeOutline className="w-3 h-3" />
                             <span>{campaign.timeCommitment}</span>
                           </div>
                           <div className="flex items-center space-x-1">
-                            <HiOutlineEye className="w-3 h-3" />
+                            <IoEyeOutline className="w-3 h-3" />
                             <span>{campaign.sold} đã bán</span>
                           </div>
                         </div>
@@ -2489,7 +2488,7 @@ export default function Home() {
 
                       {/* Location */}
                       <div className="flex items-center space-x-1 mb-3 text-xs text-gray-600">
-                        <HiOutlineMapPin className="w-3 h-3 text-blue-500" />
+                        <IoLocationOutline className="w-3 h-3 text-blue-500" />
                         <span>{campaign.location}</span>
                       </div>
 
@@ -2499,14 +2498,14 @@ export default function Home() {
                           className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white text-sm font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1"
                           data-testid={`apply-shopee-campaign-${campaign.id}`}
                         >
-                          <HiOutlinePlusCircle className="w-4 h-4" />
+                          <IoAddCircleOutline className="w-4 h-4" />
                           <span>Ứng tuyển</span>
                         </button>
                         <button 
                           className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors"
                           data-testid={`bookmark-shopee-campaign-${campaign.id}`}
                         >
-                          <HiOutlineBookmark className="w-4 h-4" />
+                          <IoBookmarkOutline className="w-4 h-4" />
                         </button>
                       </div>
                     </div>
@@ -2519,7 +2518,7 @@ export default function Home() {
               <div className="mt-12 text-center">
                 <div className="bg-gradient-to-r from-[#ff0086]/5 to-pink-500/5 rounded-2xl border border-[#ff0086]/20 p-6">
                   <div className="inline-flex items-center space-x-2 bg-[#ff0086] text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    <HiOutlineShoppingBag className="w-4 h-4" />
+                    <IoBagOutline className="w-4 h-4" />
                     <span>SHOPEE KOC PROGRAM</span>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -2533,7 +2532,7 @@ export default function Home() {
                       className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2"
                       data-testid="register-shopee-koc"
                     >
-                      <HiUserPlus className="w-4 h-4" />
+                      <IoPersonAddOutline className="w-4 h-4" />
                       <span>Đăng ký KOC Shopee</span>
                     </button>
                     <button 
@@ -2558,7 +2557,7 @@ export default function Home() {
                 <div className="flex items-center space-x-4">
                   <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors" data-testid="button-filter-koc-content">
                     <span className="flex items-center space-x-2">
-                      <HiOutlineFunnel className="w-4 h-4" />
+                      <IoFunnelOutline className="w-4 h-4" />
                       <span>Bộ lọc</span>
                     </span>
                   </button>
@@ -2772,7 +2771,7 @@ export default function Home() {
 
                   return (
                     <div key={content.id} className="bg-white rounded-xl border border-gray-100 hover:shadow-xl hover:border-gray-200 transition-all duration-300 group cursor-pointer overflow-hidden">
-                      {/* Content Thumbnail with HiOutlinePlay Button & Metrics */}
+                      {/* Content Thumbnail with IoPlayOutline Button & Metrics */}
                       <div className="relative overflow-hidden">
                         <div className="w-full h-48 bg-gray-50 flex items-center justify-center relative">
                           <img 
@@ -2785,7 +2784,7 @@ export default function Home() {
                             }}
                           />
                           
-                          {/* HiOutlineVideoCamera HiOutlinePlay Button Overlay */}
+                          {/* IoVideocamOutline IoPlayOutline Button Overlay */}
                           <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div className="w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                               <div className="w-0 h-0 border-l-[12px] border-l-[#ff0086] border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
@@ -2849,7 +2848,7 @@ export default function Home() {
                               <span className="text-sm font-semibold text-gray-900">{content.creator.name}</span>
                               {content.creator.verified && (
                                 <div className="w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center">
-                                  <HiOutlineCheckCircle className="w-3 h-3 text-white" />
+                                  <IoCheckmarkCircleOutline className="w-3 h-3 text-white" />
                                 </div>
                               )}
                             </div>
@@ -2869,28 +2868,28 @@ export default function Home() {
                             {content.category}
                           </span>
                           <div className="flex items-center space-x-1 text-gray-400">
-                            <HiOutlineEye className="w-3 h-3" />
+                            <IoEyeOutline className="w-3 h-3" />
                             <span className="text-xs">{content.metrics.views}</span>
                           </div>
                         </div>
 
                         {/* Location */}
                         <div className="flex items-center space-x-1 mb-3 text-xs text-gray-600">
-                          <HiOutlineMapPin className="w-3 h-3 text-blue-500" />
+                          <IoLocationOutline className="w-3 h-3 text-blue-500" />
                           <span>{content.location}</span>
                         </div>
 
                         {/* Action Buttons */}
                         <div className="flex space-x-2">
                           <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white text-sm font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1">
-                            <HiOutlineVideoCamera className="w-4 h-4" />
+                            <IoVideocamOutline className="w-4 h-4" />
                             <span>Xem ngay</span>
                           </button>
                           <button className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors">
-                            <HiOutlineHeart className="w-4 h-4" />
+                            <IoHeartOutline className="w-4 h-4" />
                           </button>
                           <button className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors">
-                            <HiOutlineShare className="w-4 h-4" />
+                            <IoShareSocialOutline className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
@@ -2903,7 +2902,7 @@ export default function Home() {
               <div className="mt-12 text-center">
                 <div className="bg-gradient-to-r from-[#ff0086]/5 to-pink-500/5 rounded-2xl border border-[#ff0086]/20 p-6">
                   <div className="inline-flex items-center space-x-2 bg-[#ff0086] text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    <HiOutlineVideoCamera className="w-4 h-4" />
+                    <IoVideocamOutline className="w-4 h-4" />
                     <span>KOC CONTENT HUB</span>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -2914,7 +2913,7 @@ export default function Home() {
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3">
                     <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                      <HiOutlineVideoCamera className="w-4 h-4" />
+                      <IoVideocamOutline className="w-4 h-4" />
                       <span>Xem tất cả content</span>
                     </button>
                     <button className="border border-[#ff0086] text-[#ff0086] hover:bg-[#ff0086]/5 px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -2970,11 +2969,11 @@ export default function Home() {
                       </p>
                       <div className="flex items-center space-x-6 text-sm">
                         <div className="flex items-center space-x-1">
-                          <HiOutlineUsers className="w-4 h-4" />
+                          <IoPeopleOutline className="w-4 h-4" />
                           <span>5,800+ Affiliate tham gia</span>
                         </div>
                         <div className="flex items-center space-x-1">
-                          <HiOutlineCurrencyDollar className="w-4 h-4" />
+                          <IoCashOutline className="w-4 h-4" />
                           <span>Hoa hồng: 15-35%</span>
                         </div>
                       </div>
@@ -3170,25 +3169,25 @@ export default function Home() {
                       case 'instagram': return <FaInstagram className="w-4 h-4 text-pink-500" />;
                       case 'youtube': return <FaYoutube className="w-4 h-4 text-red-500" />;
                       case 'tiktok': return <FaTiktok className="w-4 h-4 text-black" />;
-                      case 'website': return <HiOutlineGlobeAlt className="w-4 h-4 text-blue-500" />;
-                      case 'social': return <HiOutlineShare className="w-4 h-4 text-green-500" />;
-                      case 'tech': return <HiOutlineDevicePhoneMobile className="w-4 h-4 text-indigo-500" />;
-                      case 'review': return <HiOutlineStar className="w-4 h-4 text-yellow-500" />;
-                      case 'fitness': return <HiOutlineTrophy className="w-4 h-4 text-orange-500" />;
-                      case 'beauty': return <HiOutlineSparkles className="w-4 h-4 text-pink-400" />;
+                      case 'website': return <IoGlobeOutline className="w-4 h-4 text-blue-500" />;
+                      case 'social': return <IoShareSocialOutline className="w-4 h-4 text-green-500" />;
+                      case 'tech': return <IoPhonePortraitOutline className="w-4 h-4 text-indigo-500" />;
+                      case 'review': return <IoStarOutline className="w-4 h-4 text-yellow-500" />;
+                      case 'fitness': return <IoTrophyOutline className="w-4 h-4 text-orange-500" />;
+                      case 'beauty': return <IoSparklesOutline className="w-4 h-4 text-pink-400" />;
                       default: return null;
                     }
                   };
 
                   const getAffiliateTypeIcon = (type: string) => {
                     switch(type) {
-                      case 'Tech Premium': return <HiOutlineDevicePhoneMobile className="w-4 h-4 text-blue-500" />;
-                      case 'Fashion Sports': return <HiOutlineTrophy className="w-4 h-4 text-green-500" />;
-                      case 'Home Tech': return <HiOutlineBolt className="w-4 h-4 text-orange-500" />;
-                      case 'Health Supplement': return <HiOutlineHeart className="w-4 h-4 text-red-500" />;
-                      case 'Premium Mobile': return <HiOutlineStar className="w-4 h-4 text-purple-500" />;
-                      case 'Beauty Care': return <HiOutlineSparkles className="w-4 h-4 text-pink-500" />;
-                      default: return <HiOutlineCheckCircle className="w-4 h-4 text-gray-500" />;
+                      case 'Tech Premium': return <IoPhonePortraitOutline className="w-4 h-4 text-blue-500" />;
+                      case 'Fashion Sports': return <IoTrophyOutline className="w-4 h-4 text-green-500" />;
+                      case 'Home Tech': return <IoFlashOutline className="w-4 h-4 text-orange-500" />;
+                      case 'Health Supplement': return <IoHeartOutline className="w-4 h-4 text-red-500" />;
+                      case 'Premium Mobile': return <IoStarOutline className="w-4 h-4 text-purple-500" />;
+                      case 'Beauty Care': return <IoSparklesOutline className="w-4 h-4 text-pink-500" />;
+                      default: return <IoCheckmarkCircleOutline className="w-4 h-4 text-gray-500" />;
                     }
                   };
 
@@ -3306,16 +3305,16 @@ export default function Home() {
                             <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
                               <div className="flex items-center space-x-3">
                                 <div className="flex items-center space-x-1">
-                                  <HiOutlineFunnel className="w-3 h-3 text-green-500" />
+                                  <IoFunnelOutline className="w-3 h-3 text-green-500" />
                                   <span>{affiliate.conversionRate}</span>
                                 </div>
                                 <div className="flex items-center space-x-1">
-                                  <HiOutlineCurrencyDollar className="w-3 h-3" />
+                                  <IoCashOutline className="w-3 h-3" />
                                   <span>{affiliate.avgOrderValue}</span>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-1 text-xs font-medium text-[#ff0086]">
-                                <HiOutlineClock className="w-3 h-3" />
+                                <IoTimeOutline className="w-3 h-3" />
                                 <span>{affiliate.countdown}</span>
                               </div>
                             </div>
@@ -3338,7 +3337,7 @@ export default function Home() {
                           {/* Action Buttons - Premium Style */}
                           <div className="flex space-x-2">
                             <button className="flex-1 bg-[#ff0086] hover:bg-[#e6007a] text-white text-sm font-semibold py-2 px-3 rounded-lg transition-colors flex items-center justify-center space-x-1">
-                              <HiOutlinePlusCircle className="w-4 h-4" />
+                              <IoAddCircleOutline className="w-4 h-4" />
                               <span>Ứng tuyển</span>
                             </button>
                             <button 
@@ -3346,14 +3345,14 @@ export default function Home() {
                               aria-label="Bookmark affiliate program"
                               data-testid={`button-bookmark-affiliate-${affiliate.id}`}
                             >
-                              <HiOutlineBookmark className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
+                              <IoBookmarkOutline className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
                             </button>
                             <button 
                               className="p-2 border border-gray-300 hover:border-[#ff0086] rounded-lg transition-colors group"
                               aria-label="Share affiliate program"
                               data-testid={`button-share-affiliate-${affiliate.id}`}
                             >
-                              <HiOutlineShare className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
+                              <IoShareSocialOutline className="w-4 h-4 text-gray-600 group-hover:text-[#ff0086]" />
                             </button>
                           </div>
                         </div>
@@ -3369,7 +3368,7 @@ export default function Home() {
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
                     <div className="text-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineFunnel className="w-6 h-6 text-white" />
+                        <IoFunnelOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">89</div>
                       <div className="text-xs text-gray-600">Chương trình</div>
@@ -3377,7 +3376,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineUsers className="w-6 h-6 text-white" />
+                        <IoPeopleOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">8.4K</div>
                       <div className="text-xs text-gray-600">Affiliate</div>
@@ -3385,7 +3384,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineCurrencyDollar className="w-6 h-6 text-white" />
+                        <IoCashOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">15-35%</div>
                       <div className="text-xs text-gray-600">Hoa hồng</div>
@@ -3393,7 +3392,7 @@ export default function Home() {
                     
                     <div className="text-center">
                       <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                        <HiOutlineArrowTrendingUp className="w-6 h-6 text-white" />
+                        <IoTrendingUpOutline className="w-6 h-6 text-white" />
                       </div>
                       <div className="text-2xl font-bold text-gray-900">12.8%</div>
                       <div className="text-xs text-gray-600">Conversion</div>
@@ -3408,7 +3407,7 @@ export default function Home() {
                     <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-3">
                       <Link to="/register">
                         <button className="bg-[#ff0086] hover:bg-[#e6007a] text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center space-x-2">
-                          <HiOutlinePlusCircle className="w-4 h-4" />
+                          <IoAddCircleOutline className="w-4 h-4" />
                           <span>Đăng ký ngay</span>
                         </button>
                       </Link>
@@ -3440,7 +3439,7 @@ export default function Home() {
                   },
                   { 
                     streamer: "Tech Guru VN", 
-                    title: "HiOutlineDevicePhoneMobile flagship 2024 - Unboxing & Performance Test",
+                    title: "IoPhonePortraitOutline flagship 2024 - Unboxing & Performance Test",
                     category: "Technology", 
                     viewers: "1,099",
                     location: "Hà Nội"
@@ -3478,7 +3477,7 @@ export default function Home() {
                     {/* Thumbnail */}
                     <div className="relative mb-3 rounded-lg overflow-hidden">
                       <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                        <HiOutlinePlay className="w-12 h-12 text-gray-400" />
+                        <IoPlayOutline className="w-12 h-12 text-gray-400" />
                       </div>
                       <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium">
                         LIVE_{stream.viewers}
@@ -3502,7 +3501,7 @@ export default function Home() {
                         {stream.title}
                       </h3>
                       <div className="flex items-center space-x-1 mb-2 text-xs text-gray-600">
-                        <HiOutlineMapPin className="w-3 h-3 text-blue-500" />
+                        <IoLocationOutline className="w-3 h-3 text-blue-500" />
                         <span>{stream.location}</span>
                       </div>
                       <p className="text-xs text-gray-400">{stream.category}</p>
