@@ -517,10 +517,10 @@ function AppleHIGShowcaseContent() {
 
   // Recipe 8 sample data - Categories with hierarchical items
   const categoryList = [
-    { id: 1, name: 'Thời trang', itemCount: 156, icon: '👔' },
-    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '💄' },
-    { id: 3, name: 'Công nghệ', itemCount: 64, icon: '💻' },
-    { id: 4, name: 'Ẩm thực', itemCount: 42, icon: '🍔' },
+    { id: 1, name: 'Thời trang', itemCount: 156, icon: '' },
+    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '' },
+    { id: 3, name: 'Công nghệ', itemCount: 64, icon: '' },
+    { id: 4, name: 'Ẩm thực', itemCount: 42, icon: '' },
   ];
 
   const categoryItemsTree: TreeNode[] = [
@@ -659,7 +659,7 @@ function AppleHIGShowcaseContent() {
           }`}
           data-testid="button-ikk-theme"
         >
-          🌸 IKK Pink Theme
+          IKK Pink Theme
         </button>
         <button
           onClick={() => setTheme(appleTheme)}
@@ -670,7 +670,7 @@ function AppleHIGShowcaseContent() {
           }`}
           data-testid="button-apple-theme"
         >
-          🍎 Apple Blue Theme
+          Apple Blue Theme
         </button>
       </div>
     );
@@ -2588,7 +2588,7 @@ function MyComponent() {
               </div>
               
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Tips tùy chỉnh:</h4>
                 <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>Thay đổi số cột grid với props <code className="bg-gray-200 px-1 rounded">cols</code></li>
                   <li>Điều chỉnh gap giữa các card: <code className="bg-gray-200 px-1 rounded">gap="sm" | "md" | "lg"</code></li>
@@ -2750,7 +2750,7 @@ function MyComponent() {
               </div>
               
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Tips tùy chỉnh:</h4>
                 <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>Responsive grid tự động điều chỉnh: 1 cột (mobile), 2 cột (tablet), 4 cột (desktop)</li>
                   <li>Thêm badges để highlight sản phẩm đặc biệt (Hot, Sale, New)</li>
@@ -2914,7 +2914,7 @@ function MyComponent() {
               </div>
               
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Tips tùy chỉnh:</h4>
                 <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>Sử dụng AppleStack vertical để xếp chồng các phần tử</li>
                   <li>Hiển thị thống kê quan trọng với StatsCard ở đầu trang</li>
@@ -3051,7 +3051,7 @@ function MyComponent() {
               </div>
               
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Tips tùy chỉnh:</h4>
                 <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>AppleStack vertical tự động tạo spacing giữa các KOCCard</li>
                   <li>Sử dụng AppleInput với leftIcon để tạo search bar đẹp mắt</li>
@@ -3211,7 +3211,7 @@ function MyComponent() {
               </div>
               
               <div className="mb-4">
-                <h4 className="text-sm font-semibold text-gray-700 mb-2">💡 Tips tùy chỉnh:</h4>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Tips tùy chỉnh:</h4>
                 <ul className="text-sm text-gray-600 space-y-1 list-disc list-inside">
                   <li>Layout 2 cột responsive: ProductCard bên trái, thông tin giá và actions bên phải</li>
                   <li>CommissionBadge hiển thị tỷ lệ hoa hồng cho KOC</li>
@@ -3337,7 +3337,7 @@ function MyComponent() {
               </div>
 
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-blue-900 mb-2">💡 Use Case</h4>
+                <h4 className="font-semibold text-blue-900 mb-2">Use Case</h4>
                 <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
                   <li>Trang sản phẩm livestream với mua hàng ngay</li>
                   <li>App thương mại điện tử có affiliate marketing</li>
@@ -3504,7 +3504,7 @@ function EcommercePage() {
               </div>
 
               <div className="bg-purple-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-purple-900 mb-2">💡 Use Case</h4>
+                <h4 className="font-semibold text-purple-900 mb-2">Use Case</h4>
                 <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
                   <li>Admin panel cho nền tảng KOC marketing</li>
                   <li>Dashboard quản lý chiến dịch affiliate</li>
@@ -3707,7 +3707,7 @@ function AdminDashboard() {
 
               {/* Best Practices */}
               <div className="mb-6 bg-green-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-green-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <h4 className="font-semibold text-green-900 mb-2">Khi nào nên dùng / When to Use</h4>
                 <ul className="text-sm text-green-800 space-y-1 list-disc list-inside">
                   <li>Quản lý cấu trúc dữ liệu phân cấp (danh mục, tổ chức)</li>
                   <li>Cần thao tác hàng loạt trên nhiều mục cùng lúc</li>
@@ -3731,8 +3731,8 @@ function AdminListManagement() {
   const [expandedNodes, setExpandedNodes] = useState<Set<string | number>>(new Set());
 
   const categories = [
-    { id: 1, name: 'Thời trang', itemCount: 156, icon: '👔' },
-    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '💄' }
+    { id: 1, name: 'Thời trang', itemCount: 156, icon: '' },
+    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '' }
   ];
 
   const categoryTree: TreeNode[] = [
@@ -3968,7 +3968,7 @@ function AdminListManagement() {
 
               {/* Best Practices */}
               <div className="mb-6 bg-blue-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-blue-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <h4 className="font-semibold text-blue-900 mb-2">Khi nào nên dùng / When to Use</h4>
                 <ul className="text-sm text-blue-800 space-y-1 list-disc list-inside">
                   <li>Dashboard điều hành với nhiều chỉ số KPI</li>
                   <li>Báo cáo phân tích theo thời gian</li>
@@ -4239,7 +4239,7 @@ function AnalyticsDashboard() {
 
               {/* Best Practices */}
               <div className="mb-6 bg-purple-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-purple-900 mb-2">✅ Khi nào nên dùng / When to Use</h4>
+                <h4 className="font-semibold text-purple-900 mb-2">Khi nào nên dùng / When to Use</h4>
                 <ul className="text-sm text-purple-800 space-y-1 list-disc list-inside">
                   <li>Quản lý người dùng/thành viên trong hệ thống</li>
                   <li>Cần hiển thị thông báo và hoạt động real-time</li>
@@ -4911,17 +4911,17 @@ import { Edit, Trash, Download } from 'lucide-react';
                     <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
                       <h5 className="text-sm font-medium mb-2">Tính năng:</h5>
                       <ul className="text-sm text-gray-600 space-y-1">
-                        <li>✨ <strong>Fuzzy Search:</strong> Tìm kiếm thông minh, khớp chuỗi không liên tục</li>
-                        <li>⚡ <strong>Phím tắt:</strong> Cmd+K (Mac) hoặc Ctrl+K (Windows) để mở nhanh</li>
-                        <li>📁 <strong>Phân loại:</strong> Nhóm lệnh theo category</li>
-                        <li>🕐 <strong>Lịch sử:</strong> Tự động lưu các lệnh gần đây</li>
-                        <li>⌨️ <strong>Điều hướng:</strong> Dùng ↑↓ để chọn, Enter để thực thi</li>
+                        <li><strong>Fuzzy Search:</strong> Tìm kiếm thông minh, khớp chuỗi không liên tục</li>
+                        <li><strong>Phím tắt:</strong> Cmd+K (Mac) hoặc Ctrl+K (Windows) để mở nhanh</li>
+                        <li><strong>Phân loại:</strong> Nhóm lệnh theo category</li>
+                        <li><strong>Lịch sử:</strong> Tự động lưu các lệnh gần đây</li>
+                        <li><strong>Điều hướng:</strong> Dùng ↑↓ để chọn, Enter để thực thi</li>
                       </ul>
                     </div>
 
                     <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                       <p className="text-sm text-blue-800">
-                        💡 <strong>Mẹo:</strong> Thử gõ "tao", "tim", "bao" để thấy fuzzy search hoạt động!
+                        <strong>Mẹo:</strong> Thử gõ "tao", "tim", "bao" để thấy fuzzy search hoạt động!
                       </p>
                     </div>
                   </div>
@@ -5133,7 +5133,7 @@ function MyComponent() {
                       data-testid="searchbar-loading"
                     />
                     <p className="mt-3 text-sm text-gray-600">
-                      💡 <strong>Debounce:</strong> Tìm kiếm được debounce 300ms để tránh gọi API quá nhiều
+                      <strong>Debounce:</strong> Tìm kiếm được debounce 300ms để tránh gọi API quá nhiều
                     </p>
                   </div>
                 </div>
@@ -6312,7 +6312,7 @@ import { IoTrendingUpOutline, IoPeopleOutline, IoDocumentTextOutline, ShoppingCa
                     </AppleButton>
                   </div>
                 }
-                beforeCode={`// ❌ Inconsistent styling, manual hover states
+                beforeCode={`// Bad: Inconsistent styling, manual hover states
 <button className="bg-pink-600 text-white px-5 py-2 rounded hover:bg-pink-700">
   Tham gia chiến dịch
 </button>
@@ -6322,7 +6322,7 @@ import { IoTrendingUpOutline, IoPeopleOutline, IoDocumentTextOutline, ShoppingCa
 <button className="border-2 border-blue-500 text-blue-500 px-4 py-2 rounded-lg hover:bg-blue-50">
   Tìm hiểu thêm
 </button>`}
-                afterCode={`// ✅ Standardized, consistent sizing & states
+                afterCode={`// Good: Standardized, consistent sizing & states
 import { AppleButton } from '@/components/apple';
 
 <AppleButton variant="primary" size="md">
@@ -6378,7 +6378,7 @@ import { AppleButton } from '@/components/apple';
                     />
                   </div>
                 }
-                beforeCode={`// ❌ Manual label, error handling, styling
+                beforeCode={`// Bad: Manual label, error handling, styling
 <div>
   <label className="block text-sm font-medium text-gray-700 mb-1">
     Email
@@ -6390,7 +6390,7 @@ import { AppleButton } from '@/components/apple';
   />
   <p className="text-red-500 text-xs mt-1">Email không hợp lệ</p>
 </div>`}
-                afterCode={`// ✅ Built-in label, error support, icons
+                afterCode={`// Good: Built-in label, error support, icons
 import { AppleInput } from '@/components/apple';
 import { Mail } from 'lucide-react';
 
@@ -6445,7 +6445,7 @@ import { Mail } from 'lucide-react';
                     data-testid="tabs-migration-nav"
                   />
                 }
-                beforeCode={`// ❌ Manual state, styling, no keyboard navigation
+                beforeCode={`// Bad: Manual state, styling, no keyboard navigation
 const [activeTab, setActiveTab] = useState('overview');
 
 <div className="flex gap-2 border-b border-gray-200">
@@ -6457,7 +6457,7 @@ const [activeTab, setActiveTab] = useState('overview');
   </button>
   {/* More tabs... */}
 </div>`}
-                afterCode={`// ✅ Built-in state, keyboard navigation, ARIA
+                afterCode={`// Good: Built-in state, keyboard navigation, ARIA
 import { AppleTabs } from '@/components/apple';
 
 <AppleTabs
@@ -6502,7 +6502,7 @@ import { AppleTabs } from '@/components/apple';
                     <div className="p-4 bg-gray-100 rounded">Card 4</div>
                   </AppleGrid>
                 }
-                beforeCode={`// ❌ Repeated responsive classes everywhere
+                beforeCode={`// Bad: Repeated responsive classes everywhere
 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
   <div>Card 1</div>
   <div>Card 2</div>
@@ -6511,7 +6511,7 @@ import { AppleTabs } from '@/components/apple';
 </div>
 
 {/* Repeated in 10+ places with different breakpoints */}`}
-                afterCode={`// ✅ Reusable, standardized breakpoints
+                afterCode={`// Good: Reusable, standardized breakpoints
 import { AppleGrid } from '@/components/apple';
 
 <AppleGrid cols={{ sm: 2, lg: 3, xl: 4 }} gap="md">
@@ -6541,15 +6541,15 @@ import { AppleGrid } from '@/components/apple';
                   <div className="space-y-2">
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-identify" />
-                      <span>✅ Xác định các components cần migrate (buttons, inputs, cards, tables)</span>
+                      <span>Xác định các components cần migrate (buttons, inputs, cards, tables)</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-review" />
-                      <span>✅ Review Apple HIG showcase để hiểu rõ components có sẵn</span>
+                      <span>Review Apple HIG showcase để hiểu rõ components có sẵn</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-blue-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-backup" />
-                      <span>✅ Tạo backup code hiện tại hoặc branch mới trên Git</span>
+                      <span>Tạo backup code hiện tại hoặc branch mới trên Git</span>
                     </label>
                   </div>
                 </div>
@@ -6559,19 +6559,19 @@ import { AppleGrid } from '@/components/apple';
                   <div className="space-y-2">
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-section" />
-                      <span>✅ Replace components từng section một (không làm hết cùng lúc)</span>
+                      <span>Replace components từng section một (không làm hết cùng lúc)</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-imports" />
-                      <span>✅ Import đúng components: <code className="bg-white px-1 rounded">import {`{ AppleButton }`} from '@/components/apple'</code></span>
+                      <span>Import đúng components: <code className="bg-white px-1 rounded">import {`{ AppleButton }`} from '@/components/apple'</code></span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-props" />
-                      <span>✅ Sử dụng đúng props (variant, size, icon) theo documentation</span>
+                      <span>Sử dụng đúng props (variant, size, icon) theo documentation</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-green-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-testid" />
-                      <span>✅ Thêm data-testid cho tất cả interactive elements</span>
+                      <span>Thêm data-testid cho tất cả interactive elements</span>
                     </label>
                   </div>
                 </div>
@@ -6581,23 +6581,23 @@ import { AppleGrid } from '@/components/apple';
                   <div className="space-y-2">
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-accessibility" />
-                      <span>✅ Test accessibility (keyboard navigation, Tab, Enter, ESC, screen readers)</span>
+                      <span>Test accessibility (keyboard navigation, Tab, Enter, ESC, screen readers)</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-tokens" />
-                      <span>✅ Update styling để sử dụng design tokens từ constants</span>
+                      <span>Update styling để sử dụng design tokens từ constants</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-cleanup" />
-                      <span>✅ Remove old CSS classes và Tailwind utility classes không dùng</span>
+                      <span>Remove old CSS classes và Tailwind utility classes không dùng</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-responsive" />
-                      <span>✅ Test responsive trên mobile, tablet, desktop</span>
+                      <span>Test responsive trên mobile, tablet, desktop</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700 cursor-pointer hover:bg-purple-100 p-2 rounded transition-colors">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-review-final" />
-                      <span>✅ Code review và QA testing trước khi deploy</span>
+                      <span>Code review và QA testing trước khi deploy</span>
                     </label>
                   </div>
                 </div>
@@ -6618,7 +6618,7 @@ import { AppleGrid } from '@/components/apple';
               <div className="space-y-6">
                 {/* Form Composition */}
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">📝 Form với AppleInput + AppleSelect + AppleButton</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">Form với AppleInput + AppleSelect + AppleButton</h4>
                   <CodeBlock code={`import { AppleInput, AppleSelect, AppleButton } from '@/components/apple';
 
 function CampaignForm() {
@@ -6662,7 +6662,7 @@ function CampaignForm() {
 
                 {/* Dashboard Composition */}
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">📊 Dashboard với AppleMetricCard + AppleChart</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">Dashboard với AppleMetricCard + AppleChart</h4>
                   <CodeBlock code={`import { AppleMetricCard, AppleChart, AppleGrid } from '@/components/apple';
 
 function Dashboard() {
@@ -6718,7 +6718,7 @@ function Dashboard() {
 
                 {/* Data Table Composition */}
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-3">🗂️ Data Table với AppleTable + ApplePagination + AppleDropdown</h4>
+                  <h4 className="font-semibold text-gray-900 mb-3">Data Table với AppleTable + ApplePagination + AppleDropdown</h4>
                   <CodeBlock code={`import { AppleTable, ApplePagination, AppleDropdown } from '@/components/apple';
 
 function KOCTable() {
@@ -6776,35 +6776,35 @@ function KOCTable() {
                   <div className="space-y-2">
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-semantic" />
-                      <span>✅ <strong>Luôn sử dụng semantic components:</strong> AppleButton thay vì div với onClick</span>
+                      <span><strong>Luôn sử dụng semantic components:</strong> AppleButton thay vì div với onClick</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-aria" />
-                      <span>✅ <strong>Cung cấp aria-labels:</strong> Đặc biệt cho icon-only buttons</span>
+                      <span><strong>Cung cấp aria-labels:</strong> Đặc biệt cho icon-only buttons</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-tooltip" />
-                      <span>✅ <strong>Sử dụng AppleTooltip:</strong> Cho contextual help và thông tin bổ sung</span>
+                      <span><strong>Sử dụng AppleTooltip:</strong> Cho contextual help và thông tin bổ sung</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-keyboard" />
-                      <span>✅ <strong>Đảm bảo keyboard navigation:</strong> Tab, Enter, ESC, Arrow keys hoạt động</span>
+                      <span><strong>Đảm bảo keyboard navigation:</strong> Tab, Enter, ESC, Arrow keys hoạt động</span>
                     </label>
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input type="checkbox" className="mt-0.5" data-testid="checkbox-screen-reader" />
-                      <span>✅ <strong>Test với screen readers:</strong> NVDA, JAWS, VoiceOver</span>
+                      <span><strong>Test với screen readers:</strong> NVDA, JAWS, VoiceOver</span>
                     </label>
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <h4 className="font-semibold text-gray-900 mb-3">Ví dụ thực tế:</h4>
-                  <CodeBlock code={`// ❌ BAD: Không accessibility
+                  <CodeBlock code={`// Bad: BAD: Không accessibility
 <div onClick={handleDelete} className="cursor-pointer">
   <IoTrashOutline className="w-4 h-4" />
 </div>
 
-// ✅ GOOD: Semantic button với aria-label
+// Good: GOOD: Semantic button với aria-label
 <AppleButton
   variant="outline"
   size="sm"
@@ -6815,7 +6815,7 @@ function KOCTable() {
   <IoTrashOutline className="w-4 h-4" />
 </AppleButton>
 
-// ✅ BETTER: Với tooltip cho context
+// Good: BETTER: Với tooltip cho context
 <AppleTooltip content="Xóa chiến dịch này">
   <AppleButton
     variant="outline"
@@ -6840,18 +6840,18 @@ function KOCTable() {
                   <div className="space-y-4">
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-2">
-                        💡 Import chỉ những components cần thiết
+                        Import chỉ những components cần thiết
                       </p>
-                      <CodeBlock code={`// ✅ GOOD: Named imports
+                      <CodeBlock code={`// Good: GOOD: Named imports
 import { AppleButton, AppleInput } from '@/components/apple';
 
-// ❌ BAD: Import all (larger bundle)
+// Bad: BAD: Import all (larger bundle)
 import * as Apple from '@/components/apple';`} />
                     </div>
 
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-2">
-                        💡 Sử dụng AppleSkeleton cho loading states
+                        Sử dụng AppleSkeleton cho loading states
                       </p>
                       <CodeBlock code={`import { AppleSkeleton } from '@/components/apple';
 
@@ -6872,7 +6872,7 @@ function CampaignList() {
 
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-2">
-                        💡 Lazy load charts và heavy components
+                        Lazy load charts và heavy components
                       </p>
                       <CodeBlock code={`import { lazy, Suspense } from 'react';
 import { AppleSkeleton } from '@/components/apple';
@@ -6890,7 +6890,7 @@ function Dashboard() {
 
                     <div>
                       <p className="text-sm font-medium text-gray-900 mb-2">
-                        💡 Optimize re-renders với React.memo
+                        Optimize re-renders với React.memo
                       </p>
                       <CodeBlock code={`import { memo } from 'react';
 import { AppleCard } from '@/components/apple';
@@ -6919,7 +6919,7 @@ const KOCCard = memo(({ koc }) => (
                     <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Mixing raw Tailwind với Apple components</h4>
-                      <CodeBlock code={`// ❌ BAD
+                      <CodeBlock code={`// Bad: BAD
 <AppleButton className="bg-blue-500 px-10 py-5">
   Click me
 </AppleButton>`} />
@@ -6929,12 +6929,12 @@ const KOCCard = memo(({ koc }) => (
                     <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng props hoặc className cho custom styles</h4>
-                      <CodeBlock code={`// ✅ GOOD: Use props
+                      <CodeBlock code={`// Good: GOOD: Use props
 <AppleButton variant="primary" size="lg">
   Click me
 </AppleButton>
 
-// ✅ OK: Custom styles via className (when needed)
+// Good: OK: Custom styles via className (when needed)
 <AppleButton className="shadow-2xl">
   Click me
 </AppleButton>`} />
@@ -6948,7 +6948,7 @@ const KOCCard = memo(({ koc }) => (
                     <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Quên data-testid attributes</h4>
-                      <CodeBlock code={`// ❌ BAD: No testid
+                      <CodeBlock code={`// Bad: BAD: No testid
 <AppleButton onClick={handleSubmit}>
   Submit
 </AppleButton>`} />
@@ -6958,7 +6958,7 @@ const KOCCard = memo(({ koc }) => (
                     <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Luôn thêm data-testid cho interactive elements</h4>
-                      <CodeBlock code={`// ✅ GOOD
+                      <CodeBlock code={`// Good: GOOD
 <AppleButton 
   onClick={handleSubmit}
   data-testid="button-submit-campaign"
@@ -6975,7 +6975,7 @@ const KOCCard = memo(({ koc }) => (
                     <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Inconsistent spacing/colors</h4>
-                      <CodeBlock code={`// ❌ BAD: Random values
+                      <CodeBlock code={`// Bad: BAD: Random values
 <div className="mb-7 text-[#ff0099]">
   <h1 className="text-2xl mb-5">Title</h1>
 </div>`} />
@@ -6985,7 +6985,7 @@ const KOCCard = memo(({ koc }) => (
                     <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng design tokens từ constants</h4>
-                      <CodeBlock code={`// ✅ GOOD: Use design tokens
+                      <CodeBlock code={`// Good: GOOD: Use design tokens
 import { designTokens } from '@/constants/design-tokens';
 
 <div className={designTokens.spacing.sectionSpacing}>
@@ -7070,7 +7070,7 @@ import { designTokens } from '@/constants/design-tokens';
               </div>
 
               <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-900 mb-2">💡 Pro Tips:</h4>
+                <h4 className="font-semibold text-blue-900 mb-2">Pro Tips:</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
                   <li>• <strong>AppleTooltip:</strong> Cho thông tin bổ sung, không critical</li>
                   <li>• <strong>ApplePopover:</strong> Cho UI tương tác (forms, filters) trong popup</li>
@@ -7083,7 +7083,7 @@ import { designTokens } from '@/constants/design-tokens';
         </Section>
 
         {/* Theming & I18n Guide Section */}
-        <Section title="🎨 Theming & Internationalization Guide">
+        <Section title="Theming & Internationalization Guide">
           <div className="space-y-12">
             {/* Introduction */}
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
@@ -7095,7 +7095,7 @@ import { designTokens } from '@/constants/design-tokens';
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    🎨 Theming System
+                    Theming System
                   </h4>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• 2 Predefined themes (IKK Pink, Apple Blue)</li>
@@ -7106,7 +7106,7 @@ import { designTokens } from '@/constants/design-tokens';
                 </div>
                 <div className="bg-white p-4 rounded-lg">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    🌍 Internationalization
+                    Internationalization
                   </h4>
                   <ul className="text-sm text-gray-600 space-y-1">
                     <li>• 8 components with i18n support</li>
@@ -7135,10 +7135,10 @@ import { designTokens } from '@/constants/design-tokens';
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                   <h5 className="font-semibold text-blue-900 mb-2">Key Features:</h5>
                   <ul className="text-sm text-blue-800 space-y-1">
-                    <li>✅ <strong>CSS Variables:</strong> All colors use CSS custom properties for instant updates</li>
-                    <li>✅ <strong>Instant Switching:</strong> Change themes without page reload</li>
-                    <li>✅ <strong>TypeScript Support:</strong> Fully typed theme objects</li>
-                    <li>✅ <strong>Custom Themes:</strong> Create unlimited themes with createTheme()</li>
+                    <li><strong>CSS Variables:</strong> All colors use CSS custom properties for instant updates</li>
+                    <li><strong>Instant Switching:</strong> Change themes without page reload</li>
+                    <li><strong>TypeScript Support:</strong> Fully typed theme objects</li>
+                    <li><strong>Custom Themes:</strong> Create unlimited themes with createTheme()</li>
                   </ul>
                 </div>
               </div>
@@ -7189,7 +7189,7 @@ import { designTokens } from '@/constants/design-tokens';
                 <h4 className="text-xl font-semibold mb-4">1.3 Predefined Themes</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div className="border-2 border-pink-200 rounded-lg p-4 bg-pink-50">
-                    <h5 className="font-semibold text-lg mb-3">🌸 IKK Pink Theme (Default)</h5>
+                    <h5 className="font-semibold text-lg mb-3">IKK Pink Theme (Default)</h5>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded" style={{ backgroundColor: '#ff0086' }}></div>
@@ -7215,7 +7215,7 @@ import { designTokens } from '@/constants/design-tokens';
                   </div>
 
                   <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-                    <h5 className="font-semibold text-lg mb-3">🍎 Apple Blue Theme</h5>
+                    <h5 className="font-semibold text-lg mb-3">Apple Blue Theme</h5>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded" style={{ backgroundColor: '#007AFF' }}></div>
@@ -7369,7 +7369,7 @@ const purpleTheme = createTheme({
                 </div>
 
                 <div className="mt-4 bg-yellow-50 p-4 rounded-lg border border-yellow-200">
-                  <h5 className="font-semibold text-yellow-900 mb-2">💡 Pro Tip:</h5>
+                  <h5 className="font-semibold text-yellow-900 mb-2">Pro Tip:</h5>
                   <p className="text-sm text-yellow-800">
                     You can also use CSS variables directly in your custom components:
                   </p>
@@ -7404,10 +7404,10 @@ const purpleTheme = createTheme({
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                   <h5 className="font-semibold text-green-900 mb-2">Supported Features:</h5>
                   <ul className="text-sm text-green-800 space-y-1">
-                    <li>✅ <strong>Text Customization:</strong> All labels, messages, and UI text can be customized via props</li>
-                    <li>✅ <strong>Locale Formatting:</strong> Numbers, dates, and currencies formatted per locale (vi-VN, en-US, etc.)</li>
-                    <li>✅ <strong>Backward Compatible:</strong> Vietnamese defaults for IKK, fully customizable for external use</li>
-                    <li>✅ <strong>TypeScript Support:</strong> Full typing for all i18n props</li>
+                    <li><strong>Text Customization:</strong> All labels, messages, and UI text can be customized via props</li>
+                    <li><strong>Locale Formatting:</strong> Numbers, dates, and currencies formatted per locale (vi-VN, en-US, etc.)</li>
+                    <li><strong>Backward Compatible:</strong> Vietnamese defaults for IKK, fully customizable for external use</li>
+                    <li><strong>TypeScript Support:</strong> Full typing for all i18n props</li>
                   </ul>
                 </div>
               </div>
@@ -7419,7 +7419,7 @@ const purpleTheme = createTheme({
                 <div className="space-y-8">
                   {/* AppleMetricCard */}
                   <div className="border-l-2 border-blue-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">📊 AppleMetricCard</h5>
+                    <h5 className="text-lg font-semibold mb-3">AppleMetricCard</h5>
                     <p className="text-sm text-gray-600 mb-3">Metric display with locale-aware number formatting and customizable change label.</p>
                     <CodeBlock code={`interface AppleMetricCardProps {
   changeLabel?: string  // Default: "so với tháng trước"
@@ -7448,7 +7448,7 @@ const purpleTheme = createTheme({
 
                   {/* AppleSearchBar */}
                   <div className="border-l-2 border-purple-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">🔍 AppleSearchBar</h5>
+                    <h5 className="text-lg font-semibold mb-3">AppleSearchBar</h5>
                     <p className="text-sm text-gray-600 mb-3">Search component with customizable placeholder and UI text.</p>
                     <CodeBlock code={`interface AppleSearchBarProps {
   placeholder?: string         // Default: "Tìm kiếm..."
@@ -7471,7 +7471,7 @@ const purpleTheme = createTheme({
 
                   {/* PriceDisplay */}
                   <div className="border-l-2 border-green-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">💰 PriceDisplay</h5>
+                    <h5 className="text-lg font-semibold mb-3">PriceDisplay</h5>
                     <p className="text-sm text-gray-600 mb-3">Price component with locale-specific formatting and currency symbols.</p>
                     <CodeBlock code={`interface PriceDisplayProps {
   currency?: string    // Default: "đ"
@@ -7493,7 +7493,7 @@ const purpleTheme = createTheme({
 
                   {/* StreamCard */}
                   <div className="border-l-2 border-red-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">🎥 StreamCard</h5>
+                    <h5 className="text-lg font-semibold mb-3">StreamCard</h5>
                     <p className="text-sm text-gray-600 mb-3">Livestream card with customizable live badge and viewer count text.</p>
                     <CodeBlock code={`interface StreamCardProps {
   liveLabel?: string      // Default: "TRỰC TIẾP"
@@ -7515,7 +7515,7 @@ const purpleTheme = createTheme({
 
                   {/* ProductCard */}
                   <div className="border-l-2 border-yellow-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">🛍️ ProductCard</h5>
+                    <h5 className="text-lg font-semibold mb-3">ProductCard</h5>
                     <p className="text-sm text-gray-600 mb-3">Product card with customizable labels and locale-aware price formatting.</p>
                     <CodeBlock code={`interface ProductCardProps {
   labels?: Partial<ProductCardLabels>
@@ -7545,7 +7545,7 @@ interface ProductCardLabels {
 
                   {/* ContentModerationQueue */}
                   <div className="border-l-2 border-indigo-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">🛡️ ContentModerationQueue</h5>
+                    <h5 className="text-lg font-semibold mb-3">ContentModerationQueue</h5>
                     <p className="text-sm text-gray-600 mb-3">Comprehensive moderation UI with full label customization (32+ labels).</p>
                     <CodeBlock code={`interface ContentModerationLabels {
   // Tabs
@@ -7591,7 +7591,7 @@ interface ProductCardLabels {
 
                   {/* CommissionRulesEditor */}
                   <div className="border-l-2 border-pink-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">💸 CommissionRulesEditor</h5>
+                    <h5 className="text-lg font-semibold mb-3">CommissionRulesEditor</h5>
                     <p className="text-sm text-gray-600 mb-3">Commission rules editor with customizable labels, tier names, and categories.</p>
                     <CodeBlock code={`interface CommissionRulesEditorProps {
   labels?: Partial<CommissionRulesLabels>
@@ -7628,7 +7628,7 @@ interface ProductCardLabels {
 
                   {/* DataExportDialog */}
                   <div className="border-l-2 border-teal-400 pl-4">
-                    <h5 className="text-lg font-semibold mb-3">📥 DataExportDialog</h5>
+                    <h5 className="text-lg font-semibold mb-3">DataExportDialog</h5>
                     <p className="text-sm text-gray-600 mb-3">Data export dialog with comprehensive label customization (25+ labels).</p>
                     <CodeBlock code={`interface DataExportDialogLabels {
   title: string
@@ -7723,10 +7723,10 @@ interface ProductCardLabels {
                     <h5 className="font-semibold mb-2">1. When to Use i18n Props</h5>
                     <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                       <ul className="text-sm text-blue-900 space-y-2">
-                        <li>✅ <strong>Always</strong> set <code>locale</code> for apps targeting non-Vietnamese markets</li>
-                        <li>✅ <strong>Always</strong> customize labels when translating to another language</li>
-                        <li>✅ <strong>Optional</strong> for IKK internal apps (defaults are Vietnamese)</li>
-                        <li>✅ Store locale preference in user settings/localStorage</li>
+                        <li><strong>Always</strong> set <code>locale</code> for apps targeting non-Vietnamese markets</li>
+                        <li><strong>Always</strong> customize labels when translating to another language</li>
+                        <li><strong>Optional</strong> for IKK internal apps (defaults are Vietnamese)</li>
+                        <li>Store locale preference in user settings/localStorage</li>
                       </ul>
                     </div>
                   </div>
@@ -7792,9 +7792,9 @@ function Dashboard() {
                     <h5 className="font-semibold mb-2">4. Performance Considerations</h5>
                     <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
                       <ul className="text-sm text-yellow-900 space-y-2">
-                        <li>✅ Label props don't cause re-renders (passed directly)</li>
-                        <li>✅ Intl.NumberFormat is memoized internally</li>
-                        <li>✅ Use same locale string reference to avoid recreating formatters</li>
+                        <li>Label props don't cause re-renders (passed directly)</li>
+                        <li>Intl.NumberFormat is memoized internally</li>
+                        <li>Use same locale string reference to avoid recreating formatters</li>
                         <li>⚠️ Avoid creating new label objects on every render</li>
                       </ul>
                     </div>
@@ -7814,7 +7814,7 @@ function Dashboard() {
               <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
                 <h4 className="text-xl font-semibold mb-4">3.1 For IKK Internal Developers</h4>
                 <div className="bg-green-50 p-4 rounded-lg border border-green-200 mb-4">
-                  <h5 className="font-semibold text-green-900 mb-2">✅ Great News: No Changes Required!</h5>
+                  <h5 className="font-semibold text-green-900 mb-2">Great News: No Changes Required!</h5>
                   <p className="text-sm text-green-800">
                     All theming and i18n features are backward compatible. Your existing code continues to work with Vietnamese defaults and IKK Pink theme.
                   </p>
@@ -8061,32 +8061,32 @@ function TechDashboard() {
 
             {/* Summary */}
             <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-8 rounded-lg border border-indigo-200 mt-12">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Summary: What You've Learned</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Summary: What You've Learned</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-lg">
-                  <h4 className="font-semibold text-lg mb-3">🎨 Theming System</h4>
+                  <h4 className="font-semibold text-lg mb-3">Theming System</h4>
                   <ul className="text-sm text-gray-700 space-y-2">
-                    <li>✅ Use AppleThemeProvider to enable theming</li>
-                    <li>✅ Choose from ikkTheme or appleTheme presets</li>
-                    <li>✅ Create custom themes with createTheme()</li>
-                    <li>✅ All 18 CSS variables update automatically</li>
-                    <li>✅ Use useAppleTheme() hook for theme switching</li>
+                    <li>Use AppleThemeProvider to enable theming</li>
+                    <li>Choose from ikkTheme or appleTheme presets</li>
+                    <li>Create custom themes with createTheme()</li>
+                    <li>All 18 CSS variables update automatically</li>
+                    <li>Use useAppleTheme() hook for theme switching</li>
                   </ul>
                 </div>
                 <div className="bg-white p-6 rounded-lg">
-                  <h4 className="font-semibold text-lg mb-3">🌍 Internationalization</h4>
+                  <h4 className="font-semibold text-lg mb-3">Internationalization</h4>
                   <ul className="text-sm text-gray-700 space-y-2">
-                    <li>✅ 8 components support full i18n</li>
-                    <li>✅ Customize labels via props</li>
-                    <li>✅ Use locale prop for number/date formatting</li>
-                    <li>✅ Vietnamese defaults (backward compatible)</li>
-                    <li>✅ Organize translations in separate files</li>
+                    <li>8 components support full i18n</li>
+                    <li>Customize labels via props</li>
+                    <li>Use locale prop for number/date formatting</li>
+                    <li>Vietnamese defaults (backward compatible)</li>
+                    <li>Organize translations in separate files</li>
                   </ul>
                 </div>
               </div>
               <div className="mt-6 p-4 bg-white rounded-lg">
                 <p className="text-gray-700">
-                  <strong>🚀 Ready to Use:</strong> The Apple HIG Design System is now fully customizable for external developers. 
+                  <strong>Ready to Use:</strong> The Apple HIG Design System is now fully customizable for external developers. 
                   With theming and i18n support, you can adapt it to any brand and any language while maintaining all the quality, 
                   accessibility, and consistency of the original design system.
                 </p>
@@ -8096,7 +8096,7 @@ function TechDashboard() {
         </Section>
 
         {/* Admin Patterns Guide (Phase 2) */}
-        <Section title="🔧 Admin Patterns Guide (Phase 2)">
+        <Section title="Admin Patterns Guide (Phase 2)">
           <div className="space-y-12">
             {/* Introduction */}
             <div className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 border border-blue-200 rounded-lg p-8">
@@ -8110,31 +8110,31 @@ function TechDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-2xl">📋</span> AppleListDetailShell
+                    AppleListDetailShell
                   </h4>
                   <p className="text-sm text-gray-600">Master-detail layout for item management</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-2xl">🌳</span> AppleHierarchicalTable
+                    AppleHierarchicalTable
                   </h4>
                   <p className="text-sm text-gray-600">Expandable nested data tables</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-2xl">🔔</span> AppleNotificationCenter
+                    AppleNotificationCenter
                   </h4>
                   <p className="text-sm text-gray-600">IoPersonOutline notification management</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-2xl">📊</span> Advanced Dashboard
+                    Advanced Dashboard
                   </h4>
                   <p className="text-sm text-gray-600">Analytics dashboard composition</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <span className="text-2xl">⚡</span> Enhanced BulkActionToolbar
+                    Enhanced BulkActionToolbar
                   </h4>
                   <p className="text-sm text-gray-600">Bulk operations with undo & export</p>
                 </div>
@@ -8187,7 +8187,7 @@ function TechDashboard() {
                 <h4 className="text-xl font-semibold mb-4">When to Use</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <h5 className="font-semibold text-green-700 mb-2">Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> IoPersonOutline management interfaces
@@ -8207,7 +8207,7 @@ function TechDashboard() {
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <h5 className="font-semibold text-red-700 mb-2">Avoid For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-red-600">•</span> Simple lists without details
@@ -8228,15 +8228,15 @@ function TechDashboard() {
                 <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop (≥1024px)</h5>
+                    <h5 className="font-semibold text-blue-900 mb-2">Desktop (≥1024px)</h5>
                     <p className="text-sm text-blue-800">Side-by-side layout (30/70 split by default)</p>
                   </div>
                   <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet (768-1023px)</h5>
+                    <h5 className="font-semibold text-purple-900 mb-2">Tablet (768-1023px)</h5>
                     <p className="text-sm text-purple-800">Side-by-side with adjusted ratio</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile ({'<'}768px)</h5>
+                    <h5 className="font-semibold text-green-900 mb-2">Mobile ({'<'}768px)</h5>
                     <p className="text-sm text-green-800">Stacked layout with drawer for details</p>
                   </div>
                 </div>
@@ -8420,7 +8420,7 @@ function UserManagement() {
                 <h4 className="text-xl font-semibold mb-4">When to Use</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <h5 className="font-semibold text-green-700 mb-2">Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Organizational charts
@@ -8440,7 +8440,7 @@ function UserManagement() {
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <h5 className="font-semibold text-red-700 mb-2">Avoid For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-red-600">•</span> Flat data structures
@@ -8461,15 +8461,15 @@ function UserManagement() {
                 <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <h5 className="font-semibold text-blue-900 mb-2">Desktop</h5>
                     <p className="text-sm text-blue-800">Full table view with expand/collapse controls</p>
                   </div>
                   <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <h5 className="font-semibold text-purple-900 mb-2">Tablet</h5>
                     <p className="text-sm text-purple-800">Horizontal scroll if needed, collapsible columns</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <h5 className="font-semibold text-green-900 mb-2">Mobile</h5>
                     <p className="text-sm text-green-800">Stacked card view with accordion-style expansion</p>
                   </div>
                 </div>
@@ -8629,7 +8629,7 @@ const columns = [
                 <h4 className="text-xl font-semibold mb-4">When to Use</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <h5 className="font-semibold text-green-700 mb-2">Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> IoPersonOutline alerts & updates
@@ -8649,7 +8649,7 @@ const columns = [
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-red-700 mb-2">❌ Avoid For:</h5>
+                    <h5 className="font-semibold text-red-700 mb-2">Avoid For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-red-600">•</span> Single toast messages (use AppleToast)
@@ -8667,15 +8667,15 @@ const columns = [
                 <h4 className="text-xl font-semibold mb-4">Responsive Behaviors</h4>
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <h5 className="font-semibold text-blue-900 mb-2">Desktop</h5>
                     <p className="text-sm text-blue-800">Dropdown panel from header (top-right)</p>
                   </div>
                   <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <h5 className="font-semibold text-purple-900 mb-2">Tablet</h5>
                     <p className="text-sm text-purple-800">Similar to desktop, adjusted width</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <h5 className="font-semibold text-green-900 mb-2">Mobile</h5>
                     <p className="text-sm text-green-800">Bottom drawer (full-width)</p>
                   </div>
                 </div>
@@ -8853,7 +8853,7 @@ function AdminHeader() {
                 <h4 className="text-xl font-semibold mb-4">When to Use</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <h5 className="font-semibold text-green-700 mb-2">Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Analytics pages
@@ -8873,7 +8873,7 @@ function AdminHeader() {
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-blue-700 mb-2">💡 Composition Approach:</h5>
+                    <h5 className="font-semibold text-blue-700 mb-2">Composition Approach:</h5>
                     <p className="text-sm text-gray-700">
                       This is NOT a single component, but a <strong>pattern</strong> combining:
                     </p>
@@ -8900,15 +8900,15 @@ function AdminHeader() {
                 <h4 className="text-xl font-semibold mb-4">Responsive Layout</h4>
                 <div className="space-y-4">
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                    <h5 className="font-semibold text-blue-900 mb-2">🖥️ Desktop</h5>
+                    <h5 className="font-semibold text-blue-900 mb-2">Desktop</h5>
                     <p className="text-sm text-blue-800">4-column metric cards, 2-column charts</p>
                   </div>
                   <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
-                    <h5 className="font-semibold text-purple-900 mb-2">💻 Tablet</h5>
+                    <h5 className="font-semibold text-purple-900 mb-2">Tablet</h5>
                     <p className="text-sm text-purple-800">2-column metric cards, 1-column charts</p>
                   </div>
                   <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                    <h5 className="font-semibold text-green-900 mb-2">📱 Mobile</h5>
+                    <h5 className="font-semibold text-green-900 mb-2">Mobile</h5>
                     <p className="text-sm text-green-800">1-column stack (metrics → charts → tables)</p>
                   </div>
                 </div>
@@ -9149,7 +9149,7 @@ function SalesDashboard() {
                 <h4 className="text-xl font-semibold mb-4">When to Use</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
+                    <h5 className="font-semibold text-green-700 mb-2">Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Data tables with multi-select
@@ -9169,7 +9169,7 @@ function SalesDashboard() {
                     </ul>
                   </div>
                   <div className="space-y-2">
-                    <h5 className="font-semibold text-blue-700 mb-2">✨ New Features:</h5>
+                    <h5 className="font-semibold text-blue-700 mb-2">New Features:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
                         <span className="text-blue-600">•</span> Undo last action (Ctrl+Z)
@@ -9578,7 +9578,7 @@ function AnalyticsDashboard() {
 
             {/* Summary */}
             <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 p-8 rounded-lg border border-blue-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Phase 2 Summary</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Phase 2 Summary</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-lg">
                   <h4 className="font-semibold text-lg mb-3">What You've Learned</h4>
@@ -10219,7 +10219,7 @@ export default function MyPage() {
                     {
                       id: '1',
                       type: 'stream',
-                      content: 'Review Son Môi Maybelline SuperStay - Màu đẹp lắm mọi người ơi! 💄',
+                      content: 'Review Son Môi Maybelline SuperStay - Màu đẹp lắm mọi người ơi!',
                       user: {id: 'u1', name: 'Nguyễn Minh Anh', avatar: ''},
                       timestamp: new Date(Date.now() - 3600000).toISOString(),
                       status: 'pending'
@@ -10603,7 +10603,7 @@ export default function MyPage() {
 
             {/* Summary Section */}
             <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border border-purple-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">📊 Migration Impact Summary</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Migration Impact Summary</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div className="bg-white p-4 rounded-lg">
                   <div className="text-2xl font-bold text-[#ff0086]">~540 lines</div>
@@ -10632,7 +10632,7 @@ export default function MyPage() {
         {activeTab === 'reusability' && (
           <div className="space-y-12">
             <AppleSectionHeader 
-              title="🌍 External Reusability - Theme & i18n"
+              title="External Reusability - Theme & i18n"
               description="Demonstrate how external developers can customize the design system with theming and internationalization"
             />
 
@@ -10997,7 +10997,7 @@ function ThemeSwitcher() {
                 title="Customization for External Developers"
                 before={
                   <div className="space-y-4">
-                    <p className="text-sm text-gray-700">❌ <strong>Before:</strong> Hardcoded Vietnamese, single theme</p>
+                    <p className="text-sm text-gray-700"><strong>Before:</strong> Hardcoded Vietnamese, single theme</p>
                     <div className="bg-gray-50 p-4 rounded">
                       <AppleBadge variant="success" size="md">Đã duyệt</AppleBadge>
                       <p className="text-xs text-gray-500 mt-2">Can't change language or theme</p>
@@ -11006,7 +11006,7 @@ function ThemeSwitcher() {
                 }
                 after={
                   <div className="space-y-4">
-                    <p className="text-sm text-gray-700">✅ <strong>After:</strong> Fully customizable themes & i18n</p>
+                    <p className="text-sm text-gray-700"><strong>After:</strong> Fully customizable themes & i18n</p>
                     <div className="bg-gray-50 p-4 rounded space-y-3">
                       <div>
                         <AppleBadge variant="success" size="md">Approved</AppleBadge>
@@ -11041,11 +11041,11 @@ function ThemeSwitcher() {
 
             {/* Summary */}
             <section className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-lg border border-blue-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">🎯 Why This Matters for External Developers</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Why This Matters for External Developers</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-lg">
                   <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                    🎨 Theme Customization
+                    Theme Customization
                   </h4>
                   <ul className="space-y-2 text-sm text-gray-700">
                     <li>• Switch between IKK Pink and Apple Blue themes instantly</li>
@@ -11056,7 +11056,7 @@ function ThemeSwitcher() {
                 </div>
                 <div className="bg-white p-6 rounded-lg">
                   <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
-                    🌍 Internationalization
+                    Internationalization
                   </h4>
                   <ul className="space-y-2 text-sm text-gray-700">
                     <li>• Support for any language via props</li>
@@ -11176,35 +11176,35 @@ function ThemeSwitcher() {
               <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Responsive layout (side-by-side desktop, drawer mobile)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Built-in search and filtering</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Keyboard navigation (arrow keys, enter)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Auto-scroll selected item into view</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Empty and loading states</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Theme-aware styling</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Vietnamese + i18n support</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Accessibility WCAG 2.1 AA compliant</span>
                 </li>
               </ul>
@@ -11426,35 +11426,35 @@ const [searchValue, setSearchValue] = useState('');
               <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Expand/collapse individual rows</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Multiple nesting levels support</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Expand all / Collapse all</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Visual indentation with connecting lines</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Row selection (single/multiple)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Keyboard navigation</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Lazy loading children support</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Controlled/Uncontrolled modes</span>
                 </li>
               </ul>
@@ -11681,35 +11681,35 @@ const orgData: TreeNode[] = [
               <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Unread badge count with animation</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Tab filtering (all/unread/read)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Mark individual as read</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Mark all as read</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Clear all notifications</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>4 notification types (info/success/warning/error)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Vietnamese time formatting</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Click outside to close</span>
                 </li>
               </ul>
@@ -11846,22 +11846,22 @@ const [notifications, setNotifications] = useState<Notification[]>([
 
             {/* Overview */}
             <div className="bg-gradient-to-br from-blue-50 to-purple-50 border rounded-lg p-8 shadow-sm">
-              <h3 className="text-2xl font-bold mb-4">🎯 Dashboard Composition Pattern</h3>
+              <h3 className="text-2xl font-bold mb-4">Dashboard Composition Pattern</h3>
               <p className="text-gray-700 mb-6">
                 Advanced Dashboard demonstrates how to compose multiple Phase 2 components (List-Detail Shell, Hierarchical Table, Notification Center, Bulk Actions) into a cohesive admin interface.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg mb-2">📊 Real-time Analytics</h4>
+                  <h4 className="font-semibold text-lg mb-2">Real-time Analytics</h4>
                   <p className="text-sm text-gray-600">Charts, metrics, and KPIs</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg mb-2">👥 User Management</h4>
+                  <h4 className="font-semibold text-lg mb-2">User Management</h4>
                   <p className="text-sm text-gray-600">List-Detail Shell for users</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-semibold text-lg mb-2">🔔 Live Notifications</h4>
+                  <h4 className="font-semibold text-lg mb-2">Live Notifications</h4>
                   <p className="text-sm text-gray-600">Real-time updates</p>
                 </div>
               </div>
@@ -11876,7 +11876,7 @@ const [notifications, setNotifications] = useState<Notification[]>([
               
               <a href="/design-system/advanced-dashboard" target="_blank" rel="noopener noreferrer">
                 <AppleButton size="lg" variant="primary" data-testid="button-view-dashboard">
-                  🚀 View Full Dashboard Demo
+                  View Full Dashboard Demo
                   <IoChevronForwardOutline className="w-5 h-5 ml-2" />
                 </AppleButton>
               </a>
@@ -11887,35 +11887,35 @@ const [notifications, setNotifications] = useState<Notification[]>([
               <h3 className="text-lg font-semibold mb-3">Key Features</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Component composition pattern</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Real-time data synchronization</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Responsive grid layout</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>State management with React hooks</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Data visualization with charts</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Interactive filters and search</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Export and bulk actions</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Full i18n support</span>
                 </li>
               </ul>
@@ -11993,7 +11993,7 @@ function AdvancedDashboard() {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">🔄</span>
+                    <span className="text-2xl"></span>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1">Reusable Logic</h4>
@@ -12002,7 +12002,7 @@ function AdvancedDashboard() {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
+                    <span className="text-2xl"></span>
                   </div>
                   <div>
                     <h4 className="font-semibold mb-1">Performance Optimized</h4>
@@ -12146,35 +12146,35 @@ function AdvancedDashboard() {
               <h3 className="text-lg font-semibold mb-3">Tính năng chính</h3>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Select all / Deselect all</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Undo last action with state restoration</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Export dropdown (CSV/Excel/JSON)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Batch edit button</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Destructive actions with confirmation</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Keyboard shortcuts (Ctrl+Z, Ctrl+A)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Selected count indicator</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-green-500">✅</span>
+                  <span className="text-green-500">✓</span>
                   <span>Responsive toolbar layout</span>
                 </li>
               </ul>
@@ -12299,19 +12299,19 @@ const [lastAction, setLastAction] = useState<any>(null);
               <h3 className="text-lg font-semibold mb-4">Common Use Cases</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">📦 Product Management</h4>
+                  <h4 className="font-semibold mb-2">Product Management</h4>
                   <p className="text-sm text-gray-600">Bulk update prices, categories, or stock levels for multiple products</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">👥 User Management</h4>
+                  <h4 className="font-semibold mb-2">User Management</h4>
                   <p className="text-sm text-gray-600">Assign roles, send notifications, or export user data in bulk</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">📧 Email Campaigns</h4>
+                  <h4 className="font-semibold mb-2">Email Campaigns</h4>
                   <p className="text-sm text-gray-600">Send bulk emails, schedule campaigns, or manage recipients</p>
                 </div>
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-semibold mb-2">📊 Data Export</h4>
+                  <h4 className="font-semibold mb-2">Data Export</h4>
                   <p className="text-sm text-gray-600">Export selected data to various formats for analysis</p>
                 </div>
               </div>
