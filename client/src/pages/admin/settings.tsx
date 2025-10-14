@@ -26,9 +26,10 @@ import {
 } from "react-icons/hi2"
 import { FaTiktok, FaInstagram, FaYoutube, FaFacebookF } from "react-icons/fa"
 import IKKAdminLayout from "@/components/ikk-admin-layout"
+import { AppleTabs } from "@/components/apple"
 
 export default function AdminSettingsPage() {
-  const [selectedSettingsTab, setSelectedSettingsTab] = useState<'general' | 'security' | 'notifications' | 'integrations'>('general')
+  const [selectedSettingsTab, setSelectedSettingsTab] = useState<string>('general')
 
   return (
     <IKKAdminLayout>
@@ -67,78 +68,19 @@ export default function AdminSettingsPage() {
               </div>
             </div>
 
-            {/* Settings Tabs */}
-            <div className="border-b border-gray-200 mb-6">
-              <div className="flex gap-1">
-                <button
-                  onClick={() => setSelectedSettingsTab('general')}
-                  className={`px-4 py-3 text-sm font-medium transition-colors relative ${
-                    selectedSettingsTab === 'general'
-                      ? 'text-[#ff0086]'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="tab-settings-general"
-                >
-                  <div className="flex items-center gap-2">
-                    <HiOutlineCog6Tooth className="w-4 h-4" />
-                    <span>Cài đặt chung</span>
-                  </div>
-                  {selectedSettingsTab === 'general' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ff0086]"></div>
-                  )}
-                </button>
-                <button
-                  onClick={() => setSelectedSettingsTab('security')}
-                  className={`px-4 py-3 text-sm font-medium transition-colors relative ${
-                    selectedSettingsTab === 'security'
-                      ? 'text-[#ff0086]'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="tab-settings-security"
-                >
-                  <div className="flex items-center gap-2">
-                    <HiOutlineShieldCheck className="w-4 h-4" />
-                    <span>Bảo mật</span>
-                  </div>
-                  {selectedSettingsTab === 'security' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ff0086]"></div>
-                  )}
-                </button>
-                <button
-                  onClick={() => setSelectedSettingsTab('notifications')}
-                  className={`px-4 py-3 text-sm font-medium transition-colors relative ${
-                    selectedSettingsTab === 'notifications'
-                      ? 'text-[#ff0086]'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="tab-settings-notifications"
-                >
-                  <div className="flex items-center gap-2">
-                    <HiOutlineBell className="w-4 h-4" />
-                    <span>Thông báo</span>
-                  </div>
-                  {selectedSettingsTab === 'notifications' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ff0086]"></div>
-                  )}
-                </button>
-                <button
-                  onClick={() => setSelectedSettingsTab('integrations')}
-                  className={`px-4 py-3 text-sm font-medium transition-colors relative ${
-                    selectedSettingsTab === 'integrations'
-                      ? 'text-[#ff0086]'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
-                  data-testid="tab-settings-integrations"
-                >
-                  <div className="flex items-center gap-2">
-                    <HiOutlineSquares2X2 className="w-4 h-4" />
-                    <span>Tích hợp</span>
-                  </div>
-                  {selectedSettingsTab === 'integrations' && (
-                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ff0086]"></div>
-                  )}
-                </button>
-              </div>
+            {/* Settings Tabs using AppleTabs */}
+            <div className="mb-6">
+              <AppleTabs
+                tabs={[
+                  { id: 'general', label: 'Cài đặt chung', icon: <HiOutlineCog6Tooth className="w-4 h-4" /> },
+                  { id: 'security', label: 'Bảo mật', icon: <HiOutlineShieldCheck className="w-4 h-4" /> },
+                  { id: 'notifications', label: 'Thông báo', icon: <HiOutlineBell className="w-4 h-4" /> },
+                  { id: 'integrations', label: 'Tích hợp', icon: <HiOutlineSquares2X2 className="w-4 h-4" /> },
+                ]}
+                activeTab={selectedSettingsTab}
+                onChange={setSelectedSettingsTab}
+                variant="underline"
+              />
             </div>
 
             {/* General Settings Tab */}
