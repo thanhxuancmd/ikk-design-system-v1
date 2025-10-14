@@ -1,84 +1,81 @@
 import { useState, useEffect } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Checkbox } from "@/components/ui/checkbox"
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
 import { useToast } from "@/hooks/use-toast"
 import {
-  HiOutlinePlus,
-  HiOutlineFolder,
-  HiOutlineMagnifyingGlass,
-  HiOutlinePencil,
-  HiOutlineTrash,
-  HiOutlineChevronLeft,
-  HiOutlineChevronRight,
-  HiOutlineChevronUp,
-  HiOutlineChevronDown,
-  HiOutlineArrowDownTray,
-  HiOutlineSparkles,
-  HiOutlineDevicePhoneMobile,
-  HiOutlineShoppingBag,
-  HiOutlineMapPin,
-  HiOutlineSquares2X2,
-  HiOutlineHeart,
-  HiOutlineTrophy,
-  HiOutlineVideoCamera,
-  HiOutlineCake,
-  HiOutlinePaperAirplane,
-  HiOutlinePuzzlePiece,
-  HiOutlineAcademicCap,
-  HiOutlineBanknotes,
-  HiOutlineUser,
-  HiOutlineBeaker,
-  HiOutlineHome,
-  HiOutlineStar,
-  HiOutlineCube,
-  HiOutlineFolderOpen,
-  HiOutlineSquare3Stack3D,
-  HiOutlineXMark,
-  HiOutlineTableCells,
-  HiOutlineListBullet
-} from "react-icons/hi2"
-import { AppleMetricCard, AppleInput, AppleSelect, AppleButton } from "@/components/apple"
+  IoAddOutline,
+  IoFolderOutline,
+  IoSearchOutline,
+  IoCreateOutline,
+  IoTrashOutline,
+  IoChevronBackOutline,
+  IoChevronForwardOutline,
+  IoChevronUpOutline,
+  IoChevronDownOutline,
+  IoDownloadOutline,
+  IoSparklesOutline,
+  IoPhonePortraitOutline,
+  IoBagOutline,
+  IoLocationOutline,
+  IoGridOutline,
+  IoHeartOutline,
+  IoTrophyOutline,
+  IoVideocamOutline,
+  IoCafeOutline,
+  IoAirplaneOutline,
+  IoExtensionPuzzleOutline,
+  IoSchoolOutline,
+  IoCashOutline,
+  IoPersonOutline,
+  IoFlaskOutline,
+  IoHomeOutline,
+  IoStarOutline,
+  IoCubeOutline,
+  IoFolderOpenOutline,
+  IoLayersOutline,
+  IoCloseOutline,
+  IoListOutline
+} from "react-icons/io5"
+import { 
+  AppleMetricCard, 
+  AppleInput, 
+  AppleSelect, 
+  AppleButton, 
+  AppleCard, 
+  AppleBadge, 
+  AppleTextarea, 
+  ApplePopover, 
+  AppleModal, 
+  AppleDialog, 
+  AppleDropdown 
+} from "@/components/apple"
 import IKKAdminLayout from "@/components/ikk-admin-layout"
 import { categories as initialCategories, type Category } from "@shared/categories"
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
-  'Package': HiOutlineCube,
-  'Sparkles': HiOutlineSparkles,
-  'Smartphone': HiOutlineDevicePhoneMobile,
-  'ShoppingBag': HiOutlineShoppingBag,
-  'MapPin': HiOutlineMapPin,
-  'Grid2x2': HiOutlineSquares2X2,
-  'Heart': HiOutlineHeart,
-  'Trophy': HiOutlineTrophy,
-  'Video': HiOutlineVideoCamera,
-  'Coffee': HiOutlineCake,
-  'Plane': HiOutlinePaperAirplane,
-  'Gamepad2': HiOutlinePuzzlePiece,
-  'GraduationCap': HiOutlineAcademicCap,
-  'DollarSign': HiOutlineBanknotes,
-  'Wand2': HiOutlineSparkles,
-  'Baby': HiOutlineUser,
-  'Pill': HiOutlineBeaker,
-  'Sofa': HiOutlineHome,
-  'Flower2': HiOutlineStar,
-  'Utensils': HiOutlineCake,
-  'Home': HiOutlineHome,
-  'FolderOpen': HiOutlineFolderOpen,
-  'Grid3x3': HiOutlineSquare3Stack3D,
-  'Folder': HiOutlineFolder
+  'Package': IoCubeOutline,
+  'Sparkles': IoSparklesOutline,
+  'Smartphone': IoPhonePortraitOutline,
+  'ShoppingBag': IoBagOutline,
+  'MapPin': IoLocationOutline,
+  'Grid2x2': IoGridOutline,
+  'Heart': IoHeartOutline,
+  'Trophy': IoTrophyOutline,
+  'Video': IoVideocamOutline,
+  'Coffee': IoCafeOutline,
+  'Plane': IoAirplaneOutline,
+  'Gamepad2': IoExtensionPuzzleOutline,
+  'GraduationCap': IoSchoolOutline,
+  'DollarSign': IoCashOutline,
+  'Wand2': IoSparklesOutline,
+  'Baby': IoPersonOutline,
+  'Pill': IoFlaskOutline,
+  'Sofa': IoHomeOutline,
+  'Flower2': IoStarOutline,
+  'Utensils': IoCafeOutline,
+  'Home': IoHomeOutline,
+  'FolderOpen': IoFolderOpenOutline,
+  'Grid3x3': IoLayersOutline,
+  'Folder': IoFolderOutline
 }
 
 interface IconPickerProps {
@@ -87,13 +84,12 @@ interface IconPickerProps {
 }
 
 function IconPicker({ value, onChange }: IconPickerProps) {
-  const [open, setOpen] = useState(false)
   const iconNames = Object.keys(iconMap)
   const SelectedIcon = value ? iconMap[value] : null
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <ApplePopover
+      trigger={
         <AppleButton 
           variant="secondary" 
           className="w-full justify-start border-gray-300 hover:border-[#ff0086] focus:border-[#ff0086] focus:ring-[#ff0086]/20"
@@ -108,37 +104,36 @@ function IconPicker({ value, onChange }: IconPickerProps) {
             <span className="text-gray-400">Chọn icon...</span>
           )}
         </AppleButton>
-      </PopoverTrigger>
-      <PopoverContent className="w-80" data-testid="popover-icon-picker">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold text-gray-700">Chọn icon cho danh mục</p>
-          <div className="grid grid-cols-6 gap-2">
-            {iconNames.map(iconName => {
-              const IconComponent = iconMap[iconName]
-              const isSelected = value === iconName
-              return (
-                <button
-                  key={iconName}
-                  onClick={() => {
-                    onChange(iconName)
-                    setOpen(false)
-                  }}
-                  className={`p-2 hover:bg-pink-50 rounded-lg border-2 transition-all ${
-                    isSelected 
-                      ? 'border-[#ff0086] bg-pink-50' 
-                      : 'border-transparent hover:border-pink-300'
-                  }`}
-                  title={iconName}
-                  data-testid={`icon-option-${iconName}`}
-                >
-                  <IconComponent className={`w-6 h-6 ${isSelected ? 'text-[#ff0086]' : 'text-gray-600'}`} />
-                </button>
-              )
-            })}
-          </div>
+      }
+      showCloseButton={true}
+    >
+      <div className="space-y-2 w-80" data-testid="popover-icon-picker">
+        <p className="text-sm font-semibold text-gray-700">Chọn icon cho danh mục</p>
+        <div className="grid grid-cols-6 gap-2">
+          {iconNames.map(iconName => {
+            const IconComponent = iconMap[iconName]
+            const isSelected = value === iconName
+            return (
+              <button
+                key={iconName}
+                onClick={() => {
+                  onChange(iconName)
+                }}
+                className={`p-2 hover:bg-pink-50 rounded-lg border-2 transition-all ${
+                  isSelected 
+                    ? 'border-[#ff0086] bg-pink-50' 
+                    : 'border-transparent hover:border-pink-300'
+                }`}
+                title={iconName}
+                data-testid={`icon-option-${iconName}`}
+              >
+                <IconComponent className={`w-6 h-6 ${isSelected ? 'text-[#ff0086]' : 'text-gray-600'}`} />
+              </button>
+            )
+          })}
         </div>
-      </PopoverContent>
-    </Popover>
+      </div>
+    </ApplePopover>
   )
 }
 
@@ -151,61 +146,61 @@ const getCategoryIcon = (name: string, slug: string, iconName?: string) => {
   }
   
   if (name.includes('Làm đẹp') || slug.includes('beauty')) {
-    return <HiOutlineSparkles className={`${iconClass} text-pink-600`} />
+    return <IoSparklesOutline className={`${iconClass} text-pink-600`} />
   }
   if (name.includes('Công nghệ') || slug.includes('tech')) {
-    return <HiOutlineDevicePhoneMobile className={`${iconClass} text-blue-600`} />
+    return <IoPhonePortraitOutline className={`${iconClass} text-blue-600`} />
   }
   if (name.includes('Ẩm thực') || name.includes('Đồ ăn') || name.includes('thức uống') || slug.includes('food') || slug.includes('beverage')) {
-    return <HiOutlineShoppingBag className={`${iconClass} text-orange-600`} />
+    return <IoBagOutline className={`${iconClass} text-orange-600`} />
   }
   if (name.includes('Du lịch') || slug.includes('travel')) {
-    return <HiOutlineMapPin className={`${iconClass} text-green-600`} />
+    return <IoLocationOutline className={`${iconClass} text-green-600`} />
   }
   if (name.includes('Thời trang') || slug.includes('fashion')) {
-    return <HiOutlineSquares2X2 className={`${iconClass} text-rose-600`} />
+    return <IoGridOutline className={`${iconClass} text-rose-600`} />
   }
   if (name.includes('Lối sống') || name.includes('Lifestyle') || slug.includes('lifestyle')) {
-    return <HiOutlineHeart className={`${iconClass} text-purple-600`} />
+    return <IoHeartOutline className={`${iconClass} text-purple-600`} />
   }
   if (name.includes('Thể thao')) {
-    return <HiOutlineTrophy className={`${iconClass} text-red-600`} />
+    return <IoTrophyOutline className={`${iconClass} text-red-600`} />
   }
   if (name.includes('Giải trí') || slug.includes('entertainment')) {
-    return <HiOutlineVideoCamera className={`${iconClass} text-yellow-600`} />
+    return <IoVideocamOutline className={`${iconClass} text-yellow-600`} />
   }
   if (name.includes('Nhà hàng') || name.includes('cà phê') || slug.includes('restaurants')) {
-    return <HiOutlineCake className={`${iconClass} text-amber-600`} />
+    return <IoCafeOutline className={`${iconClass} text-amber-600`} />
   }
   if (name.includes('Game') || slug.includes('game')) {
-    return <HiOutlinePuzzlePiece className={`${iconClass} text-indigo-600`} />
+    return <IoExtensionPuzzleOutline className={`${iconClass} text-indigo-600`} />
   }
   if (name.includes('Giáo dục') || slug.includes('education')) {
-    return <HiOutlineAcademicCap className={`${iconClass} text-teal-600`} />
+    return <IoSchoolOutline className={`${iconClass} text-teal-600`} />
   }
   if (name.includes('Tài chính') || slug.includes('finance')) {
-    return <HiOutlineBanknotes className={`${iconClass} text-emerald-600`} />
+    return <IoCashOutline className={`${iconClass} text-emerald-600`} />
   }
   if (name.includes('Phong thuỷ') || slug.includes('feng_shui')) {
-    return <HiOutlineSparkles className={`${iconClass} text-violet-600`} />
+    return <IoSparklesOutline className={`${iconClass} text-violet-600`} />
   }
   if (name.includes('Mẹ và bé') || slug.includes('mom_baby')) {
-    return <HiOutlineUser className={`${iconClass} text-pink-500`} />
+    return <IoPersonOutline className={`${iconClass} text-pink-500`} />
   }
   if (name.includes('Mỹ phẩm') || slug.includes('cosmetics')) {
-    return <HiOutlineSparkles className={`${iconClass} text-pink-500`} />
+    return <IoSparklesOutline className={`${iconClass} text-pink-500`} />
   }
   if (name.includes('Dược phẩm') || slug.includes('pharma')) {
-    return <HiOutlineBeaker className={`${iconClass} text-red-500`} />
+    return <IoFlaskOutline className={`${iconClass} text-red-500`} />
   }
   if (name.includes('Nội thất') || slug.includes('furniture')) {
-    return <HiOutlineHome className={`${iconClass} text-brown-600`} />
+    return <IoHomeOutline className={`${iconClass} text-brown-600`} />
   }
   if (name.includes('Thú cưng') || slug.includes('pet')) {
-    return <HiOutlineStar className={`${iconClass} text-orange-500`} />
+    return <IoStarOutline className={`${iconClass} text-orange-500`} />
   }
   
-  return <HiOutlineCube className={`${iconClass} text-gray-600`} />
+  return <IoCubeOutline className={`${iconClass} text-gray-600`} />
 }
 
 const getTypeColor = (type: string) => {
@@ -219,10 +214,10 @@ const getTypeColor = (type: string) => {
 
 const getTypeIcon = (type: string) => {
   switch (type) {
-    case 'MAIN': return <HiOutlineSquare3Stack3D className="w-5 h-5 text-white" />
-    case 'PRODUCT': return <HiOutlineCube className="w-5 h-5 text-white" />
-    case 'SERVICE': return <HiOutlineFolderOpen className="w-5 h-5 text-white" />
-    default: return <HiOutlineFolder className="w-5 h-5 text-white" />
+    case 'MAIN': return <IoLayersOutline className="w-5 h-5 text-white" />
+    case 'PRODUCT': return <IoCubeOutline className="w-5 h-5 text-white" />
+    case 'SERVICE': return <IoFolderOpenOutline className="w-5 h-5 text-white" />
+    default: return <IoFolderOutline className="w-5 h-5 text-white" />
   }
 }
 
@@ -658,11 +653,15 @@ export default function AdminCategoriesPage() {
       <>
         <tr className="border-b hover:bg-gray-50">
           <td className="px-6 py-4 w-12">
-            <Checkbox
-              checked={selectedCategories.includes(category.category_id)}
-              onCheckedChange={(checked) => handleSelectCategory(category.category_id, checked as boolean)}
-              data-testid={`checkbox-select-${category.category_id}`}
-            />
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                checked={selectedCategories.includes(category.category_id)}
+                onChange={(e) => handleSelectCategory(category.category_id, e.target.checked)}
+                className="w-5 h-5 rounded border-2 border-gray-300 text-[#ff0086] focus:ring-[#ff0086] focus:ring-offset-1"
+                data-testid={`checkbox-select-${category.category_id}`}
+              />
+            </div>
           </td>
           <td className="px-6 py-4" style={{ paddingLeft: `${24 + (level * 32)}px` }}>
             <div className="flex items-center gap-2">
@@ -673,9 +672,9 @@ export default function AdminCategoriesPage() {
                   data-testid={`button-toggle-${category.category_id}`}
                 >
                   {isExpanded ? (
-                    <HiOutlineChevronDown className="w-4 h-4" />
+                    <IoChevronDownOutline className="w-4 h-4" />
                   ) : (
-                    <HiOutlineChevronRight className="w-4 h-4" />
+                    <IoChevronForwardOutline className="w-4 h-4" />
                   )}
                 </button>
               )}
@@ -697,7 +696,7 @@ export default function AdminCategoriesPage() {
             </code>
           </td>
           <td className="px-6 py-4">
-            <Badge className={getTypeColor(category.type)}>{category.type}</Badge>
+            <AppleBadge className={getTypeColor(category.type)}>{category.type}</AppleBadge>
           </td>
           <td className="px-6 py-4" data-testid={`text-parent-${category.category_id}`}>
             {category.parent_id ? (
@@ -719,22 +718,22 @@ export default function AdminCategoriesPage() {
           <td className="px-6 py-4">
             <div className="flex items-center justify-end gap-1">
               <AppleButton 
-                variant="ghost" 
+                variant="outline" 
                 size="sm" 
                 className="h-8 w-8 p-0 hover:bg-[#ff0086]/10 hover:text-[#ff0086]"
                 onClick={() => openEditDialog(category)}
                 data-testid={`button-edit-${category.category_id}`}
               >
-                <HiOutlinePencil className="w-4 h-4" />
+                <IoCreateOutline className="w-4 h-4" />
               </AppleButton>
               <AppleButton 
-                variant="danger" 
+                variant="destructive" 
                 size="sm" 
                 className="h-8 w-8 p-0"
                 onClick={() => openDeleteDialog(category.category_id)}
                 data-testid={`button-delete-${category.category_id}`}
               >
-                <HiOutlineTrash className="w-4 h-4" />
+                <IoTrashOutline className="w-4 h-4" />
               </AppleButton>
             </div>
           </td>
@@ -765,47 +764,42 @@ export default function AdminCategoriesPage() {
             </p>
           </div>
           <div className="flex gap-3">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+            <AppleDropdown
+              trigger={
                 <AppleButton variant="secondary" className="gap-2" data-testid="button-export">
-                  <HiOutlineArrowDownTray className="w-4 h-4" />
+                  <IoDownloadOutline className="w-4 h-4" />
                   Xuất dữ liệu
-                  <HiOutlineChevronDown className="w-4 h-4" />
+                  <IoChevronDownOutline className="w-4 h-4" />
                 </AppleButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem 
-                  onClick={() => handleExport('csv')}
-                  className="cursor-pointer"
-                  data-testid="export-csv"
-                >
-                  <HiOutlineArrowDownTray className="w-4 h-4 mr-2" />
-                  Xuất CSV
-                </DropdownMenuItem>
-                <DropdownMenuItem 
-                  onClick={() => handleExport('json')}
-                  className="cursor-pointer"
-                  data-testid="export-json"
-                >
-                  <HiOutlineArrowDownTray className="w-4 h-4 mr-2" />
-                  Xuất JSON
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+              }
+              items={[
+                {
+                  label: 'Xuất CSV',
+                  icon: <IoDownloadOutline className="w-4 h-4" />,
+                  onClick: () => handleExport('csv'),
+                },
+                {
+                  label: 'Xuất JSON',
+                  icon: <IoDownloadOutline className="w-4 h-4" />,
+                  onClick: () => handleExport('json'),
+                }
+              ]}
+              align="end"
+            />
             <AppleButton 
               variant="primary"
               className="gap-2" 
               onClick={() => setIsCreateDialogOpen(true)}
               data-testid="button-create"
             >
-              <HiOutlinePlus className="w-4 h-4" />
+              <IoAddOutline className="w-4 h-4" />
               Tạo danh mục
             </AppleButton>
           </div>
         </div>
 
-        <Card className="shadow-sm border border-gray-100">
-          <CardContent className="p-6">
+        <AppleCard variant="outlined" className="">
+          <AppleCard.Body>
             {/* Bulk Actions Bar */}
             {selectedCategories.length > 0 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 flex items-center justify-between">
@@ -814,7 +808,7 @@ export default function AdminCategoriesPage() {
                     Đã chọn {selectedCategories.length} danh mục
                   </span>
                   <AppleButton
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => setSelectedCategories([])}
                     className="text-blue-600 hover:text-blue-800"
@@ -831,17 +825,17 @@ export default function AdminCategoriesPage() {
                     className="gap-2"
                     data-testid="button-bulk-export"
                   >
-                    <HiOutlineArrowDownTray className="w-4 h-4" />
+                    <IoDownloadOutline className="w-4 h-4" />
                     Xuất đã chọn
                   </AppleButton>
                   <AppleButton
-                    variant="danger"
+                    variant="destructive"
                     size="sm"
                     onClick={handleBulkDelete}
                     className="gap-2"
                     data-testid="button-bulk-delete"
                   >
-                    <HiOutlineTrash className="w-4 h-4" />
+                    <IoTrashOutline className="w-4 h-4" />
                     Xóa đã chọn
                   </AppleButton>
                 </div>
@@ -853,7 +847,7 @@ export default function AdminCategoriesPage() {
               <AppleMetricCard
                 title="Danh mục chính"
                 value={mainCategories.length}
-                icon={<HiOutlineSquare3Stack3D className="w-5 h-5" />}
+                icon={<IoLayersOutline className="w-5 h-5" />}
                 trend="neutral"
                 valueTestId="stat-main"
               />
@@ -861,7 +855,7 @@ export default function AdminCategoriesPage() {
               <AppleMetricCard
                 title="Danh mục sản phẩm"
                 value={productCategories.length}
-                icon={<HiOutlineCube className="w-5 h-5" />}
+                icon={<IoCubeOutline className="w-5 h-5" />}
                 trend="neutral"
                 valueTestId="stat-product"
               />
@@ -869,7 +863,7 @@ export default function AdminCategoriesPage() {
               <AppleMetricCard
                 title="Danh mục dịch vụ"
                 value={serviceCategories.length}
-                icon={<HiOutlineFolderOpen className="w-5 h-5" />}
+                icon={<IoFolderOpenOutline className="w-5 h-5" />}
                 trend="neutral"
                 valueTestId="stat-service"
               />
@@ -877,7 +871,7 @@ export default function AdminCategoriesPage() {
               <AppleMetricCard
                 title="Tổng danh mục"
                 value={categories.length}
-                icon={<HiOutlineFolder className="w-5 h-5" />}
+                icon={<IoFolderOutline className="w-5 h-5" />}
                 trend="neutral"
                 valueTestId="stat-total"
               />
@@ -888,7 +882,7 @@ export default function AdminCategoriesPage() {
               <div className="flex flex-col gap-3">
                 <div className="flex flex-col md:flex-row gap-3">
                   <div className="relative flex-1">
-                    <HiOutlineMagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <IoSearchOutline className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       type="text"
                       placeholder="Tìm kiếm theo ID, tên, slug, mô tả..."
@@ -950,7 +944,7 @@ export default function AdminCategoriesPage() {
 
                 {(selectedType !== 'all' || selectedParentFilter !== 'all' || searchTerm !== '') && (
                   <AppleButton
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
                     onClick={() => {
                       setSelectedType('all')
@@ -961,7 +955,7 @@ export default function AdminCategoriesPage() {
                     className="text-gray-600 hover:text-gray-900 self-start"
                     data-testid="button-reset-filters"
                   >
-                    <HiOutlineXMark className="w-4 h-4 mr-2" />
+                    <IoCloseOutline className="w-4 h-4 mr-2" />
                     Đặt lại bộ lọc
                   </AppleButton>
                 )}
@@ -977,7 +971,7 @@ export default function AdminCategoriesPage() {
                 onClick={() => setViewMode('table')}
                 data-testid="button-view-table"
               >
-                <HiOutlineTableCells className="w-4 h-4 mr-2" />
+                <IoGridOutline className="w-4 h-4 mr-2" />
                 Bảng
               </AppleButton>
               <AppleButton
@@ -986,7 +980,7 @@ export default function AdminCategoriesPage() {
                 onClick={() => setViewMode('tree')}
                 data-testid="button-view-tree"
               >
-                <HiOutlineListBullet className="w-4 h-4 mr-2" />
+                <IoListOutline className="w-4 h-4 mr-2" />
                 Cây
               </AppleButton>
             </div>
@@ -1020,10 +1014,11 @@ export default function AdminCategoriesPage() {
                   <thead className="bg-purple-600 border-b border-purple-700">
                     <tr>
                       <th className="px-6 py-3 w-12">
-                        <Checkbox
+                        <input
+                          type="checkbox"
                           checked={isAllSelected}
-                          onCheckedChange={handleSelectAll}
-                          className="border-white data-[state=checked]:bg-white data-[state=checked]:text-purple-600"
+                          onChange={(e) => handleSelectAll(e.target.checked)}
+                          className="w-5 h-5 rounded border-2 border-white text-white focus:ring-white focus:ring-offset-1 bg-purple-700"
                           data-testid="checkbox-select-all"
                         />
                       </th>
@@ -1037,8 +1032,8 @@ export default function AdminCategoriesPage() {
                           CATEGORY ID
                           {sortBy === 'category_id' && (
                             sortOrder === 'asc' ? 
-                              <HiOutlineChevronUp className="w-4 h-4" /> : 
-                              <HiOutlineChevronDown className="w-4 h-4" />
+                              <IoChevronUpOutline className="w-4 h-4" /> : 
+                              <IoChevronDownOutline className="w-4 h-4" />
                           )}
                         </div>
                       </th>
@@ -1051,8 +1046,8 @@ export default function AdminCategoriesPage() {
                           TÊN DANH MỤC
                           {sortBy === 'name' && (
                             sortOrder === 'asc' ? 
-                              <HiOutlineChevronUp className="w-4 h-4" /> : 
-                              <HiOutlineChevronDown className="w-4 h-4" />
+                              <IoChevronUpOutline className="w-4 h-4" /> : 
+                              <IoChevronDownOutline className="w-4 h-4" />
                           )}
                         </div>
                       </th>
@@ -1065,8 +1060,8 @@ export default function AdminCategoriesPage() {
                           SLUG
                           {sortBy === 'slug' && (
                             sortOrder === 'asc' ? 
-                              <HiOutlineChevronUp className="w-4 h-4" /> : 
-                              <HiOutlineChevronDown className="w-4 h-4" />
+                              <IoChevronUpOutline className="w-4 h-4" /> : 
+                              <IoChevronDownOutline className="w-4 h-4" />
                           )}
                         </div>
                       </th>
@@ -1079,8 +1074,8 @@ export default function AdminCategoriesPage() {
                           TYPE
                           {sortBy === 'type' && (
                             sortOrder === 'asc' ? 
-                              <HiOutlineChevronUp className="w-4 h-4" /> : 
-                              <HiOutlineChevronDown className="w-4 h-4" />
+                              <IoChevronUpOutline className="w-4 h-4" /> : 
+                              <IoChevronDownOutline className="w-4 h-4" />
                           )}
                         </div>
                       </th>
@@ -1093,8 +1088,8 @@ export default function AdminCategoriesPage() {
                           PARENT ID
                           {sortBy === 'parent_id' && (
                             sortOrder === 'asc' ? 
-                              <HiOutlineChevronUp className="w-4 h-4" /> : 
-                              <HiOutlineChevronDown className="w-4 h-4" />
+                              <IoChevronUpOutline className="w-4 h-4" /> : 
+                              <IoChevronDownOutline className="w-4 h-4" />
                           )}
                         </div>
                       </th>
@@ -1116,9 +1111,11 @@ export default function AdminCategoriesPage() {
                       paginatedCategories.map((item) => (
                         <tr key={item.category_id} className="hover:bg-gray-50 transition-colors" data-testid={`row-${item.category_id}`}>
                           <td className="px-6 py-4 w-12">
-                            <Checkbox
+                            <input
+                              type="checkbox"
                               checked={selectedCategories.includes(item.category_id)}
-                              onCheckedChange={(checked) => handleSelectCategory(item.category_id, checked as boolean)}
+                              onChange={(e) => handleSelectCategory(item.category_id, e.target.checked)}
+                              className="w-5 h-5 rounded border-2 border-gray-300 text-[#ff0086] focus:ring-[#ff0086] focus:ring-offset-1"
                               data-testid={`checkbox-select-${item.category_id}`}
                             />
                           </td>
@@ -1141,7 +1138,7 @@ export default function AdminCategoriesPage() {
                             </code>
                           </td>
                           <td className="px-6 py-3">
-                            <Badge className={getTypeColor(item.type)}>{item.type}</Badge>
+                            <AppleBadge className={getTypeColor(item.type)}>{item.type}</AppleBadge>
                           </td>
                           <td className="px-6 py-3" data-testid={`text-parent-${item.category_id}`}>
                             {item.parent_id ? (
@@ -1163,22 +1160,22 @@ export default function AdminCategoriesPage() {
                           <td className="px-6 py-3">
                             <div className="flex items-center justify-end gap-1">
                               <AppleButton 
-                                variant="ghost" 
+                                variant="outline" 
                                 size="sm" 
                                 className="h-8 w-8 p-0 hover:bg-[#ff0086]/10 hover:text-[#ff0086]"
                                 onClick={() => openEditDialog(item)}
                                 data-testid={`button-edit-${item.category_id}`}
                               >
-                                <HiOutlinePencil className="w-4 h-4" />
+                                <IoCreateOutline className="w-4 h-4" />
                               </AppleButton>
                               <AppleButton 
-                                variant="danger" 
+                                variant="destructive" 
                                 size="sm" 
                                 className="h-8 w-8 p-0"
                                 onClick={() => openDeleteDialog(item.category_id)}
                                 data-testid={`button-delete-${item.category_id}`}
                               >
-                                <HiOutlineTrash className="w-4 h-4" />
+                                <IoTrashOutline className="w-4 h-4" />
                               </AppleButton>
                             </div>
                           </td>
@@ -1192,7 +1189,7 @@ export default function AdminCategoriesPage() {
               {/* Empty State - Search No Results */}
               {paginatedCategories.length === 0 && searchTerm && (
                 <div className="text-center py-12" data-testid="empty-search-state">
-                  <HiOutlineMagnifyingGlass className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                  <IoSearchOutline className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900">
                     Không tìm thấy kết quả
                   </h3>
@@ -1217,7 +1214,7 @@ export default function AdminCategoriesPage() {
               {/* Empty State - No Data */}
               {paginatedCategories.length === 0 && !searchTerm && (
                 <div className="text-center py-12" data-testid="empty-data-state">
-                  <HiOutlineFolderOpen className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                  <IoFolderOpenOutline className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                   <h3 className="text-lg font-medium text-gray-900">
                     Chưa có danh mục nào
                   </h3>
@@ -1230,7 +1227,7 @@ export default function AdminCategoriesPage() {
                     className="mt-4"
                     data-testid="button-create-first"
                   >
-                    <HiOutlinePlus className="w-4 h-4 mr-2" />
+                    <IoAddOutline className="w-4 h-4 mr-2" />
                     Tạo danh mục
                   </AppleButton>
                 </div>
@@ -1255,7 +1252,7 @@ export default function AdminCategoriesPage() {
                       onClick={() => setCurrentPage(currentPage - 1)}
                       data-testid="button-prev"
                     >
-                      <HiOutlineChevronLeft className="w-4 h-4" />
+                      <IoChevronBackOutline className="w-4 h-4" />
                     </AppleButton>
                     {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                       let pageNum
@@ -1287,115 +1284,26 @@ export default function AdminCategoriesPage() {
                       onClick={() => setCurrentPage(currentPage + 1)}
                       data-testid="button-next"
                     >
-                      <HiOutlineChevronRight className="w-4 h-4" />
+                      <IoChevronForwardOutline className="w-4 h-4" />
                     </AppleButton>
                   </div>
                 </div>
               )}
             </div>
-          </CardContent>
-        </Card>
+          </AppleCard.Body>
+        </AppleCard>
 
         {/* Create Dialog */}
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="dialog-create">
-            <DialogHeader className="border-b border-gray-200 pb-4">
-              <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-[#ff0086] to-purple-600 rounded-lg flex items-center justify-center">
-                  <HiOutlinePlus className="w-4 h-4 text-white" />
-                </div>
-                Tạo danh mục mới
-              </DialogTitle>
-            </DialogHeader>
-            <div className="grid grid-cols-2 gap-4 py-4">
-              <AppleInput
-                label="Category ID *"
-                name="category_id"
-                placeholder="VD: CAT001, P001, S001"
-                value={formData.category_id}
-                onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-              />
-              <AppleInput
-                label="Tên danh mục *"
-                name="name"
-                placeholder="VD: Làm đẹp"
-                value={formData.name}
-                onChange={(e) => {
-                  const newName = e.target.value
-                  const newSlug = generateSlug(newName)
-                  setFormData({ 
-                    ...formData, 
-                    name: newName,
-                    slug: newSlug
-                  })
-                  
-                  const validation = validateSlug(newSlug)
-                  setSlugError(validation.isValid ? '' : validation.error || '')
-                }}
-              />
-              <AppleInput
-                label="Slug *"
-                name="slug"
-                placeholder="VD: beauty, food_beverage"
-                value={formData.slug}
-                onChange={(e) => {
-                  const newSlug = e.target.value
-                  setFormData({ ...formData, slug: newSlug })
-                  
-                  const validation = validateSlug(newSlug)
-                  setSlugError(validation.isValid ? '' : validation.error || '')
-                }}
-                error={slugError}
-                helperText="Tự động tạo từ tên danh mục. Chỉ dùng chữ thường, số, _ và -"
-              />
-              <AppleSelect
-                label="Type *"
-                name="type"
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                options={[
-                  { value: 'MAIN', label: 'MAIN' },
-                  { value: 'PRODUCT', label: 'PRODUCT' },
-                  { value: 'SERVICE', label: 'SERVICE' }
-                ]}
-              />
-              <AppleSelect
-                label="Danh mục cha"
-                name="parent"
-                value={formData.parent_id || 'none'}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
-                  parent_id: e.target.value === 'none' ? '' : e.target.value 
-                })}
-                options={[
-                  { value: 'none', label: '- Không có -' },
-                  ...categories.map(cat => ({
-                    value: cat.category_id,
-                    label: `${cat.category_id} - ${cat.name}`
-                  }))
-                ]}
-              />
-              <div className="space-y-2">
-                <Label htmlFor="create-icon" className="text-sm font-semibold">Icon *</Label>
-                <IconPicker
-                  value={formData.icon_number}
-                  onChange={(iconName) => setFormData({ ...formData, icon_number: iconName })}
-                />
-              </div>
-              <div className="space-y-2 col-span-2">
-                <Label htmlFor="create-desc" className="text-sm font-semibold">Description *</Label>
-                <Textarea
-                  id="create-desc"
-                  placeholder="Mô tả chi tiết danh mục..."
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={3}
-                  className="border-gray-300 focus:border-[#ff0086] focus:ring-[#ff0086]/20"
-                  data-testid="textarea-create-desc"
-                />
-              </div>
-            </div>
-            <DialogFooter className="border-t border-gray-200 pt-4">
+        <AppleModal
+          open={isCreateDialogOpen}
+          onClose={() => {
+            setIsCreateDialogOpen(false)
+            resetForm()
+          }}
+          title="Tạo danh mục mới"
+          size="lg"
+          footer={
+            <div className="flex gap-2 justify-end" data-testid="dialog-create">
               <AppleButton variant="secondary" onClick={() => {
                 setIsCreateDialogOpen(false)
                 resetForm()
@@ -1410,106 +1318,109 @@ export default function AdminCategoriesPage() {
               >
                 {isCreating ? "Đang tạo..." : "Tạo danh mục"}
               </AppleButton>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <AppleInput
+              label="Category ID *"
+              name="category_id"
+              placeholder="VD: CAT001, P001, S001"
+              value={formData.category_id}
+              onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+            />
+            <AppleInput
+              label="Tên danh mục *"
+              name="name"
+              placeholder="VD: Làm đẹp"
+              value={formData.name}
+              onChange={(e) => {
+                const newName = e.target.value
+                const newSlug = generateSlug(newName)
+                setFormData({ 
+                  ...formData, 
+                  name: newName,
+                  slug: newSlug
+                })
+                
+                const validation = validateSlug(newSlug)
+                setSlugError(validation.isValid ? '' : validation.error || '')
+              }}
+            />
+            <AppleInput
+              label="Slug *"
+              name="slug"
+              placeholder="VD: beauty, food_beverage"
+              value={formData.slug}
+              onChange={(e) => {
+                const newSlug = e.target.value
+                setFormData({ ...formData, slug: newSlug })
+                
+                const validation = validateSlug(newSlug)
+                setSlugError(validation.isValid ? '' : validation.error || '')
+              }}
+              error={slugError}
+              helperText="Tự động tạo từ tên danh mục. Chỉ dùng chữ thường, số, _ và -"
+            />
+            <AppleSelect
+              label="Type *"
+              name="type"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+              options={[
+                { value: 'MAIN', label: 'MAIN' },
+                { value: 'PRODUCT', label: 'PRODUCT' },
+                { value: 'SERVICE', label: 'SERVICE' }
+              ]}
+            />
+            <AppleSelect
+              label="Danh mục cha"
+              name="parent"
+              value={formData.parent_id || 'none'}
+              onChange={(e) => setFormData({ 
+                ...formData, 
+                parent_id: e.target.value === 'none' ? '' : e.target.value 
+              })}
+              options={[
+                { value: 'none', label: '- Không có -' },
+                ...categories.map(cat => ({
+                  value: cat.category_id,
+                  label: `${cat.category_id} - ${cat.name}`
+                }))
+              ]}
+            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Icon *</label>
+              <IconPicker
+                value={formData.icon_number}
+                onChange={(iconName) => setFormData({ ...formData, icon_number: iconName })}
+              />
+            </div>
+            <div className="col-span-2">
+              <AppleTextarea
+                label="Description *"
+                name="create-desc"
+                placeholder="Mô tả chi tiết danh mục..."
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+                data-testid="textarea-create-desc"
+              />
+            </div>
+          </div>
+        </AppleModal>
 
         {/* Edit Dialog */}
-        <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="dialog-edit">
-            <DialogHeader className="border-b border-gray-200 pb-4">
-              <DialogTitle className="text-xl font-bold flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-[#ff0086] to-purple-600 rounded-lg flex items-center justify-center">
-                  <HiOutlinePencil className="w-4 h-4 text-white" />
-                </div>
-                Chỉnh sửa danh mục
-              </DialogTitle>
-            </DialogHeader>
-            <div className="grid grid-cols-2 gap-4 py-4">
-              <AppleInput
-                label="Category ID *"
-                name="category_id"
-                value={formData.category_id}
-                disabled
-              />
-              <AppleInput
-                label="Tên danh mục *"
-                name="name"
-                value={formData.name}
-                onChange={(e) => {
-                  const newName = e.target.value
-                  const newSlug = generateSlug(newName)
-                  setFormData({ 
-                    ...formData, 
-                    name: newName,
-                    slug: newSlug
-                  })
-                  
-                  const validation = validateSlug(newSlug)
-                  setSlugError(validation.isValid ? '' : validation.error || '')
-                }}
-              />
-              <AppleInput
-                label="Slug *"
-                name="slug"
-                value={formData.slug}
-                onChange={(e) => {
-                  const newSlug = e.target.value
-                  setFormData({ ...formData, slug: newSlug })
-                  
-                  const validation = validateSlug(newSlug)
-                  setSlugError(validation.isValid ? '' : validation.error || '')
-                }}
-                error={slugError}
-                helperText="Tự động tạo từ tên danh mục. Chỉ dùng chữ thường, số, _ và -"
-              />
-              <AppleSelect
-                label="Type *"
-                name="type"
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                options={[
-                  { value: 'MAIN', label: 'MAIN' },
-                  { value: 'PRODUCT', label: 'PRODUCT' },
-                  { value: 'SERVICE', label: 'SERVICE' }
-                ]}
-              />
-              <AppleSelect
-                label="Danh mục cha"
-                name="parent"
-                value={formData.parent_id || 'none'}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
-                  parent_id: e.target.value === 'none' ? '' : e.target.value 
-                })}
-                options={[
-                  { value: 'none', label: '- Không có -' },
-                  ...getAvailableParents(formData.category_id).map(cat => ({
-                    value: cat.category_id,
-                    label: `${cat.category_id} - ${cat.name}`
-                  }))
-                ]}
-              />
-              <div className="space-y-2">
-                <Label htmlFor="edit-icon" className="text-sm font-semibold">Icon</Label>
-                <IconPicker
-                  value={formData.icon_number}
-                  onChange={(iconName) => setFormData({ ...formData, icon_number: iconName })}
-                />
-              </div>
-              <div className="space-y-2 col-span-2">
-                <Label htmlFor="edit-desc" className="text-sm font-semibold">Description *</Label>
-                <Textarea
-                  id="edit-desc"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows={3}
-                  className="border-gray-300 focus:border-[#ff0086] focus:ring-[#ff0086]/20"
-                  data-testid="textarea-edit-desc"
-                />
-              </div>
-            </div>
-            <DialogFooter className="border-t border-gray-200 pt-4">
+        <AppleModal
+          open={isEditDialogOpen}
+          onClose={() => {
+            setIsEditDialogOpen(false)
+            resetForm()
+          }}
+          title="Chỉnh sửa danh mục"
+          size="lg"
+          footer={
+            <div className="flex gap-2 justify-end" data-testid="dialog-edit">
               <AppleButton variant="secondary" onClick={() => {
                 setIsEditDialogOpen(false)
                 resetForm()
@@ -1524,62 +1435,160 @@ export default function AdminCategoriesPage() {
               >
                 {isUpdating ? "Đang cập nhật..." : "Lưu thay đổi"}
               </AppleButton>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <AppleInput
+              label="Category ID *"
+              name="category_id"
+              value={formData.category_id}
+              disabled
+            />
+            <AppleInput
+              label="Tên danh mục *"
+              name="name"
+              value={formData.name}
+              onChange={(e) => {
+                const newName = e.target.value
+                const newSlug = generateSlug(newName)
+                setFormData({ 
+                  ...formData, 
+                  name: newName,
+                  slug: newSlug
+                })
+                
+                const validation = validateSlug(newSlug)
+                setSlugError(validation.isValid ? '' : validation.error || '')
+              }}
+            />
+            <AppleInput
+              label="Slug *"
+              name="slug"
+              value={formData.slug}
+              onChange={(e) => {
+                const newSlug = e.target.value
+                setFormData({ ...formData, slug: newSlug })
+                
+                const validation = validateSlug(newSlug)
+                setSlugError(validation.isValid ? '' : validation.error || '')
+              }}
+              error={slugError}
+              helperText="Tự động tạo từ tên danh mục. Chỉ dùng chữ thường, số, _ và -"
+            />
+            <AppleSelect
+              label="Type *"
+              name="type"
+              value={formData.type}
+              onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+              options={[
+                { value: 'MAIN', label: 'MAIN' },
+                { value: 'PRODUCT', label: 'PRODUCT' },
+                { value: 'SERVICE', label: 'SERVICE' }
+              ]}
+            />
+            <AppleSelect
+              label="Danh mục cha"
+              name="parent"
+              value={formData.parent_id || 'none'}
+              onChange={(e) => setFormData({ 
+                ...formData, 
+                parent_id: e.target.value === 'none' ? '' : e.target.value 
+              })}
+              options={[
+                { value: 'none', label: '- Không có -' },
+                ...getAvailableParents(formData.category_id).map(cat => ({
+                  value: cat.category_id,
+                  label: `${cat.category_id} - ${cat.name}`
+                }))
+              ]}
+            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Icon</label>
+              <IconPicker
+                value={formData.icon_number}
+                onChange={(iconName) => setFormData({ ...formData, icon_number: iconName })}
+              />
+            </div>
+            <div className="col-span-2">
+              <AppleTextarea
+                label="Description *"
+                name="edit-desc"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                rows={3}
+                data-testid="textarea-edit-desc"
+              />
+            </div>
+          </div>
+        </AppleModal>
 
         {/* Delete Dialog */}
-        <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <AlertDialogContent data-testid="dialog-delete">
-            <AlertDialogHeader>
-              <AlertDialogTitle className="text-xl font-bold">Xác nhận xóa danh mục</AlertDialogTitle>
-              <AlertDialogDescription className="text-base">
-                Bạn có chắc chắn muốn xóa danh mục <strong className="text-gray-900">{categoryToDelete}</strong>? 
-                Hành động này không thể hoàn tác.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel data-testid="button-cancel-delete">Hủy</AlertDialogCancel>
-              <AlertDialogAction 
-                className="bg-red-600 hover:bg-red-700 text-white"
+        <AppleDialog
+          open={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+          title="Xác nhận xóa danh mục"
+          variant="destructive"
+        >
+          <div data-testid="dialog-delete">
+            <p className="text-sm text-gray-600 mb-6">
+              Bạn có chắc chắn muốn xóa danh mục <strong className="text-gray-900">{categoryToDelete}</strong>? 
+              Hành động này không thể hoàn tác.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <AppleButton 
+                variant="secondary" 
+                onClick={() => setIsDeleteDialogOpen(false)}
+                data-testid="button-cancel-delete"
+              >
+                Hủy
+              </AppleButton>
+              <AppleButton 
+                variant="destructive"
                 onClick={handleDelete}
                 disabled={isDeleting}
                 data-testid="button-confirm-delete"
               >
                 {isDeleting ? "Đang xóa..." : "Xóa danh mục"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+              </AppleButton>
+            </div>
+          </div>
+        </AppleDialog>
 
         {/* Bulk Delete Dialog */}
-        <AlertDialog open={isBulkDeleteDialogOpen} onOpenChange={setIsBulkDeleteDialogOpen}>
-          <AlertDialogContent data-testid="dialog-bulk-delete">
-            <AlertDialogHeader>
-              <AlertDialogTitle>Xác nhận xóa nhiều danh mục</AlertDialogTitle>
-              <AlertDialogDescription>
-                Bạn có chắc chắn muốn xóa {selectedCategories.length} danh mục đã chọn? 
-                Hành động này không thể hoàn tác.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel data-testid="button-cancel-bulk-delete">
+        <AppleDialog
+          open={isBulkDeleteDialogOpen}
+          onClose={() => setIsBulkDeleteDialogOpen(false)}
+          title="Xác nhận xóa nhiều danh mục"
+          variant="destructive"
+        >
+          <div data-testid="dialog-bulk-delete">
+            <p className="text-sm text-gray-600 mb-6">
+              Bạn có chắc chắn muốn xóa {selectedCategories.length} danh mục đã chọn? 
+              Hành động này không thể hoàn tác.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <AppleButton 
+                variant="secondary" 
+                onClick={() => setIsBulkDeleteDialogOpen(false)}
+                data-testid="button-cancel-bulk-delete"
+              >
                 Hủy
-              </AlertDialogCancel>
-              <AlertDialogAction
+              </AppleButton>
+              <AppleButton 
+                variant="destructive"
                 onClick={(e) => {
                   e.preventDefault()
                   confirmBulkDelete()
                 }}
                 disabled={isDeleting}
-                className="bg-red-600 hover:bg-red-700 text-white"
                 data-testid="button-confirm-bulk-delete"
               >
                 {isDeleting ? "Đang xóa..." : `Xóa ${selectedCategories.length} danh mục`}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+              </AppleButton>
+            </div>
+          </div>
+        </AppleDialog>
       </div>
     </IKKAdminLayout>
   )
