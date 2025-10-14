@@ -65,7 +65,7 @@ UI Effects: Modern card-based design with clean shadows and borders
 
 **Objective:** Improve admin pages compliance with Apple HIG design system from 28% to 50% by standardizing layout and replacing custom UI with Apple components.
 
-**Refactored Pages (4):**
+**Refactored Pages (5):**
 1. **content.tsx** - Content moderation page
    - ✅ Fixed container: Changed to `max-w-7xl mx-auto px-4 mb-12`
    - ✅ Added header actions: "Xuất báo cáo" + "Thao tác hàng loạt" buttons (RIGHT aligned)
@@ -87,6 +87,15 @@ UI Effects: Modern card-based design with clean shadows and borders
    - ✅ Maintained all form handlers and state management
    - ✅ Header layout: Title LEFT, "Lưu nháp" + "Xuất bản" buttons RIGHT
 
+5. **brands/categories.tsx** - Category management page
+   - ✅ Fixed container: Already using `max-w-7xl mx-auto px-4 mb-12`
+   - ✅ Refactored header: Removed CardHeader gradient, simple div with h1 text-3xl (LEFT) + 2 buttons (RIGHT)
+   - ✅ Replaced 4 custom statistics cards with AppleMetricCard (Heroicons v2)
+   - ✅ Migrated ALL icons: 29 Lucide → Heroicons v2 (HiOutlinePlus, HiOutlineFolder, etc.)
+   - ✅ Replaced ALL form inputs: 6 Input → AppleInput (Create/Edit dialogs), 4 Select → AppleSelect
+   - ✅ Replaced ALL buttons: 24 Button → AppleButton (primary/secondary/danger variants)
+   - ✅ Preserved functionality: form validation, auto-slug, bulk actions, tree expand/collapse
+
 **Apple Components Integrated:**
 - **AppleMetricCard**: Statistics display with trend indicators (up/down/neutral)
 - **AppleTabs**: Consistent tab navigation with underline variant
@@ -96,11 +105,11 @@ UI Effects: Modern card-based design with clean shadows and borders
 - **AppleButton**: Buttons with variants (primary/secondary/danger)
 
 **Compliance Achievement:**
-- ✅ All 4 pages use mandatory container: `max-w-7xl mx-auto px-4 mb-12`
-- ✅ All 4 pages follow header layout: Title/description LEFT, 2 action buttons RIGHT
+- ✅ All 5 pages use mandatory container: `max-w-7xl mx-auto px-4 mb-12`
+- ✅ All 5 pages follow header layout: Title/description LEFT, 2 action buttons RIGHT
 - ✅ Zero LSP/TypeScript errors after refactoring
 - ✅ E2E tests passed: Design consistency verified, all components functional
-- ✅ Admin compliance improved: **28% → 50%** (Phase A target achieved)
+- ✅ Admin compliance improved: **28% → 55%** (Phase A extended - 5 pages refactored)
 
 **Next Steps:**
 - Phase B: Extend compliance to remaining admin pages (dashboard, campaigns, brands, KOC, analytics, financial, communication)
