@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { IoChevronUpOutline, IoChevronDownOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface Column<T> {
@@ -76,9 +76,9 @@ export function AppleTable<T extends Record<string, any>>({
                   {column.sortable && sortBy === column.key && (
                     <span className="text-gray-600">
                       {sortDirection === 'asc' ? (
-                        <ChevronUp className="w-4 h-4" />
+                        <IoChevronUpOutline className="w-4 h-4" />
                       ) : (
-                        <ChevronDown className="w-4 h-4" />
+                        <IoChevronDownOutline className="w-4 h-4" />
                       )}
                     </span>
                   )}

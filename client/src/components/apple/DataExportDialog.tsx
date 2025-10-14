@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { X, Download, FileSpreadsheet, FileJson, FileText, Check, Calendar } from 'lucide-react';
+import { IoCloseOutline, IoDownloadOutline, IoDocumentTextOutline, IoCheckmarkOutline, IoCalendarOutline } from 'react-icons/io5';
 import { DateRange } from 'react-day-picker';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
@@ -112,9 +112,9 @@ export interface DataExportDialogProps {
 }
 
 const formatIcons: Record<ExportFormat, JSX.Element> = {
-  csv: <FileText className="w-5 h-5" />,
-  excel: <FileSpreadsheet className="w-5 h-5" />,
-  json: <FileJson className="w-5 h-5" />,
+  csv: <IoDocumentTextOutline className="w-5 h-5" />,
+  excel: <IoDocumentTextOutline className="w-5 h-5" />,
+  json: <IoDocumentTextOutline className="w-5 h-5" />,
 };
 
 export function DataExportDialog({
@@ -262,7 +262,7 @@ export function DataExportDialog({
                 `}
                 aria-label={labels.closeButton}
               >
-                <X className="w-5 h-5" />
+                <IoCloseOutline className="w-5 h-5" />
               </button>
             </Dialog.Close>
           </div>
@@ -376,7 +376,7 @@ export function DataExportDialog({
               >
                 {exportComplete ? (
                   <>
-                    <Check className="w-5 h-5 text-green-600" />
+                    <IoCheckmarkOutline className="w-5 h-5 text-green-600" />
                     <span className="text-sm font-medium text-green-700">{labels.successMessage}</span>
                   </>
                 ) : (
@@ -411,7 +411,7 @@ export function DataExportDialog({
               {isExporting || exportComplete ? (
                 exportComplete ? (
                   <>
-                    <Check className="w-5 h-5" />
+                    <IoCheckmarkOutline className="w-5 h-5" />
                     {labels.completeButton}
                   </>
                 ) : (
@@ -422,7 +422,7 @@ export function DataExportDialog({
                 )
               ) : (
                 <>
-                  <Download className="w-5 h-5" />
+                  <IoDownloadOutline className="w-5 h-5" />
                   {labels.exportButton}
                 </>
               )}

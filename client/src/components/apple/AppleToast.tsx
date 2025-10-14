@@ -1,4 +1,4 @@
-import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
+import { IoCheckmarkCircleOutline, IoCloseCircleOutline, IoWarningOutline, IoInformationCircleOutline, IoCloseOutline } from 'react-icons/io5';
 import { useAppleToastContext, AppleToast as ToastType } from '@/contexts/AppleToastContext';
 import { designTokens } from '@/constants/design-tokens';
 
@@ -7,10 +7,10 @@ interface ToastProps {
 }
 
 const iconMap = {
-  success: CheckCircle,
-  error: XCircle,
-  warning: AlertTriangle,
-  info: Info,
+  success: IoCheckmarkCircleOutline,
+  error: IoCloseCircleOutline,
+  warning: IoWarningOutline,
+  info: IoInformationCircleOutline,
 };
 
 const colorMap = {
@@ -74,7 +74,7 @@ function Toast({ toast }: ToastProps) {
             ${designTokens.transitions.fast}
           `}
         >
-          <X className="w-4 h-4" />
+          <IoCloseOutline className="w-4 h-4" />
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { ShoppingBag, Package, Truck, CheckCircle, AlertCircle, Check } from 'lucide-react';
+import { IoBagHandleOutline, IoCubeOutline, IoCarOutline, IoCheckmarkCircleOutline, IoAlertCircleOutline, IoCheckmarkOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { format } from 'date-fns';
 
@@ -20,31 +20,31 @@ export interface OrderStatusTrackerProps {
 
 const statusOrder: OrderStatus[] = ['ordered', 'processing', 'shipping', 'delivered'];
 
-const defaultSteps: Record<OrderStatus, { label: string; description: string; icon: typeof ShoppingBag }> = {
+const defaultSteps: Record<OrderStatus, { label: string; description: string; icon: typeof IoBagHandleOutline }> = {
   ordered: {
     label: 'Đã đặt hàng',
     description: 'Đơn hàng đã được tạo',
-    icon: ShoppingBag,
+    icon: IoBagHandleOutline,
   },
   processing: {
     label: 'Đang xử lý',
     description: 'Đang chuẩn bị hàng',
-    icon: Package,
+    icon: IoCubeOutline,
   },
   shipping: {
     label: 'Đang giao hàng',
     description: 'Đơn hàng đang trên đường',
-    icon: Truck,
+    icon: IoCarOutline,
   },
   delivered: {
     label: 'Đã giao hàng',
     description: 'Giao hàng thành công',
-    icon: CheckCircle,
+    icon: IoCheckmarkCircleOutline,
   },
   cancelled: {
     label: 'Đã hủy',
     description: 'Đơn hàng đã bị hủy',
-    icon: AlertCircle,
+    icon: IoAlertCircleOutline,
   },
 };
 
@@ -102,7 +102,7 @@ export function OrderStatusTracker({
             flex items-start gap-3
           `}
         >
-          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <IoAlertCircleOutline className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
           <div>
             <h4 className="text-sm font-semibold text-red-900">
               {defaultSteps.cancelled.label}
@@ -117,7 +117,7 @@ export function OrderStatusTracker({
       <div className="relative">
         {displaySteps.map((step, index) => {
           const stepState = getStepState(step.status, currentStatus, isCancelled);
-          const StepIcon = defaultSteps[step.status]?.icon || ShoppingBag;
+          const StepIcon = defaultSteps[step.status]?.icon || IoBagHandleOutline;
           const isLast = index === displaySteps.length - 1;
 
           const iconColor = 
@@ -163,7 +163,7 @@ export function OrderStatusTracker({
                   data-testid={`status-icon-${step.status}`}
                 >
                   {stepState === 'completed' ? (
-                    <Check className="w-5 h-5 text-white" />
+                    <IoCheckmarkOutline className="w-5 h-5 text-white" />
                   ) : stepState === 'active' ? (
                     <div
                       className="w-3 h-3 rounded-full bg-[#ff0086] animate-pulse"

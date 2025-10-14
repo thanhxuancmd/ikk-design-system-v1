@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tag, X, Loader2 } from 'lucide-react';
+import { IoPricetagOutline, IoCloseOutline, IoReloadOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 export interface VoucherInputProps {
@@ -85,7 +85,7 @@ export function VoucherInput({
         <div className="flex-1 relative">
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <Tag className="w-5 h-5" />
+              <IoPricetagOutline className="w-5 h-5" />
             </div>
             
             <input
@@ -134,7 +134,7 @@ export function VoucherInput({
             aria-label="Xóa mã"
             title="Xóa mã"
           >
-            <X className="w-4 h-4" />
+            <IoCloseOutline className="w-4 h-4" />
           </button>
         ) : (
           <button
@@ -159,7 +159,7 @@ export function VoucherInput({
           >
             {isLoading ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <IoReloadOutline className="w-4 h-4 animate-spin" />
                 <span>Đang kiểm tra...</span>
               </>
             ) : (

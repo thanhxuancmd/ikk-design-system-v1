@@ -3,7 +3,7 @@ import { DayPicker, DateRange } from 'react-day-picker';
 import { format } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import * as Popover from '@radix-ui/react-popover';
-import { Calendar } from 'lucide-react';
+import { IoCalendarOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import 'react-day-picker/dist/style.css';
 
@@ -112,7 +112,7 @@ export function AppleDatePicker({
             data-testid={name ? `datepicker-${name}` : 'datepicker'}
           >
             <span className="block truncate">{formatDateDisplay()}</span>
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <IoCalendarOutline className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           </button>
         </Popover.Trigger>
 

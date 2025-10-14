@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { IoChevronBackOutline, IoChevronForwardOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface SidebarItem {
@@ -75,7 +75,7 @@ export function AppleSidebar({
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           aria-expanded={!isCollapsed}
         >
-          {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
+          {isCollapsed ? <IoChevronForwardOutline className="w-5 h-5" /> : <IoChevronBackOutline className="w-5 h-5" />}
         </button>
       </div>
 

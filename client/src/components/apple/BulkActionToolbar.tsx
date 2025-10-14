@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { X, RotateCcw, Download, Edit } from 'lucide-react';
+import { IoCloseOutline, IoReloadOutline, IoDownloadOutline, IoCreateOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
 import { AppleDialog } from './AppleDialog';
@@ -265,7 +265,7 @@ export function BulkActionToolbar({
                       {isIndeterminate ? (
                         <div className="w-2.5 h-0.5 bg-[#ff0086]" />
                       ) : (selectedCount === totalCount || allSelected) ? (
-                        <X className="w-3.5 h-3.5 text-white rotate-45" strokeWidth={3} />
+                        <IoCloseOutline className="w-3.5 h-3.5 text-white rotate-45" strokeWidth={3} />
                       ) : null}
                     </div>
                   </div>
@@ -297,7 +297,7 @@ export function BulkActionToolbar({
                   data-testid="button-undo"
                 >
                   <span className="flex items-center gap-2">
-                    <RotateCcw className="w-4 h-4" />
+                    <IoReloadOutline className="w-4 h-4" />
                     <span>{undoLabel || labels.undo}</span>
                   </span>
                 </AppleButton>
@@ -316,7 +316,7 @@ export function BulkActionToolbar({
                   data-testid="button-batch-edit"
                 >
                   <span className="flex items-center gap-2">
-                    <Edit className="w-4 h-4" />
+                    <IoCreateOutline className="w-4 h-4" />
                     <span>{batchEditLabel || labels.batchEdit}</span>
                   </span>
                 </AppleButton>
@@ -334,7 +334,7 @@ export function BulkActionToolbar({
                       data-testid="dropdown-export"
                     >
                       <span className="flex items-center gap-2">
-                        <Download className="w-4 h-4" />
+                        <IoDownloadOutline className="w-4 h-4" />
                         <span>{exporting ? 'Đang xuất...' : labels.export}</span>
                       </span>
                     </AppleButton>
@@ -342,7 +342,7 @@ export function BulkActionToolbar({
                   items={exportFormats.map(format => ({
                     label: labels[`export${format.charAt(0).toUpperCase()}${format.slice(1)}` as keyof typeof labels] as string,
                     onClick: () => handleExport(format),
-                    icon: <Download className="w-4 h-4" />
+                    icon: <IoDownloadOutline className="w-4 h-4" />
                   }))}
                 />
               )}
@@ -385,7 +385,7 @@ export function BulkActionToolbar({
                   aria-label="Close toolbar"
                   data-testid="button-close-toolbar"
                 >
-                  <X className="w-5 h-5" />
+                  <IoCloseOutline className="w-5 h-5" />
                 </button>
               )}
             </div>

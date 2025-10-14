@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, X, Video, MessageSquare, Package, FileText } from 'lucide-react';
+import { IoCheckmarkOutline, IoCloseOutline, IoVideocamOutline, IoChatboxOutline, IoCubeOutline, IoDocumentTextOutline } from 'react-icons/io5';
 import { formatDistanceToNow } from 'date-fns';
 import { vi } from 'date-fns/locale';
 import { designTokens } from '@/constants/design-tokens';
@@ -138,10 +138,10 @@ const defaultLabels: ContentModerationLabels = {
 };
 
 const contentTypeIcons: Record<ContentType, JSX.Element> = {
-  stream: <Video className="w-4 h-4" />,
-  comment: <MessageSquare className="w-4 h-4" />,
-  product: <Package className="w-4 h-4" />,
-  post: <FileText className="w-4 h-4" />,
+  stream: <IoVideocamOutline className="w-4 h-4" />,
+  comment: <IoChatboxOutline className="w-4 h-4" />,
+  product: <IoCubeOutline className="w-4 h-4" />,
+  post: <IoDocumentTextOutline className="w-4 h-4" />,
 };
 
 const statusVariants: Record<ModerationStatus, 'warning' | 'success' | 'error'> = {
@@ -305,7 +305,7 @@ export function ContentModerationQueue({
                 className="inline-flex items-center gap-1 !bg-green-600 hover:!bg-green-700"
                 data-testid={`button-approve-${item.id}`}
               >
-                <Check className="w-4 h-4" />
+                <IoCheckmarkOutline className="w-4 h-4" />
                 {labels.approveButton}
               </AppleButton>
               <AppleButton
@@ -315,7 +315,7 @@ export function ContentModerationQueue({
                 className="inline-flex items-center gap-1 !bg-red-600 hover:!bg-red-700"
                 data-testid={`button-reject-${item.id}`}
               >
-                <X className="w-4 h-4" />
+                <IoCloseOutline className="w-4 h-4" />
                 {labels.rejectButton}
               </AppleButton>
             </>

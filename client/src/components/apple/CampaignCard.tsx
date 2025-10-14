@@ -1,6 +1,6 @@
 import { designTokens } from '@/constants/design-tokens';
 import { AppleBadge } from '@/components/apple';
-import { Calendar, Users, Award } from 'lucide-react';
+import { IoCalendarOutline, IoPeopleOutline, IoTrophyOutline } from 'react-icons/io5';
 
 type CampaignType = 'review' | 'checkin' | 'cpi' | 'cpa' | 'seeding';
 type CampaignStatus = 'draft' | 'recruiting' | 'in-progress' | 'completed';
@@ -194,7 +194,7 @@ export function CampaignCard({
       {/* Reward Section */}
       <div className="px-6 pb-4">
         <div className="flex items-center gap-2">
-          <Award className="w-4 h-4 text-[#ff0086]" />
+          <IoTrophyOutline className="w-4 h-4 text-[#ff0086]" />
           <span className="text-sm text-gray-600">{labels.rewardLabel}</span>
           <span
             className="font-semibold text-[#ff0086]"
@@ -210,7 +210,7 @@ export function CampaignCard({
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-gray-400" />
+              <IoPeopleOutline className="w-4 h-4 text-gray-400" />
               <span className="text-gray-600">{labels.kocNeededLabel}</span>
             </div>
             <span
@@ -234,7 +234,7 @@ export function CampaignCard({
       {/* Deadline Section */}
       <div className="px-6 pb-6 pt-2 border-t border-gray-100">
         <div className="flex items-center gap-2">
-          <Calendar className="w-4 h-4 text-gray-400" />
+          <IoCalendarOutline className="w-4 h-4 text-gray-400" />
           <span className="text-sm text-gray-600">{labels.deadlineLabel}</span>
           <span
             className="text-sm font-medium text-gray-900"

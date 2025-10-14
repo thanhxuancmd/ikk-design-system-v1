@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
+import { IoCheckmarkCircleOutline, IoCloseCircleOutline, IoWarningOutline, IoInformationCircleOutline, IoCloseOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleAlertProps {
@@ -11,10 +11,10 @@ interface AppleAlertProps {
 }
 
 const iconMap = {
-  success: CheckCircle,
-  error: XCircle,
-  warning: AlertTriangle,
-  info: Info,
+  success: IoCheckmarkCircleOutline,
+  error: IoCloseCircleOutline,
+  warning: IoWarningOutline,
+  info: IoInformationCircleOutline,
 };
 
 const colorMap = {
@@ -86,7 +86,7 @@ export function AppleAlert({ severity, title, children, onClose, icon }: AppleAl
               ${designTokens.transitions.fast}
             `}
           >
-            <X className="w-5 h-5" />
+            <IoCloseOutline className="w-5 h-5" />
           </button>
         )}
       </div>

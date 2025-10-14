@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, ChevronLeft, ChevronRight, Package, CreditCard, FileCheck } from 'lucide-react';
+import { IoCheckmarkOutline, IoChevronBackOutline, IoChevronForwardOutline, IoCubeOutline, IoCardOutline, IoDocumentTextOutline } from 'react-icons/io5';
 import { AppleInput } from './AppleInput';
 import { AppleSelect } from './AppleSelect';
 import { AppleRadioGroup } from './AppleRadio';
@@ -102,9 +102,9 @@ export function CheckoutStepper({
   });
 
   const steps = [
-    { number: 1, label: 'Thông tin giao hàng', icon: Package },
-    { number: 2, label: 'Thanh toán', icon: CreditCard },
-    { number: 3, label: 'Xác nhận', icon: FileCheck },
+    { number: 1, label: 'Thông tin giao hàng', icon: IoCubeOutline },
+    { number: 2, label: 'Thanh toán', icon: IoCardOutline },
+    { number: 3, label: 'Xác nhận', icon: IoDocumentTextOutline },
   ];
 
   const validateStep1 = (): boolean => {
@@ -236,7 +236,7 @@ export function CheckoutStepper({
                   `}
                 >
                   {isCompleted ? (
-                    <Check className="w-5 h-5" />
+                    <IoCheckmarkOutline className="w-5 h-5" />
                   ) : (
                     <Icon className="w-5 h-5" />
                   )}
@@ -411,7 +411,7 @@ export function CheckoutStepper({
             {/* Shipping Summary */}
             <div className="mb-6" data-testid="summary-shipping">
               <h3 className={`${designTokens.typography.h3} mb-3 flex items-center`}>
-                <Package className="w-5 h-5 mr-2 text-[#ff0086]" />
+                <IoCubeOutline className="w-5 h-5 mr-2 text-[#ff0086]" />
                 Thông tin giao hàng
               </h3>
               <div className={`p-4 bg-gray-50 ${designTokens.borderRadius.md} space-y-2`}>
@@ -451,7 +451,7 @@ export function CheckoutStepper({
             {/* Payment Summary */}
             <div className="mb-6" data-testid="summary-payment">
               <h3 className={`${designTokens.typography.h3} mb-3 flex items-center`}>
-                <CreditCard className="w-5 h-5 mr-2 text-[#ff0086]" />
+                <IoCardOutline className="w-5 h-5 mr-2 text-[#ff0086]" />
                 Phương thức thanh toán
               </h3>
               <div className={`p-4 bg-gray-50 ${designTokens.borderRadius.md}`}>
@@ -467,7 +467,7 @@ export function CheckoutStepper({
             {/* Order Summary */}
             <div className="mb-6" data-testid="summary-order">
               <h3 className={`${designTokens.typography.h3} mb-3 flex items-center`}>
-                <FileCheck className="w-5 h-5 mr-2 text-[#ff0086]" />
+                <IoDocumentTextOutline className="w-5 h-5 mr-2 text-[#ff0086]" />
                 Tổng đơn hàng
               </h3>
               <div className={`p-4 bg-gray-50 ${designTokens.borderRadius.md} space-y-3`}>
@@ -522,7 +522,7 @@ export function CheckoutStepper({
               data-testid="button-back"
               className="flex items-center"
             >
-              <ChevronLeft className="w-4 h-4 mr-1" />
+              <IoChevronBackOutline className="w-4 h-4 mr-1" />
               Quay lại
             </AppleButton>
           )}
@@ -546,7 +546,7 @@ export function CheckoutStepper({
               className="flex items-center"
             >
               Tiếp tục
-              <ChevronRight className="w-4 h-4 ml-1" />
+              <IoChevronForwardOutline className="w-4 h-4 ml-1" />
             </AppleButton>
           ) : (
             <AppleButton
@@ -555,7 +555,7 @@ export function CheckoutStepper({
               data-testid="button-complete"
               className="flex items-center"
             >
-              <Check className="w-4 h-4 mr-1" />
+              <IoCheckmarkOutline className="w-4 h-4 mr-1" />
               Hoàn tất đơn hàng
             </AppleButton>
           )}

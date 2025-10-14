@@ -1,5 +1,5 @@
 import { InputHTMLAttributes, useId } from 'react';
-import { Check } from 'lucide-react';
+import { IoCheckmarkOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleCheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -38,7 +38,7 @@ export function AppleCheckbox({
             cursor-pointer
           `}
         >
-          <Check 
+          <IoCheckmarkOutline 
             className={`
               w-3.5 h-3.5 text-white
               ${designTokens.transitions.base}

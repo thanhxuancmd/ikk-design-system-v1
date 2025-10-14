@@ -1,5 +1,5 @@
 import { Component, ReactNode, ErrorInfo } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { IoAlertCircleOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
 
@@ -63,7 +63,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               data-testid="error-icon"
             >
               <div className="w-20 h-20 rounded-full bg-red-100 flex items-center justify-center">
-                <AlertCircle className="w-12 h-12 text-red-600" />
+                <IoAlertCircleOutline className="w-12 h-12 text-red-600" />
               </div>
             </div>
 

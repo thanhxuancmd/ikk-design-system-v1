@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { IoTrendingUpOutline, IoTrendingDownOutline, IoRemoveOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleMetricCardProps {
@@ -45,9 +45,9 @@ export function AppleMetricCard({
   };
 
   const trendIcons = {
-    up: <TrendingUp className="w-4 h-4" />,
-    down: <TrendingDown className="w-4 h-4" />,
-    neutral: <Minus className="w-4 h-4" />,
+    up: <IoTrendingUpOutline className="w-4 h-4" />,
+    down: <IoTrendingDownOutline className="w-4 h-4" />,
+    neutral: <IoRemoveOutline className="w-4 h-4" />,
   };
 
   const variantColors = {

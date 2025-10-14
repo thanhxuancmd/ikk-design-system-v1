@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
-import { ChevronDown } from 'lucide-react';
+import { IoChevronDownOutline } from 'react-icons/io5';
 import { DateRange } from 'react-day-picker';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleCheckbox } from './AppleCheckbox';
@@ -236,7 +236,7 @@ export function AppleFilterPanel({
                   data-testid={`filter-group-trigger-${filter.id}`}
                 >
                   <span className={designTokens.typography.small}>{filter.label}</span>
-                  <ChevronDown
+                  <IoChevronDownOutline
                     className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${
                       isOpen ? 'rotate-180' : 'rotate-0'
                     }`}

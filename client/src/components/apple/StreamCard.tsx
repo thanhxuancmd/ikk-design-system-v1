@@ -1,6 +1,6 @@
 import { designTokens } from '@/constants/design-tokens';
 import { AppleAvatar, AppleBadge } from '@/components/apple';
-import { Eye } from 'lucide-react';
+import { IoEyeOutline } from 'react-icons/io5';
 
 interface StreamCardProps {
   id: string;
@@ -89,7 +89,7 @@ export function StreamCard({
           data-testid={`viewer-count-${id}`}
           aria-label={`${viewerCount} viewers`}
         >
-          <Eye className="w-3.5 h-3.5" />
+          <IoEyeOutline className="w-3.5 h-3.5" />
           {formatViewerCount(viewerCount)} {viewersLabel}
         </div>
       </div>

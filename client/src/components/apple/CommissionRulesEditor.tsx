@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Trash2, Calculator } from 'lucide-react';
+import { IoAddOutline, IoTrashOutline, IoCalculatorOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleSelect } from './AppleSelect';
 import { AppleInput } from './AppleInput';
@@ -311,7 +311,7 @@ export function CommissionRulesEditor({
                   data-testid={`button-remove-rule-${rule.id}`}
                   className="!text-red-600 hover:!text-red-700 hover:!bg-red-50 !bg-transparent"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <IoTrashOutline className="w-4 h-4" />
                 </AppleButton>
               </div>
 
@@ -333,7 +333,7 @@ export function CommissionRulesEditor({
             data-testid="button-add-rule"
             className="w-full inline-flex items-center justify-center gap-2"
           >
-            <Plus className="w-5 h-5" />
+            <IoAddOutline className="w-5 h-5" />
             {labels.addRuleButton}
           </AppleButton>
         </div>
@@ -343,7 +343,7 @@ export function CommissionRulesEditor({
           <AppleCard data-testid="preview-panel">
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-gray-900">
-                <Calculator className="w-5 h-5 text-[#ff0086]" />
+                <IoCalculatorOutline className="w-5 h-5 text-[#ff0086]" />
                 <h3 className={`${designTokens.typography.h3}`}>{labels.previewTitle}</h3>
               </div>
 

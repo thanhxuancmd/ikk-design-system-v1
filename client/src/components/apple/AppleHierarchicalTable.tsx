@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, KeyboardEvent, ReactNode } from 'react';
-import { ChevronRight, ChevronDown, Loader2 } from 'lucide-react';
+import { IoChevronForwardOutline, IoChevronDownOutline, IoReloadOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
 import { EmptyState } from './EmptyState';
@@ -292,7 +292,7 @@ export function AppleHierarchicalTable<T = any>({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12" data-testid="hierarchical-table-loading">
-        <Loader2 className="w-8 h-8 animate-spin text-[var(--apple-primary)]" />
+        <IoReloadOutline className="w-8 h-8 animate-spin text-[var(--apple-primary)]" />
         <span className="ml-3 text-gray-600">{labels.loading}</span>
       </div>
     );
@@ -423,11 +423,11 @@ export function AppleHierarchicalTable<T = any>({
                               data-testid={`toggle-${row.node.id}`}
                             >
                               {isRowLoading ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <IoReloadOutline className="w-4 h-4 animate-spin" />
                               ) : isRowExpanded ? (
-                                <ChevronDown className="w-4 h-4" />
+                                <IoChevronDownOutline className="w-4 h-4" />
                               ) : (
-                                <ChevronRight className="w-4 h-4" />
+                                <IoChevronForwardOutline className="w-4 h-4" />
                               )}
                             </button>
                           ) : (

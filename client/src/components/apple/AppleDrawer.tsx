@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { X } from 'lucide-react';
+import { IoCloseOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { cn } from '@/lib/utils';
 
@@ -82,7 +82,7 @@ export function AppleDrawer({
                       designTokens.transitions.fast
                     )}
                   >
-                    <X className="h-5 w-5" />
+                    <IoCloseOutline className="h-5 w-5" />
                   </Dialog.Close>
                 )}
               </div>

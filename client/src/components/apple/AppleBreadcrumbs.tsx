@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { IoChevronForwardOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface BreadcrumbItem {
@@ -15,7 +15,7 @@ interface AppleBreadcrumbsProps {
 
 export function AppleBreadcrumbs({ 
   items, 
-  separator = <ChevronRight className="w-4 h-4" /> 
+  separator = <IoChevronForwardOutline className="w-4 h-4" /> 
 }: AppleBreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb">

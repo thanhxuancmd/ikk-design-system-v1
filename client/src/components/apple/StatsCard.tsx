@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { IoTrendingUpOutline, IoTrendingDownOutline, IoRemoveOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface StatsCardChangeLabels {
@@ -75,9 +75,9 @@ export function StatsCard({
   };
 
   const changeIcons = {
-    increase: <TrendingUp className="w-4 h-4" />,
-    decrease: <TrendingDown className="w-4 h-4" />,
-    neutral: <Minus className="w-4 h-4" />,
+    increase: <IoTrendingUpOutline className="w-4 h-4" />,
+    decrease: <IoTrendingDownOutline className="w-4 h-4" />,
+    neutral: <IoRemoveOutline className="w-4 h-4" />,
   };
 
   const changeLabelMap = {

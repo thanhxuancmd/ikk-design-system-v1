@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Bell, Check, X, Trash2, AlertCircle, CheckCircle, AlertTriangle, Info } from 'lucide-react';
+import { IoNotificationsOutline, IoCheckmarkOutline, IoCloseOutline, IoTrashOutline, IoAlertCircleOutline, IoCheckmarkCircleOutline, IoWarningOutline, IoInformationCircleOutline } from 'react-icons/io5';
 import { AppleAvatar } from './AppleAvatar';
 import { AppleTabs } from './AppleTabs';
 import { AppleButton } from './AppleButton';
@@ -78,10 +78,10 @@ const defaultLabels = {
 };
 
 const notificationTypeIcons = {
-  info: Info,
-  success: CheckCircle,
-  warning: AlertTriangle,
-  error: AlertCircle,
+  info: IoInformationCircleOutline,
+  success: IoCheckmarkCircleOutline,
+  warning: IoWarningOutline,
+  error: IoAlertCircleOutline,
 };
 
 const notificationTypeColors = {
@@ -218,7 +218,7 @@ export function AppleNotificationCenter({
         aria-haspopup="dialog"
         data-testid="notification-trigger"
       >
-        <Bell className="w-5 h-5 text-gray-600" />
+        <IoNotificationsOutline className="w-5 h-5 text-gray-600" />
         {unreadCount > 0 && (
           <span
             className={cn(
@@ -281,7 +281,7 @@ export function AppleNotificationCenter({
                   aria-label={labels.clearAll}
                   data-testid="button-clear-all"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <IoTrashOutline className="w-4 h-4" />
                 </button>
               )}
             </div>
@@ -454,7 +454,7 @@ function NotificationItem({
                   aria-label={labels.markAsRead}
                   data-testid={`button-mark-read-${notification.id}`}
                 >
-                  <Check className="w-4 h-4" />
+                  <IoCheckmarkOutline className="w-4 h-4" />
                 </button>
               )}
             </div>

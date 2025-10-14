@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import * as Popover from '@radix-ui/react-popover';
-import { X } from 'lucide-react';
+import { IoCloseOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface ApplePopoverProps {
@@ -69,7 +69,7 @@ export function ApplePopover({
                   aria-label="Close"
                   data-testid="popover-close"
                 >
-                  <X className="h-4 w-4" />
+                  <IoCloseOutline className="h-4 w-4" />
                 </Popover.Close>
               )}
             </div>
@@ -87,7 +87,7 @@ export function ApplePopover({
                 aria-label="Close"
                 data-testid="popover-close"
               >
-                <X className="h-4 w-4" />
+                <IoCloseOutline className="h-4 w-4" />
               </Popover.Close>
             </div>
           )}

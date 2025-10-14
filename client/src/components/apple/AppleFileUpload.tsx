@@ -1,5 +1,5 @@
 import { useId, useRef, useState, useEffect, DragEvent, ChangeEvent, HTMLAttributes } from 'react';
-import { Upload, X, File } from 'lucide-react';
+import { IoCloudUploadOutline, IoCloseOutline, IoDocumentOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleFileUploadProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -277,7 +277,7 @@ export function AppleFileUpload({
         `}
         data-testid={name ? `fileupload-${name}` : 'fileupload'}
       >
-        <Upload className={`w-8 h-8 mb-2 ${isDragging ? 'text-[#ff0086]' : 'text-gray-400'}`} />
+        <IoCloudUploadOutline className={`w-8 h-8 mb-2 ${isDragging ? 'text-[#ff0086]' : 'text-gray-400'}`} />
         <p className="text-sm text-gray-600 text-center mb-2">
           Kéo thả tệp vào đây hoặc nhấp để chọn
         </p>
@@ -343,7 +343,7 @@ export function AppleFileUpload({
                   `}
                   data-testid={`button-remove-${index}`}
                 >
-                  <X className="w-4 h-4" />
+                  <IoCloseOutline className="w-4 h-4" />
                 </button>
 
                 {/* Preview content */}
@@ -361,7 +361,7 @@ export function AppleFileUpload({
                   </div>
                 ) : (
                   <div className="flex items-start gap-2">
-                    <File className="w-8 h-8 text-gray-400 flex-shrink-0" />
+                    <IoDocumentOutline className="w-8 h-8 text-gray-400 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-gray-600 truncate" title={file.name}>
                         {file.name}

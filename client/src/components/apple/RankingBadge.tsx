@@ -1,4 +1,4 @@
-import { Trophy, Star, Award } from 'lucide-react';
+import { IoTrophyOutline, IoStarOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface RankingBadgeTierLabels {
@@ -91,11 +91,11 @@ export function RankingBadge({
     const iconClass = sizeClasses[size].icon;
 
     if (rank === 1) {
-      return <Trophy className={iconClass} data-testid={`rank-icon-${rank}`} />;
+      return <IoTrophyOutline className={iconClass} data-testid={`rank-icon-${rank}`} />;
     } else if (rank === 2) {
-      return <Award className={iconClass} data-testid={`rank-icon-${rank}`} />;
+      return <IoTrophyOutline className={iconClass} data-testid={`rank-icon-${rank}`} />;
     } else if (rank === 3) {
-      return <Star className={iconClass} data-testid={`rank-icon-${rank}`} />;
+      return <IoStarOutline className={iconClass} data-testid={`rank-icon-${rank}`} />;
     }
 
     return null;

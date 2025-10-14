@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Database, Search, Lock, FileQuestion, WifiOff } from 'lucide-react';
+import { IoServerOutline, IoSearchOutline, IoLockClosedOutline, IoHelpCircleOutline, IoCloudOfflineOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
 
@@ -23,27 +23,27 @@ const variantConfig: Record<EmptyStateVariant, {
   description: string;
 }> = {
   noData: {
-    icon: <Database className="w-30 h-30" />,
+    icon: <IoServerOutline className="w-30 h-30" />,
     title: "Chưa có dữ liệu",
     description: "Dữ liệu sẽ xuất hiện ở đây khi có sẵn"
   },
   noResults: {
-    icon: <Search className="w-30 h-30" />,
+    icon: <IoSearchOutline className="w-30 h-30" />,
     title: "Không tìm thấy kết quả",
     description: "Hãy thử tìm kiếm với từ khóa khác"
   },
   noPermission: {
-    icon: <Lock className="w-30 h-30" />,
+    icon: <IoLockClosedOutline className="w-30 h-30" />,
     title: "Không có quyền truy cập",
     description: "Bạn không có quyền xem nội dung này"
   },
   notFound: {
-    icon: <FileQuestion className="w-30 h-30" />,
+    icon: <IoHelpCircleOutline className="w-30 h-30" />,
     title: "Không tìm thấy trang",
     description: "Trang bạn tìm kiếm không tồn tại"
   },
   offline: {
-    icon: <WifiOff className="w-30 h-30" />,
+    icon: <IoCloudOfflineOutline className="w-30 h-30" />,
     title: "Mất kết nối",
     description: "Kiểm tra kết nối mạng và thử lại"
   }

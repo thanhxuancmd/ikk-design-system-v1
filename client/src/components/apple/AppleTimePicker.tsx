@@ -1,6 +1,6 @@
 import { HTMLAttributes, useId, useState, useEffect, useRef, KeyboardEvent } from 'react';
 import * as Popover from '@radix-ui/react-popover';
-import { Clock } from 'lucide-react';
+import { IoTimeOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleTimePickerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -167,7 +167,7 @@ export function AppleTimePicker({
             data-testid={name ? `timepicker-${name}` : 'timepicker'}
           >
             <span className="block truncate">{value || 'Chọn giờ'}</span>
-            <Clock className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <IoTimeOutline className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           </button>
         </Popover.Trigger>
 

@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { IoChevronBackOutline, IoChevronForwardOutline, IoPlayBackOutline, IoPlayForwardOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface ApplePaginationProps {
@@ -89,7 +89,7 @@ export function ApplePagination({
           className={navButtonClass}
           aria-label="Go to first page"
         >
-          <ChevronsLeft className="w-5 h-5" />
+          <IoPlayBackOutline className="w-5 h-5" />
         </button>
       )}
       
@@ -100,7 +100,7 @@ export function ApplePagination({
         className={navButtonClass}
         aria-label="Go to previous page"
       >
-        <ChevronLeft className="w-5 h-5" />
+        <IoChevronBackOutline className="w-5 h-5" />
       </button>
 
       {getPageNumbers().map((page, index) => {
@@ -140,7 +140,7 @@ export function ApplePagination({
         className={navButtonClass}
         aria-label="Go to next page"
       >
-        <ChevronRight className="w-5 h-5" />
+        <IoChevronForwardOutline className="w-5 h-5" />
       </button>
 
       {showFirstLast && (
@@ -151,7 +151,7 @@ export function ApplePagination({
           className={navButtonClass}
           aria-label="Go to last page"
         >
-          <ChevronsRight className="w-5 h-5" />
+          <IoPlayForwardOutline className="w-5 h-5" />
         </button>
       )}
     </nav>

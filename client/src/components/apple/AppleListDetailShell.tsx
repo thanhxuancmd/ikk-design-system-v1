@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { IoChevronBackOutline } from 'react-icons/io5';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { designTokens } from '@/constants/design-tokens';
 import { cn } from '@/lib/utils';
@@ -352,7 +352,7 @@ export function AppleListDetailShell<T extends { id: string | number }>({
               'hover:opacity-80'
             )}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <IoChevronBackOutline className="w-5 h-5" />
             <span className="font-medium">{mergedLabels.backButton}</span>
           </button>
           

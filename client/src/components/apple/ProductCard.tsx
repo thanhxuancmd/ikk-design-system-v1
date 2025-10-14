@@ -1,6 +1,6 @@
 import { designTokens } from '@/constants/design-tokens';
 import { AppleBadge } from '@/components/apple';
-import { Star } from 'lucide-react';
+import { IoStarOutline } from 'react-icons/io5';
 
 interface ProductCardLabels {
   discountPrefix?: string;
@@ -67,7 +67,7 @@ export function ProductCard({
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400"
             data-testid={`star-filled-${i}`}
@@ -75,7 +75,7 @@ export function ProductCard({
         );
       } else if (i === fullStars && hasHalfStar) {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400"
             style={{ clipPath: 'inset(0 50% 0 0)' }}
@@ -84,7 +84,7 @@ export function ProductCard({
         );
       } else {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 text-gray-300"
             data-testid={`star-empty-${i}`}

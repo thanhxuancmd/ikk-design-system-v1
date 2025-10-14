@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef } from 'react';
-import { X } from 'lucide-react';
+import { IoCloseOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleModalProps {
@@ -119,7 +119,7 @@ export function AppleModal({
               ${designTokens.transitions.fast}
             `}
           >
-            <X className="w-5 h-5" />
+            <IoCloseOutline className="w-5 h-5" />
           </button>
         </div>
 

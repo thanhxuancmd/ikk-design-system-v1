@@ -1,5 +1,5 @@
 import { ReactNode, useState, useRef, useEffect } from 'react';
-import { Menu, X, ChevronDown } from 'lucide-react';
+import { IoMenuOutline, IoCloseOutline, IoChevronDownOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface NavItem {
@@ -103,7 +103,7 @@ export function AppleNav({
             aria-haspopup="true"
           >
             {item.label}
-            <ChevronDown 
+            <IoChevronDownOutline 
               className={`w-4 h-4 ${designTokens.transitions.base} ${isDropdownOpen ? 'rotate-180' : ''}`} 
             />
           </button>
@@ -187,7 +187,7 @@ export function AppleNav({
             aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <IoCloseOutline className="w-6 h-6" /> : <IoMenuOutline className="w-6 h-6" />}
           </button>
         </div>
 

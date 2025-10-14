@@ -5,7 +5,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent
 } from '@radix-ui/react-dropdown-menu';
-import { ChevronRight } from 'lucide-react';
+import { IoChevronForwardOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 export interface DropdownItem {
@@ -73,7 +73,7 @@ function DropdownItems({ items }: { items: DropdownItem[] }) {
                   {item.icon && <span className="w-4 h-4">{item.icon}</span>}
                   <span>{item.label}</span>
                 </div>
-                <ChevronRight className="w-4 h-4" />
+                <IoChevronForwardOutline className="w-4 h-4" />
               </DropdownMenuSubTrigger>
               <DropdownMenu.Portal>
                 <DropdownMenuSubContent

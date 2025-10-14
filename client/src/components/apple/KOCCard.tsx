@@ -1,6 +1,6 @@
 import { designTokens } from '@/constants/design-tokens';
 import { AppleAvatar, AppleBadge } from '@/components/apple';
-import { Star, CheckCircle, Users, TrendingUp } from 'lucide-react';
+import { IoStarOutline, IoCheckmarkCircleOutline, IoPeopleOutline, IoTrendingUpOutline } from 'react-icons/io5';
 
 type KOCLevel = 'Nano' | 'Micro' | 'Macro' | 'Celebrity';
 
@@ -92,14 +92,14 @@ export function KOCCard({
     for (let i = 0; i < 5; i++) {
       if (i < fullStars) {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400"
           />
         );
       } else if (i === fullStars && hasHalfStar) {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400"
             style={{ clipPath: 'inset(0 50% 0 0)' }}
@@ -107,7 +107,7 @@ export function KOCCard({
         );
       } else {
         stars.push(
-          <Star
+          <IoStarOutline
             key={i}
             className="w-3.5 h-3.5 text-gray-300"
           />
@@ -149,7 +149,7 @@ export function KOCCard({
                 {name}
               </h3>
               {isVerified && (
-                <CheckCircle
+                <IoCheckmarkCircleOutline
                   className="w-5 h-5 text-[#ff0086] flex-shrink-0"
                   data-testid={`verified-badge-${id}`}
                   aria-label={labels.verifiedLabel}
@@ -185,7 +185,7 @@ export function KOCCard({
       <div className="px-6 pb-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-gray-400" />
+            <IoPeopleOutline className="w-4 h-4 text-gray-400" />
             <div>
               <p className="text-xs text-gray-500">{labels.followersLabel}</p>
               <p className="font-semibold text-gray-900" data-testid={`followers-${id}`}>
@@ -194,7 +194,7 @@ export function KOCCard({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-gray-400" />
+            <IoTrendingUpOutline className="w-4 h-4 text-gray-400" />
             <div>
               <p className="text-xs text-gray-500">{labels.campaignsLabel}</p>
               <p className="font-semibold text-gray-900" data-testid={`campaigns-${id}`}>

@@ -1,5 +1,5 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { Check } from 'lucide-react';
+import { IoCheckmarkOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { AppleButton } from './AppleButton';
 
@@ -111,7 +111,7 @@ export function OnboardingStepper({
                 data-testid={`onboarding-dot-${index}`}
               >
                 {index < currentStep && (
-                  <Check className="w-3.5 h-3.5 text-white" />
+                  <IoCheckmarkOutline className="w-3.5 h-3.5 text-white" />
                 )}
               </div>
               {index < steps.length - 1 && (

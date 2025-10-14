@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { X, Trash2, ShoppingCart, Plus, Minus } from 'lucide-react';
+import { IoCloseOutline, IoTrashOutline, IoCartOutline, IoAddOutline, IoRemoveOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 import { cn } from '@/lib/utils';
 
@@ -92,7 +92,7 @@ export function ShoppingCartDrawer({
                   designTokens.transitions.fast
                 )}
               >
-                <X className="h-5 w-5" />
+                <IoCloseOutline className="h-5 w-5" />
               </Dialog.Close>
             </div>
           </div>
@@ -101,7 +101,7 @@ export function ShoppingCartDrawer({
           {items.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
               <div className="mb-4 rounded-full bg-gray-100 p-6">
-                <ShoppingCart className="h-12 w-12 text-gray-400" />
+                <IoCartOutline className="h-12 w-12 text-gray-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 Giỏ hàng trống
@@ -171,7 +171,7 @@ export function ShoppingCartDrawer({
                                 designTokens.transitions.fast
                               )}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <IoTrashOutline className="h-4 w-4" />
                             </button>
                           </div>
 
@@ -189,7 +189,7 @@ export function ShoppingCartDrawer({
                                   designTokens.transitions.fast
                                 )}
                               >
-                                <Minus className="h-3 w-3" />
+                                <IoRemoveOutline className="h-3 w-3" />
                               </button>
                               <span
                                 className="w-8 text-center text-sm font-medium text-gray-900"
@@ -208,7 +208,7 @@ export function ShoppingCartDrawer({
                                   designTokens.transitions.fast
                                 )}
                               >
-                                <Plus className="h-3 w-3" />
+                                <IoAddOutline className="h-3 w-3" />
                               </button>
                             </div>
 

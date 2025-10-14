@@ -1,6 +1,6 @@
 import { HTMLAttributes, useId, useState, useEffect, useRef } from 'react';
 import * as Popover from '@radix-ui/react-popover';
-import { Search, X, Loader2, Clock } from 'lucide-react';
+import { IoSearchOutline, IoCloseOutline, IoReloadOutline, IoTimeOutline } from 'react-icons/io5';
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleSearchBarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -212,7 +212,7 @@ export function AppleSearchBar({
           <div className="relative">
             {/* Search Icon */}
             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <Search className="w-5 h-5" />
+              <IoSearchOutline className="w-5 h-5" />
             </div>
 
             {/* Input */}
@@ -248,7 +248,7 @@ export function AppleSearchBar({
             {/* Clear/Loading Button */}
             <div className="absolute right-3 top-1/2 -translate-y-1/2">
               {loading ? (
-                <Loader2 className="w-5 h-5 text-gray-400 animate-spin" data-testid="searchbar-loading" />
+                <IoReloadOutline className="w-5 h-5 text-gray-400 animate-spin" data-testid="searchbar-loading" />
               ) : value.length > 0 ? (
                 <button
                   type="button"
@@ -258,7 +258,7 @@ export function AppleSearchBar({
                   data-testid="searchbar-clear"
                   className="text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <IoCloseOutline className="w-5 h-5" />
                 </button>
               ) : null}
             </div>
@@ -312,7 +312,7 @@ export function AppleSearchBar({
                             ${isSelected ? 'bg-gray-100' : 'hover:bg-gray-50'}
                           `}
                         >
-                          <Clock className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <IoTimeOutline className="w-4 h-4 text-gray-400 flex-shrink-0" />
                           <span className="text-gray-500 text-sm truncate">{search}</span>
                         </button>
                       );
@@ -345,7 +345,7 @@ export function AppleSearchBar({
                             ${isSelected ? 'bg-gray-100' : 'hover:bg-gray-50'}
                           `}
                         >
-                          <Search className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <IoSearchOutline className="w-4 h-4 text-gray-400 flex-shrink-0" />
                           <span className="text-gray-700 text-sm truncate">
                             {highlightMatch(suggestion, value)}
                           </span>

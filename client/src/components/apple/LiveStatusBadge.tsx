@@ -1,5 +1,5 @@
 import { designTokens } from '@/constants/design-tokens';
-import { Clock } from 'lucide-react';
+import { IoTimeOutline } from 'react-icons/io5';
 
 type LiveStatus = 'live' | 'offline' | 'scheduled';
 type LiveStatusSize = 'sm' | 'md';
@@ -98,7 +98,7 @@ export function LiveStatusBadge({
           </span>
         )}
         {status === 'scheduled' && scheduledTime && (
-          <Clock className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />
+          <IoTimeOutline className={size === 'sm' ? 'w-3 h-3' : 'w-4 h-4'} />
         )}
         {status === 'offline' && (
           <span className={`${sizeInfo.dotSize} bg-gray-500 rounded-full`} />
