@@ -3704,8 +3704,7 @@ function AdminDashboard() {
                             { value: 'paused', label: 'Tạm dừng' },
                             { value: 'draft', label: 'Nháp' },
                             { value: 'completed', label: 'Hoàn thành' }
-                          ],
-                          value: campaignFilters.status
+                          ]
                         },
                         {
                           id: 'dateRange',
@@ -3715,14 +3714,14 @@ function AdminDashboard() {
                             { value: 'week', label: 'Tuần này' },
                             { value: 'month', label: 'Tháng này' },
                             { value: 'quarter', label: 'Quý này' }
-                          ],
-                          value: campaignFilters.dateRange
+                          ]
                         }
                       ]}
-                      onFilterChange={(filterId, value) => {
-                        setCampaignFilters(prev => ({ ...prev, [filterId]: value }));
+                      values={campaignFilters}
+                      onChange={(values) => {
+                        setCampaignFilters(values);
                       }}
-                      onClearAll={() => setCampaignFilters({ status: 'all', dateRange: 'month' })}
+                      onReset={() => setCampaignFilters({ status: 'all', dateRange: 'month' })}
                     />
                   </div>
 
@@ -3730,10 +3729,13 @@ function AdminDashboard() {
                   <AppleListDetailShell
                     items={campaignList}
                     selectedId={selectedCampaignId}
-                    onSelect={(id) => setSelectedCampaignId(id as number)}
+                    onSelect={(campaign) => setSelectedCampaignId(campaign.id)}
+                    searchable={true}
                     searchValue={campaignSearchValue}
                     onSearchChange={setCampaignSearchValue}
-                    searchPlaceholder="Tìm kiếm chiến dịch..."
+                    labels={{
+                      searchPlaceholder: "Tìm kiếm chiến dịch..."
+                    }}
                     renderListItem={(campaign) => (
                       <div className="flex items-center justify-between w-full">
                         <div className="flex-1">
@@ -3758,84 +3760,90 @@ function AdminDashboard() {
                         </AppleBadge>
                       </div>
                     )}
-                    renderDetail={(campaign) => (
-                      <div className="space-y-6">
-                        {/* Campaign Header */}
-                        <div>
-                          <div className="flex items-start justify-between mb-4">
-                            <div>
-                              <h3 className="text-xl font-bold mb-2">{campaign.name}</h3>
-                              <p className="text-gray-600">
-                                Bắt đầu: {campaign.startDate} • {campaign.kocCount} KOCs tham gia
-                              </p>
+                    renderDetail={(campaign) => {
+                      if (!campaign) {
+                        return <div className="p-6 text-center text-gray-500">Chọn một chiến dịch để xem chi tiết</div>;
+                      }
+                      
+                      return (
+                        <div className="space-y-6">
+                          {/* Campaign Header */}
+                          <div>
+                            <div className="flex items-start justify-between mb-4">
+                              <div>
+                                <h3 className="text-xl font-bold mb-2">{campaign.name}</h3>
+                                <p className="text-gray-600">
+                                  Bắt đầu: {campaign.startDate} • {campaign.kocCount} KOCs tham gia
+                                </p>
+                              </div>
+                              <AppleBadge variant={campaign.status === 'active' ? 'success' : 'warning'}>
+                                {campaign.status === 'active' ? 'Đang chạy' : 'Tạm dừng'}
+                              </AppleBadge>
                             </div>
-                            <AppleBadge variant={campaign.status === 'active' ? 'success' : 'warning'}>
-                              {campaign.status === 'active' ? 'Đang chạy' : 'Tạm dừng'}
-                            </AppleBadge>
+
+                            {/* Quick Stats */}
+                            <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                              <div>
+                                <div className="text-sm text-gray-600">Ngân sách</div>
+                                <div className="text-lg font-bold">₫{campaign.budget.toLocaleString('vi-VN')}</div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">Doanh thu</div>
+                                <div className="text-lg font-bold text-green-600">₫{campaign.revenue.toLocaleString('vi-VN')}</div>
+                              </div>
+                              <div>
+                                <div className="text-sm text-gray-600">ROI</div>
+                                <div className="text-lg font-bold text-primary">{campaign.roi}%</div>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Quick Stats */}
-                          <div className="grid grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
-                            <div>
-                              <div className="text-sm text-gray-600">Ngân sách</div>
-                              <div className="text-lg font-bold">₫{campaign.budget.toLocaleString('vi-VN')}</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-gray-600">Doanh thu</div>
-                              <div className="text-lg font-bold text-green-600">₫{campaign.revenue.toLocaleString('vi-VN')}</div>
-                            </div>
-                            <div>
-                              <div className="text-sm text-gray-600">ROI</div>
-                              <div className="text-lg font-bold text-primary">{campaign.roi}%</div>
-                            </div>
+                          {/* Revenue Chart */}
+                          <div>
+                            <h4 className="font-semibold mb-3">Xu hướng doanh thu</h4>
+                            <AppleChart
+                              variant="area"
+                              data={campaignRevenueData}
+                              dataKey="revenue"
+                              categoryKey="date"
+                              height={250}
+                            />
+                          </div>
+
+                          {/* Performance Table */}
+                          <div>
+                            <h4 className="font-semibold mb-3">Top KOCs hiệu suất</h4>
+                            <AppleTable
+                              columns={[
+                                { key: 'name', header: 'Tên KOC' },
+                                { key: 'sales', header: 'Doanh số' },
+                                { key: 'commission', header: 'Hoa hồng' },
+                                { key: 'engagement', header: 'Tương tác' }
+                              ]}
+                              data={[
+                                { name: 'Minh Anh', sales: '₫85M', commission: '₫8.5M', engagement: '15.2K' },
+                                { name: 'Thu Hà', sales: '₫72M', commission: '₫7.2M', engagement: '12.8K' },
+                                { name: 'Quỳnh Mai', sales: '₫68M', commission: '₫6.8M', engagement: '11.5K' }
+                              ]}
+                            />
                           </div>
                         </div>
-
-                        {/* Revenue Chart */}
-                        <div>
-                          <h4 className="font-semibold mb-3">Xu hướng doanh thu</h4>
-                          <AppleChart
-                            type="area"
-                            data={campaignRevenueData}
-                            dataKeys={[
-                              { key: 'revenue', color: '#ff0086', name: 'Doanh thu thực tế' },
-                              { key: 'target', color: '#94a3b8', name: 'Mục tiêu' }
-                            ]}
-                            xAxisKey="date"
-                            height={250}
-                          />
-                        </div>
-
-                        {/* Performance Table */}
-                        <div>
-                          <h4 className="font-semibold mb-3">Top KOCs hiệu suất</h4>
-                          <AppleTable
-                            columns={[
-                              { key: 'name', label: 'Tên KOC' },
-                              { key: 'sales', label: 'Doanh số', align: 'right' },
-                              { key: 'commission', label: 'Hoa hồng', align: 'right' },
-                              { key: 'engagement', label: 'Tương tác', align: 'center' }
-                            ]}
-                            data={[
-                              { name: 'Minh Anh', sales: '₫85M', commission: '₫8.5M', engagement: '15.2K' },
-                              { name: 'Thu Hà', sales: '₫72M', commission: '₫7.2M', engagement: '12.8K' },
-                              { name: 'Quỳnh Mai', sales: '₫68M', commission: '₫6.8M', engagement: '11.5K' }
-                            ]}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    emptyState={{
-                      icon: <IoDocumentTextOutline className="w-12 h-12" />,
-                      title: 'Chưa có chiến dịch',
-                      description: 'Tạo chiến dịch đầu tiên để bắt đầu'
+                      );
                     }}
+                    emptyState={
+                      <EmptyState
+                        icon={<IoDocumentTextOutline className="w-12 h-12" />}
+                        title='Chưa có chiến dịch'
+                        description='Tạo chiến dịch đầu tiên để bắt đầu'
+                      />
+                    }
                   />
 
                   {/* Bulk Actions */}
                   {selectedCampaigns.size > 0 && (
                     <BulkActionToolbar
                       selectedCount={selectedCampaigns.size}
+                      totalCount={campaignList.length}
                       onSelectAll={() => {
                         setSelectedCampaigns(new Set(campaignList.map(c => c.id)));
                       }}
@@ -3845,7 +3853,7 @@ function AdminDashboard() {
                       actions={[
                         { 
                           label: 'Tạm dừng', 
-                          variant: 'outline',
+                          variant: 'default',
                           onClick: () => {
                             setPauseCampaignDialogOpen(true);
                           }
