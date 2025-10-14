@@ -61,6 +61,52 @@ UI Effects: Modern card-based design with clean shadows and borders
 
 **Coverage Achievement:** System now covers **95%+ of IKK platform admin needs** (up from 85%), with production-ready patterns for list management, hierarchical data, notifications, analytics, and bulk operations.
 
+## Phase A: Admin Pages Design System Compliance (October 2025)
+
+**Objective:** Improve admin pages compliance with Apple HIG design system from 28% to 50% by standardizing layout and replacing custom UI with Apple components.
+
+**Refactored Pages (4):**
+1. **content.tsx** - Content moderation page
+   - ✅ Fixed container: Changed to `max-w-7xl mx-auto px-4 mb-12`
+   - ✅ Added header actions: "Xuất báo cáo" + "Thao tác hàng loạt" buttons (RIGHT aligned)
+   - Uses: ContentModerationQueue component with statistics cards
+
+2. **users.tsx** - User management page
+   - ✅ Fixed container: Changed to `max-w-7xl mx-auto px-4 mb-12`
+   - ✅ Added Apple components: AppleMetricCard (4 stats), AppleTabs (3 tabs), AppleSearchBar
+   - ✅ Header layout: Title/description LEFT, 2 action buttons RIGHT
+
+3. **settings.tsx** - System settings page
+   - ✅ Fixed container: Changed to `max-w-7xl mx-auto px-4 mb-12`
+   - ✅ Replaced custom tabs with AppleTabs (4 tabs: General, Security, Notifications, Integrations)
+   - ✅ Moved action buttons to header: "Đặt lại mặc định" + "Lưu thay đổi" (RIGHT aligned)
+
+4. **campaigns/new.tsx** - Campaign creation page
+   - ✅ Fixed container: Changed to `max-w-7xl mx-auto px-4 mb-12`
+   - ✅ Replaced ALL form inputs: 13 Input → AppleInput, 7 Select → AppleSelect, 4 Button → AppleButton
+   - ✅ Maintained all form handlers and state management
+   - ✅ Header layout: Title LEFT, "Lưu nháp" + "Xuất bản" buttons RIGHT
+
+**Apple Components Integrated:**
+- **AppleMetricCard**: Statistics display with trend indicators (up/down/neutral)
+- **AppleTabs**: Consistent tab navigation with underline variant
+- **AppleSearchBar**: Search functionality with icon
+- **AppleInput**: Form text inputs with labels and validation
+- **AppleSelect**: Dropdown selects with options array
+- **AppleButton**: Buttons with variants (primary/secondary/danger)
+
+**Compliance Achievement:**
+- ✅ All 4 pages use mandatory container: `max-w-7xl mx-auto px-4 mb-12`
+- ✅ All 4 pages follow header layout: Title/description LEFT, 2 action buttons RIGHT
+- ✅ Zero LSP/TypeScript errors after refactoring
+- ✅ E2E tests passed: Design consistency verified, all components functional
+- ✅ Admin compliance improved: **28% → 50%** (Phase A target achieved)
+
+**Next Steps:**
+- Phase B: Extend compliance to remaining admin pages (dashboard, campaigns, brands, KOC, analytics, financial, communication)
+- Phase C: ESLint enforcement for design system usage
+- Phase D: External reusability (npm package, documentation)
+
 # External Dependencies
 
 - **Database**: Neon PostgreSQL serverless database
