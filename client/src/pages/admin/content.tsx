@@ -164,7 +164,7 @@ export default function AdminContentPage() {
     <IKKAdminLayout>
       <div className="max-w-7xl mx-auto px-4 mb-12">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-start justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900" data-testid="page-title">
               Quản lý nội dung
@@ -172,6 +172,14 @@ export default function AdminContentPage() {
             <p className="text-muted-foreground" data-testid="page-description">
               Kiểm duyệt và quản lý nội dung từ KOC và Affiliate
             </p>
+          </div>
+          <div className="flex gap-3">
+            <button className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium transition-colors" data-testid="button-export">
+              Xuất báo cáo
+            </button>
+            <button className="px-4 py-2 bg-[#ff0086] hover:bg-[#e6007a] text-white rounded-lg text-sm font-medium transition-colors" data-testid="button-bulk-action">
+              Thao tác hàng loạt
+            </button>
           </div>
         </div>
 

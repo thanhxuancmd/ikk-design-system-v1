@@ -34,39 +34,26 @@ export default function AdminSettingsPage() {
   return (
     <IKKAdminLayout>
       <section className="max-w-7xl mx-auto px-4 mb-12" data-testid="section-system-settings">
-        <Card className="shadow-sm border border-gray-100">
-          {/* Header with Settings Icon */}
-          <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50 border-b border-gray-100">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-gray-500 to-slate-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <HiOutlineCog6Tooth className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2" data-testid="title-system-settings">Cài đặt hệ thống</h2>
-                  <p className="text-gray-600" data-testid="subtitle-system-settings">Quản lý cấu hình và tùy chỉnh hệ thống nền tảng</p>
-                </div>
-              </div>
-              <div className="w-10 h-10 bg-gradient-to-br from-gray-500 to-slate-600 rounded-lg flex items-center justify-center" data-testid="icon-system-settings">
-                <HiOutlineCog6Tooth className="w-5 h-5 text-white" />
-              </div>
-            </div>
-          </CardHeader>
+        {/* Header - MANDATORY layout: title/desc left, actions right */}
+        <div className="flex items-start justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900" data-testid="title-system-settings">Cài đặt hệ thống</h1>
+            <p className="text-gray-600 mt-2" data-testid="subtitle-system-settings">Quản lý cấu hình và tùy chỉnh hệ thống nền tảng</p>
+          </div>
+          <div className="flex gap-3">
+            <button className="px-4 py-2 bg-white hover:bg-gray-50 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2" data-testid="btn-reset-settings">
+              <HiOutlineArrowPath className="w-4 h-4" />
+              <span>Đặt lại mặc định</span>
+            </button>
+            <button className="px-4 py-2 bg-[#ff0086] hover:bg-[#e6007a] text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2" data-testid="btn-save-settings">
+              <HiOutlineCheck className="w-4 h-4" />
+              <span>Lưu thay đổi</span>
+            </button>
+          </div>
+        </div>
 
+        <Card className="shadow-sm border border-gray-100">
           <CardContent className="p-6">
-            {/* Action Buttons - MANDATORY 2-button layout */}
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center space-x-4">
-                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-sm font-medium transition-colors flex items-center gap-2" data-testid="btn-reset-settings">
-                  <HiOutlineArrowPath className="w-4 h-4" />
-                  <span>Đặt lại mặc định</span>
-                </button>
-                <button className="px-4 py-2 bg-[#ff0086] hover:bg-[#e6007a] text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2" data-testid="btn-save-settings">
-                  <HiOutlineCheck className="w-4 h-4" />
-                  <span>Lưu thay đổi</span>
-                </button>
-              </div>
-            </div>
 
             {/* Settings Tabs using AppleTabs */}
             <div className="mb-6">
