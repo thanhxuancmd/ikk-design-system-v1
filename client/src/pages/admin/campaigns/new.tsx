@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { AppleInput, AppleSelect, AppleButton } from "@/components/apple"
-import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Switch } from "@/components/ui/switch"
@@ -44,6 +46,9 @@ export default function NewCampaignPage() {
     targetLocation: [] as string[],
     targetFollowers: "",
     platforms: [] as string[],
+    targetDescription: "",
+    minEngagementRate: "",
+    minAvgViews: "",
     
     // Content Requirements
     contentType: "",
@@ -63,13 +68,23 @@ export default function NewCampaignPage() {
     startDate: "",
     endDate: "",
     applicationDeadline: "",
+    selectionDeadline: "",
     contentDeadline: "",
+    reviewDeadline: "",
     
     // Additional Settings
     autoApprove: false,
     requireApproval: true,
     isUrgent: false,
-    isPrivate: false
+    isPrivate: false,
+    
+    // Terms & Usage Rights
+    contentUsageAllowed: false,
+    contentUsageMonths: "",
+    productReturnRequired: false,
+    productReturnGuide: "",
+    guidelineUrl: "",
+    websiteUrl: ""
   })
 
   const sections = [
@@ -85,7 +100,7 @@ export default function NewCampaignPage() {
       title: "Đối tượng mục tiêu",
       icon: HiUsers,
       color: "bg-blue-500",
-      fields: ["targetGender", "targetAgeMin", "targetAgeMax", "targetFollowers", "platforms", "targetLocation"]
+      fields: ["targetGender", "targetAgeMin", "targetAgeMax", "targetFollowers", "platforms", "targetLocation", "targetDescription", "minEngagementRate", "minAvgViews"]
     },
     {
       id: "content",
@@ -106,7 +121,7 @@ export default function NewCampaignPage() {
       title: "Thời gian",
       icon: HiCalendar,
       color: "bg-orange-500",
-      fields: ["startDate", "endDate", "applicationDeadline", "contentDeadline"]
+      fields: ["startDate", "endDate", "applicationDeadline", "selectionDeadline", "contentDeadline", "reviewDeadline"]
     },
     {
       id: "settings",
@@ -114,6 +129,13 @@ export default function NewCampaignPage() {
       icon: HiCog6Tooth,
       color: "bg-gray-500",
       fields: ["autoApprove", "requireApproval", "isUrgent", "isPrivate"]
+    },
+    {
+      id: "terms",
+      title: "Điều khoản & Quyền",
+      icon: HiDocumentCheck,
+      color: "bg-indigo-500",
+      fields: ["contentUsageAllowed", "contentUsageMonths", "productReturnRequired", "productReturnGuide", "guidelineUrl", "websiteUrl"]
     }
   ]
 
@@ -179,10 +201,94 @@ export default function NewCampaignPage() {
     return (completedSections.length / sections.length) * 100
   }
 
+  const handleSubmit = async (status: 'draft' | 'recruiting') => {
+    try {
+      // Transform form data to match API schema
+      const campaignData = {
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        brandId: formData.brand, // This should be a valid brand ID
+        brandName: formData.brand, // For display purposes
+        type: formData.campaignType,
+        
+        // Target Audience
+        targetGender: formData.targetGender,
+        targetAgeMin: formData.targetAgeMin ? parseInt(formData.targetAgeMin) : null,
+        targetAgeMax: formData.targetAgeMax ? parseInt(formData.targetAgeMax) : null,
+        targetLocation: formData.targetLocation,
+        targetFollowers: formData.targetFollowers,
+        platforms: formData.platforms,
+        targetDescription: formData.targetDescription,
+        minEngagementRate: formData.minEngagementRate,
+        minAvgViews: formData.minAvgViews ? parseInt(formData.minAvgViews) : null,
+        
+        // Content Requirements
+        contentType: formData.contentType,
+        contentRequirements: formData.contentRequirements,
+        hashtags: formData.hashtags,
+        postingSchedule: formData.postingSchedule,
+        
+        // Budget & Rewards
+        budget: parseInt(formData.budget) || 0,
+        reward: parseInt(formData.rewardAmount) || 0,
+        rewardType: formData.rewardType,
+        rewardAmount: parseInt(formData.rewardAmount) || 0,
+        kocNeeded: parseInt(formData.kocLimit) || 0,
+        productSamples: formData.productSamples,
+        
+        // Timeline
+        startDate: formData.startDate ? new Date(formData.startDate) : null,
+        endDate: formData.endDate ? new Date(formData.endDate) : null,
+        applicationDeadline: formData.applicationDeadline ? new Date(formData.applicationDeadline) : null,
+        selectionDeadline: formData.selectionDeadline ? new Date(formData.selectionDeadline) : null,
+        contentDeadline: formData.contentDeadline ? new Date(formData.contentDeadline) : null,
+        reviewDeadline: formData.reviewDeadline ? new Date(formData.reviewDeadline) : null,
+        
+        // Settings
+        isUrgent: formData.isUrgent,
+        requireApproval: formData.requireApproval,
+        autoApprove: formData.autoApprove,
+        isPrivate: formData.isPrivate,
+        
+        // Terms & Usage Rights
+        contentUsageAllowed: formData.contentUsageAllowed,
+        contentUsageMonths: formData.contentUsageMonths ? parseInt(formData.contentUsageMonths) : null,
+        productReturnRequired: formData.productReturnRequired,
+        productReturnGuide: formData.productReturnGuide,
+        guidelineUrl: formData.guidelineUrl,
+        websiteUrl: formData.websiteUrl,
+        
+        status: status
+      }
+
+      const response = await fetch('/api/campaigns', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(campaignData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create campaign')
+      }
+
+      const result = await response.json()
+      alert(status === 'draft' ? 'Đã lưu nháp thành công!' : 'Đã xuất bản chiến dịch thành công!')
+      
+      // Redirect to campaigns list
+      window.location.href = '/admin/campaigns'
+    } catch (error) {
+      console.error('Error creating campaign:', error)
+      alert('Có lỗi xảy ra khi tạo chiến dịch. Vui lòng thử lại.')
+    }
+  }
+
   return (
     <IKKAdminLayout>
       <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 mb-12">
+        <div className="container mx-auto p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -193,14 +299,23 @@ export default function NewCampaignPage() {
               </Badge>
             </div>
             <div className="flex items-center gap-3">
-              <AppleButton variant="secondary" data-testid="button-save-draft">
+              <Button 
+                variant="outline" 
+                className="bg-white border-gray-200 hover:bg-gray-50 text-sm" 
+                data-testid="button-save-draft"
+                onClick={() => handleSubmit('draft')}
+              >
                 <HiDocumentCheck className="w-4 h-4 mr-2" />
                 Lưu nháp
-              </AppleButton>
-              <AppleButton variant="primary" data-testid="button-publish-campaign">
+              </Button>
+              <Button 
+                className="bg-gradient-to-r from-[#ff0086] to-pink-600 text-white hover:shadow-lg transition-all duration-200" 
+                data-testid="button-publish-campaign"
+                onClick={() => handleSubmit('recruiting')}
+              >
                 <HiPaperAirplane className="w-4 h-4 mr-2" />
                 Xuất bản
-              </AppleButton>
+              </Button>
             </div>
           </div>
 
@@ -299,13 +414,16 @@ export default function NewCampaignPage() {
                   <CardDescription>Chi tiết chiến dịch và thương hiệu</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-6">
-                  <AppleInput
-                    label="Tiêu đề chiến dịch *"
-                    name="title"
-                    placeholder="VD: Review son môi Maybelline SuperStay Matte Ink"
-                    value={formData.title}
-                    onChange={(e) => handleInputChange("title", e.target.value)}
-                  />
+                  <div>
+                    <Label htmlFor="title">Tiêu đề chiến dịch *</Label>
+                    <Input
+                      id="title"
+                      placeholder="VD: Review son môi Maybelline SuperStay Matte Ink"
+                      value={formData.title}
+                      onChange={(e) => handleInputChange("title", e.target.value)}
+                      className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                    />
+                  </div>
                   
                   <div>
                     <Label htmlFor="description">Mô tả chi tiết *</Label>
@@ -319,35 +437,44 @@ export default function NewCampaignPage() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <AppleSelect
-                      label="Danh mục *"
-                      name="category"
-                      value={formData.category}
-                      onChange={(e) => handleInputChange("category", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn danh mục" },
-                        ...categories.map(cat => ({ value: cat, label: cat }))
-                      ]}
-                    />
+                    <div>
+                      <Label>Danh mục *</Label>
+                      <Select value={formData.category} onValueChange={(value) => handleInputChange("category", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn danh mục" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {categories.map(cat => (
+                            <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                    <AppleInput
-                      label="Thương hiệu *"
-                      name="brand"
-                      placeholder="Tên thương hiệu"
-                      value={formData.brand}
-                      onChange={(e) => handleInputChange("brand", e.target.value)}
-                    />
+                    <div>
+                      <Label htmlFor="brand">Thương hiệu *</Label>
+                      <Input
+                        id="brand"
+                        placeholder="Tên thương hiệu"
+                        value={formData.brand}
+                        onChange={(e) => handleInputChange("brand", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                    </div>
 
-                    <AppleSelect
-                      label="Loại chiến dịch *"
-                      name="campaignType"
-                      value={formData.campaignType}
-                      onChange={(e) => handleInputChange("campaignType", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn loại" },
-                        ...campaignTypes.map(type => ({ value: type, label: type }))
-                      ]}
-                    />
+                    <div>
+                      <Label>Loại chiến dịch *</Label>
+                      <Select value={formData.campaignType} onValueChange={(value) => handleInputChange("campaignType", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn loại" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {campaignTypes.map(type => (
+                            <SelectItem key={type} value={type}>{type}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -363,52 +490,60 @@ export default function NewCampaignPage() {
                 </CardHeader>
                 <CardContent className="pt-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <AppleSelect
-                      label="Giới tính"
-                      name="targetGender"
-                      value={formData.targetGender}
-                      onChange={(e) => handleInputChange("targetGender", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn giới tính" },
-                        { value: "all", label: "Tất cả" },
-                        { value: "male", label: "Nam" },
-                        { value: "female", label: "Nữ" }
-                      ]}
-                    />
+                    <div>
+                      <Label>Giới tính</Label>
+                      <Select value={formData.targetGender} onValueChange={(value) => handleInputChange("targetGender", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn giới tính" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Tất cả</SelectItem>
+                          <SelectItem value="male">Nam</SelectItem>
+                          <SelectItem value="female">Nữ</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                     
-                    <AppleInput
-                      label="Tuổi từ"
-                      name="ageMin"
-                      type="number"
-                      placeholder="18"
-                      value={formData.targetAgeMin}
-                      onChange={(e) => handleInputChange("targetAgeMin", e.target.value)}
-                    />
+                    <div>
+                      <Label htmlFor="ageMin">Tuổi từ</Label>
+                      <Input
+                        id="ageMin"
+                        type="number"
+                        placeholder="18"
+                        value={formData.targetAgeMin}
+                        onChange={(e) => handleInputChange("targetAgeMin", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                    </div>
                     
-                    <AppleInput
-                      label="Đến tuổi"
-                      name="ageMax"
-                      type="number"
-                      placeholder="35"
-                      value={formData.targetAgeMax}
-                      onChange={(e) => handleInputChange("targetAgeMax", e.target.value)}
-                    />
+                    <div>
+                      <Label htmlFor="ageMax">Đến tuổi</Label>
+                      <Input
+                        id="ageMax"
+                        type="number"
+                        placeholder="35"
+                        value={formData.targetAgeMax}
+                        onChange={(e) => handleInputChange("targetAgeMax", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                    </div>
                     
-                    <AppleSelect
-                      label="Followers tối thiểu"
-                      name="targetFollowers"
-                      value={formData.targetFollowers}
-                      onChange={(e) => handleInputChange("targetFollowers", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn yêu cầu" },
-                        { value: "any", label: "Bất kỳ" },
-                        { value: "1k", label: "1K+" },
-                        { value: "5k", label: "5K+" },
-                        { value: "10k", label: "10K+" },
-                        { value: "50k", label: "50K+" },
-                        { value: "100k", label: "100K+" }
-                      ]}
-                    />
+                    <div>
+                      <Label>Followers tối thiểu</Label>
+                      <Select value={formData.targetFollowers} onValueChange={(value) => handleInputChange("targetFollowers", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn yêu cầu" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="any">Bất kỳ</SelectItem>
+                          <SelectItem value="1k">1K+</SelectItem>
+                          <SelectItem value="5k">5K+</SelectItem>
+                          <SelectItem value="10k">10K+</SelectItem>
+                          <SelectItem value="50k">50K+</SelectItem>
+                          <SelectItem value="100k">100K+</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
                   <div>
@@ -448,6 +583,47 @@ export default function NewCampaignPage() {
                       ))}
                     </div>
                   </div>
+
+                  <div>
+                    <Label htmlFor="targetDescription">Mô tả đối tượng mục tiêu</Label>
+                    <Textarea
+                      id="targetDescription"
+                      placeholder="VD: KOC quan tâm đến nấu ăn, chia sẻ cuộc sống gia đình, sống xanh, sống khỏe, thường xuyên đăng nội dung về lifestyle..."
+                      value={formData.targetDescription}
+                      onChange={(e) => handleInputChange("targetDescription", e.target.value)}
+                      className="mt-1 min-h-[100px] border-gray-200 focus:border-[#ff0086]"
+                    />
+                    <p className="text-xs text-gray-500 mt-1">Mô tả phong cách sống, sở thích, nội dung thường chia sẻ của KOC mong muốn</p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="minEngagementRate">Engagement rate tối thiểu (%)</Label>
+                      <Input
+                        id="minEngagementRate"
+                        type="number"
+                        step="0.1"
+                        placeholder="3.0"
+                        value={formData.minEngagementRate}
+                        onChange={(e) => handleInputChange("minEngagementRate", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Tỷ lệ tương tác trung bình tối thiểu</p>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="minAvgViews">Lượt xem trung bình tối thiểu</Label>
+                      <Input
+                        id="minAvgViews"
+                        type="number"
+                        placeholder="1000"
+                        value={formData.minAvgViews}
+                        onChange={(e) => handleInputChange("minAvgViews", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Số lượt xem trung bình mỗi bài đăng</p>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
 
@@ -462,36 +638,38 @@ export default function NewCampaignPage() {
                 </CardHeader>
                 <CardContent className="pt-6 space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <AppleSelect
-                      label="Định dạng nội dung"
-                      name="contentType"
-                      value={formData.contentType}
-                      onChange={(e) => handleInputChange("contentType", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn định dạng" },
-                        { value: "video", label: "Video (15s-60s)" },
-                        { value: "photo", label: "Hình ảnh" },
-                        { value: "story", label: "Story" },
-                        { value: "post", label: "Post thường" },
-                        { value: "livestream", label: "Livestream" },
-                        { value: "reel", label: "Reel/Short" }
-                      ]}
-                    />
+                    <div>
+                      <Label>Định dạng nội dung</Label>
+                      <Select value={formData.contentType} onValueChange={(value) => handleInputChange("contentType", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn định dạng" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="video">Video (15s-60s)</SelectItem>
+                          <SelectItem value="photo">Hình ảnh</SelectItem>
+                          <SelectItem value="story">Story</SelectItem>
+                          <SelectItem value="post">Post thường</SelectItem>
+                          <SelectItem value="livestream">Livestream</SelectItem>
+                          <SelectItem value="reel">Reel/Short</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
-                    <AppleSelect
-                      label="Thời gian đăng bài"
-                      name="postingSchedule"
-                      value={formData.postingSchedule}
-                      onChange={(e) => handleInputChange("postingSchedule", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn thời gian" },
-                        { value: "flexible", label: "Linh hoạt" },
-                        { value: "peak", label: "Giờ vàng (19:00-22:00)" },
-                        { value: "morning", label: "Buổi sáng (6:00-10:00)" },
-                        { value: "afternoon", label: "Buổi trưa (12:00-14:00)" },
-                        { value: "evening", label: "Buổi tối (18:00-21:00)" }
-                      ]}
-                    />
+                    <div>
+                      <Label>Thời gian đăng bài</Label>
+                      <Select value={formData.postingSchedule} onValueChange={(value) => handleInputChange("postingSchedule", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn thời gian" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="flexible">Linh hoạt</SelectItem>
+                          <SelectItem value="peak">Giờ vàng (19:00-22:00)</SelectItem>
+                          <SelectItem value="morning">Buổi sáng (6:00-10:00)</SelectItem>
+                          <SelectItem value="afternoon">Buổi trưa (12:00-14:00)</SelectItem>
+                          <SelectItem value="evening">Buổi tối (18:00-21:00)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
 
                   <div>
@@ -506,10 +684,10 @@ export default function NewCampaignPage() {
                   </div>
 
                   <div>
-                    <AppleInput
-                      label="Hashtag yêu cầu"
-                      name="hashtags"
+                    <Label>Hashtag yêu cầu</Label>
+                    <Input
                       placeholder="#MaybellineVietnam #SuperStayMatteInk"
+                      className="mt-1 border-gray-200 focus:border-[#ff0086]"
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && e.currentTarget.value.trim()) {
                           const newTag = e.currentTarget.value.trim()
@@ -547,47 +725,57 @@ export default function NewCampaignPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="pt-6 space-y-4">
-                    <AppleInput
-                      label="Tổng ngân sách (VNĐ) *"
-                      name="budget"
-                      type="number"
-                      placeholder="1000000"
-                      value={formData.budget}
-                      onChange={(e) => handleInputChange("budget", e.target.value)}
-                    />
+                    <div>
+                      <Label htmlFor="budget">Tổng ngân sách (VNĐ) *</Label>
+                      <Input
+                        id="budget"
+                        type="number"
+                        placeholder="1000000"
+                        value={formData.budget}
+                        onChange={(e) => handleInputChange("budget", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                    </div>
 
-                    <AppleSelect
-                      label="Loại thưởng"
-                      name="rewardType"
-                      value={formData.rewardType}
-                      onChange={(e) => handleInputChange("rewardType", e.target.value)}
-                      options={[
-                        { value: "", label: "Chọn loại thưởng" },
-                        { value: "cash", label: "Tiền mặt" },
-                        { value: "product", label: "Sản phẩm" },
-                        { value: "voucher", label: "Voucher" },
-                        { value: "combo", label: "Tiền + Sản phẩm" }
-                      ]}
-                    />
+                    <div>
+                      <Label>Loại thưởng</Label>
+                      <Select value={formData.rewardType} onValueChange={(value) => handleInputChange("rewardType", value)}>
+                        <SelectTrigger className="mt-1 border-gray-200">
+                          <SelectValue placeholder="Chọn loại thưởng" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="cash">Tiền mặt</SelectItem>
+                          <SelectItem value="product">Sản phẩm</SelectItem>
+                          <SelectItem value="voucher">Voucher</SelectItem>
+                          <SelectItem value="combo">Tiền + Sản phẩm</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                      <AppleInput
-                        label="Thưởng/KOC (VNĐ)"
-                        name="rewardAmount"
-                        type="number"
-                        placeholder="200000"
-                        value={formData.rewardAmount}
-                        onChange={(e) => handleInputChange("rewardAmount", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="rewardAmount">Thưởng/KOC (VNĐ)</Label>
+                        <Input
+                          id="rewardAmount"
+                          type="number"
+                          placeholder="200000"
+                          value={formData.rewardAmount}
+                          onChange={(e) => handleInputChange("rewardAmount", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                      </div>
                       
-                      <AppleInput
-                        label="Số KOC tối đa"
-                        name="kocLimit"
-                        type="number"
-                        placeholder="50"
-                        value={formData.kocLimit}
-                        onChange={(e) => handleInputChange("kocLimit", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="kocLimit">Số KOC tối đa</Label>
+                        <Input
+                          id="kocLimit"
+                          type="number"
+                          placeholder="50"
+                          value={formData.kocLimit}
+                          onChange={(e) => handleInputChange("kocLimit", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                      </div>
                     </div>
 
                     <div className="flex items-center space-x-2 pt-2">
@@ -611,39 +799,79 @@ export default function NewCampaignPage() {
                   </CardHeader>
                   <CardContent className="pt-6 space-y-4">
                     <div className="grid grid-cols-2 gap-3">
-                      <AppleInput
-                        label="Ngày bắt đầu *"
-                        name="startDate"
-                        type="date"
-                        value={formData.startDate}
-                        onChange={(e) => handleInputChange("startDate", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="applicationDeadline">Hạn đăng ký *</Label>
+                        <Input
+                          id="applicationDeadline"
+                          type="date"
+                          value={formData.applicationDeadline}
+                          onChange={(e) => handleInputChange("applicationDeadline", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Thời hạn KOC ứng tuyển tham gia</p>
+                      </div>
                       
-                      <AppleInput
-                        label="Ngày kết thúc *"
-                        name="endDate"
-                        type="date"
-                        value={formData.endDate}
-                        onChange={(e) => handleInputChange("endDate", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="selectionDeadline">Hạn chọn lọc KOC *</Label>
+                        <Input
+                          id="selectionDeadline"
+                          type="date"
+                          value={formData.selectionDeadline}
+                          onChange={(e) => handleInputChange("selectionDeadline", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Thời gian duyệt và chọn KOC phù hợp</p>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-3">
-                      <AppleInput
-                        label="Hạn đăng ký *"
-                        name="applicationDeadline"
-                        type="date"
-                        value={formData.applicationDeadline}
-                        onChange={(e) => handleInputChange("applicationDeadline", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="startDate">Ngày bắt đầu chiến dịch *</Label>
+                        <Input
+                          id="startDate"
+                          type="date"
+                          value={formData.startDate}
+                          onChange={(e) => handleInputChange("startDate", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                      </div>
                       
-                      <AppleInput
-                        label="Hạn nộp nội dung *"
-                        name="contentDeadline"
-                        type="date"
-                        value={formData.contentDeadline}
-                        onChange={(e) => handleInputChange("contentDeadline", e.target.value)}
-                      />
+                      <div>
+                        <Label htmlFor="contentDeadline">Hạn nộp nội dung *</Label>
+                        <Input
+                          id="contentDeadline"
+                          type="date"
+                          value={formData.contentDeadline}
+                          onChange={(e) => handleInputChange("contentDeadline", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">KOC phải nộp nội dung trước ngày này</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <Label htmlFor="endDate">Ngày kết thúc chiến dịch *</Label>
+                        <Input
+                          id="endDate"
+                          type="date"
+                          value={formData.endDate}
+                          onChange={(e) => handleInputChange("endDate", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                      </div>
+                      
+                      <div>
+                        <Label htmlFor="reviewDeadline">Hạn đánh giá & thanh toán *</Label>
+                        <Input
+                          id="reviewDeadline"
+                          type="date"
+                          value={formData.reviewDeadline}
+                          onChange={(e) => handleInputChange("reviewDeadline", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Thời gian đánh giá nội dung và thanh toán cho KOC</p>
+                      </div>
                     </div>
 
                     <div className="space-y-3 pt-2">
@@ -669,6 +897,111 @@ export default function NewCampaignPage() {
                 </Card>
               </div>
 
+              {/* Terms & Usage Rights */}
+              <Card className="rounded-xl border shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
+                <CardHeader className="bg-gradient-to-r from-indigo-500/5 to-indigo-600/5 rounded-t-xl">
+                  <CardTitle className="flex items-center gap-2">
+                    <HiDocumentCheck className="w-5 h-5 text-indigo-500" />
+                    Điều khoản & Quyền sử dụng
+                  </CardTitle>
+                  <CardDescription>Quy định về quyền sử dụng nội dung và sản phẩm</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-start space-x-3">
+                      <Switch
+                        id="contentUsageAllowed"
+                        checked={formData.contentUsageAllowed}
+                        onCheckedChange={(checked) => handleInputChange("contentUsageAllowed", checked)}
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor="contentUsageAllowed" className="text-base font-medium cursor-pointer">
+                          Sử dụng nội dung cho mục đích marketing
+                        </Label>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Cho phép sử dụng hình ảnh/video của KOC vào mục đích truyền thông, quảng cáo
+                        </p>
+                      </div>
+                    </div>
+
+                    {formData.contentUsageAllowed && (
+                      <div className="ml-11">
+                        <Label htmlFor="contentUsageMonths">Thời hạn sử dụng (tháng)</Label>
+                        <Input
+                          id="contentUsageMonths"
+                          type="number"
+                          placeholder="3"
+                          value={formData.contentUsageMonths}
+                          onChange={(e) => handleInputChange("contentUsageMonths", e.target.value)}
+                          className="mt-1 border-gray-200 focus:border-[#ff0086] max-w-xs"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Số tháng được sử dụng nội dung kể từ ngày sử dụng</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-start space-x-3">
+                      <Switch
+                        id="productReturnRequired"
+                        checked={formData.productReturnRequired}
+                        onCheckedChange={(checked) => handleInputChange("productReturnRequired", checked)}
+                      />
+                      <div className="flex-1">
+                        <Label htmlFor="productReturnRequired" className="text-base font-medium cursor-pointer">
+                          Yêu cầu trả lại sản phẩm mẫu
+                        </Label>
+                        <p className="text-sm text-gray-600 mt-1">
+                          KOC phải gửi trả sản phẩm sau khi hoàn thành chiến dịch
+                        </p>
+                      </div>
+                    </div>
+
+                    {formData.productReturnRequired && (
+                      <div className="ml-11">
+                        <Label htmlFor="productReturnGuide">Hướng dẫn trả sản phẩm</Label>
+                        <Textarea
+                          id="productReturnGuide"
+                          placeholder="VD: Gửi trả sản phẩm ngay khi video được duyệt. Địa chỉ: ..."
+                          value={formData.productReturnGuide}
+                          onChange={(e) => handleInputChange("productReturnGuide", e.target.value)}
+                          className="mt-1 min-h-[80px] border-gray-200 focus:border-[#ff0086]"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">Hướng dẫn chi tiết về cách thức, địa chỉ, thời gian trả sản phẩm</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="guidelineUrl">Link tài liệu hướng dẫn</Label>
+                      <Input
+                        id="guidelineUrl"
+                        type="url"
+                        placeholder="https://canva.com/design/..."
+                        value={formData.guidelineUrl}
+                        onChange={(e) => handleInputChange("guidelineUrl", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Link đến brief, guideline, design reference chi tiết</p>
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="websiteUrl">Website thương hiệu/sản phẩm</Label>
+                      <Input
+                        id="websiteUrl"
+                        type="url"
+                        placeholder="https://example.com"
+                        value={formData.websiteUrl}
+                        onChange={(e) => handleInputChange("websiteUrl", e.target.value)}
+                        className="mt-1 border-gray-200 focus:border-[#ff0086]"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">Website chính thức của thương hiệu hoặc sản phẩm</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Final Actions */}
               <Card className="rounded-xl border shadow-xl bg-gradient-to-r from-[#ff0086]/5 to-pink-500/5 border-[#ff0086]/20">
                 <CardContent className="pt-6">
@@ -678,14 +1011,21 @@ export default function NewCampaignPage() {
                       <p className="text-sm text-gray-600">Kiểm tra lại thông tin và xuất bản chiến dịch của bạn</p>
                     </div>
                     <div className="flex space-x-3">
-                      <AppleButton variant="secondary">
+                      <Button 
+                        variant="outline" 
+                        className="bg-white hover:bg-gray-50"
+                        onClick={() => handleSubmit('draft')}
+                      >
                         <HiDocumentCheck className="w-4 h-4 mr-2" />
                         Lưu nháp
-                      </AppleButton>
-                      <AppleButton variant="primary">
+                      </Button>
+                      <Button 
+                        className="bg-gradient-to-r from-[#ff0086] to-pink-600 text-white hover:shadow-lg transition-all duration-200"
+                        onClick={() => handleSubmit('recruiting')}
+                      >
                         <HiSparkles className="w-4 h-4 mr-2" />
                         Xuất bản chiến dịch
-                      </AppleButton>
+                      </Button>
                     </div>
                   </div>
                 </CardContent>

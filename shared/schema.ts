@@ -54,20 +54,68 @@ export const campaigns = pgTable("campaigns", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
   brandId: varchar("brand_id").references(() => brands.id).notNull(),
+  brandName: text("brand_name"),
   description: text("description").notNull(),
   category: text("category").notNull(),
   type: text("type").notNull(), // review, checkin, cpi, cpa, seeding
-  reward: integer("reward").notNull(), // Points
+  
+  // Target Audience
+  targetGender: text("target_gender"),
+  targetAgeMin: integer("target_age_min"),
+  targetAgeMax: integer("target_age_max"),
+  targetLocation: json("target_location").$type<string[]>(),
+  targetFollowers: text("target_followers"),
+  platforms: json("platforms").$type<string[]>(),
+  targetDescription: text("target_description"),
+  minEngagementRate: decimal("min_engagement_rate", { precision: 5, scale: 2 }),
+  minAvgViews: integer("min_avg_views"),
+  
+  // Content Requirements
+  contentType: text("content_type"),
+  contentRequirements: text("content_requirements"),
+  hashtags: json("hashtags").$type<string[]>(),
+  postingSchedule: text("posting_schedule"),
+  
+  // Budget & Rewards
+  reward: integer("reward").notNull(), // Points or VND per KOC
   bonusReward: integer("bonus_reward"),
-  requirements: json("requirements"), // Complex requirements object
-  content: json("content"), // Content requirements
-  timeline: json("timeline"), // Timeline dates
+  rewardType: text("reward_type"), // cash, product, voucher, combo
+  rewardAmount: integer("reward_amount"),
+  budget: integer("budget").notNull(),
   kocNeeded: integer("koc_needed").notNull(),
   kocApplied: integer("koc_applied").default(0),
   kocSelected: integer("koc_selected").default(0),
-  status: text("status").default("draft"), // draft, recruiting, in-progress, review, completed
-  budget: integer("budget").notNull(),
+  productSamples: boolean("product_samples").default(false),
+  
+  // Timeline
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  applicationDeadline: timestamp("application_deadline"),
+  selectionDeadline: timestamp("selection_deadline"),
+  contentDeadline: timestamp("content_deadline"),
+  reviewDeadline: timestamp("review_deadline"),
+  
+  // Settings
+  isUrgent: boolean("is_urgent").default(false),
+  requireApproval: boolean("require_approval").default(true),
+  autoApprove: boolean("auto_approve").default(false),
+  isPrivate: boolean("is_private").default(false),
+  
+  // Terms & Usage Rights
+  contentUsageAllowed: boolean("content_usage_allowed").default(false),
+  contentUsageMonths: integer("content_usage_months"),
+  productReturnRequired: boolean("product_return_required").default(false),
+  productReturnGuide: text("product_return_guide"),
+  guidelineUrl: text("guideline_url"),
+  websiteUrl: text("website_url"),
+  
+  // Legacy fields
+  requirements: json("requirements"), // Complex requirements object
+  content: json("content"), // Content requirements
+  timeline: json("timeline"), // Timeline dates
   kpi: json("kpi"), // KPI targets
+  
+  status: text("status").default("draft"), // draft, recruiting, in-progress, review, completed
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

@@ -11018,6 +11018,236 @@ function CampaignManagement() {
               </p>
             </section>
 
+            {/* Pattern 6: Campaign Management Dashboard */}
+            <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-campaign-management">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 6: Campaign Management Dashboard</h3>
+                <p className="text-gray-600 mb-2">Complete campaign management with search, filter, bulk actions, and export - tích hợp đầy đủ CRUD operations</p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <AppleBadge variant="default" size="sm">AppleTable</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleSearchBar</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleTabs</AppleBadge>
+                  <AppleBadge variant="default" size="sm">AppleMetricCard</AppleBadge>
+                  <AppleBadge variant="default" size="sm">BulkActionToolbar</AppleBadge>
+                </div>
+              </div>
+
+              {/* Live Example */}
+              <div className="bg-gray-50 p-4 rounded-lg mb-4 space-y-6">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <AppleMetricCard
+                    title="Tổng chiến dịch"
+                    value="348"
+                    change={12}
+                    trend="up"
+                    description="+24 chiến dịch mới tháng này"
+                    icon={<IoTrendingUpOutline className="w-5 h-5 text-blue-600" />}
+                    data-testid="campaign-total"
+                  />
+                  <AppleMetricCard
+                    title="Đang hoạt động"
+                    value="156"
+                    description="89 chiến dịch đang tuyển KOC"
+                    icon={<IoCheckmarkCircleOutline className="w-5 h-5 text-green-600" />}
+                    data-testid="campaign-active"
+                  />
+                  <AppleMetricCard
+                    title="KOC tham gia"
+                    value="2,847"
+                    change={8}
+                    trend="up"
+                    description="+342 KOC tuần này"
+                    icon={<IoPeopleOutline className="w-5 h-5 text-purple-600" />}
+                    data-testid="campaign-koc"
+                  />
+                  <AppleMetricCard
+                    title="Tổng ngân sách"
+                    value="12.4B"
+                    description="8.7B đã chi tiêu (70%)"
+                    icon={<IoCashOutline className="w-5 h-5 text-orange-600" />}
+                    data-testid="campaign-budget"
+                  />
+                </div>
+
+                {/* Search & Tabs */}
+                <div className="space-y-4">
+                  <AppleSearchBar
+                    value=""
+                    onChange={() => {}}
+                    placeholder="Tìm kiếm theo tên chiến dịch, mã, thương hiệu..."
+                  />
+                  
+                  <AppleTabs
+                    tabs={[
+                      { id: 'all', label: 'Tất cả (348)' },
+                      { id: 'recruiting', label: 'Đang chạy (156)' },
+                      { id: 'draft', label: 'Nháp (42)' },
+                      { id: 'completed', label: 'Hoàn thành (128)' },
+                      { id: 'paused', label: 'Tạm dừng (22)' }
+                    ]}
+                    activeTab="all"
+                    onChange={() => {}}
+                    variant="pills"
+                  />
+                </div>
+
+                {/* Campaign Table Preview */}
+                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Chiến dịch</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Thương hiệu</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Trạng thái</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">KOC</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase">Ngân sách</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-900">Review Son Môi Maybelline</span>
+                            <AppleBadge variant="info" size="sm">TikTok</AppleBadge>
+                          </div>
+                          <div className="text-xs text-gray-500">CPG-001</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">💄</span>
+                            <span className="text-sm text-gray-900">Maybelline</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <AppleBadge variant="success" size="sm">Đang chạy</AppleBadge>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">89/100</div>
+                          <div className="text-xs text-gray-500">KOC tham gia</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">85M VNĐ</div>
+                          <div className="text-xs text-gray-500">Đã chi: 63M (74%)</div>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-900">Unboxing Kem Nền Loreal</span>
+                            <AppleBadge variant="info" size="sm">Instagram</AppleBadge>
+                          </div>
+                          <div className="text-xs text-gray-500">CPG-002</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">🎨</span>
+                            <span className="text-sm text-gray-900">L'Oréal Paris</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <AppleBadge variant="success" size="sm">Đang chạy</AppleBadge>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">45/80</div>
+                          <div className="text-xs text-gray-500">KOC tham gia</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">64M VNĐ</div>
+                          <div className="text-xs text-gray-500">Đã chi: 38M (60%)</div>
+                        </td>
+                      </tr>
+                      <tr className="hover:bg-gray-50">
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-900">Tutorial Makeup NARS</span>
+                            <AppleBadge variant="info" size="sm">YouTube</AppleBadge>
+                          </div>
+                          <div className="text-xs text-gray-500">CPG-003</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-2xl">✨</span>
+                            <span className="text-sm text-gray-900">NARS</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <AppleBadge variant="default" size="sm">Hoàn thành</AppleBadge>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">50/50</div>
+                          <div className="text-xs text-gray-500">KOC tham gia</div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="text-sm font-semibold text-gray-900">50M VNĐ</div>
+                          <div className="text-xs text-gray-500">Đã chi: 50M (100%)</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Usage Code */}
+              <div className="mb-4">
+                <CodeBlock code={`// Campaign Management Pattern
+import { 
+  AppleTable,
+  AppleSearchBar,
+  AppleTabs,
+  AppleMetricCard,
+  AppleBadge
+} from '@/components/apple';
+
+function CampaignManagement() {
+  const [campaigns, setCampaigns] = useState([]);
+  const [searchValue, setSearchValue] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
+
+  return (
+    <div className="space-y-6">
+      {/* Stats Grid */}
+      <div className="grid grid-cols-4 gap-4">
+        <AppleMetricCard title="Tổng chiến dịch" value="348" />
+        <AppleMetricCard title="Đang hoạt động" value="156" />
+        <AppleMetricCard title="KOC tham gia" value="2,847" />
+        <AppleMetricCard title="Tổng ngân sách" value="12.4B" />
+      </div>
+
+      {/* Search & Filter */}
+      <AppleSearchBar 
+        value={searchValue} 
+        onChange={setSearchValue}
+        placeholder="Tìm kiếm chiến dịch..."
+      />
+      
+      <AppleTabs
+        tabs={[
+          { id: 'all', label: 'Tất cả (348)' },
+          { id: 'recruiting', label: 'Đang chạy (156)' },
+          { id: 'draft', label: 'Nháp (42)' }
+        ]}
+        activeTab={activeTab}
+        onChange={setActiveTab}
+      />
+
+      {/* Campaign Table */}
+      <AppleTable
+        columns={[...]}
+        data={campaigns}
+        selectable
+      />
+    </div>
+  );
+}`} />
+              </div>
+
+              <p className="text-sm text-gray-600">
+                <strong>Sử dụng trong:</strong> Campaign Management, Admin Dashboard • 
+                <strong> Lợi ích:</strong> Complete CRUD operations, search & filter, bulk actions, responsive design
+              </p>
+            </section>
+
             {/* Summary Section */}
             <section className="bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-lg border border-purple-200">
               <h3 className="text-xl font-bold text-gray-900 mb-3">Migration Impact Summary</h3>
