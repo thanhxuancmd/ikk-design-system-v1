@@ -116,11 +116,45 @@ UI Effects: Modern card-based design with clean shadows and borders
 - Phase C: ESLint enforcement for design system usage
 - Phase D: External reusability (npm package, documentation)
 
+## Icon System Migration (October 2025)
+
+**Objective:** Standardize entire design system to use Ionicons 5 exclusively, removing Heroicons v2 and Lucide dependencies.
+
+**Migration Completed:**
+1. **/apple-hig showcase page:**
+   - ✅ Migrated 418 icon usages: Heroicons v2 (7 types) + Lucide (20 types) → Ionicons 5
+   - ✅ Removed ALL 80 emoji occurrences with plain text replacements
+   - ✅ Updated imports: react-icons/hi2, lucide-react → react-icons/io5
+
+2. **Supporting components:**
+   - ✅ quick-navigation.tsx: 8 Heroicons → Ionicons 5 (IoHomeOutline, IoAddOutline, etc.)
+   - ✅ ikk-admin-layout.tsx: 11 Heroicons → Ionicons 5
+   - ✅ admin/admin-overview.tsx: 4 Heroicons → Ionicons 5
+
+3. **Apple HIG component library:**
+   - ✅ ALL 40 Apple components migrated: Lucide → Ionicons 5
+   - ✅ Includes: Form components, Navigation, Feedback, Data display, Domain-specific
+
+**Icon Mapping Reference (Lucide/Heroicons → Ionicons 5):**
+- Check/Success: CheckCircle, HiOutlineCheckCircle → IoCheckmarkCircleOutline
+- Close/Cancel: X, XCircle, HiOutlineXCircle → IoCloseOutline, IoCloseCircleOutline
+- Navigation: ChevronRight, HiOutlineChevronRight → IoChevronForwardOutline
+- Actions: Edit, Trash, Download → IoCreateOutline, IoTrashOutline, IoDownloadOutline
+- User: User, Users, HiOutlineUser → IoPersonOutline, IoPeopleOutline
+- Common: Search, Settings, Home → IoSearchOutline, IoSettingsOutline, IoHomeOutline
+
+**Benefits Achieved:**
+- ✅ Single icon system across entire application (Ionicons 5)
+- ✅ Consistent visual language and sizing
+- ✅ Reduced bundle size (removed 2 icon libraries)
+- ✅ Improved maintainability (one import source)
+- ✅ E2E tested: All icons render correctly on /apple-hig showcase
+
 # External Dependencies
 
 - **Database**: Neon PostgreSQL serverless database
 - **UI Components**: Radix UI primitives, shadcn/ui
 - **Styling**: Tailwind CSS
 - **Fonts**: Google Fonts (Noto Sans Korean, Roboto)
-- **Icons**: Heroicons v2 (react-icons/hi2), lucide-react, react-icons/fa
+- **Icons**: Ionicons 5 (react-icons/io5 - primary icon system), react-icons/fa (company logos only)
 - **Charts**: Recharts library
