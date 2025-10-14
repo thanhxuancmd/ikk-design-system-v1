@@ -74,8 +74,31 @@ import {
 } from '@/components/apple';
 import type { CartItem, OrderStatus, ModerationItem, ModerationStatus, CommissionRule, ExportField, TreeNode, Notification } from '@/components/apple';
 import { designTokens } from '@/constants/design-tokens';
-import { HiOutlineCheckCircle, HiOutlineXCircle, HiEye, HiHeart, HiCurrencyDollar, HiArrowTrendingUp, HiCheckCircle as HiCheckCircleSolid } from 'react-icons/hi2';
-import { Mail, User, Home, FileText, Settings, ShoppingCart, TrendingUp, Users, Edit, Trash, Download, ChevronRight, Info, HelpCircle, Copy, Search, Command, DollarSign, Heart, Eye } from 'lucide-react';
+import { 
+  IoCheckmarkCircleOutline, 
+  IoCloseCircleOutline, 
+  IoEyeOutline, 
+  IoHeartOutline, 
+  IoCashOutline, 
+  IoTrendingUpOutline, 
+  IoCheckmarkCircle,
+  IoMailOutline,
+  IoPersonOutline,
+  IoHomeOutline,
+  IoDocumentTextOutline,
+  IoSettingsOutline,
+  IoCartOutline,
+  IoPeopleOutline,
+  IoCreateOutline,
+  IoTrashOutline,
+  IoDownloadOutline,
+  IoChevronForwardOutline,
+  IoInformationCircleOutline,
+  IoHelpCircleOutline,
+  IoCopyOutline,
+  IoSearchOutline,
+  IoTerminalOutline
+} from 'react-icons/io5';
 import { 
   LineChart as RechartsLineChart, 
   Line, 
@@ -149,7 +172,7 @@ function AppleHIGShowcaseContent() {
   // Phase 2 components state
   // List-Detail Shell state
   const [selectedUserId, setSelectedUserId] = useState<number | undefined>(undefined);
-  const [listDetailSearchValue, setListDetailSearchValue] = useState('');
+    const [listDetailSearchValue, setListDetailSearchValue] = useState('');
   
   // Hierarchical Table state
   const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string | number>>(new Set());
@@ -252,7 +275,7 @@ function AppleHIGShowcaseContent() {
       id: 'new-campaign',
       label: 'Tạo chiến dịch mới',
       description: 'Bắt đầu một chiến dịch marketing mới',
-      icon: <FileText className="w-4 h-4" />,
+      icon: <IoDocumentTextOutline className="w-4 h-4" />,
       category: 'Chiến dịch',
       onSelect: () => {
         toast.success('Đang tạo chiến dịch mới...');
@@ -263,7 +286,7 @@ function AppleHIGShowcaseContent() {
       id: 'search-koc',
       label: 'Tìm kiếm KOC',
       description: 'Tìm KOC phù hợp cho chiến dịch',
-      icon: <Search className="w-4 h-4" />,
+      icon: <IoSearchOutline className="w-4 h-4" />,
       category: 'KOC',
       onSelect: () => {
         toast.info('Đang tìm kiếm KOC...');
@@ -274,7 +297,7 @@ function AppleHIGShowcaseContent() {
       id: 'view-analytics',
       label: 'Xem báo cáo',
       description: 'Phân tích hiệu suất chiến dịch',
-      icon: <TrendingUp className="w-4 h-4" />,
+      icon: <IoTrendingUpOutline className="w-4 h-4" />,
       category: 'Báo cáo',
       onSelect: () => {
         toast.info('Đang mở báo cáo...');
@@ -285,7 +308,7 @@ function AppleHIGShowcaseContent() {
       id: 'settings',
       label: 'Cài đặt',
       description: 'Điều chỉnh cài đặt hệ thống',
-      icon: <Settings className="w-4 h-4" />,
+      icon: <IoSettingsOutline className="w-4 h-4" />,
       category: 'Hệ thống',
       onSelect: () => {
         toast.info('Đang mở cài đặt...');
@@ -296,7 +319,7 @@ function AppleHIGShowcaseContent() {
       id: 'invite-user',
       label: 'Mời người dùng',
       description: 'Thêm thành viên mới vào nhóm',
-      icon: <User className="w-4 h-4" />,
+      icon: <IoPersonOutline className="w-4 h-4" />,
       category: 'Người dùng',
       onSelect: () => {
         toast.success('Đang gửi lời mời...');
@@ -604,7 +627,7 @@ function AppleHIGShowcaseContent() {
       <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
         <div className="p-6">
           <div className="flex items-center gap-2 mb-4">
-            <HiOutlineXCircle className="w-5 h-5 text-red-500" />
+            <IoCloseCircleOutline className="w-5 h-5 text-red-500" />
             <h4 className="font-semibold text-gray-700">Before (Inconsistent)</h4>
           </div>
           <div className="mb-4 p-4 bg-gray-50 rounded-lg">{before}</div>
@@ -612,7 +635,7 @@ function AppleHIGShowcaseContent() {
         </div>
         <div className="p-6">
           <div className="flex items-center gap-2 mb-4">
-            <HiOutlineCheckCircle className="w-5 h-5 text-green-500" />
+            <IoCheckmarkCircleOutline className="w-5 h-5 text-green-500" />
             <h4 className="font-semibold text-gray-700">After (Standardized)</h4>
           </div>
           <div className="mb-4 p-4 bg-gray-50 rounded-lg">{after}</div>
@@ -1123,7 +1146,7 @@ function AppleHIGShowcaseContent() {
                     <AppleInput 
                       label="Email" 
                       placeholder="email@example.com" 
-                      leftIcon={<Mail className="w-4 h-4" />}
+                      leftIcon={<IoMailOutline className="w-4 h-4" />}
                       data-testid="input-with-icon"
                     />
                     <AppleInput 
@@ -1150,7 +1173,7 @@ function AppleHIGShowcaseContent() {
 <AppleInput 
   label="Email" 
   placeholder="email@example.com"
-  leftIcon={<Mail className="w-4 h-4" />}
+  leftIcon={<IoMailOutline className="w-4 h-4" />}
   error={errors.email}
 />`}
                 />
@@ -1591,9 +1614,9 @@ const [dateRange, setDateRange] = useState<DateRange>();
                   <h4 className="text-sm font-medium text-gray-700 mb-3">Underline Variant</h4>
                   <AppleTabs
                     tabs={[
-                      { id: 'home', label: 'Trang chủ', icon: <Home className="w-4 h-4" /> },
-                      { id: 'profile', label: 'Hồ sơ', icon: <User className="w-4 h-4" /> },
-                      { id: 'settings', label: 'Cài đặt', icon: <Settings className="w-4 h-4" /> },
+                      { id: 'home', label: 'Trang chủ', icon: <IoHomeOutline className="w-4 h-4" /> },
+                      { id: 'profile', label: 'Hồ sơ', icon: <IoPersonOutline className="w-4 h-4" /> },
+                      { id: 'settings', label: 'Cài đặt', icon: <IoSettingsOutline className="w-4 h-4" /> },
                     ]}
                     activeTab={tabsActiveTab}
                     onChange={setTabsActiveTab}
@@ -1623,8 +1646,8 @@ const [dateRange, setDateRange] = useState<DateRange>();
 
 <AppleTabs
   tabs={[
-    { id: 'home', label: 'Trang chủ', icon: <Home /> },
-    { id: 'profile', label: 'Hồ sơ', icon: <User /> }
+    { id: 'home', label: 'Trang chủ', icon: <IoHomeOutline /> },
+    { id: 'profile', label: 'Hồ sơ', icon: <IoPersonOutline /> }
   ]}
   activeTab={activeTab}
   onChange={setActiveTab}
@@ -1701,10 +1724,10 @@ const [dateRange, setDateRange] = useState<DateRange>();
               <div className="h-96 border border-gray-200 rounded-lg overflow-hidden">
                 <AppleSidebar
                   items={[
-                    { id: '1', label: 'Trang chủ', icon: <Home className="w-5 h-5" /> },
-                    { id: '2', label: 'Chiến dịch', icon: <FileText className="w-5 h-5" />, badge: 5 },
-                    { id: '3', label: 'Người dùng', icon: <User className="w-5 h-5" /> },
-                    { id: '4', label: 'Cài đặt', icon: <Settings className="w-5 h-5" /> },
+                    { id: '1', label: 'Trang chủ', icon: <IoHomeOutline className="w-5 h-5" /> },
+                    { id: '2', label: 'Chiến dịch', icon: <IoDocumentTextOutline className="w-5 h-5" />, badge: 5 },
+                    { id: '3', label: 'Người dùng', icon: <IoPersonOutline className="w-5 h-5" /> },
+                    { id: '4', label: 'Cài đặt', icon: <IoSettingsOutline className="w-5 h-5" /> },
                   ]}
                   activeItem="1"
                 />
@@ -1717,8 +1740,8 @@ const [dateRange, setDateRange] = useState<DateRange>();
 
 <AppleSidebar
   items={[
-    { id: '1', label: 'Trang chủ', icon: <Home /> },
-    { id: '2', label: 'Chiến dịch', icon: <FileText />, badge: 5 }
+    { id: '1', label: 'Trang chủ', icon: <IoHomeOutline /> },
+    { id: '2', label: 'Chiến dịch', icon: <IoDocumentTextOutline />, badge: 5 }
   ]}
   activeItem={activeItem}
 />`}
@@ -2801,7 +2824,7 @@ function MyComponent() {
                       value={125000000}
                       change={18.5}
                       changeType="increase"
-                      icon={<TrendingUp className="w-8 h-8" />}
+                      icon={<IoTrendingUpOutline className="w-8 h-8" />}
                       color={designTokens.colors.primary.DEFAULT}
                     />
                     <StatsCard
@@ -2810,7 +2833,7 @@ function MyComponent() {
                       value={24}
                       change={12.5}
                       changeType="increase"
-                      icon={<ShoppingCart className="w-8 h-8" />}
+                      icon={<IoCartOutline className="w-8 h-8" />}
                     />
                     <StatsCard
                       id="kocs-active"
@@ -2818,7 +2841,7 @@ function MyComponent() {
                       value={156}
                       change={5.2}
                       changeType="increase"
-                      icon={<Users className="w-8 h-8" />}
+                      icon={<IoPeopleOutline className="w-8 h-8" />}
                     />
                   </AppleGrid>
                   
@@ -2921,7 +2944,7 @@ function MyComponent() {
       value={totalRevenue}
       change={revenueChange}
       changeType="increase"
-      icon={<TrendingUp />}
+      icon={<IoTrendingUpOutline />}
     />
     {/* More stats */}
   </AppleGrid>
@@ -2953,7 +2976,7 @@ function MyComponent() {
                 <div className="mb-6 space-y-4">
                   <AppleInput
                     placeholder="Tìm kiếm KOC theo tên, danh mục..."
-                    leftIcon={<User className="w-4 h-4" />}
+                    leftIcon={<IoPersonOutline className="w-4 h-4" />}
                   />
                   <div className="flex gap-2 flex-wrap">
                     <span className="text-sm text-gray-600">Lọc theo level:</span>
@@ -3045,7 +3068,7 @@ function MyComponent() {
 
 <AppleInput
   placeholder="Tìm kiếm KOC..."
-  leftIcon={<User />}
+  leftIcon={<IoPersonOutline />}
   value={searchQuery}
   onChange={(e) => setSearchQuery(e.target.value)}
 />
@@ -3116,7 +3139,7 @@ function MyComponent() {
                       </div>
                       <div className="mt-6">
                         <AppleButton variant="primary" size="lg" className="w-full">
-                          <ShoppingCart className="w-5 h-5 mr-2" />
+                          <IoCartOutline className="w-5 h-5 mr-2" />
                           Thêm vào giỏ hàng
                         </AppleButton>
                       </div>
@@ -3180,7 +3203,7 @@ function MyComponent() {
                 <div className="mt-6">
                   <AppleAlert severity="success">
                     <div className="flex items-center gap-2">
-                      <TrendingUp className="w-5 h-5" />
+                      <IoTrendingUpOutline className="w-5 h-5" />
                       <span>Sản phẩm này đang được 156 KOCs giới thiệu. Tham gia ngay để nhận hoa hồng 15%!</span>
                     </div>
                   </AppleAlert>
@@ -3214,7 +3237,7 @@ function MyComponent() {
       />
       <CommissionBadge rate={15} variant="highlight" />
       <AppleButton variant="primary" size="lg" className="w-full">
-        <ShoppingCart /> Thêm vào giỏ
+        <IoCartOutline /> Thêm vào giỏ
       </AppleButton>
     </div>
     
@@ -3270,7 +3293,7 @@ function MyComponent() {
                     className="mt-4"
                     onClick={() => toast.success('Đã thêm vào giỏ hàng!')}
                   >
-                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    <IoCartOutline className="w-4 h-4 mr-2" />
                     Thêm vào giỏ hàng
                   </AppleButton>
                 </div>
@@ -3850,7 +3873,7 @@ function AdminListManagement() {
                       format="currency"
                       change={analyticsMetrics.revenue.change}
                       changeType={analyticsMetrics.revenue.changeType}
-                      icon={<DollarSign className="w-5 h-5" />}
+                      icon={<IoCashOutline className="w-5 h-5" />}
                     />
                     <AppleMetricCard
                       title="Đơn hàng"
@@ -3858,7 +3881,7 @@ function AdminListManagement() {
                       format="number"
                       change={analyticsMetrics.orders.change}
                       changeType={analyticsMetrics.orders.changeType}
-                      icon={<ShoppingCart className="w-5 h-5" />}
+                      icon={<IoCartOutline className="w-5 h-5" />}
                     />
                     <AppleMetricCard
                       title="Khách hàng"
@@ -3866,7 +3889,7 @@ function AdminListManagement() {
                       format="number"
                       change={analyticsMetrics.customers.change}
                       changeType={analyticsMetrics.customers.changeType}
-                      icon={<Users className="w-5 h-5" />}
+                      icon={<IoPeopleOutline className="w-5 h-5" />}
                     />
                     <AppleMetricCard
                       title="Tỷ lệ chuyển đổi"
@@ -3874,7 +3897,7 @@ function AdminListManagement() {
                       suffix="%"
                       change={analyticsMetrics.conversion.change}
                       changeType={analyticsMetrics.conversion.changeType}
-                      icon={<TrendingUp className="w-5 h-5" />}
+                      icon={<IoTrendingUpOutline className="w-5 h-5" />}
                     />
                   </div>
 
@@ -4099,7 +4122,7 @@ function AnalyticsDashboard() {
                     )}
                     renderDetail={(user) => (
                       <div className="space-y-6">
-                        {/* User Info */}
+                        {/* IoPersonOutline Info */}
                         <div className="flex items-start gap-6 pb-6 border-b">
                           <AppleAvatar src={user.avatar} fallback={user.name.charAt(0)} size="xl" />
                           <div className="flex-1">
@@ -4144,15 +4167,15 @@ function AnalyticsDashboard() {
                         {/* Actions */}
                         <div className="flex gap-3 pt-6 border-t">
                           <AppleButton variant="primary">
-                            <Edit className="w-4 h-4 mr-2" />
+                            <IoCreateOutline className="w-4 h-4 mr-2" />
                             Chỉnh sửa
                           </AppleButton>
                           <AppleButton variant="outline">
-                            <Mail className="w-4 h-4 mr-2" />
+                            <IoMailOutline className="w-4 h-4 mr-2" />
                             Gửi thông báo
                           </AppleButton>
                           <AppleButton variant="destructive">
-                            <Trash className="w-4 h-4 mr-2" />
+                            <IoTrashOutline className="w-4 h-4 mr-2" />
                             Vô hiệu hóa
                           </AppleButton>
                         </div>
@@ -4295,7 +4318,7 @@ function UserManagement() {
         )}
         renderDetail={(user) => (
           <div className="space-y-6">
-            {/* User info */}
+            {/* IoPersonOutline info */}
             <div className="flex gap-4">
               <AppleAvatar src={user.avatar} size="xl" />
               <div>
@@ -4394,13 +4417,13 @@ function UserManagement() {
                   <div className="flex items-center gap-6 flex-wrap p-6 bg-gray-50 rounded-lg">
                     <AppleTooltip content="Nhấn để chỉnh sửa thông tin">
                       <AppleButton variant="primary" size="md" data-testid="tooltip-button">
-                        <Edit className="w-4 h-4" /> Button Trigger
+                        <IoCreateOutline className="w-4 h-4" /> Button Trigger
                       </AppleButton>
                     </AppleTooltip>
                     
                     <AppleTooltip content="Xem thêm thông tin chi tiết">
                       <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors" data-testid="tooltip-icon">
-                        <Info className="w-5 h-5 text-gray-600" />
+                        <IoInformationCircleOutline className="w-5 h-5 text-gray-600" />
                       </button>
                     </AppleTooltip>
                     
@@ -4445,7 +4468,7 @@ import { Info } from 'lucide-react';
 
 // Với icon trigger
 <AppleTooltip content="Xem thêm thông tin">
-  <Info className="w-5 h-5" />
+  <IoInformationCircleOutline className="w-5 h-5" />
 </AppleTooltip>
 
 // Với độ trễ tùy chỉnh
@@ -4477,7 +4500,7 @@ import { Info } from 'lucide-react';
                     <ApplePopover
                       trigger={
                         <AppleButton variant="primary" size="md" data-testid="popover-basic">
-                          <Info className="w-4 h-4" /> Xem thông tin
+                          <IoInformationCircleOutline className="w-4 h-4" /> Xem thông tin
                         </AppleButton>
                       }
                       title="Thông tin chiến dịch"
@@ -4505,7 +4528,7 @@ import { Info } from 'lucide-react';
                     <ApplePopover
                       trigger={
                         <AppleButton variant="outline" size="md" data-testid="popover-form">
-                          <Edit className="w-4 h-4" /> Chỉnh sửa nhanh
+                          <IoCreateOutline className="w-4 h-4" /> Chỉnh sửa nhanh
                         </AppleButton>
                       }
                       title="Cập nhật thông tin"
@@ -4644,23 +4667,23 @@ import { Info } from 'lucide-react';
                     <AppleDropdown
                       trigger={
                         <AppleButton variant="primary" size="md" data-testid="dropdown-basic">
-                          Hành động <ChevronRight className="w-4 h-4 ml-1" />
+                          Hành động <IoChevronForwardOutline className="w-4 h-4 ml-1" />
                         </AppleButton>
                       }
                       items={[
                         {
                           label: 'Chỉnh sửa',
-                          icon: <Edit className="w-4 h-4" />,
+                          icon: <IoCreateOutline className="w-4 h-4" />,
                           onClick: () => toast.info('Đang chỉnh sửa...')
                         },
                         {
                           label: 'Tải xuống',
-                          icon: <Download className="w-4 h-4" />,
+                          icon: <IoDownloadOutline className="w-4 h-4" />,
                           onClick: () => toast.success('Đang tải xuống...')
                         },
                         {
                           label: 'Sao chép',
-                          icon: <Copy className="w-4 h-4" />,
+                          icon: <IoCopyOutline className="w-4 h-4" />,
                           onClick: () => toast.success('Đã sao chép!')
                         }
                       ]}
@@ -4674,26 +4697,26 @@ import { Info } from 'lucide-react';
                     <AppleDropdown
                       trigger={
                         <AppleButton variant="outline" size="md" data-testid="dropdown-dividers">
-                          Tùy chọn <ChevronRight className="w-4 h-4 ml-1" />
+                          Tùy chọn <IoChevronForwardOutline className="w-4 h-4 ml-1" />
                         </AppleButton>
                       }
                       items={[
                         { type: 'label', label: 'Hành động chung' },
                         {
                           label: 'Xem chi tiết',
-                          icon: <Info className="w-4 h-4" />,
+                          icon: <IoInformationCircleOutline className="w-4 h-4" />,
                           onClick: () => toast.info('Đang mở...')
                         },
                         {
                           label: 'Chỉnh sửa',
-                          icon: <Edit className="w-4 h-4" />,
+                          icon: <IoCreateOutline className="w-4 h-4" />,
                           onClick: () => toast.info('Đang chỉnh sửa...')
                         },
                         { type: 'divider', label: '' },
                         { type: 'label', label: 'Hành động khác' },
                         {
                           label: 'Chia sẻ',
-                          icon: <Copy className="w-4 h-4" />,
+                          icon: <IoCopyOutline className="w-4 h-4" />,
                           onClick: () => toast.success('Đã sao chép liên kết!')
                         }
                       ]}
@@ -4707,30 +4730,30 @@ import { Info } from 'lucide-react';
                     <AppleDropdown
                       trigger={
                         <AppleButton variant="secondary" size="md" data-testid="dropdown-destructive">
-                          Quản lý <ChevronRight className="w-4 h-4 ml-1" />
+                          Quản lý <IoChevronForwardOutline className="w-4 h-4 ml-1" />
                         </AppleButton>
                       }
                       items={[
                         {
                           label: 'Chỉnh sửa',
-                          icon: <Edit className="w-4 h-4" />,
+                          icon: <IoCreateOutline className="w-4 h-4" />,
                           onClick: () => toast.info('Đang chỉnh sửa...')
                         },
                         {
                           label: 'Tải xuống',
-                          icon: <Download className="w-4 h-4" />,
+                          icon: <IoDownloadOutline className="w-4 h-4" />,
                           onClick: () => toast.success('Đang tải...')
                         },
                         {
                           label: 'Chia sẻ (đã tắt)',
-                          icon: <Copy className="w-4 h-4" />,
+                          icon: <IoCopyOutline className="w-4 h-4" />,
                           onClick: () => {},
                           disabled: true
                         },
                         { type: 'divider', label: '' },
                         {
                           label: 'Xóa',
-                          icon: <Trash className="w-4 h-4" />,
+                          icon: <IoTrashOutline className="w-4 h-4" />,
                           onClick: () => toast.error('Đã xóa!'),
                           destructive: true
                         }
@@ -4745,13 +4768,13 @@ import { Info } from 'lucide-react';
                     <AppleDropdown
                       trigger={
                         <AppleButton variant="primary" size="md" data-testid="dropdown-nested">
-                          Menu với Submenu <ChevronRight className="w-4 h-4 ml-1" />
+                          Menu với Submenu <IoChevronForwardOutline className="w-4 h-4 ml-1" />
                         </AppleButton>
                       }
                       items={[
                         {
                           label: 'Tệp',
-                          icon: <FileText className="w-4 h-4" />,
+                          icon: <IoDocumentTextOutline className="w-4 h-4" />,
                           items: [
                             {
                               label: 'Tệp mới',
@@ -4770,7 +4793,7 @@ import { Info } from 'lucide-react';
                         },
                         {
                           label: 'Chỉnh sửa',
-                          icon: <Edit className="w-4 h-4" />,
+                          icon: <IoCreateOutline className="w-4 h-4" />,
                           items: [
                             {
                               label: 'Hoàn tác',
@@ -4785,7 +4808,7 @@ import { Info } from 'lucide-react';
                         { type: 'divider', label: '' },
                         {
                           label: 'Cài đặt',
-                          icon: <Settings className="w-4 h-4" />,
+                          icon: <IoSettingsOutline className="w-4 h-4" />,
                           items: [
                             {
                               label: 'Tùy chọn chung',
@@ -4811,12 +4834,12 @@ import { Edit, Trash, Download } from 'lucide-react';
   items={[
     {
       label: 'Chỉnh sửa',
-      icon: <Edit className="w-4 h-4" />,
+      icon: <IoCreateOutline className="w-4 h-4" />,
       onClick: () => handleEdit()
     },
     {
       label: 'Tải xuống',
-      icon: <Download className="w-4 h-4" />,
+      icon: <IoDownloadOutline className="w-4 h-4" />,
       onClick: () => handleDownload()
     }
   ]}
@@ -4882,7 +4905,7 @@ import { Edit, Trash, Download } from 'lucide-react';
                       onClick={() => setCommandOpen(true)}
                       data-testid="button-open-command"
                     >
-                      <Command className="w-4 h-4" /> Mở Command Palette
+                      <IoTerminalOutline className="w-4 h-4" /> Mở Command Palette
                     </AppleButton>
                     
                     <div className="mt-4 p-4 bg-white rounded-lg border border-gray-200">
@@ -4909,11 +4932,11 @@ import { Edit, Trash, Download } from 'lucide-react';
                   <div className="p-6 bg-gray-50 rounded-lg">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
-                        { category: 'Chiến dịch', count: 1, icon: <FileText className="w-4 h-4" /> },
-                        { category: 'KOC', count: 1, icon: <Users className="w-4 h-4" /> },
-                        { category: 'Báo cáo', count: 1, icon: <TrendingUp className="w-4 h-4" /> },
-                        { category: 'Hệ thống', count: 1, icon: <Settings className="w-4 h-4" /> },
-                        { category: 'Người dùng', count: 1, icon: <User className="w-4 h-4" /> }
+                        { category: 'Chiến dịch', count: 1, icon: <IoDocumentTextOutline className="w-4 h-4" /> },
+                        { category: 'KOC', count: 1, icon: <IoPeopleOutline className="w-4 h-4" /> },
+                        { category: 'Báo cáo', count: 1, icon: <IoTrendingUpOutline className="w-4 h-4" /> },
+                        { category: 'Hệ thống', count: 1, icon: <IoSettingsOutline className="w-4 h-4" /> },
+                        { category: 'Người dùng', count: 1, icon: <IoPersonOutline className="w-4 h-4" /> }
                       ].map((cat) => (
                         <div key={cat.category} className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
                           {cat.icon}
@@ -4971,7 +4994,7 @@ function MyComponent() {
       id: 'new-campaign',
       label: 'Tạo chiến dịch mới',
       description: 'Bắt đầu một chiến dịch marketing mới',
-      icon: <FileText className="w-4 h-4" />,
+      icon: <IoDocumentTextOutline className="w-4 h-4" />,
       category: 'Chiến dịch',
       onSelect: () => {
         handleCreateCampaign();
@@ -4982,7 +5005,7 @@ function MyComponent() {
       id: 'search-koc',
       label: 'Tìm kiếm KOC',
       description: 'Tìm KOC phù hợp cho chiến dịch',
-      icon: <Search className="w-4 h-4" />,
+      icon: <IoSearchOutline className="w-4 h-4" />,
       category: 'KOC',
       onSelect: () => {
         handleSearchKOC();
@@ -5425,19 +5448,19 @@ function MyComponent() {
             >
               <nav className="space-y-2">
                 <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-home">
-                  <Home className="w-5 h-5" />
+                  <IoHomeOutline className="w-5 h-5" />
                   <span>Trang chủ</span>
                 </button>
                 <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-campaigns">
-                  <FileText className="w-5 h-5" />
+                  <IoDocumentTextOutline className="w-5 h-5" />
                   <span>Chiến dịch</span>
                 </button>
                 <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-kocs">
-                  <Users className="w-5 h-5" />
+                  <IoPeopleOutline className="w-5 h-5" />
                   <span>KOC</span>
                 </button>
                 <button className="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-3" data-testid="nav-settings">
-                  <Settings className="w-5 h-5" />
+                  <IoSettingsOutline className="w-5 h-5" />
                   <span>Cài đặt</span>
                 </button>
               </nav>
@@ -5500,7 +5523,7 @@ function MyComponent() {
                   }}
                   data-testid="action-share"
                 >
-                  <Copy className="w-5 h-5" />
+                  <IoCopyOutline className="w-5 h-5" />
                   <span>Chia sẻ</span>
                 </button>
                 <button 
@@ -5511,7 +5534,7 @@ function MyComponent() {
                   }}
                   data-testid="action-download"
                 >
-                  <Download className="w-5 h-5" />
+                  <IoDownloadOutline className="w-5 h-5" />
                   <span>Tải xuống</span>
                 </button>
                 <button 
@@ -5522,7 +5545,7 @@ function MyComponent() {
                   }}
                   data-testid="action-delete"
                 >
-                  <Trash className="w-5 h-5" />
+                  <IoTrashOutline className="w-5 h-5" />
                   <span>Xóa</span>
                 </button>
               </div>
@@ -5667,7 +5690,7 @@ function MyComponent() {
                   trend="up"
                   suffix="đ"
                   variant="success"
-                  icon={<TrendingUp className="w-5 h-5" />}
+                  icon={<IoTrendingUpOutline className="w-5 h-5" />}
                   description="So với tháng trước"
                 />
                 <AppleMetricCard
@@ -5676,7 +5699,7 @@ function MyComponent() {
                   change={-8.3}
                   trend="down"
                   variant="error"
-                  icon={<Users className="w-5 h-5" />}
+                  icon={<IoPeopleOutline className="w-5 h-5" />}
                   description="Người dùng hoạt động"
                 />
                 <AppleMetricCard
@@ -5684,7 +5707,7 @@ function MyComponent() {
                   value={48}
                   trend="neutral"
                   variant="default"
-                  icon={<FileText className="w-5 h-5" />}
+                  icon={<IoDocumentTextOutline className="w-5 h-5" />}
                   description="Đang chạy"
                 />
                 <AppleMetricCard
@@ -5693,7 +5716,7 @@ function MyComponent() {
                   change={25.8}
                   trend="up"
                   variant="warning"
-                  icon={<ShoppingCart className="w-5 h-5" />}
+                  icon={<IoCartOutline className="w-5 h-5" />}
                   description="Trong tháng này"
                 />
               </div>
@@ -5702,7 +5725,7 @@ function MyComponent() {
                 <h4 className="text-sm font-medium text-gray-700 mb-3">Code Example</h4>
                 <CodeBlock
                   code={`import { AppleMetricCard } from '@/components/apple/AppleMetricCard';
-import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
+import { IoTrendingUpOutline, IoPeopleOutline, IoDocumentTextOutline, ShoppingCart } from 'lucide-react';
 
 // Revenue metric with upward trend
 <AppleMetricCard
@@ -5712,7 +5735,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
   trend="up"
   suffix="đ"
   variant="success"
-  icon={<TrendingUp className="w-5 h-5" />}
+  icon={<IoTrendingUpOutline className="w-5 h-5" />}
   description="So với tháng trước"
 />
 
@@ -5723,7 +5746,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
   change={-8.3}
   trend="down"
   variant="error"
-  icon={<Users className="w-5 h-5" />}
+  icon={<IoPeopleOutline className="w-5 h-5" />}
   description="Người dùng hoạt động"
 />`}
                 />
@@ -6016,7 +6039,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
                   value={12500000}
                   change={15.5}
                   changeType="increase"
-                  icon={<TrendingUp className="w-8 h-8" />}
+                  icon={<IoTrendingUpOutline className="w-8 h-8" />}
                   color={designTokens.colors.primary.DEFAULT}
                 />
                 <StatsCard
@@ -6025,7 +6048,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
                   value={342}
                   change={8.3}
                   changeType="decrease"
-                  icon={<ShoppingCart className="w-8 h-8" />}
+                  icon={<IoCartOutline className="w-8 h-8" />}
                 />
                 <StatsCard
                   id="kocs"
@@ -6033,7 +6056,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
                   value={156}
                   change={0}
                   changeType="neutral"
-                  icon={<Users className="w-8 h-8" />}
+                  icon={<IoPeopleOutline className="w-8 h-8" />}
                 />
               </div>
 
@@ -6044,7 +6067,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
   value={12500000}
   change={15.5}
   changeType="increase"
-  icon={<TrendingUp className="w-8 h-8" />}
+  icon={<IoTrendingUpOutline className="w-8 h-8" />}
   color={designTokens.colors.primary.DEFAULT}
 />
 
@@ -6055,7 +6078,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
   value={342}
   change={8.3}
   changeType="decrease"
-  icon={<ShoppingCart className="w-8 h-8" />}
+  icon={<IoCartOutline className="w-8 h-8" />}
 />
 
 // Clickable card
@@ -6141,7 +6164,7 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
 
               <div className="max-w-sm mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg">
                 <div className="h-48 bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center">
-                  <ShoppingCart className="w-20 h-20 text-gray-400" />
+                  <IoCartOutline className="w-20 h-20 text-gray-400" />
                 </div>
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
@@ -6234,19 +6257,19 @@ import { TrendingUp, Users, FileText, ShoppingCart } from 'lucide-react';
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Tại sao nên migrate sang Apple HIG Components?</h3>
               <div className="space-y-3 text-gray-700">
                 <p className="flex items-start gap-2">
-                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <IoCheckmarkCircleOutline className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <span><strong>Tính nhất quán:</strong> Tất cả components tuân theo cùng một design language, đảm bảo UI đồng nhất</span>
                 </p>
                 <p className="flex items-start gap-2">
-                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <IoCheckmarkCircleOutline className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <span><strong>Khả năng tiếp cận:</strong> Built-in accessibility features (ARIA labels, keyboard navigation, screen reader support)</span>
                 </p>
                 <p className="flex items-start gap-2">
-                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <IoCheckmarkCircleOutline className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <span><strong>Dễ bảo trì:</strong> Centralized updates, bug fixes áp dụng cho toàn bộ hệ thống</span>
                 </p>
                 <p className="flex items-start gap-2">
-                  <HiOutlineCheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                  <IoCheckmarkCircleOutline className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                   <span><strong>Developer experience:</strong> Props rõ ràng, TypeScript support, documentation đầy đủ</span>
                 </p>
               </div>
@@ -6349,7 +6372,7 @@ import { AppleButton } from '@/components/apple';
                       label="Email"
                       type="email"
                       placeholder="email@example.com"
-                      leftIcon={<Mail className="w-4 h-4" />}
+                      leftIcon={<IoMailOutline className="w-4 h-4" />}
                       error="Email không hợp lệ"
                       data-testid="input-migration-email"
                     />
@@ -6375,7 +6398,7 @@ import { Mail } from 'lucide-react';
   label="Email"
   type="email"
   placeholder="email@example.com"
-  leftIcon={<Mail className="w-4 h-4" />}
+  leftIcon={<IoMailOutline className="w-4 h-4" />}
   error="Email không hợp lệ"
 />`}
               />
@@ -6413,9 +6436,9 @@ import { Mail } from 'lucide-react';
                 after={
                   <AppleTabs
                     tabs={[
-                      { id: 'overview', label: 'Tổng quan', icon: <Home className="w-4 h-4" /> },
-                      { id: 'campaigns', label: 'Chiến dịch', icon: <FileText className="w-4 h-4" /> },
-                      { id: 'reports', label: 'Báo cáo', icon: <TrendingUp className="w-4 h-4" /> },
+                      { id: 'overview', label: 'Tổng quan', icon: <IoHomeOutline className="w-4 h-4" /> },
+                      { id: 'campaigns', label: 'Chiến dịch', icon: <IoDocumentTextOutline className="w-4 h-4" /> },
+                      { id: 'reports', label: 'Báo cáo', icon: <IoTrendingUpOutline className="w-4 h-4" /> },
                     ]}
                     activeTab={tabsActiveTab}
                     onChange={setTabsActiveTab}
@@ -6439,9 +6462,9 @@ import { AppleTabs } from '@/components/apple';
 
 <AppleTabs
   tabs={[
-    { id: 'overview', label: 'Tổng quan', icon: <Home /> },
-    { id: 'campaigns', label: 'Chiến dịch', icon: <FileText /> },
-    { id: 'reports', label: 'Báo cáo', icon: <TrendingUp /> },
+    { id: 'overview', label: 'Tổng quan', icon: <IoHomeOutline /> },
+    { id: 'campaigns', label: 'Chiến dịch', icon: <IoDocumentTextOutline /> },
+    { id: 'reports', label: 'Báo cáo', icon: <IoTrendingUpOutline /> },
   ]}
   activeTab={activeTab}
   onChange={setActiveTab}
@@ -6657,7 +6680,7 @@ function Dashboard() {
           value="438M"
           change={15.3}
           changeType="increase"
-          icon={<TrendingUp />}
+          icon={<IoTrendingUpOutline />}
         />
         <AppleMetricCard
           title="Chiến dịch đang chạy"
@@ -6717,9 +6740,9 @@ function KOCTable() {
       actions: (
         <AppleDropdown
           items={[
-            { label: 'Xem profile', icon: <User />, onClick: () => {} },
+            { label: 'Xem profile', icon: <IoPersonOutline />, onClick: () => {} },
             { label: 'Gửi tin nhắn', icon: <Mail />, onClick: () => {} },
-            { label: 'Mời tham gia', icon: <FileText />, onClick: () => {} }
+            { label: 'Mời tham gia', icon: <IoDocumentTextOutline />, onClick: () => {} }
           ]}
         />
       )
@@ -6778,7 +6801,7 @@ function KOCTable() {
                   <h4 className="font-semibold text-gray-900 mb-3">Ví dụ thực tế:</h4>
                   <CodeBlock code={`// ❌ BAD: Không accessibility
 <div onClick={handleDelete} className="cursor-pointer">
-  <Trash className="w-4 h-4" />
+  <IoTrashOutline className="w-4 h-4" />
 </div>
 
 // ✅ GOOD: Semantic button với aria-label
@@ -6789,7 +6812,7 @@ function KOCTable() {
   aria-label="Xóa chiến dịch"
   data-testid="button-delete"
 >
-  <Trash className="w-4 h-4" />
+  <IoTrashOutline className="w-4 h-4" />
 </AppleButton>
 
 // ✅ BETTER: Với tooltip cho context
@@ -6800,7 +6823,7 @@ function KOCTable() {
     onClick={handleDelete}
     aria-label="Xóa chiến dịch"
   >
-    <Trash className="w-4 h-4" />
+    <IoTrashOutline className="w-4 h-4" />
   </AppleButton>
 </AppleTooltip>`} />
                 </div>
@@ -6893,7 +6916,7 @@ const KOCCard = memo(({ koc }) => (
                 {/* Pitfall 1 */}
                 <div className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Mixing raw Tailwind với Apple components</h4>
                       <CodeBlock code={`// ❌ BAD
@@ -6903,7 +6926,7 @@ const KOCCard = memo(({ koc }) => (
                     </div>
                   </div>
                   <div className="flex items-start gap-3 ml-9">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng props hoặc className cho custom styles</h4>
                       <CodeBlock code={`// ✅ GOOD: Use props
@@ -6922,7 +6945,7 @@ const KOCCard = memo(({ koc }) => (
                 {/* Pitfall 2 */}
                 <div className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Quên data-testid attributes</h4>
                       <CodeBlock code={`// ❌ BAD: No testid
@@ -6932,7 +6955,7 @@ const KOCCard = memo(({ koc }) => (
                     </div>
                   </div>
                   <div className="flex items-start gap-3 ml-9">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Luôn thêm data-testid cho interactive elements</h4>
                       <CodeBlock code={`// ✅ GOOD
@@ -6949,7 +6972,7 @@ const KOCCard = memo(({ koc }) => (
                 {/* Pitfall 3 */}
                 <div className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-start gap-3 mb-3">
-                    <HiOutlineXCircle className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
+                    <IoCloseCircleOutline className="w-6 h-6 text-red-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Lỗi: Inconsistent spacing/colors</h4>
                       <CodeBlock code={`// ❌ BAD: Random values
@@ -6959,7 +6982,7 @@ const KOCCard = memo(({ koc }) => (
                     </div>
                   </div>
                   <div className="flex items-start gap-3 ml-9">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 mt-0.5 flex-shrink-0" />
                     <div className="flex-1">
                       <h4 className="font-semibold text-gray-900 mb-1">Giải pháp: Sử dụng design tokens từ constants</h4>
                       <CodeBlock code={`// ✅ GOOD: Use design tokens
@@ -7558,7 +7581,7 @@ interface ProductCardLabels {
     approveButton: "Approve",
     rejectButton: "Reject",
     contentColumn: "Content",
-    userColumn: "User",
+    userColumn: "IoPersonOutline",
     typeColumn: "Type",
     statusColumn: "Status",
     actionsColumn: "Actions"
@@ -7717,7 +7740,7 @@ export const en = {
     changeLabel: "vs last month"
   },
   searchBar: {
-    placeholder: "Search...",
+    placeholder: "IoSearchOutline...",
     recentLabel: "Recent searches",
     noResultsText: "No results found"
   },
@@ -7741,7 +7764,7 @@ export const vi = {
 import { en } from './translations/en'
 
 function Dashboard() {
-  const locale = useUserLocale() // Get from settings
+  const locale = useIoPersonOutlineLocale() // Get from settings
   const t = locale === 'en' ? en : vi
   
   return (
@@ -7865,7 +7888,7 @@ export const enTranslations = {
   
   // AppleSearchBar
   searchBar: {
-    placeholder: "Search...",
+    placeholder: "IoSearchOutline...",
     recentLabel: "Recent searches",
     noResultsText: "No results found",
     clearButtonLabel: "Clear"
@@ -7880,7 +7903,7 @@ export const enTranslations = {
     approveButton: "Approve",
     rejectButton: "Reject",
     contentColumn: "Content",
-    userColumn: "User",
+    userColumn: "IoPersonOutline",
     // ... add all needed labels
   },
   
@@ -7976,7 +7999,7 @@ const techTheme = createTheme({
 
 // 2. Create translations
 const en = {
-  search: { placeholder: "Search products...", noResults: "Nothing found" },
+  search: { placeholder: "IoSearchOutline products...", noResults: "Nothing found" },
   metric: { vsLabel: "vs last quarter" },
 }
 
@@ -7987,7 +8010,7 @@ function TechDashboard() {
       <div className="p-8">
         <h1>Tech Dashboard</h1>
         
-        {/* Search with English labels */}
+        {/* IoSearchOutline with English labels */}
         <AppleSearchBar
           placeholder={en.search.placeholder}
           noResultsText={en.search.noResults}
@@ -8006,7 +8029,7 @@ function TechDashboard() {
           />
           
           <AppleMetricCard
-            title="Users"
+            title="IoPeopleOutline"
             value={125000}
             change={12.3}
             changeLabel={en.metric.vsLabel}
@@ -8101,7 +8124,7 @@ function TechDashboard() {
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
                     <span className="text-2xl">🔔</span> AppleNotificationCenter
                   </h4>
-                  <p className="text-sm text-gray-600">User notification management</p>
+                  <p className="text-sm text-gray-600">IoPersonOutline notification management</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold mb-2 flex items-center gap-2">
@@ -8121,28 +8144,28 @@ function TechDashboard() {
                 <h4 className="font-semibold text-gray-900 mb-3">Why These Patterns?</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-start gap-3">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Consistency</p>
                       <p className="text-sm text-gray-600">Unified UX across all admin pages</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Productivity</p>
                       <p className="text-sm text-gray-600">Pre-built patterns save development time</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Accessibility</p>
                       <p className="text-sm text-gray-600">WCAG 2.1 AA compliant out of the box</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiOutlineCheckCircle className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircleOutline className="w-6 h-6 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium">Responsive</p>
                       <p className="text-sm text-gray-600">Works seamlessly on all devices</p>
@@ -8167,7 +8190,7 @@ function TechDashboard() {
                     <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
-                        <span className="text-green-600">•</span> User management interfaces
+                        <span className="text-green-600">•</span> IoPersonOutline management interfaces
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Product catalogs
@@ -8176,7 +8199,7 @@ function TechDashboard() {
                         <span className="text-green-600">•</span> Order management
                       </li>
                       <li className="flex items-start gap-2">
-                        <span className="text-green-600">•</span> Settings and configuration panels
+                        <span className="text-green-600">•</span> IoSettingsOutline and configuration panels
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Any scenario with list + detail view
@@ -8224,31 +8247,31 @@ function TechDashboard() {
                 <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
                 <div className="space-y-2">
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="list"</code> on list panel
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-selected</code> on selected items
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="region"</code> with <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-label</code> on detail panel
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       Full keyboard navigation (arrow keys, Enter, Escape)
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       Focus management when opening/closing detail
                     </div>
@@ -8457,25 +8480,25 @@ function UserManagement() {
                 <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
                 <div className="space-y-2">
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="treegrid"</code> for hierarchical structure
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-level</code> indicates nesting depth
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-expanded</code> for expand/collapse state
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       Keyboard navigation (Arrow keys to navigate, Space to expand/collapse)
                     </div>
@@ -8609,7 +8632,7 @@ const columns = [
                     <h5 className="font-semibold text-green-700 mb-2">✅ Perfect For:</h5>
                     <ul className="space-y-1 text-sm text-gray-700">
                       <li className="flex items-start gap-2">
-                        <span className="text-green-600">•</span> User alerts & updates
+                        <span className="text-green-600">•</span> IoPersonOutline alerts & updates
                       </li>
                       <li className="flex items-start gap-2">
                         <span className="text-green-600">•</span> Activity feeds
@@ -8663,25 +8686,25 @@ const columns = [
                 <h4 className="text-xl font-semibold mb-4">Accessibility Features</h4>
                 <div className="space-y-2">
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">role="dialog"</code> for notification panel
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       <code className="text-sm bg-gray-100 px-2 py-1 rounded">aria-live="polite"</code> for new notifications
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       Badge shows unread count with proper ARIA label
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+                    <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                     <div>
                       Escape key to close panel
                     </div>
@@ -8945,7 +8968,7 @@ function CampaignDashboard() {
           value="438M VNĐ"
           change={15.3}
           changeType="increase"
-          icon={<TrendingUp />}
+          icon={<IoTrendingUpOutline />}
         />
         <AppleMetricCard
           title="Chiến dịch"
@@ -9261,26 +9284,26 @@ function ProductList() {
                     <h5 className="font-semibold text-gray-900 mb-3">🇬🇧 English - User Management</h5>
                     <CodeBlock code={`import { BulkActionToolbar } from '@/components/apple';
 
-function UserList() {
+function IoPersonOutlineList() {
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [lastAction, setLastAction] = useState<any>(null);
 
   const handleBulkArchive = async () => {
     const itemsToArchive = Array.from(selectedIds);
-    await archiveUsers(itemsToArchive);
+    await archiveIoPeopleOutline(itemsToArchive);
     setLastAction({ type: 'archive', items: itemsToArchive });
   };
 
   const handleUndo = () => {
     if (lastAction?.type === 'archive') {
-      unarchiveUsers(lastAction.items);
+      unarchiveIoPeopleOutline(lastAction.items);
       setLastAction(null);
     }
   };
 
   const handleExport = (format: 'csv' | 'json') => {
-    const selectedUsers = users.filter(u => selectedIds.has(u.id));
-    exportData(selectedUsers, format);
+    const selectedIoPeopleOutline = users.filter(u => selectedIds.has(u.id));
+    exportData(selectedIoPeopleOutline, format);
   };
 
   return (
@@ -9447,11 +9470,11 @@ function ContentManagement() {
 
   return (
     <div className="space-y-4">
-      {/* Search */}
+      {/* IoSearchOutline */}
       <AppleSearchBar 
         value={searchQuery} 
         onChange={setSearchQuery}
-        placeholder="Search files..."
+        placeholder="IoSearchOutline files..."
       />
 
       {/* Bulk Actions */}
@@ -9527,7 +9550,7 @@ function AnalyticsDashboard() {
           changeType="decrease"
         />
         <AppleMetricCard
-          title="Users"
+          title="IoPeopleOutline"
           value="12.5K"
           change={12.8}
           changeType="increase"
@@ -9561,23 +9584,23 @@ function AnalyticsDashboard() {
                   <h4 className="font-semibold text-lg mb-3">What You've Learned</h4>
                   <ul className="text-sm text-gray-700 space-y-2">
                     <li className="flex items-start gap-2">
-                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span>AppleListDetailShell for master-detail layouts</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span>AppleHierarchicalTable for tree structures</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span>AppleNotificationCenter for user alerts</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span>Advanced Dashboard composition</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <HiCheckCircleSolid className="w-5 h-5 text-green-600 mt-0.5" />
+                      <IoCheckmarkCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span>Enhanced BulkActionToolbar with undo/export</span>
                     </li>
                   </ul>
@@ -9722,7 +9745,7 @@ function AnalyticsDashboard() {
               <h3 className="text-2xl font-bold mb-4">Benefits of Standardization</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex gap-3">
-                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="font-semibold mb-1">Consistency</h4>
                     <p className="text-sm text-gray-600">
@@ -9731,7 +9754,7 @@ function AnalyticsDashboard() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="font-semibold mb-1">Maintainability</h4>
                     <p className="text-sm text-gray-600">
@@ -9740,7 +9763,7 @@ function AnalyticsDashboard() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="font-semibold mb-1">Accessibility</h4>
                     <p className="text-sm text-gray-600">
@@ -9749,7 +9772,7 @@ function AnalyticsDashboard() {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <HiOutlineCheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
+                  <IoCheckmarkCircleOutline className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                   <div>
                     <h4 className="font-semibold mb-1">Developer Experience</h4>
                     <p className="text-sm text-gray-600">
@@ -10080,8 +10103,8 @@ export default function MyPage() {
                   totalCount={10}
                   selectedIds={['1', '2']}
                   actions={[
-                    {id: 'delete', label: 'Xóa', icon: <Trash />, onClick: () => toast.info('Xóa...'), variant: 'danger'},
-                    {id: 'export', label: 'Xuất', icon: <Download />, onClick: () => toast.info('Xuất...')}
+                    {id: 'delete', label: 'Xóa', icon: <IoTrashOutline />, onClick: () => toast.info('Xóa...'), variant: 'danger'},
+                    {id: 'export', label: 'Xuất', icon: <IoDownloadOutline />, onClick: () => toast.info('Xuất...')}
                   ]}
                   onSelectAll={() => toast.info('Select all')}
                   onDeselectAll={() => setShowBulkToolbar(false)}
@@ -10120,7 +10143,7 @@ export default function MyPage() {
                     value="12,845"
                     change={8.3}
                     trend="up"
-                    icon={<Users className="w-5 h-5 text-blue-600" />}
+                    icon={<IoPeopleOutline className="w-5 h-5 text-blue-600" />}
                     data-testid="metric-users"
                   />
                   <AppleMetricCard
@@ -10128,7 +10151,7 @@ export default function MyPage() {
                     value="156"
                     change={12.5}
                     trend="up"
-                    icon={<TrendingUp className="w-5 h-5 text-green-600" />}
+                    icon={<IoTrendingUpOutline className="w-5 h-5 text-green-600" />}
                     data-testid="metric-campaigns"
                   />
                   <AppleMetricCard
@@ -10136,14 +10159,14 @@ export default function MyPage() {
                     value="856.4M"
                     change={15.3}
                     trend="up"
-                    icon={<DollarSign className="w-5 h-5 text-purple-600" />}
+                    icon={<IoCashOutline className="w-5 h-5 text-purple-600" />}
                     data-testid="metric-revenue"
                   />
                   <AppleMetricCard
                     title="KOC tham gia"
                     value="2,847"
                     description="+342 KOC tuần này"
-                    icon={<Users className="w-5 h-5 text-orange-600" />}
+                    icon={<IoPeopleOutline className="w-5 h-5 text-orange-600" />}
                     data-testid="metric-koc"
                   />
                 </div>
@@ -10158,14 +10181,14 @@ export default function MyPage() {
     value="12,845"
     change={8.3}
     trend="up"
-    icon={<Users className="w-5 h-5 text-blue-600" />}
+    icon={<IoPeopleOutline className="w-5 h-5 text-blue-600" />}
   />
   <AppleMetricCard
     title="Chiến dịch hoạt động"
     value="156"
     change={12.5}
     trend="up"
-    icon={<TrendingUp className="w-5 h-5 text-green-600" />}
+    icon={<IoTrendingUpOutline className="w-5 h-5 text-green-600" />}
   />
   {/* More metrics... */}
 </div>`} />
@@ -10341,10 +10364,10 @@ export default function MyPage() {
               </p>
             </section>
 
-            {/* Pattern 4: Search & Filter Pattern */}
+            {/* Pattern 4: IoSearchOutline & Filter Pattern */}
             <section className="bg-white p-6 rounded-lg border border-gray-200" data-testid="section-pattern-search-filter">
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 4: Search & Filter Pattern</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Pattern 4: IoSearchOutline & Filter Pattern</h3>
                 <p className="text-gray-600 mb-2">AppleSearchBar + AppleTabs + AppleBadge filters cho tìm kiếm và lọc dữ liệu</p>
                 <div className="flex items-center gap-2 flex-wrap">
                   <AppleBadge variant="default" size="sm">AppleSearchBar</AppleBadge>
@@ -10435,7 +10458,7 @@ export default function MyPage() {
                     value="2.4M"
                     change={12.5}
                     trend="up"
-                    icon={<Eye className="w-5 h-5 text-blue-600" />}
+                    icon={<IoEyeOutline className="w-5 h-5 text-blue-600" />}
                     data-testid="analytics-views"
                   />
                   <AppleMetricCard
@@ -10443,7 +10466,7 @@ export default function MyPage() {
                     value="8.42%"
                     change={2.3}
                     trend="up"
-                    icon={<Heart className="w-5 h-5 text-pink-600" />}
+                    icon={<IoHeartOutline className="w-5 h-5 text-pink-600" />}
                     data-testid="analytics-engagement"
                   />
                   <AppleMetricCard
@@ -10452,14 +10475,14 @@ export default function MyPage() {
                     prefix="đ"
                     change={18.7}
                     trend="up"
-                    icon={<DollarSign className="w-5 h-5 text-green-600" />}
+                    icon={<IoCashOutline className="w-5 h-5 text-green-600" />}
                     data-testid="analytics-revenue"
                   />
                   <AppleMetricCard
                     title="Growth"
                     value="+24.8%"
                     description="Tháng này"
-                    icon={<TrendingUp className="w-5 h-5 text-purple-600" />}
+                    icon={<IoTrendingUpOutline className="w-5 h-5 text-purple-600" />}
                     data-testid="analytics-growth"
                   />
                 </div>
@@ -10689,7 +10712,7 @@ function ThemeSwitcher() {
                         title="Lượt xem"
                         value={1234567}
                         change={5.2}
-                        icon={<Eye className="w-5 h-5" />}
+                        icon={<IoEyeOutline className="w-5 h-5" />}
                       />
                     </div>
                     <div>
@@ -10700,7 +10723,7 @@ function ThemeSwitcher() {
                         change={5.2}
                         changeLabel="vs last month"
                         locale="en-US"
-                        icon={<Eye className="w-5 h-5" />}
+                        icon={<IoEyeOutline className="w-5 h-5" />}
                       />
                     </div>
                   </div>
@@ -10749,7 +10772,7 @@ function ThemeSwitcher() {
                         value=""
                         onChange={() => {}}
                         onSearch={() => {}}
-                        placeholder="Search..."
+                        placeholder="IoSearchOutline..."
                         recentLabel="Recent searches"
                         noResultsText="No results found"
                       />
@@ -10774,7 +10797,7 @@ function ThemeSwitcher() {
   value={value}
   onChange={setValue}
   onSearch={handleSearch}
-  placeholder="Search..."
+  placeholder="IoSearchOutline..."
   recentLabel="Recent searches"
   noResultsText="No results found"
 />`}
@@ -10954,7 +10977,7 @@ function ThemeSwitcher() {
     approveButton: "Approve",
     rejectButton: "Reject",
     contentColumn: "Content",
-    userColumn: "User",
+    userColumn: "IoPersonOutline",
     typeColumn: "Type",
     statusColumn: "Status",
     actionsColumn: "Actions",
@@ -11083,7 +11106,7 @@ function ThemeSwitcher() {
                           <p className="text-sm text-gray-600 truncate">{user.email}</p>
                         </div>
                         {isSelected && (
-                          <ChevronRight className="w-4 h-4 text-[var(--apple-primary)]" />
+                          <IoChevronForwardOutline className="w-4 h-4 text-[var(--apple-primary)]" />
                         )}
                       </div>
                     </div>
@@ -11125,7 +11148,7 @@ function ThemeSwitcher() {
                         </div>
 
                         <div className="flex gap-2 pt-4">
-                          <AppleButton size="sm" variant="primary">Edit User</AppleButton>
+                          <AppleButton size="sm" variant="primary">Edit IoPersonOutline</AppleButton>
                           <AppleButton size="sm" variant="outline">View Activity</AppleButton>
                         </div>
                       </div>
@@ -11258,7 +11281,7 @@ const [searchValue, setSearchValue] = useState('');
 />`} />
               <div className="mt-4">
                 <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
-                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                  <IoCopyOutline className="w-4 h-4 mr-2" /> Copy Code
                 </AppleButton>
               </div>
             </div>
@@ -11508,7 +11531,7 @@ const orgData: TreeNode[] = [
 />`} />
               <div className="mt-4">
                 <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
-                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                  <IoCopyOutline className="w-4 h-4 mr-2" /> Copy Code
                 </AppleButton>
               </div>
             </div>
@@ -11762,7 +11785,7 @@ const [notifications, setNotifications] = useState<Notification[]>([
 />`} />
               <div className="mt-4">
                 <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
-                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                  <IoCopyOutline className="w-4 h-4 mr-2" /> Copy Code
                 </AppleButton>
               </div>
             </div>
@@ -11854,7 +11877,7 @@ const [notifications, setNotifications] = useState<Notification[]>([
               <a href="/design-system/advanced-dashboard" target="_blank" rel="noopener noreferrer">
                 <AppleButton size="lg" variant="primary" data-testid="button-view-dashboard">
                   🚀 View Full Dashboard Demo
-                  <ChevronRight className="w-5 h-5 ml-2" />
+                  <IoChevronForwardOutline className="w-5 h-5 ml-2" />
                 </AppleButton>
               </a>
             </div>
@@ -11950,7 +11973,7 @@ function AdvancedDashboard() {
 }`} />
               <div className="mt-4">
                 <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
-                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                  <IoCopyOutline className="w-4 h-4 mr-2" /> Copy Code
                 </AppleButton>
               </div>
             </div>
@@ -12027,7 +12050,7 @@ function AdvancedDashboard() {
                       label: 'Xóa',
                       onClick: () => setBulkActionDialogOpen(true),
                       variant: 'destructive' as const,
-                      icon: <Trash className="w-4 h-4" />
+                      icon: <IoTrashOutline className="w-4 h-4" />
                     }
                   ]}
                   labels={{
@@ -12221,7 +12244,7 @@ const [lastAction, setLastAction] = useState<any>(null);
 />`} />
               <div className="mt-4">
                 <AppleButton size="sm" onClick={() => toast.success('Code copied!')}>
-                  <Copy className="w-4 h-4 mr-2" /> Copy Code
+                  <IoCopyOutline className="w-4 h-4 mr-2" /> Copy Code
                 </AppleButton>
               </div>
             </div>
