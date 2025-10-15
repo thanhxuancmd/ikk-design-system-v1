@@ -11261,7 +11261,7 @@ function CampaignManagement() {
                   <div className="text-sm text-gray-600">Migrated to 100% Apple HIG</div>
                 </div>
                 <div className="bg-white p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">5 patterns</div>
+                  <div className="text-2xl font-bold text-blue-600">6 patterns</div>
                   <div className="text-sm text-gray-600">Reusable admin patterns</div>
                 </div>
               </div>
