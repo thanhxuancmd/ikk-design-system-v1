@@ -1,8 +1,11 @@
-import type { 
-  InsertUser, User, InsertKocProfile, KocProfile, 
-  InsertBrand, Brand, InsertCampaign, Campaign, 
-  InsertApplication, Application, InsertNotification, Notification 
+import type {
+  InsertUser, User, InsertKocProfile, KocProfile,
+  InsertBrand, Brand, InsertCampaign, Campaign,
+  InsertApplication, Application, InsertNotification, Notification,
+  Category, InsertCategory
 } from "@shared/schema";
+import { categoriesTable } from "@shared/schema";
+import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -45,6 +48,13 @@ export interface IStorage {
   createNotification(notification: InsertNotification): Promise<Notification>;
   getAllNotifications(): Promise<Notification[]>;
   markNotificationRead(id: string): Promise<void>;
+
+  // Category operations
+  getAllCategories(): Promise<Category[]>;
+  getCategoryById(id: string): Promise<Category | undefined>;
+  createCategory(category: InsertCategory): Promise<Category>;
+  updateCategory(id: string, updates: Partial<InsertCategory>): Promise<Category | undefined>;
+  deleteCategory(id: string): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -54,6 +64,7 @@ export class MemStorage implements IStorage {
   private campaigns = new Map<string, Campaign>();
   private applications = new Map<string, Application>();
   private notifications = new Map<string, Notification>();
+  private categories = new Map<string, Category>();
 
   constructor() {
     this.initializeMockData();
@@ -547,6 +558,16 @@ export class MemStorage implements IStorage {
 
     this.notifications.set(notification1.id, notification1);
     this.notifications.set(notification2.id, notification2);
+
+    const mockCategories: Category[] = [
+      { id: 'CAT001', name: 'Hướng dẫn Dịch vụ', slug: 'revu_guide', type: 'MAIN', parentId: null, iconNumber: '6', description: 'REVU GUIDE - Hướng dẫn sử dụng dịch vụ', createdAt: new Date(), updatedAt: new Date() },
+      { id: 'CAT002', name: 'Nhà hàng, cà phê', slug: 'restaurants_cafes', type: 'MAIN', parentId: null, iconNumber: '7', description: 'Restaurants & Cafes - Dịch vụ ăn uống', createdAt: new Date(), updatedAt: new Date() },
+      { id: 'CAT003', name: 'Làm đẹp', slug: 'beauty', type: 'MAIN', parentId: null, iconNumber: '8', description: 'Beauty & Cosmetics - Mỹ phẩm và làm đẹp', createdAt: new Date(), updatedAt: new Date() },
+      { id: 'P002', name: 'Mỹ phẩm', slug: 'cosmetics', type: 'PRODUCT', parentId: 'CAT003', iconNumber: null, description: 'Sản phẩm mỹ phẩm và làm đẹp', createdAt: new Date(), updatedAt: new Date() },
+      { id: 'S005', name: 'Làm đẹp', slug: 'beauty_service', type: 'SERVICE', parentId: 'CAT003', iconNumber: '8', description: 'Spa và làm đẹp', createdAt: new Date(), updatedAt: new Date() },
+    ];
+
+    mockCategories.forEach(category => this.categories.set(category.id, category));
   }
 
   // User operations
@@ -826,6 +847,39 @@ export class MemStorage implements IStorage {
     if (notification) {
       this.notifications.set(id, { ...notification, isRead: true });
     }
+  }
+
+  // Category operations
+  async getAllCategories(): Promise<Category[]> {
+    return Array.from(this.categories.values());
+  }
+
+  async getCategoryById(id: string): Promise<Category | undefined> {
+    return this.categories.get(id);
+  }
+
+  async createCategory(categoryData: InsertCategory): Promise<Category> {
+    const id = randomUUID();
+    const category: Category = {
+      id,
+      ...categoryData,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.categories.set(id, category);
+    return category;
+  }
+
+  async updateCategory(id: string, updates: Partial<InsertCategory>): Promise<Category | undefined> {
+    const category = this.categories.get(id);
+    if (!category) return undefined;
+    const updatedCategory = { ...category, ...updates, updatedAt: new Date() };
+    this.categories.set(id, updatedCategory);
+    return updatedCategory;
+  }
+
+  async deleteCategory(id: string): Promise<boolean> {
+    return this.categories.delete(id);
   }
 }
 
