@@ -11722,8 +11722,8 @@ function ThemeSwitcher() {
           </div>
         )}
 
-        {/* Phase 2: List-Detail Shell Tab */}
-        {activeTab === 'list-detail' && (
+        {/* REMOVED: List-Detail Shell Tab - Deleted per user request */}
+        {false && activeTab === 'list-detail' && (
           <div className="space-y-8">
             {/* Header */}
             <AppleSectionHeader 
@@ -11732,11 +11732,11 @@ function ThemeSwitcher() {
             />
 
             {/* Live Demo */}
-            <div className="bg-gray-50 border border-gray-300 rounded-lg p-8 shadow-xl">
-              <h3 className="text-2xl font-bold mb-3" data-testid="heading-list-detail-demo">Live Demo</h3>
+            <div className="bg-gradient-to-br from-blue-50/30 to-white border-2 border-blue-200 rounded-2xl p-8 shadow-2xl ring-1 ring-blue-100/50">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900" data-testid="heading-list-detail-demo">Live Demo</h3>
               <p className="text-base text-gray-700 mb-8">Select a user to view details. Try searching and keyboard navigation (↑↓ arrows, Enter).</p>
               
-              <div className="min-h-[500px] border-2 border-gray-300 rounded-xl overflow-hidden shadow-lg">
+              <div className="min-h-[500px] border-[3px] border-blue-300 rounded-2xl overflow-hidden shadow-2xl">
                 <AppleListDetailShell
                   items={filteredUsers}
                   selectedId={selectedUserId}
@@ -11972,8 +11972,8 @@ const [searchValue, setSearchValue] = useState('');
           </div>
         )}
 
-        {/* Phase 2: Hierarchical Table Tab */}
-        {activeTab === 'hierarchical-table' && (
+        {/* REMOVED: Hierarchical Table Tab - Deleted per user request */}
+        {false && activeTab === 'hierarchical-table' && (
           <div className="space-y-8">
             {/* Header */}
             <AppleSectionHeader 
@@ -11982,8 +11982,8 @@ const [searchValue, setSearchValue] = useState('');
             />
 
             {/* Live Demo */}
-            <div className="bg-gray-50 border border-gray-300 rounded-lg p-8 shadow-xl">
-              <h3 className="text-2xl font-bold mb-3" data-testid="heading-hierarchical-table-demo">Live Demo - Organization Structure</h3>
+            <div className="bg-gradient-to-br from-purple-50/30 to-white border-2 border-purple-200 rounded-2xl p-8 shadow-2xl ring-1 ring-purple-100/50">
+              <h3 className="text-2xl font-bold mb-3 text-gray-900" data-testid="heading-hierarchical-table-demo">Live Demo - Organization Structure</h3>
               <p className="text-base text-gray-700 mb-6">Explore the organizational hierarchy with expand/collapse, selection, and connecting lines.</p>
               
               <div className="flex gap-3 mb-6">
@@ -12018,7 +12018,7 @@ const [searchValue, setSearchValue] = useState('');
                 </AppleButton>
               </div>
 
-              <div className="border-2 border-gray-300 rounded-xl overflow-hidden shadow-lg">
+              <div className="border-[3px] border-purple-300 rounded-2xl overflow-hidden shadow-2xl">
                 <AppleHierarchicalTable
                   data={orgStructure}
                   columns={[
