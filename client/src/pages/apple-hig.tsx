@@ -134,19 +134,9 @@ function AppleHIGShowcaseContent() {
   const [filterValues, setFilterValues] = useState<Record<string, any>>({});
   const [drawerOpen, setDrawerOpen] = useState({ left: false, right: false, bottom: false });
 
-  // Recipe 5 state - Advanced KOC Discovery
-  const [kocSearchQuery, setKocSearchQuery] = useState('');
-  const [kocFilters, setKocFilters] = useState<Record<string, any>>({});
-  const [kocDrawerOpen, setKocDrawerOpen] = useState(false);
+  // REMOVED: Recipe 5 state - Advanced KOC Discovery
 
-  // Recipe 6 state - Campaign Scheduling Form
-  const [campaignForm, setCampaignForm] = useState({
-    name: '',
-    startDate: undefined as Date | undefined,
-    startTime: '',
-    endDate: undefined as Date | undefined,
-    endTime: ''
-  });
+  // REMOVED: Recipe 6 state - Campaign Scheduling Form
 
   // E-commerce tab state
   const [cartOpen, setCartOpen] = useState(false);
@@ -160,14 +150,8 @@ function AppleHIGShowcaseContent() {
   // Utilities tab state
   const [showBulkToolbar, setShowBulkToolbar] = useState(false);
 
-  // Admin tab state
-  const [exportDialogOpen, setExportDialogOpen] = useState(false);
-  
-  // Admin Use Cases state
-  const [adminFormOpen, setAdminFormOpen] = useState(false);
-  const [adminFilterTab, setAdminFilterTab] = useState('all');
-  const [adminSearchValue, setAdminSearchValue] = useState('');
-  const [analyticsTab, setAnalyticsTab] = useState('week');
+  // REMOVED: Admin tab state
+  // REMOVED: Admin Use Cases state
 
   // Campaign Management state
   const [selectedCampaignId, setSelectedCampaignId] = useState<number | undefined>(1);
@@ -265,19 +249,11 @@ function AppleHIGShowcaseContent() {
   const [lastBulkAction, setLastBulkAction] = useState<any>(null);
   const [bulkActionDialogOpen, setBulkActionDialogOpen] = useState(false);
 
-  // Recipe 8 state - Admin List Management
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | undefined>(1);
-  const [selectedItemsInCategory, setSelectedItemsInCategory] = useState<Set<string | number>>(new Set());
+  // REMOVED: Recipe 8 state - Admin List Management
   
-  // Recipe 9 state - Analytics Dashboard
-  const [analyticsFilters, setAnalyticsFilters] = useState<Record<string, any>>({
-    dateRange: 'week',
-    channel: 'all'
-  });
+  // REMOVED: Recipe 9 state - Analytics Dashboard
   
-  // Recipe 10 state - User Management with Notifications
-  const [selectedUserIds, setSelectedUserIds] = useState<Set<number>>(new Set());
-  const [selectedUserIdForDetail, setSelectedUserIdForDetail] = useState<number | undefined>(1);
+  // REMOVED: Recipe 10 state - User Management with Notifications
 
   // Campaign Management mock data
   const campaignList = [
@@ -397,39 +373,7 @@ function AppleHIGShowcaseContent() {
     { name: 'Công nghệ', value: 15 }
   ];
 
-  // Sample KOC data for Recipe 5
-  const sampleKOCData = [
-    { id: 'koc-1', name: 'Nguyễn Minh Anh', level: 'Micro', followers: 85000, platform: 'TikTok', categories: ['Làm đẹp', 'Skincare'] },
-    { id: 'koc-2', name: 'Trần Hương Giang', level: 'Macro', followers: 320000, platform: 'Instagram', categories: ['Thời trang', 'Lifestyle'] },
-    { id: 'koc-3', name: 'Lê Phương Linh', level: 'Nano', followers: 12000, platform: 'Facebook', categories: ['Ẩm thực', 'Nấu ăn'] },
-    { id: 'koc-4', name: 'Phạm Thanh Tùng', level: 'Celebrity', followers: 1200000, platform: 'YouTube', categories: ['Tech', 'Gaming'] },
-    { id: 'koc-5', name: 'Hoàng Mai Anh', level: 'Micro', followers: 65000, platform: 'TikTok', categories: ['Mẹ và bé', 'Parenting'] },
-    { id: 'koc-6', name: 'Đỗ Văn Bình', level: 'Nano', followers: 8500, platform: 'Instagram', categories: ['Du lịch', 'Review'] },
-    { id: 'koc-7', name: 'Vũ Thu Hà', level: 'Micro', followers: 95000, platform: 'TikTok', categories: ['Làm đẹp', 'Makeup'] },
-    { id: 'koc-8', name: 'Ngô Quang Minh', level: 'Macro', followers: 450000, platform: 'YouTube', categories: ['Thể thao', 'Fitness'] },
-  ];
-
-  // Filter KOC data based on search and filters
-  const filteredKOCs = sampleKOCData.filter(koc => {
-    const matchesSearch = !kocSearchQuery || 
-      koc.name.toLowerCase().includes(kocSearchQuery.toLowerCase()) ||
-      koc.categories.some(cat => cat.toLowerCase().includes(kocSearchQuery.toLowerCase()));
-    
-    const matchesLevel = !kocFilters.level?.length || kocFilters.level.includes(koc.level);
-    const matchesPlatform = !kocFilters.platform || kocFilters.platform === koc.platform;
-    const matchesFollowers = !kocFilters.followers || 
-      (koc.followers >= (kocFilters.followers.min || 0) && 
-       koc.followers <= (kocFilters.followers.max || Infinity));
-    
-    return matchesSearch && matchesLevel && matchesPlatform && matchesFollowers;
-  });
-
-  // KOC names for search autocomplete
-  const kocSuggestions = kocSearchQuery.trim() 
-    ? sampleKOCData
-        .filter(koc => koc.name.toLowerCase().includes(kocSearchQuery.toLowerCase()))
-        .map(koc => koc.name)
-    : [];
+  // REMOVED: Sample KOC data for Recipe 5
 
   // Phase 2 Sample Data
   // Sample users for List-Detail Shell
@@ -544,85 +488,11 @@ function AppleHIGShowcaseContent() {
     { id: 12, name: 'Ví da cao cấp', sku: 'IKK-WL-012', price: 450000, stock: 50, category: 'Phụ kiện', status: 'active' },
   ];
 
-  // Recipe 8 sample data - Categories with hierarchical items
-  const categoryList = [
-    { id: 1, name: 'Thời trang', itemCount: 156, icon: '' },
-    { id: 2, name: 'Làm đẹp', itemCount: 89, icon: '' },
-    { id: 3, name: 'Công nghệ', itemCount: 64, icon: '' },
-    { id: 4, name: 'Ẩm thực', itemCount: 42, icon: '' },
-  ];
+  // REMOVED: Recipe 8 sample data - Categories with hierarchical items
 
-  const categoryItemsTree: TreeNode[] = [
-    {
-      id: 'fashion-1',
-      data: { name: 'Áo quần nam', type: 'Danh mục chính', products: 45, revenue: '125M VNĐ' },
-      children: [
-        { id: 'fashion-1-1', data: { name: 'Áo thun nam', type: 'Danh mục con', products: 18, revenue: '45M VNĐ' } },
-        { id: 'fashion-1-2', data: { name: 'Quần jean nam', type: 'Danh mục con', products: 15, revenue: '52M VNĐ' } },
-        { id: 'fashion-1-3', data: { name: 'Áo sơ mi nam', type: 'Danh mục con', products: 12, revenue: '28M VNĐ' } },
-      ]
-    },
-    {
-      id: 'fashion-2',
-      data: { name: 'Áo quần nữ', type: 'Danh mục chính', products: 67, revenue: '198M VNĐ' },
-      children: [
-        { id: 'fashion-2-1', data: { name: 'Váy nữ', type: 'Danh mục con', products: 24, revenue: '78M VNĐ' } },
-        { id: 'fashion-2-2', data: { name: 'Áo kiểu nữ', type: 'Danh mục con', products: 28, revenue: '85M VNĐ' } },
-        { id: 'fashion-2-3', data: { name: 'Quần nữ', type: 'Danh mục con', products: 15, revenue: '35M VNĐ' } },
-      ]
-    },
-    {
-      id: 'fashion-3',
-      data: { name: 'Phụ kiện thời trang', type: 'Danh mục chính', products: 44, revenue: '89M VNĐ' },
-      children: [
-        { id: 'fashion-3-1', data: { name: 'Túi xách', type: 'Danh mục con', products: 18, revenue: '45M VNĐ' } },
-        { id: 'fashion-3-2', data: { name: 'Giày dép', type: 'Danh mục con', products: 16, revenue: '32M VNĐ' } },
-        { id: 'fashion-3-3', data: { name: 'Mũ nón', type: 'Danh mục con', products: 10, revenue: '12M VNĐ' } },
-      ]
-    },
-  ];
+  // REMOVED: Recipe 9 sample data - Analytics dashboard
 
-  // Recipe 9 sample data - Analytics dashboard
-  const analyticsMetrics = {
-    revenue: { value: 245000000, change: 18.5, changeType: 'increase' as const },
-    orders: { value: 1842, change: 12.3, changeType: 'increase' as const },
-    customers: { value: 856, change: 8.7, changeType: 'increase' as const },
-    conversion: { value: 3.4, change: -2.1, changeType: 'decrease' as const, suffix: '%' },
-  };
-
-  const revenueChartData = [
-    { date: '01/10', revenue: 15000000 },
-    { date: '05/10', revenue: 18000000 },
-    { date: '10/10', revenue: 22000000 },
-    { date: '15/10', revenue: 25000000 },
-    { date: '20/10', revenue: 28000000 },
-    { date: '25/10', revenue: 32000000 },
-    { date: '30/10', revenue: 35000000 },
-  ];
-
-  const categoryRevenueData = [
-    { category: 'Thời trang', revenue: 95000000 },
-    { category: 'Làm đẹp', revenue: 68000000 },
-    { category: 'Công nghệ', revenue: 52000000 },
-    { category: 'Ẩm thực', revenue: 30000000 },
-  ];
-
-  const recentOrdersData = [
-    { id: 'ORD-001', customer: 'Nguyễn Văn A', amount: 1250000, status: 'Đã giao', date: '2024-10-12' },
-    { id: 'ORD-002', customer: 'Trần Thị B', amount: 890000, status: 'Đang giao', date: '2024-10-12' },
-    { id: 'ORD-003', customer: 'Lê Hoàng C', amount: 2150000, status: 'Đã giao', date: '2024-10-11' },
-    { id: 'ORD-004', customer: 'Phạm Thị D', amount: 750000, status: 'Chờ xử lý', date: '2024-10-11' },
-    { id: 'ORD-005', customer: 'Hoàng Văn E', amount: 1680000, status: 'Đã giao', date: '2024-10-10' },
-  ];
-
-  // Recipe 10 sample data - User activities
-  const userActivitiesData = [
-    { id: 1, action: 'Đăng nhập hệ thống', timestamp: '2024-10-13 09:30', ip: '192.168.1.1', device: 'Chrome - Windows' },
-    { id: 2, action: 'Chỉnh sửa chiến dịch "Tết 2025"', timestamp: '2024-10-13 10:15', ip: '192.168.1.1', device: 'Chrome - Windows' },
-    { id: 3, action: 'Phê duyệt KOC mới', timestamp: '2024-10-13 11:20', ip: '192.168.1.1', device: 'Chrome - Windows' },
-    { id: 4, action: 'Xuất báo cáo doanh thu', timestamp: '2024-10-13 14:45', ip: '192.168.1.1', device: 'Chrome - Windows' },
-    { id: 5, action: 'Đăng nhập hệ thống', timestamp: '2024-10-12 08:45', ip: '192.168.1.2', device: 'Safari - MacOS' },
-  ];
+  // REMOVED: Recipe 10 sample data - User activities
 
   const CodeBlock = ({ code, language = 'tsx' }: { code: string; language?: string }) => (
     <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm">
@@ -728,7 +598,7 @@ function AppleHIGShowcaseContent() {
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
         <div className={designTokens.spacing.container}>
           <nav className="flex gap-1 overflow-x-auto py-2">
-            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'admin', 'reusability', 'recipes', 'guides', 'examples', 'list-detail', 'hierarchical-table', 'notification-center', 'advanced-dashboard', 'enhanced-bulk-actions'].map((tab) => (
+            {['overview', 'buttons', 'badges', 'headers', 'forms', 'navigation', 'feedback', 'data', 'layout-components', 'advanced', 'data-viz', 'ikk-components', 'ecommerce', 'utilities', 'reusability', 'guides', 'examples', 'list-detail', 'hierarchical-table', 'notification-center', 'advanced-dashboard', 'enhanced-bulk-actions'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -741,7 +611,6 @@ function AppleHIGShowcaseContent() {
               >
                 {tab === 'ecommerce' ? 'E-commerce' : 
                  tab === 'utilities' ? 'Tiện ích' : 
-                 tab === 'admin' ? 'Admin Use Cases' : 
                  tab === 'reusability' ? 'External Reusability' :
                  tab === 'list-detail' ? 'List-Detail Shell' :
                  tab === 'hierarchical-table' ? 'Hierarchical Table' :
@@ -2526,8 +2395,8 @@ function MyComponent() {
         </Section>
         )}
 
-        {/* Recipes & Patterns Section */}
-        {activeTab === 'recipes' && (
+        {/* REMOVED: Recipes & Patterns Section - Deleted per user request */}
+        {false && activeTab === 'recipes' && (
         <>
         <Section title="Composition Recipes & Patterns">
           <p className="text-gray-600 mb-8">
@@ -10144,8 +10013,8 @@ export default function MyPage() {
           </div>
         )}
 
-        {/* Admin Use Cases Tab */}
-        {activeTab === 'admin' && (
+        {/* REMOVED: Admin Use Cases Tab - Deleted per user request */}
+        {false && activeTab === 'admin' && (
           <div className="space-y-12">
             <AppleSectionHeader 
               title="Admin Use Cases - Các Mẫu Quản Trị Thực Tế"
