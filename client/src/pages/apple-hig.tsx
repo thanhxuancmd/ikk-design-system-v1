@@ -3978,15 +3978,15 @@ function AdminListManagement() {
                       <AppleTable
                         data={recentOrdersData}
                         columns={[
-                          { key: 'id', label: 'Mã đơn' },
-                          { key: 'customer', label: 'Khách hàng' },
+                          { key: 'id', header: 'Mã đơn' },
+                          { key: 'customer', header: 'Khách hàng' },
                           { 
                             key: 'amount', 
-                            label: 'Số tiền',
+                            header: 'Số tiền',
                             render: (value) => `${value.toLocaleString('vi-VN')} ₫`
                           },
-                          { key: 'status', label: 'Trạng thái' },
-                          { key: 'date', label: 'Ngày' }
+                          { key: 'status', header: 'Trạng thái' },
+                          { key: 'date', header: 'Ngày' }
                         ]}
                         pagination={false}
                       />
@@ -4184,10 +4184,10 @@ function AnalyticsDashboard() {
                           <AppleTable
                             data={userActivitiesData}
                             columns={[
-                              { key: 'action', label: 'Hành động', width: '35%' },
-                              { key: 'timestamp', label: 'Thời gian', width: '25%' },
-                              { key: 'ip', label: 'IP', width: '20%' },
-                              { key: 'device', label: 'Thiết bị', width: '20%' }
+                              { key: 'action', header: 'Hành động', width: '35%' },
+                              { key: 'timestamp', header: 'Thời gian', width: '25%' },
+                              { key: 'ip', header: 'IP', width: '20%' },
+                              { key: 'device', header: 'Thiết bị', width: '20%' }
                             ]}
                             pagination={false}
                           />
@@ -4361,9 +4361,9 @@ function UserManagement() {
             <AppleTable
               data={activities}
               columns={[
-                { key: 'action', label: 'Hành động' },
-                { key: 'timestamp', label: 'Thời gian' },
-                { key: 'ip', label: 'IP' }
+                { key: 'action', header: 'Hành động' },
+                { key: 'timestamp', header: 'Thời gian' },
+                { key: 'ip', header: 'IP' }
               ]}
             />
 
@@ -10513,8 +10513,8 @@ function CampaignManagement() {
             {/* Performance Table */}
             <AppleTable
               columns={[
-                { key: 'name', label: 'Tên KOC' },
-                { key: 'sales', label: 'Doanh số', align: 'right' }
+                { key: 'name', header: 'Tên KOC' },
+                { key: 'sales', header: 'Doanh số', align: 'right' }
               ]}
               data={topKOCs}
             />

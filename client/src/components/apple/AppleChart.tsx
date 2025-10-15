@@ -18,16 +18,25 @@ import {
 import { designTokens } from '@/constants/design-tokens';
 
 interface AppleChartProps {
-  variant: 'line' | 'bar' | 'area' | 'pie';
+  // Support both 'variant' and 'type' for backward compatibility
+  variant?: 'line' | 'bar' | 'area' | 'pie';
+  type?: 'line' | 'bar' | 'area' | 'pie';
   data: any[];
-  dataKey: string;
+  // Support both old (dataKey/categoryKey) and new (xKey/yKey) naming
+  dataKey?: string;
   categoryKey?: string;
+  xKey?: string;
+  yKey?: string;
+  // Support dataKeys array for multi-series charts
+  dataKeys?: Array<{ key: string; color?: string; name?: string }>;
+  xAxisKey?: string;
   height?: number;
   showGrid?: boolean;
   showLegend?: boolean;
   showTooltip?: boolean;
   color?: string;
   labelKey?: string;
+  title?: string;
 }
 
 const PIE_COLORS = [
@@ -89,16 +98,26 @@ const renderCustomizedLabel = (props: any) => {
 
 export function AppleChart({
   variant,
+  type,
   data,
   dataKey,
   categoryKey,
+  xKey,
+  yKey,
+  dataKeys,
+  xAxisKey,
   height = 300,
   showGrid = true,
   showLegend = false,
   showTooltip = true,
   color = designTokens.colors.primary.DEFAULT,
   labelKey,
+  title,
 }: AppleChartProps) {
+  // Normalize props: support both old and new naming conventions
+  const chartType = type || variant || 'line';
+  const xDataKey = xKey || xAxisKey || categoryKey;
+  const yDataKey = yKey || dataKey;
   const gridStroke = designTokens.colors.neutral[200];
   const axisColor = designTokens.colors.neutral[500];
 
@@ -117,13 +136,13 @@ export function AppleChart({
           </linearGradient>
         </defs>
         {showGrid && <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />}
-        {categoryKey && <XAxis dataKey={categoryKey} tick={axisStyle} />}
+        {xDataKey && <XAxis dataKey={xDataKey} tick={axisStyle} />}
         <YAxis tick={axisStyle} tickFormatter={formatVietnameseNumber} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Line
           type="monotone"
-          dataKey={dataKey}
+          dataKey={yDataKey || dataKey}
           stroke={color}
           strokeWidth={2}
           dot={{ fill: color, r: 4 }}
@@ -138,12 +157,12 @@ export function AppleChart({
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         {showGrid && <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />}
-        {categoryKey && <XAxis dataKey={categoryKey} tick={axisStyle} />}
+        {xDataKey && <XAxis dataKey={xDataKey} tick={axisStyle} />}
         <YAxis tick={axisStyle} tickFormatter={formatVietnameseNumber} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Bar
-          dataKey={dataKey}
+          dataKey={yDataKey || dataKey}
           fill={color}
           radius={[8, 8, 0, 0]}
         />
@@ -161,13 +180,13 @@ export function AppleChart({
           </linearGradient>
         </defs>
         {showGrid && <CartesianGrid strokeDasharray="3 3" stroke={gridStroke} />}
-        {categoryKey && <XAxis dataKey={categoryKey} tick={axisStyle} />}
+        {xDataKey && <XAxis dataKey={xDataKey} tick={axisStyle} />}
         <YAxis tick={axisStyle} tickFormatter={formatVietnameseNumber} />
         {showTooltip && <Tooltip content={<CustomTooltip />} />}
         {showLegend && <Legend />}
         <Area
           type="monotone"
-          dataKey={dataKey}
+          dataKey={yDataKey || dataKey}
           stroke={color}
           strokeWidth={2}
           fill="url(#areaGradient)"
@@ -183,7 +202,7 @@ export function AppleChart({
         {showLegend && <Legend />}
         <Pie
           data={data}
-          dataKey={dataKey}
+          dataKey={yDataKey || dataKey}
           nameKey={labelKey || 'name'}
           cx="50%"
           cy="50%"
@@ -208,8 +227,9 @@ export function AppleChart({
   };
 
   return (
-    <div data-testid={`apple-chart-${variant}`}>
-      {chartRenderers[variant]()}
+    <div data-testid={`apple-chart-${chartType}`}>
+      {title && <h4 className="text-sm font-semibold text-gray-700 mb-2">{title}</h4>}
+      {chartRenderers[chartType as keyof typeof chartRenderers]?.()}
     </div>
   );
 }
