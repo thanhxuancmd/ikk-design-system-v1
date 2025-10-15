@@ -711,7 +711,7 @@ function AppleHIGShowcaseContent() {
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className={`${designTokens.spacing.container} py-12`}>
           <h1 className="text-5xl font-bold text-gray-900 mb-3" data-testid="heading-main">
-            Apple HIG Design System
+            IKK Apple HIG Design System
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl" data-testid="text-description">
             Standardized components following Apple Human Interface Guidelines for consistent, 
@@ -7118,7 +7118,7 @@ import { designTokens } from '@/constants/design-tokens';
             <div className="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-6">
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Complete Guide to Theming & i18n</h3>
               <p className="text-gray-700 mb-4">
-                Learn how to customize the Apple HIG Design System with your own brand colors (theming) and translate it to any language (internationalization). 
+                Learn how to customize the IKK Apple HIG Design System with your own brand colors (theming) and translate it to any language (internationalization). 
                 This guide covers everything external developers need to adapt the system to their own applications.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -8115,7 +8115,7 @@ function TechDashboard() {
               </div>
               <div className="mt-6 p-4 bg-white rounded-lg">
                 <p className="text-gray-700">
-                  <strong>Ready to Use:</strong> The Apple HIG Design System is now fully customizable for external developers. 
+                  <strong>Ready to Use:</strong> The IKK Apple HIG Design System is now fully customizable for external developers. 
                   With theming and i18n support, you can adapt it to any brand and any language while maintaining all the quality, 
                   accessibility, and consistency of the original design system.
                 </p>
