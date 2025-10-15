@@ -11732,11 +11732,11 @@ function ThemeSwitcher() {
             />
 
             {/* Live Demo */}
-            <div className="bg-white border rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4" data-testid="heading-list-detail-demo">Live Demo</h3>
-              <p className="text-gray-600 mb-6">Select a user to view details. Try searching and keyboard navigation (↑↓ arrows, Enter).</p>
+            <div className="bg-gray-50 border border-gray-300 rounded-lg p-8 shadow-xl">
+              <h3 className="text-2xl font-bold mb-3" data-testid="heading-list-detail-demo">Live Demo</h3>
+              <p className="text-base text-gray-700 mb-8">Select a user to view details. Try searching and keyboard navigation (↑↓ arrows, Enter).</p>
               
-              <div className="h-[500px] border border-gray-200 rounded-lg overflow-hidden">
+              <div className="min-h-[500px] border-2 border-gray-300 rounded-xl overflow-hidden shadow-lg">
                 <AppleListDetailShell
                   items={filteredUsers}
                   selectedId={selectedUserId}
@@ -11982,10 +11982,11 @@ const [searchValue, setSearchValue] = useState('');
             />
 
             {/* Live Demo */}
-            <div className="bg-white border rounded-lg p-6 shadow-sm">
-              <h3 className="text-lg font-semibold mb-4" data-testid="heading-hierarchical-table-demo">Live Demo - Organization Structure</h3>
+            <div className="bg-gray-50 border border-gray-300 rounded-lg p-8 shadow-xl">
+              <h3 className="text-2xl font-bold mb-3" data-testid="heading-hierarchical-table-demo">Live Demo - Organization Structure</h3>
+              <p className="text-base text-gray-700 mb-6">Explore the organizational hierarchy with expand/collapse, selection, and connecting lines.</p>
               
-              <div className="flex gap-2 mb-4">
+              <div className="flex gap-3 mb-6">
                 <AppleButton 
                   size="sm" 
                   onClick={() => {
@@ -12017,7 +12018,7 @@ const [searchValue, setSearchValue] = useState('');
                 </AppleButton>
               </div>
 
-              <div className="border border-gray-200 rounded-lg overflow-hidden">
+              <div className="border-2 border-gray-300 rounded-xl overflow-hidden shadow-lg">
                 <AppleHierarchicalTable
                   data={orgStructure}
                   columns={[
