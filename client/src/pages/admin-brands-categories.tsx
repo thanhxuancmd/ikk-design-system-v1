@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { AppleTableEnhanced } from '@/components/apple/AppleTableEnhanced';
 import { AppleButton } from '@/components/apple/AppleButton';
 import { AppleDialog } from '@/components/apple/AppleDialog';
@@ -8,7 +8,7 @@ import { AppleSearchBar } from '@/components/apple/AppleSearchBar';
 import { AppleFilterPanel } from '@/components/apple/AppleFilterPanel';
 import { AppleBadge } from '@/components/apple/AppleBadge';
 import { AppleSectionHeader } from '@/components/apple/AppleSectionHeader';
-import { AppleAlert } from '@/components/apple/AppleAlert';
+import { AppleToast } from '@/components/apple/AppleToast';
 import { BulkActionToolbar } from '@/components/apple/BulkActionToolbar';
 import { EmptyState } from '@/components/apple/EmptyState';
 import { IoAdd, IoTrash, IoPencil, IoFilter } from 'react-icons/io5';
@@ -98,15 +98,7 @@ export default function AdminBrandsCategories() {
   });
   
   // Toast state
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'warning' | 'info' } | null>(null);
-
-  // Auto hide toast after 3 seconds
-  useEffect(() => {
-    if (toast) {
-      const timer = setTimeout(() => setToast(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [toast]);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   const pageSize = 10;
 
@@ -347,7 +339,6 @@ export default function AdminBrandsCategories() {
                 placeholder="Search categories..."
                 value={searchQuery}
                 onChange={setSearchQuery}
-                onSearch={setSearchQuery}
               />
             </div>
             <AppleButton
@@ -446,20 +437,6 @@ export default function AdminBrandsCategories() {
               onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
               placeholder="Enter brand name"
             />
-            <div className="flex gap-3 justify-end mt-6">
-              <AppleButton
-                variant="secondary"
-                onClick={() => setShowAddDialog(false)}
-              >
-                Cancel
-              </AppleButton>
-              <AppleButton
-                variant="primary"
-                onClick={confirmAdd}
-              >
-                Add
-              </AppleButton>
-            </div>
           </div>
         </AppleDialog>
 
@@ -501,20 +478,6 @@ export default function AdminBrandsCategories() {
               onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
               placeholder="Enter brand name"
             />
-            <div className="flex gap-3 justify-end mt-6">
-              <AppleButton
-                variant="secondary"
-                onClick={() => setShowEditDialog(false)}
-              >
-                Cancel
-              </AppleButton>
-              <AppleButton
-                variant="primary"
-                onClick={confirmEdit}
-              >
-                Save
-              </AppleButton>
-            </div>
           </div>
         </AppleDialog>
 
@@ -544,16 +507,13 @@ export default function AdminBrandsCategories() {
           onCancel={() => setShowBulkDeleteDialog(false)}
         />
 
-        {/* Toast Notification */}
+        {/* Toast */}
         {toast && (
-          <div className="fixed top-4 right-4 z-50 animate-slide-in-right">
-            <AppleAlert
-              severity={toast.type}
-              onClose={() => setToast(null)}
-            >
-              {toast.message}
-            </AppleAlert>
-          </div>
+          <AppleToast
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast(null)}
+          />
         )}
       </div>
     </div>
