@@ -87,7 +87,7 @@ export function AppleFilterPanel({
   };
 
   const renderFilterContent = (filter: FilterGroup) => {
-    const filterValue = values[filter.id];
+    const filterValue = values?.[filter.id];
 
     switch (filter.type) {
       case 'checkbox':

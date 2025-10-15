@@ -440,7 +440,7 @@ export function AppleHierarchicalTable<T = any>({
                         </div>
                       )}
                       
-                      {colIndex !== 0 && column.render(row.node, row.depth)}
+                      {colIndex !== 0 && typeof column.render === 'function' && column.render(row.node, row.depth)}
                     </td>
                   ))}
                 </tr>

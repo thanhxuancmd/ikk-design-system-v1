@@ -3677,13 +3677,13 @@ function AdminDashboard() {
                         columns={[
                           { 
                             key: 'name', 
-                            label: 'Tên danh mục', 
+                            header: 'Tên danh mục', 
                             width: '35%',
-                            render: (value) => <span className="font-medium">{value}</span>
+                            render: (node) => <span className="font-medium">{node.data.name}</span>
                           },
-                          { key: 'type', label: 'Loại', width: '20%' },
-                          { key: 'products', label: 'Sản phẩm', width: '15%', align: 'center' },
-                          { key: 'revenue', label: 'Doanh thu', width: '30%', align: 'right' },
+                          { key: 'type', header: 'Loại', width: '20%', render: (node) => node.data.type },
+                          { key: 'products', header: 'Sản phẩm', width: '15%', align: 'center', render: (node) => node.data.products },
+                          { key: 'revenue', header: 'Doanh thu', width: '30%', align: 'right', render: (node) => node.data.revenue },
                         ]}
                         expandedIds={new Set([...expandedNodeIds])}
                         onExpandedChange={setExpandedNodeIds}
